@@ -1,6 +1,11 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { MemoryRouter as Router, Switch, Route } from 'react-router-dom';
+import {
+  MemoryRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom';
 import * as firebase from 'firebase/app';
 import 'firebase/database';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,12 +16,9 @@ import Start from 'pages/Start';
 import JoinGame from 'pages/JoinGame';
 import PlayerSetup from 'pages/PlayerSetup';
 import WaitingRoom from 'pages/WaitingRoom';
+import GameScreen from 'pages/GameScreen';
 
-import {
-  selectGameId,
-  // selectCurrentPage,
-  // selectScenario,
-} from 'redux/game/selectors';
+import { selectGameId, selectGameStartedAt } from 'redux/game/selectors';
 import { selectUid } from 'redux/auth/selectors';
 import { userUpdated } from 'redux/auth/slice';
 import { gameUpdated } from 'redux/game/slice';
@@ -35,9 +37,8 @@ const ContentContainer = styled.header`
 function App() {
   const dispatch = useDispatch();
   const gameId = useSelector(selectGameId);
-  // const currentPage = useSelector(selectCurrentPage);
   const uid = useSelector(selectUid);
-  // const scenario = useSelector(selectScenario);
+  const startedAt = useSelector(selectGameStartedAt);
 
   useEffect(() => {
     AuthService.subscribeToAuthStateChangeListener();
@@ -96,6 +97,7 @@ function App() {
   // N.B. <Redirect> components auto nav to the specified route (it's "declarative routing")
   return (
     <Router>
+      {startedAt && <Redirect to="/gameScreen" />}
       <Container>
         <Header />
         <ContentContainer>
@@ -113,6 +115,9 @@ function App() {
             </Route>
             <Route path="/waitingRoom">
               <WaitingRoom />
+            </Route>
+            <Route path="/gameScreen">
+              <GameScreen />
             </Route>
           </Switch>
         </ContentContainer>

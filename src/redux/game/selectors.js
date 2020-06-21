@@ -6,7 +6,7 @@ export const selectGameCode = (state) => state.game.gameCode;
 
 export const selectGameId = (state) => state.game.gameId;
 
-export const selectScenario = (state) => state.game.scenario;
+export const selectGameStartedAt = (state) => state.game.startedAt;
 
 export const selectPlayer = (uid) => (state) => state.game.players[uid];
 
@@ -45,8 +45,6 @@ export const selectOtherUsersWithFilledOutProfiles = (state) => {
 export const selectCurrentPage = (state) => state.game.currentPage;
 
 export const selectPageId = (state) => state.game.currentPage.id;
-
-export const selectStartedAt = (state) => state.game.currentPage.startedAt;
 
 export const selectUidToNameMap = (state) => {
   const allPlayers = selectPlayers(state);

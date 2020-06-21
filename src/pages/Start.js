@@ -31,13 +31,9 @@ const Start = () => {
       }: ${uid}`,
     );
 
-    const scenario = 'mafia';
-
     const res = await firebase
       .functions()
-      .httpsCallable('createUserProfileAndCreateGame')({
-      scenario,
-    });
+      .httpsCallable('createUserProfileAndCreateGame')();
 
     console.log('cf done: ', res); // could return user and game data here, but also need to subscribe to the game obj
     const { data } = res;
@@ -50,7 +46,6 @@ const Start = () => {
         type: 'gameCreator',
         gameId,
         gameCode,
-        scenario,
       }),
     );
 

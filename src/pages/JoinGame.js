@@ -57,7 +57,7 @@ const JoinGame = () => {
     }
 
     const { data } = res;
-    const { gameId, scenario } = data;
+    const { gameId } = data;
 
     dispatch(
       loggedInAndJoinedGame({
@@ -65,7 +65,6 @@ const JoinGame = () => {
         type: 'gameJoiner',
         gameId,
         gameCode,
-        scenario,
       }),
     );
 
