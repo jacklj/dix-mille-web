@@ -20,6 +20,7 @@ import {
 import { selectUid } from 'redux/auth/selectors';
 import { userUpdated } from 'redux/auth/slice';
 import { gameUpdated } from 'redux/game/slice';
+import { avatarsUpdated } from 'redux/avatars/slice';
 
 const Container = styled.div`
   text-align: center;
@@ -70,6 +71,27 @@ function App() {
 
     return () => gameRef.off(); // unsubscriber
   }, [dispatch, gameId, uid]);
+
+  useEffect(() => {
+    // subscribe to avatars
+    let avatarsRef;
+
+    if (uid) {
+      // must  be logged in
+      avatarsRef = firebase.database().ref('avatars');
+      avatarsRef.on('value', (snapshot) => {
+        const avatarsObj = snapshot.val();
+        console.log('Avatars updated: ', avatarsObj);
+        dispatch(avatarsUpdated(avatarsObj));
+      });
+    }
+
+    return () => {
+      if (avatarsRef) {
+        avatarsRef.off(); // unsubscriber
+      }
+    };
+  }, [dispatch, uid]);
 
   // N.B. <Redirect> components auto nav to the specified route (it's "declarative routing")
   return (

@@ -1,6 +1,6 @@
 // import moment from 'moment';
 import { selectUid } from 'redux/auth/selectors';
-// import { selectAllAvatars } from 'redux/definitions/selectors';
+import { selectAllAvatars } from 'redux/avatars/selectors';
 
 export const selectGameCode = (state) => state.game.gameCode;
 
@@ -113,9 +113,13 @@ export const selectAvatarUrl = (avatarId) => (state) => {
 };
 
 export const selectAllAvatarsWithChosenStatus = (state) => {
-  const allAvatars = []; // selectAllAvatars(state);
+  const allAvatars = selectAllAvatars(state);
+
+  console.log('allAvatars', allAvatars);
 
   const allGameUsers = selectUsers(state);
+
+  console.log('allGameUsers', allGameUsers);
 
   if (!allAvatars || allAvatars.length === 0 || !allGameUsers) {
     return undefined;
