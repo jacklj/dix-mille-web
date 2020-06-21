@@ -40,7 +40,7 @@ const Header = () => {
 
   return (
     <Container>
-      <Title>DIX MILLE</Title>
+      <Title>dIx mIlLe</Title>
       <ProfileContainer>
         {avatarUrl && <ProfileImage src={avatarUrl} />}
 
