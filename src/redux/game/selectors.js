@@ -103,7 +103,7 @@ export const selectMyAvatarUrl = (state) => {
 };
 
 export const selectAvatarUrl = (avatarId) => (state) => {
-  const avatars = []; // state.definitions.avatars;
+  const avatars = selectAllAvatars(state);
 
   if (typeof avatarId !== 'number' || !avatars) {
     return undefined;
