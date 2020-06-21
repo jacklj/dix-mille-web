@@ -93,7 +93,7 @@ export const selectRole = (state) => {
 
 export const selectMyAvatarUrl = (state) => {
   const avatarId = state.auth.avatarId;
-  const avatars = []; // state.definitions.avatars;
+  const avatars = selectAllAvatars(state);
 
   if (typeof avatarId !== 'number' || !avatars) {
     return undefined;
