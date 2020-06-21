@@ -20,6 +20,7 @@ const Container = styled.header`
 
 const Title = styled.div`
   font-size: 2em;
+  font-style: italic;
 `;
 
 const ProfileContainer = styled.div`
@@ -40,7 +41,7 @@ const Header = () => {
 
   return (
     <Container>
-      <Title>dIx mIlLe</Title>
+      <Title>dix mille</Title>
       <ProfileContainer>
         {avatarUrl && <ProfileImage src={avatarUrl} />}
 
