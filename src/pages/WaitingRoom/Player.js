@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import moment from 'moment';
 
-import { selectUser, selectAvatarUrl } from 'redux/game/selectors';
+import { selectPlayer, selectAvatarUrl } from 'redux/game/selectors';
 
 const Container = styled.div`
   color: white;
@@ -27,7 +27,7 @@ const ProfileImage = styled.img`
 `;
 
 const Player = ({ uid }) => {
-  const playerObj = useSelector(selectUser(uid));
+  const playerObj = useSelector(selectPlayer(uid));
   const { name, joinedAt, avatarId } = playerObj;
 
   const avatarUrl = useSelector(selectAvatarUrl(avatarId));

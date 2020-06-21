@@ -11,7 +11,7 @@ const gameSlice = createSlice({
     gameId: undefined,
     gameCode: undefined,
     gameCreator: undefined,
-    users: undefined,
+    players: undefined,
     startedAt: undefined,
 
     scores: undefined,
@@ -21,7 +21,7 @@ const gameSlice = createSlice({
       const { payload } = action;
       state.gameCode = payload.code;
       state.gameCreator = payload.gameCreator;
-      state.users = payload.users;
+      state.players = payload.players;
       state.startedAt = payload.startedAt;
 
       state.scores = payload.scores;

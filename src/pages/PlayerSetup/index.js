@@ -53,8 +53,8 @@ const PlayerSetup = () => {
       .update({
         [`users/${uid}/name`]: name,
         [`users/${uid}/avatarId`]: currentAvatar,
-        [`games/${gameId}/users/${uid}/name`]: name,
-        [`games/${gameId}/users/${uid}/avatarId`]: currentAvatar,
+        [`games/${gameId}/players/${uid}/name`]: name,
+        [`games/${gameId}/players/${uid}/avatarId`]: currentAvatar,
       });
 
     history.push('/waitingRoom');

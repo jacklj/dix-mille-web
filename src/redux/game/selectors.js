@@ -8,19 +8,19 @@ export const selectGameId = (state) => state.game.gameId;
 
 export const selectScenario = (state) => state.game.scenario;
 
-export const selectUser = (uid) => (state) => state.game.users[uid];
+export const selectPlayer = (uid) => (state) => state.game.players[uid];
 
-const selectUsers = (state) => state.game.users;
+const selectPlayers = (state) => state.game.players;
 
 export const selectOtherUsersWithFilledOutProfiles = (state) => {
   const myUid = state.auth.uid;
-  const allUsers = { ...selectUsers(state) };
+  const allPlayers = { ...selectPlayers(state) };
 
-  delete allUsers[myUid];
+  delete allPlayers[myUid];
 
-  const otherUsersUids = Object.keys(allUsers)
+  const otherUsersUids = Object.keys(allPlayers)
     .map((uid) => {
-      const value = allUsers[uid];
+      const value = allPlayers[uid];
       return {
         ...value,
         uid,
@@ -36,8 +36,8 @@ export const selectOtherUsersWithFilledOutProfiles = (state) => {
         return 0;
       }
     })
-    .filter((user) => user.name) // if they havent filled out their profile yet, dont display them in Waiting Room
-    .map((userObj) => userObj.uid);
+    .filter((player) => player.name) // if they havent filled out their profile yet, dont display them in Waiting Room
+    .map((playerObj) => playerObj.uid);
 
   return otherUsersUids;
 };
@@ -49,14 +49,16 @@ export const selectPageId = (state) => state.game.currentPage.id;
 export const selectStartedAt = (state) => state.game.currentPage.startedAt;
 
 export const selectUidToNameMap = (state) => {
-  if (!state.game.users) {
+  const allPlayers = selectPlayers(state);
+
+  if (!allPlayers) {
     return undefined;
   }
 
   const uidToNameMap = {};
 
-  Object.keys(state.game.users).forEach((uid) => {
-    uidToNameMap[uid] = state.game.users[uid].name;
+  Object.keys(allPlayers).forEach((uid) => {
+    uidToNameMap[uid] = allPlayers[uid].name;
   });
 
   return uidToNameMap;
@@ -81,12 +83,13 @@ export const selectAmICurrentKing = (state) => {
 
 export const selectRole = (state) => {
   const uid = selectUid(state);
+  const allPlayers = selectPlayers(state);
 
-  if (!uid || !state.game.users) {
+  if (!uid || !allPlayers) {
     return undefined;
   }
 
-  const { role } = state.game.users[uid];
+  const { role } = allPlayers[uid];
 
   return role;
 };
@@ -117,18 +120,18 @@ export const selectAllAvatarsWithChosenStatus = (state) => {
 
   console.log('allAvatars', allAvatars);
 
-  const allGameUsers = selectUsers(state);
+  const allPlayers = selectPlayers(state);
 
-  console.log('allGameUsers', allGameUsers);
+  console.log('allPlayers', allPlayers);
 
-  if (!allAvatars || allAvatars.length === 0 || !allGameUsers) {
+  if (!allAvatars || allAvatars.length === 0 || !allPlayers) {
     return undefined;
   }
 
   const alreadyUsedAvatars = {};
 
-  Object.values(allGameUsers).forEach((user) => {
-    const { avatarId } = user;
+  Object.values(allPlayers).forEach((player) => {
+    const { avatarId } = player;
     if (avatarId || typeof avatarId === 'number') {
       // avatarId is a number, this works for strings too, in case we have string ids in future
       alreadyUsedAvatars[avatarId] = true;
