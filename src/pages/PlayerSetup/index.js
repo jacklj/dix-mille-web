@@ -27,8 +27,6 @@ const PlayerSetup = () => {
 
   const [name, setName] = useState('');
   const [currentAvatar, setCurrentAvatar] = useState(0);
-  const [hero, setHero] = useState('');
-  const [film, setFilm] = useState('');
 
   const avatars = useSelector(selectAllAvatarsWithChosenStatus);
   const gameId = useSelector(selectGameId);
@@ -44,8 +42,8 @@ const PlayerSetup = () => {
       return;
     }
 
-    if (!name || !hero || !film) {
-      alert('Name, hero or film must not be empty');
+    if (!name) {
+      alert('Name must not be empty');
       return;
     }
 
@@ -55,8 +53,6 @@ const PlayerSetup = () => {
       .update({
         [`users/${uid}/name`]: name,
         [`users/${uid}/avatarId`]: currentAvatar,
-        [`users/${uid}/hero`]: hero,
-        [`users/${uid}/film`]: film,
         [`games/${gameId}/users/${uid}/name`]: name,
         [`games/${gameId}/users/${uid}/avatarId`]: currentAvatar,
       });
@@ -100,28 +96,6 @@ const PlayerSetup = () => {
           previousAvatar={previousAvatar}
           nextAvatar={nextAvatar}
         />
-
-        <div>
-          <Label htmlFor="hero">Who's your hero?</Label>
-          <input
-            id="hero"
-            type="text"
-            placeholder="Your hero"
-            value={hero}
-            onChange={(event) => setHero(event.target.value)}
-          />
-        </div>
-
-        <div>
-          <Label htmlFor="hero">What is your favourite film?</Label>
-          <input
-            id="film"
-            type="text"
-            placeholder="Your favourite film"
-            value={film}
-            onChange={(event) => setFilm(event.target.value)}
-          />
-        </div>
 
         <Button>Next</Button>
       </form>
