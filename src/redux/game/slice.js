@@ -13,8 +13,10 @@ const gameSlice = createSlice({
     gameCreator: undefined,
     players: undefined,
     startedAt: undefined,
-
-    scores: undefined,
+    currentRound: undefined,
+    currentTurn: undefined,
+    playerTurnOrder: undefined,
+    rounds: undefined,
   },
   reducers: {
     gameUpdated(state, action) {
@@ -23,8 +25,10 @@ const gameSlice = createSlice({
       state.gameCreator = payload.gameCreator;
       state.players = payload.players;
       state.startedAt = payload.startedAt;
-
-      state.scores = payload.scores;
+      state.currentRound = payload.currentRound;
+      state.currentTurn = payload.currentTurn;
+      state.playerTurnOrder = payload.playerTurnOrder;
+      state.rounds = payload.rounds;
     },
   },
   extraReducers: {

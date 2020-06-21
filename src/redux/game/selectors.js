@@ -1,6 +1,6 @@
 // import moment from 'moment';
-import { selectUid } from 'redux/auth/selectors';
 import { selectAllAvatars } from 'redux/avatars/selectors';
+import { selectUid } from 'redux/auth/selectors';
 
 export const selectGameCode = (state) => state.game.gameCode;
 
@@ -42,10 +42,6 @@ export const selectOtherUsersWithFilledOutProfiles = (state) => {
   return otherUsersUids;
 };
 
-export const selectCurrentPage = (state) => state.game.currentPage;
-
-export const selectPageId = (state) => state.game.currentPage.id;
-
 export const selectUidToNameMap = (state) => {
   const allPlayers = selectPlayers(state);
 
@@ -62,47 +58,6 @@ export const selectUidToNameMap = (state) => {
   return uidToNameMap;
 };
 
-export const selectAmICurrentKing = (state) => {
-  const uid = selectUid(state);
-
-  if (
-    !uid ||
-    !state.game ||
-    !state.game.currentPage ||
-    !state.game.currentPage.currentKing
-  ) {
-    return false;
-  }
-
-  const currentKing = state.game.currentPage.currentKing;
-
-  return uid === currentKing;
-};
-
-export const selectRole = (state) => {
-  const uid = selectUid(state);
-  const allPlayers = selectPlayers(state);
-
-  if (!uid || !allPlayers) {
-    return undefined;
-  }
-
-  const { role } = allPlayers[uid];
-
-  return role;
-};
-
-export const selectMyAvatarUrl = (state) => {
-  const avatarId = state.auth.avatarId;
-  const avatars = selectAllAvatars(state);
-
-  if (typeof avatarId !== 'number' || !avatars) {
-    return undefined;
-  }
-
-  return avatars[avatarId];
-};
-
 export const selectAvatarUrl = (avatarId) => (state) => {
   const avatars = selectAllAvatars(state);
 
@@ -111,6 +66,14 @@ export const selectAvatarUrl = (avatarId) => (state) => {
   }
 
   return avatars[avatarId];
+};
+
+export const selectMyAvatarUrl = (state) => {
+  const avatarId = state.auth.avatarId;
+
+  const myAvatarUrl = selectAvatarUrl(avatarId)(state);
+
+  return myAvatarUrl;
 };
 
 export const selectAllAvatarsWithChosenStatus = (state) => {
@@ -142,4 +105,60 @@ export const selectAllAvatarsWithChosenStatus = (state) => {
   }));
 };
 
-export const selectScores = (state) => state.game.scores;
+// game play
+export const selectPlayerTurnOrder = (state) => state.game.playerTurnOrder;
+
+export const selectCurrentTurnPlayerUid = (state) => {
+  const { currentTurn } = state.game;
+  const playerTurnOrder = selectPlayerTurnOrder(state);
+
+  if (!playerTurnOrder || typeof currentTurn !== 'number') {
+    return undefined;
+  }
+
+  return playerTurnOrder[currentTurn];
+};
+
+export const isItMyTurn = (state) => {
+  const playerWhosTurnItIsUid = selectCurrentTurnPlayerUid(state);
+
+  const myUid = selectUid(state);
+
+  return myUid === playerWhosTurnItIsUid;
+};
+
+export const selectCurrentDiceRoll = (state) => {
+  const {
+    currentRound: currentRoundId,
+    currentTurn: currentTurnId,
+    rounds,
+  } = state.game;
+
+  const currentRoundObj = rounds[currentRoundId];
+
+  if (!currentRoundObj || !currentRoundObj.turns) {
+    return undefined;
+  }
+
+  const currentTurnObj = currentRoundObj.turns[currentTurnId];
+
+  if (!currentTurnObj) {
+    return undefined;
+  }
+
+  const { rolls } = currentTurnObj;
+
+  if (!rolls || !Array.isArray(rolls)) {
+    return undefined;
+  }
+
+  const currentRoll = rolls[rolls.length - 1];
+
+  if (!currentRoll) {
+    return undefined;
+  }
+
+  const { roll } = currentRoll;
+
+  return roll;
+};
