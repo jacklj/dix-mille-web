@@ -37,13 +37,34 @@ const GameScreen = () => {
     console.log(res);
   };
 
+  const endTurnAfterBlap = async (event) => {
+    event.preventDefault();
+
+    const res = await firebase.functions().httpsCallable('endTurnAfterBlap')({
+      gameId,
+    });
+
+    console.log(res);
+  };
+
   let gameUiJsx;
   if (isMyTurn) {
-    gameUiJsx = (
-      <form onSubmit={(event) => rollDie(event)}>
-        <Button>Roll</Button>
-      </form>
-    );
+    if (!isBlapped) {
+      gameUiJsx = (
+        <form onSubmit={(event) => rollDie(event)}>
+          <Button>Roll</Button>
+        </form>
+      );
+    } else {
+      gameUiJsx = (
+        <>
+          <form onSubmit={(event) => endTurnAfterBlap(event)}>
+            <Button>Blapped - end turn</Button>
+          </form>
+          <Text>BLAP!</Text>
+        </>
+      );
+    }
   } else {
     gameUiJsx = (
       <>
@@ -55,9 +76,8 @@ const GameScreen = () => {
   return (
     <>
       <Text>Game page!</Text>
-      {gameUiJsx}
       <Text>{JSON.stringify(currentDiceRoll)}</Text>
-      {isBlapped && <Text>BLAP!</Text>}
+      {gameUiJsx}
     </>
   );
 };
