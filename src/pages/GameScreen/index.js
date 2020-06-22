@@ -10,6 +10,7 @@ import {
   isItMyTurn,
   selectGameId,
   selectCurrentDiceRoll,
+  selectIsBlapped,
 } from 'redux/game/selectors';
 
 const Text = styled.div`
@@ -24,6 +25,7 @@ const GameScreen = () => {
   const isMyTurn = useSelector(isItMyTurn);
   const gameId = useSelector(selectGameId);
   const currentDiceRoll = useSelector(selectCurrentDiceRoll);
+  const isBlapped = useSelector(selectIsBlapped);
 
   const rollDie = async (event) => {
     event.preventDefault();
@@ -35,15 +37,15 @@ const GameScreen = () => {
     console.log(res);
   };
 
-  let jsx;
+  let gameUiJsx;
   if (isMyTurn) {
-    jsx = (
+    gameUiJsx = (
       <form onSubmit={(event) => rollDie(event)}>
         <Button>Roll</Button>
       </form>
     );
   } else {
-    jsx = (
+    gameUiJsx = (
       <>
         <Text>It's not your turn yet...</Text>
       </>
@@ -53,8 +55,9 @@ const GameScreen = () => {
   return (
     <>
       <Text>Game page!</Text>
-      {jsx}
+      {gameUiJsx}
       <Text>{JSON.stringify(currentDiceRoll)}</Text>
+      {isBlapped && <Text>BLAP!</Text>}
     </>
   );
 };

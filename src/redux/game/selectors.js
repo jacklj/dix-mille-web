@@ -127,7 +127,7 @@ export const isItMyTurn = (state) => {
   return myUid === playerWhosTurnItIsUid;
 };
 
-export const selectCurrentDiceRoll = (state) => {
+const selectCurrentRollObj = (state) => {
   const {
     currentRound: currentRoundId,
     currentTurn: currentTurnId,
@@ -154,6 +154,12 @@ export const selectCurrentDiceRoll = (state) => {
 
   const currentRoll = rolls[rolls.length - 1];
 
+  return currentRoll;
+};
+
+export const selectCurrentDiceRoll = (state) => {
+  const currentRoll = selectCurrentRollObj(state);
+
   if (!currentRoll) {
     return undefined;
   }
@@ -161,4 +167,16 @@ export const selectCurrentDiceRoll = (state) => {
   const { roll } = currentRoll;
 
   return roll;
+};
+
+export const selectIsBlapped = (state) => {
+  const currentRoll = selectCurrentRollObj(state);
+
+  if (!currentRoll) {
+    return undefined;
+  }
+
+  const { isBlapped } = currentRoll;
+
+  return isBlapped;
 };
