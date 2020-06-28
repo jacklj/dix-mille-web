@@ -27,6 +27,7 @@ const PlayerSetup = () => {
 
   const [name, setName] = useState('');
   const [currentAvatar, setCurrentAvatar] = useState(0);
+  const [isSavingPlayerDetails, setIsSavingPlayerDetails] = useState(false);
 
   const avatars = useSelector(selectAllAvatarsWithChosenStatus);
   const gameId = useSelector(selectGameId);
@@ -34,16 +35,25 @@ const PlayerSetup = () => {
 
   const writePlayerProfileAndGoToWaitingRoom = async (event) => {
     event.preventDefault();
+    setIsSavingPlayerDetails(true);
+
+    if (!avatars || avatars.length === 0) {
+      alert('Please wait for the avatars to load and then choose one');
+      setIsSavingPlayerDetails(false);
+      return;
+    }
 
     if (avatars[currentAvatar].alreadyChosen) {
       alert(
         'Someone else has already chosen this avatar - please select another',
       );
+      setIsSavingPlayerDetails(false);
       return;
     }
 
     if (!name) {
       alert('Name must not be empty');
+      setIsSavingPlayerDetails(false);
       return;
     }
 
@@ -97,7 +107,9 @@ const PlayerSetup = () => {
           nextAvatar={nextAvatar}
         />
 
-        <Button>Next</Button>
+        <Button disabled={isSavingPlayerDetails}>
+          {isSavingPlayerDetails ? 'Loading...' : 'Next'}
+        </Button>
       </form>
     </>
   );

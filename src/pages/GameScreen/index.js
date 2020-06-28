@@ -26,15 +26,21 @@ const GameScreen = () => {
   const gameId = useSelector(selectGameId);
   const currentDiceRoll = useSelector(selectCurrentDiceRoll);
   const isBlapped = useSelector(selectIsBlapped);
+  const [isRolling, setIsRolling] = useState(false);
 
   const rollDie = async (event) => {
+    setIsRolling(true);
     event.preventDefault();
 
-    const res = await firebase.functions().httpsCallable('rollDice')({
-      gameId,
-    });
-
-    console.log(res);
+    try {
+      await firebase.functions().httpsCallable('rollDice')({
+        gameId,
+      });
+      setIsRolling(false);
+    } catch (error) {
+      setIsRolling(false);
+      console.error(error);
+    }
   };
 
   const endTurnAfterBlap = async (event) => {
@@ -52,7 +58,9 @@ const GameScreen = () => {
     if (!isBlapped) {
       gameUiJsx = (
         <form onSubmit={(event) => rollDie(event)}>
-          <Button>Roll</Button>
+          <Button disabled={isRolling}>
+            {isRolling ? 'Rolling...' : 'Roll'}
+          </Button>
         </form>
       );
     } else {

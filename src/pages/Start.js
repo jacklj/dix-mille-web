@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import 'firebase/functions';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -10,8 +10,10 @@ import { loggedInAndCreatedGame } from 'redux/auth/slice';
 const Start = () => {
   const history = useHistory();
   const dispatch = useDispatch();
+  const [isStartingGame, setIsStartingGame] = useState(false);
 
   const createAnonymousProfileAndGame = async () => {
+    setIsStartingGame(true);
     // set auth persistence level:
     // LOCAL - persists across tabs
     // SESSION - persists within a tab (across page refreshes, but not shared between tabs)
@@ -55,8 +57,10 @@ const Start = () => {
   return (
     <>
       <div>
-        <button onClick={() => createAnonymousProfileAndGame()}>
-          Start a new game
+        <button
+          onClick={() => createAnonymousProfileAndGame()}
+          disabled={isStartingGame}>
+          {isStartingGame ? 'Starting...' : 'Start a new game'}
         </button>
       </div>
       <div>
