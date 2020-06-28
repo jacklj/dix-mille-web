@@ -26,6 +26,7 @@ const DiceContainer = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  margin: 20px;
 `;
 
 const GameScreen = () => {
@@ -34,6 +35,9 @@ const GameScreen = () => {
   const currentDiceRoll = useSelector(selectCurrentDiceRoll);
   const isBlapped = useSelector(selectIsBlapped);
   const [isRolling, setIsRolling] = useState(false);
+  const [isBlappingAndFinishingTurn, setIsBlappingAndFinishingTurn] = useState(
+    false,
+  );
 
   const rollDie = async (event) => {
     setIsRolling(true);
@@ -51,12 +55,14 @@ const GameScreen = () => {
   };
 
   const endTurnAfterBlap = async (event) => {
+    setIsBlappingAndFinishingTurn(true);
     event.preventDefault();
 
     const res = await firebase.functions().httpsCallable('endTurnAfterBlap')({
       gameId,
     });
 
+    setIsBlappingAndFinishingTurn(false);
     console.log(res);
   };
 
@@ -74,7 +80,11 @@ const GameScreen = () => {
       gameUiJsx = (
         <>
           <form onSubmit={(event) => endTurnAfterBlap(event)}>
-            <Button>Blapped - end turn</Button>
+            <Button disabled={isBlappingAndFinishingTurn}>
+              {isBlappingAndFinishingTurn
+                ? 'Ending turn...'
+                : 'Blapped - end turn'}
+            </Button>
           </form>
           <Text>BLAP!</Text>
         </>
@@ -91,7 +101,6 @@ const GameScreen = () => {
   return (
     <>
       <Text>Game page!</Text>
-      <Text>{JSON.stringify(currentDiceRoll)}</Text>
       <DiceContainer>
         {currentDiceRoll &&
           Object.keys(currentDiceRoll).map((id) => (
