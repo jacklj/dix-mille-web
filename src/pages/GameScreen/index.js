@@ -12,6 +12,7 @@ import {
   selectCurrentDiceRoll,
   selectIsBlapped,
 } from 'redux/game/selectors';
+import Die from './Die';
 
 const Text = styled.div`
   color: white;
@@ -19,6 +20,12 @@ const Text = styled.div`
 
 const Button = styled.button`
   margin: 20px;
+`;
+
+const DiceContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 `;
 
 const GameScreen = () => {
@@ -85,6 +92,12 @@ const GameScreen = () => {
     <>
       <Text>Game page!</Text>
       <Text>{JSON.stringify(currentDiceRoll)}</Text>
+      <DiceContainer>
+        {currentDiceRoll &&
+          Object.keys(currentDiceRoll).map((id) => (
+            <Die id={id} key={id} value={currentDiceRoll[id]} />
+          ))}
+      </DiceContainer>
       {gameUiJsx}
     </>
   );
