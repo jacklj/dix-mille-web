@@ -79,11 +79,7 @@ export const selectMyAvatarUrl = (state) => {
 export const selectAllAvatarsWithChosenStatus = (state) => {
   const allAvatars = selectAllAvatars(state);
 
-  console.log('allAvatars', allAvatars);
-
   const allPlayers = selectPlayers(state);
-
-  console.log('allPlayers', allPlayers);
 
   if (!allAvatars || allAvatars.length === 0 || !allPlayers) {
     return undefined;

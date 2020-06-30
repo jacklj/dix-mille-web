@@ -1,6 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 
+const SelectionAura = styled.div`
+  background-color: ${(props) =>
+    props.selected ? 'rgba(0,240,0,0.5)' : 'rgba(0,240,0,0)'};
+  border-radius: 50%;
+  padding: 20px;
+  margin: 16px;
+`;
+
 const Face = styled.div`
   flex: 0 0 auto;
   margin: 16px;
@@ -51,14 +59,16 @@ const Pip = styled.span`
   }
 `;
 
-const Die = ({ id, value }) => {
+const Die = ({ id, value, selected, onClick }) => {
   const arrayWithValueItems = [...Array(value)];
   return (
-    <Face>
-      {arrayWithValueItems.map((v, k) => (
-        <Pip key={k} />
-      ))}
-    </Face>
+    <SelectionAura selected={selected} onClick={onClick}>
+      <Face>
+        {arrayWithValueItems.map((v, k) => (
+          <Pip key={k} />
+        ))}
+      </Face>
+    </SelectionAura>
   );
 };
 

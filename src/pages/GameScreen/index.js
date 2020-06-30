@@ -26,6 +26,7 @@ const DiceContainer = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: space-between;
   margin: 20px;
 `;
 
@@ -38,6 +39,14 @@ const GameScreen = () => {
   const [isBlappingAndFinishingTurn, setIsBlappingAndFinishingTurn] = useState(
     false,
   );
+  const [diceSelectedState, setDiceSelectedState] = useState({
+    a: false,
+    b: false,
+    c: false,
+    d: false,
+    e: false,
+    f: false,
+  });
 
   const rollDie = async (event) => {
     setIsRolling(true);
@@ -104,7 +113,16 @@ const GameScreen = () => {
       <DiceContainer>
         {currentDiceRoll &&
           Object.keys(currentDiceRoll).map((id) => (
-            <Die id={id} key={id} value={currentDiceRoll[id]} />
+            <Die
+              id={id}
+              key={id}
+              value={currentDiceRoll[id]}
+              selected={diceSelectedState[id]}
+              onClick={() => {
+                console.log(`Clicked on dice '${id}'`);
+                setDiceSelectedState((x) => ({ ...x, [id]: !x[id] }));
+              }}
+            />
           ))}
       </DiceContainer>
       {gameUiJsx}

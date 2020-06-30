@@ -20,12 +20,15 @@ const JoinGame = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const [gameCode, setGameCode] = useState('');
+  const [isJoining, setIsJoining] = useState(false);
 
   const createAnonymousProfileAndJoinGame = async (event) => {
+    setIsJoining(true);
     event.preventDefault();
 
     if (!gameCode) {
       alert('Game code must not be empty');
+      setIsJoining(false);
       return;
     }
 
@@ -53,6 +56,7 @@ const JoinGame = () => {
 
     if (!res.data.success) {
       alert(res.data.reason);
+      setIsJoining(false);
       return;
     }
 
@@ -69,6 +73,7 @@ const JoinGame = () => {
     );
 
     history.push('/playerSetup');
+    setIsJoining(false);
   };
 
   return (
@@ -84,7 +89,7 @@ const JoinGame = () => {
         />
       </div>
 
-      <Button>Next</Button>
+      <Button disabled={isJoining}>{isJoining ? 'Loading...' : 'Next'}</Button>
     </form>
   );
 };

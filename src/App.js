@@ -51,7 +51,6 @@ function App() {
     if (uid) {
       userRef.on('value', (snapshot) => {
         const userObj = snapshot.val();
-        console.log('User updated: ', userObj);
         dispatch(userUpdated(userObj));
       });
     }
@@ -65,7 +64,6 @@ function App() {
     if (gameId && uid) {
       gameRef.on('value', (snapshot) => {
         const gameObj = snapshot.val();
-
         dispatch(gameUpdated(gameObj));
       });
     }
@@ -82,7 +80,6 @@ function App() {
       avatarsRef = firebase.database().ref('avatars');
       avatarsRef.on('value', (snapshot) => {
         const avatarsObj = snapshot.val();
-        console.log('Avatars updated: ', avatarsObj);
         dispatch(avatarsUpdated(avatarsObj));
       });
     }
