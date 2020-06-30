@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import * as firebase from 'firebase/app';
 import 'firebase/functions';
@@ -30,23 +30,32 @@ const DiceContainer = styled.div`
   margin: 20px;
 `;
 
+const diceSelectedInitialState = {
+  a: false,
+  b: false,
+  c: false,
+  d: false,
+  e: false,
+  f: false,
+};
+
 const GameScreen = () => {
   const isMyTurn = useSelector(isItMyTurn);
   const gameId = useSelector(selectGameId);
   const currentDiceRoll = useSelector(selectCurrentDiceRoll);
   const isBlapped = useSelector(selectIsBlapped);
   const [isRolling, setIsRolling] = useState(false);
+  const [isGrouping, setIsGrouping] = useState(false);
   const [isBlappingAndFinishingTurn, setIsBlappingAndFinishingTurn] = useState(
     false,
   );
-  const [diceSelectedState, setDiceSelectedState] = useState({
-    a: false,
-    b: false,
-    c: false,
-    d: false,
-    e: false,
-    f: false,
-  });
+  const [diceSelectedState, setDiceSelectedState] = useState(
+    diceSelectedInitialState,
+  );
+
+  useEffect(() => {
+    setDiceSelectedState(diceSelectedInitialState);
+  }, [currentDiceRoll]);
 
   const rollDie = async (event) => {
     setIsRolling(true);
@@ -61,6 +70,37 @@ const GameScreen = () => {
       setIsRolling(false);
       console.error(error);
     }
+  };
+
+  const createDiceGroup = async () => {
+    setIsGrouping(true);
+
+    // check on front end for invalid groups, then write to DB (less secure but quicker for current turn player)
+    const selectedDiceIds = Object.keys(diceSelectedState).filter(
+      (id) => diceSelectedState[id],
+    );
+    const diceValues = selectedDiceIds.map((id) => currentDiceRoll[id]);
+    const numberOfDice = selectedDiceIds.length;
+
+    if (numberOfDice === 1) {
+      if (diceValues[0] === 1 || diceValues[0] === 5) {
+        console.log("That's a valid group: 1 or 5!");
+      } else {
+        alert("That's not a valid set of dice");
+      }
+    } else if (numberOfDice === 3) {
+      // 3 of a kind?
+      if (diceValues.every((value) => value === diceValues[0])) {
+        console.log("That's a valid group: 3 of a kind!");
+      } else {
+        alert("That's not a valid set of dice");
+      }
+    } else {
+      // TODO 3 pairs
+      // TODO 1 2 3 4 5 6
+      alert("That's not a valid set of dice");
+    }
+    setIsGrouping(false);
   };
 
   const endTurnAfterBlap = async (event) => {
@@ -79,11 +119,16 @@ const GameScreen = () => {
   if (isMyTurn) {
     if (!isBlapped) {
       gameUiJsx = (
-        <form onSubmit={(event) => rollDie(event)}>
-          <Button disabled={isRolling}>
-            {isRolling ? 'Rolling...' : 'Roll'}
+        <>
+          <Button onClick={() => createDiceGroup()} disabled={isGrouping}>
+            {isGrouping ? 'Grouping...' : 'Group dice'}
           </Button>
-        </form>
+          <form onSubmit={(event) => rollDie(event)}>
+            <Button disabled={isRolling}>
+              {isRolling ? 'Rolling...' : 'Roll'}
+            </Button>
+          </form>
+        </>
       );
     } else {
       gameUiJsx = (
