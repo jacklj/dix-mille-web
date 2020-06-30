@@ -5,8 +5,14 @@ const SelectionAura = styled.div`
   background-color: ${(props) =>
     props.selected ? 'rgba(0,240,0,0.5)' : 'rgba(0,240,0,0)'};
   border-radius: 50%;
-  padding: 20px;
-  margin: 16px;
+  padding: 15px;
+  margin: 5px;
+  margin-bottom: 30px;
+
+  &:nth-child(even) {
+    position: relative;
+    top: 30px;
+  }
 `;
 
 const Face = styled.div`
