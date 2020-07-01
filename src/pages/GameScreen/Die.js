@@ -19,8 +19,8 @@ const Face = styled.div`
   flex: 0 0 auto;
   margin: 16px;
   padding: 10px;
-  width: 104px;
-  height: 104px;
+  width: 90px;
+  height: 90px;
 
   background-color: #e7e7e7;
   box-shadow: inset 0 5px white, inset 0 -5px #bbb, inset 5px 0 #d7d7d7,
@@ -38,8 +38,8 @@ const Pip = styled.span`
   display: block;
   align-self: center;
   justify-self: center;
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   background-color: #333;
   box-shadow: inset 0 3px #111, inset 0 -3px #555;
