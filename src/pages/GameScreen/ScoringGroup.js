@@ -16,17 +16,19 @@ const DiceContainer = styled.div`
   justify-content: flex-start;
 `;
 
-const ScoringGroup = ({ groupId, dice, ungroupGroup }) => {
-  console.log(`[group] dice: `, dice);
+const ScoringGroup = ({ groupId, dice, ungroupGroup, isMyTurn }) => {
+  // only show the 'Put back' button if it's your turn
   return (
     <Container>
       <DiceContainer>
         {dice &&
           Object.keys(dice).map((id) => (
-            <Die id={id} key={id} value={dice[id]} />
+            <Die id={id} key={id} value={dice[id]} isInGroup />
           ))}
       </DiceContainer>
-      <button onClick={() => ungroupGroup(groupId)}>Put back</button>
+      {isMyTurn && (
+        <button onClick={() => ungroupGroup(groupId)}>Put back</button>
+      )}
     </Container>
   );
 };

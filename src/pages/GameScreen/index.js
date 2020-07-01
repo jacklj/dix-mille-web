@@ -77,6 +77,11 @@ const GameScreen = () => {
     setIsRolling(true);
     event.preventDefault();
 
+    if (!isMyTurn) {
+      alert("You can't role - it's not your turn!");
+      setIsRolling(false);
+    }
+
     try {
       await firebase.functions().httpsCallable('rollDice')({
         gameId,
@@ -90,6 +95,11 @@ const GameScreen = () => {
 
   const createDiceGroup = async () => {
     setIsGrouping(true);
+
+    if (!isMyTurn) {
+      alert("You can't create a group - it's not your turn!");
+      setIsGrouping(false);
+    }
 
     // check on front end for invalid groups, then write to DB (less secure but quicker for current turn player)
     const selectedDiceIds = Object.keys(diceSelectedState).filter(
@@ -152,6 +162,10 @@ const GameScreen = () => {
   };
 
   const ungroupGroup = async (groupId) => {
+    if (!isMyTurn) {
+      alert("You can't ungroup - it's not your turn!");
+    }
+
     await firebase
       .database()
       .ref(
@@ -161,8 +175,13 @@ const GameScreen = () => {
   };
 
   const endTurnAfterBlap = async (event) => {
-    setIsBlappingAndFinishingTurn(true);
     event.preventDefault();
+    setIsBlappingAndFinishingTurn(true);
+
+    if (!isMyTurn) {
+      alert("You can't end the turn - it's not your turn!");
+      setIsBlappingAndFinishingTurn(false);
+    }
 
     const res = await firebase.functions().httpsCallable('endTurnAfterBlap')({
       gameId,
@@ -248,6 +267,7 @@ const GameScreen = () => {
                   groupId={groupId}
                   dice={dice}
                   ungroupGroup={ungroupGroup}
+                  isMyTurn={isMyTurn}
                 />
               );
             })}
