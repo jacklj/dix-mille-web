@@ -197,6 +197,33 @@ export const selectCurrentDiceRoll = (state) => {
   return roll;
 };
 
+export const selectScoringGroups = (state) => {
+  const currentRoll = selectCurrentRollObj(state);
+
+  return currentRoll?.scoringGroups;
+};
+
+export const selectCurrentDiceRollMinusScoringGroups = (state) => {
+  const currentDiceRoll = selectCurrentDiceRoll(state);
+
+  const scoringGroups = selectScoringGroups(state);
+
+  if (!scoringGroups) {
+    return currentDiceRoll;
+  }
+
+  const result = { ...currentDiceRoll };
+
+  Object.values(scoringGroups).forEach((groupObj) => {
+    const { dice } = groupObj;
+    Object.keys(dice).forEach((dieId) => {
+      delete result[dieId];
+    });
+  });
+
+  return result;
+};
+
 export const selectIsBlapped = (state) => {
   const currentRoll = selectCurrentRollObj(state);
 

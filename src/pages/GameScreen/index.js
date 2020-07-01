@@ -14,6 +14,8 @@ import {
   selectCurrentTurn,
   selectCurrentRound,
   selectCurrentRollNumber,
+  selectCurrentDiceRollMinusScoringGroups,
+  selectScoringGroups,
 } from 'redux/game/selectors';
 import Die from './Die';
 import Constants from 'services/constants';
@@ -49,6 +51,10 @@ const GameScreen = () => {
   const currentRound = useSelector(selectCurrentRound);
   const currentTurn = useSelector(selectCurrentTurn);
   const currentDiceRoll = useSelector(selectCurrentDiceRoll);
+  const currentDiceRollMinusScoringGroups = useSelector(
+    selectCurrentDiceRollMinusScoringGroups,
+  );
+  const scoringGroups = useSelector(selectScoringGroups);
   const currentRollNumber = useSelector(selectCurrentRollNumber);
   const isBlapped = useSelector(selectIsBlapped);
   const [isRolling, setIsRolling] = useState(false);
@@ -98,11 +104,11 @@ const GameScreen = () => {
         console.log("That's a valid group: 1 or 5!");
 
         isValidGroup = true;
-        groupType = Constants.diceGroupTypes.oneOrFive;
-        score = diceValues[0] === 1 ? 100 : 50;
         dice = {
           [selectedDiceIds[0]]: diceValues[0],
         };
+        groupType = Constants.diceGroupTypes.oneOrFive;
+        score = diceValues[0] === 1 ? 100 : 50;
       } else {
         alert("That's not a valid set of dice");
 
@@ -113,10 +119,10 @@ const GameScreen = () => {
       if (diceValues.every((value) => value === diceValues[0])) {
         console.log("That's a valid group: 3 of a kind!");
         isValidGroup = true;
-        groupType = Constants.diceGroupTypes.threeOfAKind;
-        score = diceValues[0] === 1 ? 1000 : diceValues[0] * 100;
         dice = {};
         selectedDiceIds.forEach((id) => (dice[id] = currentDiceRoll[id]));
+        groupType = Constants.diceGroupTypes.threeOfAKind;
+        score = diceValues[0] === 1 ? 1000 : diceValues[0] * 100;
       } else {
         alert("That's not a valid set of dice");
         isValidGroup = false;
@@ -131,7 +137,7 @@ const GameScreen = () => {
       await firebase
         .database()
         .ref(
-          `games/${gameId}/rounds/${currentRound}/turns/${currentTurn}/rolls/${currentRollNumber}/scoringSets`,
+          `games/${gameId}/rounds/${currentRound}/turns/${currentTurn}/rolls/${currentRollNumber}/scoringGroups`,
         )
         .push({
           dice,
@@ -195,8 +201,8 @@ const GameScreen = () => {
     <>
       <Text>Game page!</Text>
       <DiceContainer>
-        {currentDiceRoll &&
-          Object.keys(currentDiceRoll).map((id) => (
+        {currentDiceRollMinusScoringGroups &&
+          Object.keys(currentDiceRollMinusScoringGroups).map((id) => (
             <Die
               id={id}
               key={id}
