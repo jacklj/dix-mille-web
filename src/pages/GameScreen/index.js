@@ -11,8 +11,12 @@ import {
   selectGameId,
   selectCurrentDiceRoll,
   selectIsBlapped,
+  selectCurrentTurn,
+  selectCurrentRound,
+  selectCurrentRollNumber,
 } from 'redux/game/selectors';
 import Die from './Die';
+import Constants from 'services/constants';
 
 const Text = styled.div`
   color: white;
@@ -42,7 +46,10 @@ const diceSelectedInitialState = {
 const GameScreen = () => {
   const isMyTurn = useSelector(isItMyTurn);
   const gameId = useSelector(selectGameId);
+  const currentRound = useSelector(selectCurrentRound);
+  const currentTurn = useSelector(selectCurrentTurn);
   const currentDiceRoll = useSelector(selectCurrentDiceRoll);
+  const currentRollNumber = useSelector(selectCurrentRollNumber);
   const isBlapped = useSelector(selectIsBlapped);
   const [isRolling, setIsRolling] = useState(false);
   const [isGrouping, setIsGrouping] = useState(false);
@@ -82,23 +89,55 @@ const GameScreen = () => {
     const diceValues = selectedDiceIds.map((id) => currentDiceRoll[id]);
     const numberOfDice = selectedDiceIds.length;
 
+    let isValidGroup;
+    let groupType;
+    let score;
+    let dice;
     if (numberOfDice === 1) {
       if (diceValues[0] === 1 || diceValues[0] === 5) {
         console.log("That's a valid group: 1 or 5!");
+
+        isValidGroup = true;
+        groupType = Constants.diceGroupTypes.oneOrFive;
+        score = diceValues[0] === 1 ? 100 : 50;
+        dice = {
+          [selectedDiceIds[0]]: diceValues[0],
+        };
       } else {
         alert("That's not a valid set of dice");
+
+        isValidGroup = false;
       }
     } else if (numberOfDice === 3) {
       // 3 of a kind?
       if (diceValues.every((value) => value === diceValues[0])) {
         console.log("That's a valid group: 3 of a kind!");
+        isValidGroup = true;
+        groupType = Constants.diceGroupTypes.threeOfAKind;
+        score = diceValues[0] === 1 ? 1000 : diceValues[0] * 100;
+        dice = {};
+        selectedDiceIds.forEach((id) => (dice[id] = currentDiceRoll[id]));
       } else {
         alert("That's not a valid set of dice");
+        isValidGroup = false;
       }
     } else {
       // TODO 3 pairs
       // TODO 1 2 3 4 5 6
       alert("That's not a valid set of dice");
+      isValidGroup = false;
+    }
+    if (isValidGroup) {
+      await firebase
+        .database()
+        .ref(
+          `games/${gameId}/rounds/${currentRound}/turns/${currentTurn}/rolls/${currentRollNumber}/scoringSets`,
+        )
+        .push({
+          dice,
+          groupType,
+          score,
+        });
     }
     setIsGrouping(false);
   };

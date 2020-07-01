@@ -102,6 +102,10 @@ export const selectAllAvatarsWithChosenStatus = (state) => {
 };
 
 // game play
+export const selectCurrentTurn = (state) => state.game.currentTurn;
+
+export const selectCurrentRound = (state) => state.game.currentRound;
+
 export const selectPlayerTurnOrder = (state) => state.game.playerTurnOrder;
 
 export const selectCurrentTurnPlayerUid = (state) => {
@@ -151,6 +155,34 @@ const selectCurrentRollObj = (state) => {
   const currentRoll = rolls[rolls.length - 1];
 
   return currentRoll;
+};
+
+export const selectCurrentRollNumber = (state) => {
+  const {
+    currentRound: currentRoundId,
+    currentTurn: currentTurnId,
+    rounds,
+  } = state.game;
+
+  const currentRoundObj = rounds[currentRoundId];
+
+  if (!currentRoundObj || !currentRoundObj.turns) {
+    return undefined;
+  }
+
+  const currentTurnObj = currentRoundObj.turns[currentTurnId];
+
+  if (!currentTurnObj) {
+    return undefined;
+  }
+
+  const { rolls } = currentTurnObj;
+
+  if (!rolls || !Array.isArray(rolls)) {
+    return undefined;
+  }
+
+  return rolls.length - 1;
 };
 
 export const selectCurrentDiceRoll = (state) => {
