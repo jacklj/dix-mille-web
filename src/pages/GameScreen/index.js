@@ -18,6 +18,7 @@ import {
   selectScoringGroups,
 } from 'redux/game/selectors';
 import Die from './Die';
+import ScoringGroup from './ScoringGroup';
 import Constants from 'services/constants';
 
 const Text = styled.div`
@@ -35,6 +36,8 @@ const DiceContainer = styled.div`
   justify-content: space-between;
   margin: 20px;
 `;
+
+const ScoringGroupsContainer = styled.div``;
 
 const diceSelectedInitialState = {
   a: false,
@@ -148,6 +151,15 @@ const GameScreen = () => {
     setIsGrouping(false);
   };
 
+  const ungroupGroup = async (groupId) => {
+    await firebase
+      .database()
+      .ref(
+        `games/${gameId}/rounds/${currentRound}/turns/${currentTurn}/rolls/${currentRollNumber}/scoringGroups/${groupId}`,
+      )
+      .remove();
+  };
+
   const endTurnAfterBlap = async (event) => {
     setIsBlappingAndFinishingTurn(true);
     event.preventDefault();
@@ -161,8 +173,17 @@ const GameScreen = () => {
   };
 
   let gameUiJsx;
+  const hasRolled = !!currentDiceRoll;
   if (isMyTurn) {
-    if (!isBlapped) {
+    if (!hasRolled) {
+      gameUiJsx = (
+        <form onSubmit={(event) => rollDie(event)}>
+          <Button disabled={isRolling}>
+            {isRolling ? 'Rolling...' : 'Roll'}
+          </Button>
+        </form>
+      );
+    } else if (!isBlapped) {
       gameUiJsx = (
         <>
           <Button onClick={() => createDiceGroup()} disabled={isGrouping}>
@@ -199,7 +220,6 @@ const GameScreen = () => {
 
   return (
     <>
-      <Text>Game page!</Text>
       <DiceContainer>
         {currentDiceRollMinusScoringGroups &&
           Object.keys(currentDiceRollMinusScoringGroups).map((id) => (
@@ -215,6 +235,24 @@ const GameScreen = () => {
             />
           ))}
       </DiceContainer>
+      <ScoringGroupsContainer>
+        <Text>Scoring Groups</Text>
+        <div>
+          {scoringGroups &&
+            Object.keys(scoringGroups).map((groupId) => {
+              const groupObj = scoringGroups[groupId];
+              const { dice } = groupObj;
+              return (
+                <ScoringGroup
+                  key={groupId}
+                  groupId={groupId}
+                  dice={dice}
+                  ungroupGroup={ungroupGroup}
+                />
+              );
+            })}
+        </div>
+      </ScoringGroupsContainer>
       {gameUiJsx}
     </>
   );
