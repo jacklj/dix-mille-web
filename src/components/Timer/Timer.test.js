@@ -17,3 +17,19 @@ it('renders correctly', () => {
     .toJSON();
   expect(tree).toMatchSnapshot();
 });
+
+it('renders correctly when paused', () => {
+  const timeStarted = Date.now();
+  const isPaused = true;
+  const timeLeftOrElapsedWhenLastStarted = 20000;
+  const tree = renderer
+    .create(
+      <Timer
+        timeStarted={timeStarted}
+        timeLeftOrElapsedWhenLastStarted={timeLeftOrElapsedWhenLastStarted}
+        isPaused={isPaused}
+      />,
+    )
+    .toJSON();
+  expect(tree).toMatchSnapshot();
+});

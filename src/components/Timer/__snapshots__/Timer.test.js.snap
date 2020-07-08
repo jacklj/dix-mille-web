@@ -11,3 +11,20 @@ exports[`renders correctly 1`] = `
   </div>
 </div>
 `;
+
+exports[`renders correctly when paused 1`] = `
+<div
+  className="sc-AxjAm bXtLJg"
+>
+  <div
+    className="sc-AxiKw kULUfT"
+  >
+    paused
+  </div>
+  <div
+    className="sc-AxirZ eJUInj"
+  >
+    00:20
+  </div>
+</div>
+`;
