@@ -210,14 +210,24 @@ export const selectPreviousScoringGroupsSinceLastFullRoll = (state) => {
   const { rolls } = currentTurn;
 
   if (!rolls || !Array.isArray(rolls)) {
+    // if no rolls yet, no scoring groups
+    return undefined;
+  }
+
+  // if  first roll, no previous scoring groups
+  if (rolls.length <= 1) {
+    return undefined;
+  }
+
+  // if current roll is a full roll, dont display any previous scoring groups
+  const currentRoll = rolls[rolls.length - 1];
+  const { roll } = currentRoll;
+  const isSixDiceRoll = Object.keys(roll).length === 6;
+  if (isSixDiceRoll) {
     return undefined;
   }
 
   const penultimateRollIndex = rolls.length - 2;
-
-  if (penultimateRollIndex < 0) {
-    return [];
-  }
 
   // look back from current roll to find last full roll, and get all the scoring groups
   // in between (inclusive)
