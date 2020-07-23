@@ -9,13 +9,14 @@ import { loggedInAndJoinedGame } from 'redux/auth/slice';
 import {
   isItMyTurn,
   selectGameId,
-  selectCurrentDiceRoll,
+  selectCurrentRoll,
   selectIsBlapped,
   selectCurrentTurn,
   selectCurrentRound,
   selectCurrentRollNumber,
-  selectCurrentDiceRollMinusScoringGroups,
-  selectScoringGroups,
+  selectCurrentRollMinusScoringGroups,
+  selectPreviousScoringGroupsSinceLastFullRoll,
+  selectCurrentScoringGroups,
 } from 'redux/game/selectors';
 import Die from './Die';
 import ScoringGroup from './ScoringGroup';
@@ -55,11 +56,14 @@ const GameScreen = () => {
   const gameId = useSelector(selectGameId);
   const currentRound = useSelector(selectCurrentRound);
   const currentTurn = useSelector(selectCurrentTurn);
-  const currentDiceRoll = useSelector(selectCurrentDiceRoll);
+  const currentRoll = useSelector(selectCurrentRoll);
   const currentDiceRollMinusScoringGroups = useSelector(
-    selectCurrentDiceRollMinusScoringGroups,
+    selectCurrentRollMinusScoringGroups,
   );
-  const scoringGroups = useSelector(selectScoringGroups);
+  const currentScoringGroups = useSelector(selectCurrentScoringGroups);
+  const previousScoringGroups = useSelector(
+    selectPreviousScoringGroupsSinceLastFullRoll,
+  );
   const currentRollNumber = useSelector(selectCurrentRollNumber);
   const isBlapped = useSelector(selectIsBlapped);
   const [isRolling, setIsRolling] = useState(false);
@@ -73,7 +77,7 @@ const GameScreen = () => {
 
   useEffect(() => {
     setDiceSelectedState(diceSelectedInitialState);
-  }, [currentDiceRoll]);
+  }, [currentRoll]);
 
   const rollDie = async (event) => {
     setIsRolling(true);
@@ -107,7 +111,7 @@ const GameScreen = () => {
     const selectedDiceIds = Object.keys(diceSelectedState).filter(
       (id) => diceSelectedState[id],
     );
-    const diceValues = selectedDiceIds.map((id) => currentDiceRoll[id]);
+    const diceValues = selectedDiceIds.map((id) => currentRoll[id]);
     const numberOfDice = selectedDiceIds.length;
 
     let isValidGroup;
@@ -136,7 +140,7 @@ const GameScreen = () => {
         console.log("That's a valid group: 3 of a kind!");
         isValidGroup = true;
         dice = {};
-        selectedDiceIds.forEach((id) => (dice[id] = currentDiceRoll[id]));
+        selectedDiceIds.forEach((id) => (dice[id] = currentRoll[id]));
         groupType = Constants.diceGroupTypes.threeOfAKind;
         score = diceValues[0] === 1 ? 1000 : diceValues[0] * 100;
       } else {
@@ -158,7 +162,7 @@ const GameScreen = () => {
         console.log("That's a valid group: 6 of a kind!");
         isValidGroup = true;
         dice = {};
-        selectedDiceIds.forEach((id) => (dice[id] = currentDiceRoll[id]));
+        selectedDiceIds.forEach((id) => (dice[id] = currentRoll[id]));
         groupType = Constants.diceGroupTypes.sixOfAKind;
         score = 10000; // TODO it's actually an instant win, not just 10,000 score - sort this.
       } else if (threePairs) {
@@ -166,7 +170,7 @@ const GameScreen = () => {
         console.log("That's a valid group: 3 pairs!");
         isValidGroup = true;
         dice = {};
-        selectedDiceIds.forEach((id) => (dice[id] = currentDiceRoll[id]));
+        selectedDiceIds.forEach((id) => (dice[id] = currentRoll[id]));
         groupType = Constants.diceGroupTypes.threePairs;
         score = 1000;
       } else if (run) {
@@ -174,7 +178,7 @@ const GameScreen = () => {
         console.log("That's a valid group: a run!");
         isValidGroup = true;
         dice = {};
-        selectedDiceIds.forEach((id) => (dice[id] = currentDiceRoll[id]));
+        selectedDiceIds.forEach((id) => (dice[id] = currentRoll[id]));
         groupType = Constants.diceGroupTypes.run;
         score = 1500;
       } else {
@@ -231,7 +235,7 @@ const GameScreen = () => {
   };
 
   let gameUiJsx;
-  const hasRolled = !!currentDiceRoll;
+  const hasRolled = !!currentRoll;
   if (isMyTurn) {
     if (!hasRolled) {
       gameUiJsx = (
@@ -284,7 +288,7 @@ const GameScreen = () => {
             <Die
               id={id}
               key={id}
-              value={currentDiceRoll[id]}
+              value={currentRoll[id]}
               selected={diceSelectedState[id]}
               onClick={() => {
                 console.log(`Clicked on dice '${id}'`);
@@ -296,16 +300,30 @@ const GameScreen = () => {
       <ScoringGroupsContainer>
         <Text>Scoring Groups</Text>
         <div>
-          {scoringGroups &&
-            Object.keys(scoringGroups).map((groupId) => {
-              const groupObj = scoringGroups[groupId];
+          {currentScoringGroups &&
+            Object.keys(currentScoringGroups).map((groupId) => {
+              const groupObj = currentScoringGroups[groupId];
               const { dice } = groupObj;
               return (
                 <ScoringGroup
                   key={groupId}
                   groupId={groupId}
                   dice={dice}
+                  isCurrent
                   ungroupGroup={ungroupGroup}
+                  isMyTurn={isMyTurn}
+                />
+              );
+            })}
+          {previousScoringGroups &&
+            previousScoringGroups.map((sg) => {
+              const { dice, groupId } = sg;
+              return (
+                <ScoringGroup
+                  key={groupId}
+                  groupId={groupId}
+                  dice={dice}
+                  isCurrent={false}
                   isMyTurn={isMyTurn}
                 />
               );

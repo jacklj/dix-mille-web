@@ -27,7 +27,7 @@ const sortDiceByValue = (diceMap) => {
   return sorted;
 };
 
-const ScoringGroup = ({ groupId, dice, ungroupGroup, isMyTurn }) => {
+const ScoringGroup = ({ groupId, dice, ungroupGroup, isMyTurn, isCurrent }) => {
   // only show the 'Put back' button if it's your turn
 
   // sort dice group by value
@@ -49,7 +49,7 @@ const ScoringGroup = ({ groupId, dice, ungroupGroup, isMyTurn }) => {
             <Die id={id} key={id} value={value} isInGroup />
           ))}
       </DiceContainer>
-      {isMyTurn && (
+      {isMyTurn && isCurrent && (
         <button onClick={() => ungroupGroup(groupId)}>ⓧ Put back</button>
       )}
     </Container>

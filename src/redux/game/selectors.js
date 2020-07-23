@@ -182,28 +182,71 @@ export const selectCurrentRollNumber = (state) => {
   return rolls.length - 1;
 };
 
-export const selectCurrentDiceRoll = (state) => {
+export const selectCurrentRoll = (state) => {
   const currentRoll = selectCurrentRollObj(state);
 
-  if (!currentRoll) {
-    return undefined;
-  }
-
-  const { roll } = currentRoll;
-
-  return roll;
+  return currentRoll?.roll;
 };
 
-export const selectScoringGroups = (state) => {
+export const selectCurrentScoringGroups = (state) => {
   const currentRoll = selectCurrentRollObj(state);
 
   return currentRoll?.scoringGroups;
 };
 
-export const selectCurrentDiceRollMinusScoringGroups = (state) => {
-  const currentDiceRoll = selectCurrentDiceRoll(state);
+export const selectPreviousScoringGroupsSinceLastFullRoll = (state) => {
+  const {
+    currentRound: currentRoundId,
+    currentTurn: currentTurnId,
+    rounds,
+  } = state.game;
 
-  const scoringGroups = selectScoringGroups(state);
+  const currentTurn = rounds?.[currentRoundId]?.turns?.[currentTurnId];
+
+  if (!currentTurn) {
+    return undefined;
+  }
+
+  const { rolls } = currentTurn;
+
+  if (!rolls || !Array.isArray(rolls)) {
+    return undefined;
+  }
+
+  const penultimateRollIndex = rolls.length - 2;
+
+  if (penultimateRollIndex < 0) {
+    return [];
+  }
+
+  // look back from current roll to find last full roll, and get all the scoring groups
+  // in between (inclusive)
+  // NB add rollId to the scoring group
+  // NB order: most recent first
+  const allScoringGroups = [];
+
+  for (let i = penultimateRollIndex; i >= 0; i--) {
+    const rollObj = rolls[i];
+    const { roll, scoringGroups } = rollObj;
+
+    Object.keys(scoringGroups).forEach((groupId) => {
+      const scoringGroup = scoringGroups[groupId];
+      allScoringGroups.push({ rollIndex: i, groupId, ...scoringGroup });
+    });
+
+    if (Object.keys(roll).length === 6) {
+      // we've hit a full roll - stop looking.
+      break;
+    }
+  }
+
+  return allScoringGroups;
+};
+
+export const selectCurrentRollMinusScoringGroups = (state) => {
+  const currentDiceRoll = selectCurrentRoll(state);
+
+  const scoringGroups = selectCurrentScoringGroups(state);
 
   if (!scoringGroups) {
     return currentDiceRoll;
