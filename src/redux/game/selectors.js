@@ -253,6 +253,46 @@ export const selectPreviousScoringGroupsSinceLastFullRoll = (state) => {
   return allScoringGroups;
 };
 
+export const selectTurnScoreSoFar = (state) => {
+  const {
+    currentRound: currentRoundId,
+    currentTurn: currentTurnId,
+    rounds,
+  } = state.game;
+
+  const currentTurn = rounds?.[currentRoundId]?.turns?.[currentTurnId];
+
+  if (!currentTurn) {
+    return undefined;
+  }
+
+  const { rolls } = currentTurn;
+
+  if (!rolls || !Array.isArray(rolls)) {
+    // if no rolls yet, no scoring groups
+    return undefined;
+  }
+
+  const turnScore = rolls.reduce((accumulator, roll) => {
+    const { scoringGroups } = roll;
+
+    if (!scoringGroups || Object.values(scoringGroups).length === 0) {
+      return accumulator;
+    }
+
+    const rollScore = Object.values(scoringGroups).reduce(
+      (acc, scoringGroup) => {
+        const { score } = scoringGroup;
+        return acc + score;
+      },
+      0,
+    );
+    return accumulator + rollScore;
+  }, 0);
+
+  return turnScore;
+};
+
 export const selectCurrentRollMinusScoringGroups = (state) => {
   const currentDiceRoll = selectCurrentRoll(state);
 

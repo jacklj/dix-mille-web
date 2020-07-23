@@ -17,6 +17,7 @@ import {
   selectCurrentRollMinusScoringGroups,
   selectPreviousScoringGroupsSinceLastFullRoll,
   selectCurrentScoringGroups,
+  selectTurnScoreSoFar,
 } from 'redux/game/selectors';
 import Die from './Die';
 import ScoringGroup from './ScoringGroup';
@@ -64,6 +65,8 @@ const GameScreen = () => {
   const previousScoringGroups = useSelector(
     selectPreviousScoringGroupsSinceLastFullRoll,
   );
+  const turnScoreSoFar = useSelector(selectTurnScoreSoFar);
+
   const currentRollNumber = useSelector(selectCurrentRollNumber);
   const isBlapped = useSelector(selectIsBlapped);
   const [isRolling, setIsRolling] = useState(false);
@@ -299,6 +302,7 @@ const GameScreen = () => {
       </DiceContainer>
       <ScoringGroupsContainer>
         <Text>Scoring Groups</Text>
+        {turnScoreSoFar ? <Text>Turn score: {turnScoreSoFar}</Text> : null}
         <div>
           {currentScoringGroups &&
             Object.keys(currentScoringGroups).map((groupId) => {
