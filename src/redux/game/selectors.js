@@ -12,20 +12,18 @@ export const selectPlayer = (uid) => (state) => state.game.players[uid];
 
 const selectPlayers = (state) => state.game.players;
 
-export const selectOtherUsersWithFilledOutProfiles = (state) => {
-  const myUid = state.auth.uid;
-  const allPlayers = { ...selectPlayers(state) };
+export const selectAllUserIdsWithFilledOutProfiles = (state) => {
+  const allUsers = { ...selectPlayers(state) };
 
-  delete allPlayers[myUid];
-
-  const otherUsersUids = Object.keys(allPlayers)
+  const uids = Object.keys(allUsers)
     .map((uid) => {
-      const value = allPlayers[uid];
+      const value = allUsers[uid];
       return {
         ...value,
         uid,
       };
     })
+    .filter((user) => user.name) // if they havent filled out their profile yet, dont display them in Waiting Room
     .sort((a, b) => {
       // order by datetime joined
       if (a.joinedAt < b.joinedAt) {
@@ -36,10 +34,9 @@ export const selectOtherUsersWithFilledOutProfiles = (state) => {
         return 0;
       }
     })
-    .filter((player) => player.name) // if they havent filled out their profile yet, dont display them in Waiting Room
-    .map((playerObj) => playerObj.uid);
+    .map((userObj) => userObj.uid);
 
-  return otherUsersUids;
+  return uids;
 };
 
 export const selectUidToNameMap = (state) => {

@@ -7,24 +7,28 @@ import 'firebase/functions';
 
 import {
   selectGameId,
-  selectOtherUsersWithFilledOutProfiles,
+  selectAllUserIdsWithFilledOutProfiles,
 } from 'redux/game/selectors';
 import { selectLoggedInUsersDetails } from 'redux/auth/selectors';
-// import { selectMinNumberOfPlayers } from 'redux/definitions/selectors';
-import Player from './Player';
 import GameCode from 'components/GameCode';
+import Player from './Player';
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 const Text = styled.div`
   color: white;
 `;
 
-const ThisUser = styled.div`
-  color: white;
-  margin: 20px;
-  font-size: 3em;
+const PlayersContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-self: stretch;
 `;
-
-const OtherUsers = styled.div``;
 
 const ErrorMessage = styled.div`
   color: white;
@@ -33,14 +37,14 @@ const ErrorMessage = styled.div`
 
 const WaitingRoom = () => {
   const gameId = useSelector(selectGameId);
-  const otherPlayerUids = useSelector(selectOtherUsersWithFilledOutProfiles);
+  const playerUids = useSelector(selectAllUserIdsWithFilledOutProfiles);
   const myDetails = useSelector(selectLoggedInUsersDetails);
   const [isStartingGame, setIsStartingGame] = useState(false);
   const minimumNumberOfPlayers = 2;
 
-  const { name, type } = myDetails;
+  const { type, uid: myUid } = myDetails;
 
-  const totalNumberOfPlayers = otherPlayerUids ? otherPlayerUids.length + 1 : 1;
+  const totalNumberOfPlayers = playerUids ? playerUids.length : 0;
 
   const startGame = async () => {
     setIsStartingGame(true);
@@ -56,15 +60,17 @@ const WaitingRoom = () => {
   const canStartGame = totalNumberOfPlayers >= minimumNumberOfPlayers;
 
   return (
-    <>
+    <Container>
       <Text>Waiting room</Text>
       <GameCode />
 
-      <ThisUser>{name}</ThisUser>
-      <OtherUsers>
-        {otherPlayerUids &&
-          otherPlayerUids.map((uid) => <Player uid={uid} key={uid} />)}
-      </OtherUsers>
+      <PlayersContainer>
+        {playerUids &&
+          playerUids.map((uid) => {
+            const isMe = uid === myUid;
+            return <Player uid={uid} key={uid} isMe={isMe} />;
+          })}{' '}
+      </PlayersContainer>
       {type === 'gameCreator' && (
         <>
           <button
@@ -77,7 +83,7 @@ const WaitingRoom = () => {
           )}
         </>
       )}
-    </>
+    </Container>
   );
 };
 
