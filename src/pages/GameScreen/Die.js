@@ -8,9 +8,8 @@ const SelectionAura = styled.div`
 
   padding: ${(props) => (props.isInGroup ? '0' : '15px')};
 
-  padding: 15px;
   margin: 5px;
-  margin-bottom: 30px;
+  margin-bottom: ${(props) => (props.isInGroup ? '5px' : '30px')};
 
   &:nth-child(even) {
     position: relative;
@@ -20,7 +19,7 @@ const SelectionAura = styled.div`
 
 const Face = styled.div`
   flex: 0 0 auto;
-  margin: ${(props) => (props.isInGroup ? '10px' : '16px')};
+  margin: ${(props) => (props.isInGroup ? '5px' : '16px')};
   padding: 10px;
 
   width: ${(props) => (props.isInGroup ? '60px' : '90px')};
