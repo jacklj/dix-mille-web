@@ -16,14 +16,37 @@ const DiceContainer = styled.div`
   justify-content: flex-start;
 `;
 
+const sortDiceByValue = (diceMap) => {
+  const asArray = Object.keys(diceMap).map((id) => ({
+    id,
+    value: diceMap[id],
+  }));
+
+  const sorted = asArray.sort((a, b) => a.value - b.value);
+
+  return sorted;
+};
+
 const ScoringGroup = ({ groupId, dice, ungroupGroup, isMyTurn }) => {
   // only show the 'Put back' button if it's your turn
+
+  // sort dice group by value
+  const diceIndexedByValue = {};
+  Object.keys(dice).forEach((id) => {
+    const value = dice[id];
+    if (!diceIndexedByValue[value]) {
+      diceIndexedByValue[value] = [];
+    }
+    diceIndexedByValue[value].push(id);
+  });
+  const sortedDice = sortDiceByValue(dice);
+
   return (
     <Container>
       <DiceContainer>
-        {dice &&
-          Object.keys(dice).map((id) => (
-            <Die id={id} key={id} value={dice[id]} isInGroup />
+        {sortedDice &&
+          sortedDice.map(({ id, value }) => (
+            <Die id={id} key={id} value={value} isInGroup />
           ))}
       </DiceContainer>
       {isMyTurn && (
