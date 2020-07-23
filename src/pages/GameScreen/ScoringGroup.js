@@ -27,7 +27,7 @@ const ScoringGroup = ({ groupId, dice, ungroupGroup, isMyTurn }) => {
           ))}
       </DiceContainer>
       {isMyTurn && (
-        <button onClick={() => ungroupGroup(groupId)}>Put back</button>
+        <button onClick={() => ungroupGroup(groupId)}>ⓧ Put back</button>
       )}
     </Container>
   );

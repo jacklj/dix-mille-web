@@ -39,6 +39,8 @@ const DiceContainer = styled.div`
 
 const ScoringGroupsContainer = styled.div``;
 
+const areArraysEqual = (a, b) => a.every((value, index) => value === b[index]);
+
 const diceSelectedInitialState = {
   a: false,
   b: false,
@@ -129,7 +131,8 @@ const GameScreen = () => {
       }
     } else if (numberOfDice === 3) {
       // 3 of a kind?
-      if (diceValues.every((value) => value === diceValues[0])) {
+      const allTheSame = diceValues.every((value) => value === diceValues[0]);
+      if (allTheSame) {
         console.log("That's a valid group: 3 of a kind!");
         isValidGroup = true;
         dice = {};
@@ -140,9 +143,45 @@ const GameScreen = () => {
         alert("That's not a valid set of dice");
         isValidGroup = false;
       }
+    } else if (numberOfDice === 6) {
+      const sixOfAKind = diceValues.every((value) => value === diceValues[0]);
+      const sorted = diceValues.sort();
+      const threePairs =
+        sorted[0] === sorted[1] &&
+        sorted[2] === sorted[3] &&
+        sorted[4] === sorted[5];
+      const run = areArraysEqual(sorted, [1, 2, 3, 4, 5, 6]);
+
+      if (sixOfAKind) {
+        // N.B. must check this before we check for 3 pairs, as 6 of a kind is a subset of 3 pairs
+        // 6 of a kind (= instant win!)
+        console.log("That's a valid group: 6 of a kind!");
+        isValidGroup = true;
+        dice = {};
+        selectedDiceIds.forEach((id) => (dice[id] = currentDiceRoll[id]));
+        groupType = Constants.diceGroupTypes.sixOfAKind;
+        score = 10000; // TODO it's actually an instant win, not just 10,000 score - sort this.
+      } else if (threePairs) {
+        // 3 pairs (=1000)
+        console.log("That's a valid group: 3 pairs!");
+        isValidGroup = true;
+        dice = {};
+        selectedDiceIds.forEach((id) => (dice[id] = currentDiceRoll[id]));
+        groupType = Constants.diceGroupTypes.threePairs;
+        score = 1000;
+      } else if (run) {
+        // 1 2 3 4 5 6 (=1500)
+        console.log("That's a valid group: a run!");
+        isValidGroup = true;
+        dice = {};
+        selectedDiceIds.forEach((id) => (dice[id] = currentDiceRoll[id]));
+        groupType = Constants.diceGroupTypes.run;
+        score = 1500;
+      } else {
+        alert("That's not a valid set of dice");
+        isValidGroup = false;
+      }
     } else {
-      // TODO 3 pairs
-      // TODO 1 2 3 4 5 6
       alert("That's not a valid set of dice");
       isValidGroup = false;
     }
