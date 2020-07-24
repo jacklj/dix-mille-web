@@ -12,6 +12,9 @@ const Table = styled.table`
   color: white;
   border: 1px solid white;
   border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 40px;
 `;
 
 const Th = styled.th`
