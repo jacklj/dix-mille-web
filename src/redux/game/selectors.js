@@ -39,20 +39,15 @@ export const selectAllUserIdsWithFilledOutProfiles = (state) => {
   return uids;
 };
 
-export const selectUidToNameMap = (state) => {
+export const selectAllUsedNames = (state) => {
   const allPlayers = selectPlayers(state);
-
   if (!allPlayers) {
     return undefined;
   }
 
-  const uidToNameMap = {};
+  const names = Object.values(allPlayers).map((player) => player.name);
 
-  Object.keys(allPlayers).forEach((uid) => {
-    uidToNameMap[uid] = allPlayers[uid].name;
-  });
-
-  return uidToNameMap;
+  return names;
 };
 
 export const selectAvatarUrl = (avatarId) => (state) => {

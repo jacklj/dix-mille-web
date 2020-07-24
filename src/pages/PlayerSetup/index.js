@@ -10,6 +10,7 @@ import AvatarCarousel from './AvatarCarousel';
 import {
   selectGameId,
   selectAllAvatarsWithChosenStatus,
+  selectAllUsedNames,
 } from 'redux/game/selectors';
 import { selectUid } from 'redux/auth/selectors';
 
@@ -32,6 +33,7 @@ const PlayerSetup = () => {
   const avatars = useSelector(selectAllAvatarsWithChosenStatus);
   const gameId = useSelector(selectGameId);
   const uid = useSelector(selectUid);
+  const usedNames = useSelector(selectAllUsedNames);
 
   const writePlayerProfileAndGoToWaitingRoom = async (event) => {
     event.preventDefault();
@@ -53,6 +55,15 @@ const PlayerSetup = () => {
 
     if (!name) {
       alert('Name must not be empty');
+      setIsSavingPlayerDetails(false);
+      return;
+    }
+
+    const isThisNameAlreadyUsed = usedNames.some(
+      (usedName) => usedName === name,
+    );
+    if (isThisNameAlreadyUsed) {
+      alert(`Name '${name}' has already been taken - please choose another.`);
       setIsSavingPlayerDetails(false);
       return;
     }
