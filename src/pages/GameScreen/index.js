@@ -2,10 +2,8 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import * as firebase from 'firebase/app';
 import 'firebase/functions';
-import { useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { selectUid } from 'redux/auth/selectors';
 import {
   isItMyTurn,
   selectGameId,
@@ -89,7 +87,6 @@ const GameScreen = () => {
   const currentRollNumber = useSelector(selectCurrentRollNumber);
   const isBlapped = useSelector(selectIsBlapped);
   const hasSomeoneWon = useSelector(selectHasSomeoneWon);
-  const myUid = useSelector(selectUid);
   const [isRolling, setIsRolling] = useState(false);
   const [isGrouping, setIsGrouping] = useState(false);
   const [isSticking, setIsSticking] = useState(false);
