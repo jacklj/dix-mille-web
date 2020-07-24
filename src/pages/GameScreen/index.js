@@ -121,6 +121,13 @@ const GameScreen = () => {
     const selectedDiceIds = Object.keys(diceSelectedState).filter(
       (id) => diceSelectedState[id],
     );
+
+    if (selectedDiceIds.length === 0) {
+      alert('No dice selected');
+      setIsGrouping(false);
+      return;
+    }
+
     const diceValues = selectedDiceIds.map((id) => currentRoll[id]);
     const numberOfDice = selectedDiceIds.length;
 
@@ -278,8 +285,7 @@ const GameScreen = () => {
 
   let gameUiJsx;
   const hasRolled = !!currentRoll;
-  const noScoringGroups =
-    !currentScoringGroups || Object.keys(currentScoringGroups).length === 0;
+
   if (isMyTurn) {
     if (!hasRolled) {
       gameUiJsx = (
@@ -290,9 +296,17 @@ const GameScreen = () => {
         </form>
       );
     } else if (!isBlapped) {
+      const noScoringGroups =
+        !currentScoringGroups || Object.keys(currentScoringGroups).length === 0;
+      const noDiceSelected =
+        Object.keys(diceSelectedState).filter((id) => diceSelectedState[id])
+          .length === 0;
+
       gameUiJsx = (
         <ButtonsContainer>
-          <Button onClick={() => createDiceGroup()} disabled={isGrouping}>
+          <Button
+            onClick={() => createDiceGroup()}
+            disabled={isGrouping || noDiceSelected}>
             {isGrouping ? 'Grouping...' : 'Group dice'}
           </Button>
           <Button onClick={() => stick()} disabled={!hasRolled}>
