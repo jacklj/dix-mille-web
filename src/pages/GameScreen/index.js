@@ -333,14 +333,14 @@ const GameScreen = () => {
             disabled={isGrouping || noDiceSelected}>
             {isGrouping ? 'Grouping...' : 'Group dice'}
           </Button>
-          <Button onClick={() => stick()} disabled={!hasRolled}>
-            {isSticking ? 'Sticking...' : 'Stick'}
-          </Button>
           <form onSubmit={(event) => rollDie(event)}>
             <Button disabled={isRolling || (hasRolled && noScoringGroups)}>
               {isRolling ? 'Rolling...' : 'Roll'}
             </Button>
           </form>
+          <Button onClick={() => stick()} disabled={!hasRolled}>
+            {isSticking ? 'Sticking...' : 'Stick'}
+          </Button>
         </ButtonsContainer>
       );
     } else {
