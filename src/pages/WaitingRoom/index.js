@@ -48,13 +48,13 @@ const WaitingRoom = () => {
 
   const startGame = async () => {
     setIsStartingGame(true);
-    const startGame = firebase.functions().httpsCallable('startGame');
-    const res = await startGame({ gameId });
 
-    if (!res.data.success) {
-      alert(res.data.reason);
-      setIsStartingGame(false);
+    try {
+      await firebase.functions().httpsCallable('startGame')({ gameId });
+    } catch (error) {
+      alert(error.message);
     }
+    setIsStartingGame(false);
   };
 
   const canStartGame = totalNumberOfPlayers >= minimumNumberOfPlayers;
