@@ -339,3 +339,65 @@ export const selectHasSomeoneWon = (state) => {
     };
   }
 };
+
+// scores table
+// export const selectUidToNameMap = (state) => {
+//   const allPlayers = selectPlayers(state);
+
+//   if (!allPlayers) {
+//     return undefined;
+//   }
+
+//   const uidToNameMap = {};
+
+//   Object.keys(allPlayers).forEach((uid) => {
+//     uidToNameMap[uid] = allPlayers[uid].name;
+//   });
+
+//   return uidToNameMap;
+// };
+
+
+export const selectPlayerNamesInTurnOrder = (state) => {
+  const turnOrder = selectPlayerTurnOrder(state);
+
+  const allPlayers = selectPlayers(state);
+
+  if (!turnOrder || !allPlayers) {
+    return undefined;
+  }
+
+  return turnOrder.map((uid) => allPlayers[uid].name);
+};
+
+// const turnScores = {
+// [roundIndex]: {
+//  [turnIndex]: 600,
+//  ...
+// },
+// ...
+// }
+
+export const selectAllTurnScores = (state) => {
+  // get each turn score and add to scores map
+  const { rounds } = state.game;
+  const scoresMatrix = rounds.map((round, roundIndex) => {
+    const { turns } = round;
+    return turns.map((turn, turnIndex) => turn.turnScore);
+  });
+
+  // TODO current turn may be undefined...
+  return scoresMatrix;
+};
+
+export const selectTotalScores = (state) => {
+  const allPlayers = selectPlayers(state);
+
+  const turnOrder = selectPlayerTurnOrder(state);
+
+  if (!turnOrder || !allPlayers) {
+    return undefined;
+  }
+
+  return turnOrder.map((uid) => allPlayers[uid]?.currentScore);
+};

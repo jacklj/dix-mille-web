@@ -22,6 +22,7 @@ import {
 } from 'redux/game/selectors';
 import Die from './Die';
 import ScoringGroup from './ScoringGroup';
+import ScoresTable from './ScoresTable';
 import Constants from 'services/constants';
 
 const Text = styled.div`
@@ -416,6 +417,7 @@ const GameScreen = () => {
             })}
         </div>
       </ScoringGroupsContainer>
+      <ScoresTable />
       {hasSomeoneWon && (
         <WinnerOverlay>
           <Text>{`${
