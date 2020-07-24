@@ -32,8 +32,8 @@ const ScoresTable = () => {
       <caption>Scores</caption>
       <thead>
         <tr>
-          <Th></Th>
-          {players && players.map((name) => <Th>{name}</Th>)}
+          <Th key="empty"></Th>
+          {players && players.map((name) => <Th key={name}>{name}</Th>)}
         </tr>
       </thead>
       <tbody>

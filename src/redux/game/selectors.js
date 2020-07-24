@@ -12,6 +12,11 @@ export const selectPlayer = (uid) => (state) => state.game.players[uid];
 
 const selectPlayers = (state) => state.game.players;
 
+const selectNumberOfPlayers = (state) => {
+  const players = selectPlayers(state);
+  return Object.keys(players).length;
+};
+
 export const selectAllUserIdsWithFilledOutProfiles = (state) => {
   const allUsers = { ...selectPlayers(state) };
 
@@ -362,11 +367,19 @@ export const selectPlayerNamesInTurnOrder = (state) => {
 // }
 
 export const selectAllTurnScores = (state) => {
+  // get number of players, so we can set up the table to have the right number of cells
+  const numberOfPlayers = selectNumberOfPlayers(state);
+
   // get each turn score and add to scores map
   const { rounds } = state.game;
   const scoresMatrix = rounds.map((round, roundIndex) => {
     const { turns } = round;
-    return turns.map((turn, turnIndex) => turn.turnScore);
+    const row = new Array(numberOfPlayers).fill('');
+    turns.forEach((turn, turnIndex) => {
+      row[turnIndex] = turn.turnScore;
+    });
+
+    return row;
   });
 
   // TODO current turn may be undefined...
