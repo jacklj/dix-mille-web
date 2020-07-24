@@ -30,7 +30,7 @@ const Container = styled.div`
   background-color: #282c34;
 `;
 
-const ContentContainer = styled.header`
+const ContentContainer = styled.div`
   margin-top: 50px;
 `;
 
