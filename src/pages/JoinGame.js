@@ -50,12 +50,13 @@ const JoinGame = () => {
       uid,
     );
 
-    const res = await firebase
-      .functions()
-      .httpsCallable('createUserProfileAndJoinGame')({ gameCode });
-
-    if (!res.data.success) {
-      alert(res.data.reason);
+    let res;
+    try {
+      res = await firebase
+        .functions()
+        .httpsCallable('createUserProfileAndJoinGame')({ gameCode });
+    } catch (error) {
+      alert(error.message);
       setIsJoining(false);
       return;
     }
