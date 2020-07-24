@@ -39,6 +39,11 @@ const DiceContainer = styled.div`
   margin: 20px;
 `;
 
+const ButtonsContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
 const ScoringGroupsContainer = styled.div``;
 
 const areArraysEqual = (a, b) => a.every((value, index) => value === b[index]);
@@ -71,6 +76,7 @@ const GameScreen = () => {
   const isBlapped = useSelector(selectIsBlapped);
   const [isRolling, setIsRolling] = useState(false);
   const [isGrouping, setIsGrouping] = useState(false);
+  const [isSticking, setIsSticking] = useState(false);
   const [isBlappingAndFinishingTurn, setIsBlappingAndFinishingTurn] = useState(
     false,
   );
@@ -83,23 +89,23 @@ const GameScreen = () => {
   }, [currentRoll]);
 
   const rollDie = async (event) => {
-    setIsRolling(true);
     event.preventDefault();
+    setIsRolling(true);
 
     if (!isMyTurn) {
-      alert("You can't role - it's not your turn!");
+      alert("You can't roll - it's not your turn!");
       setIsRolling(false);
+      return;
     }
 
     try {
       await firebase.functions().httpsCallable('rollDice')({
         gameId,
       });
-      setIsRolling(false);
     } catch (error) {
-      setIsRolling(false);
       console.error(error);
     }
+    setIsRolling(false);
   };
 
   const createDiceGroup = async () => {
@@ -108,6 +114,7 @@ const GameScreen = () => {
     if (!isMyTurn) {
       alert("You can't create a group - it's not your turn!");
       setIsGrouping(false);
+      return;
     }
 
     // check on front end for invalid groups, then write to DB (less secure but quicker for current turn player)
@@ -210,6 +217,7 @@ const GameScreen = () => {
   const ungroupGroup = async (groupId) => {
     if (!isMyTurn) {
       alert("You can't ungroup - it's not your turn!");
+      return;
     }
 
     await firebase
@@ -220,6 +228,36 @@ const GameScreen = () => {
       .remove();
   };
 
+  const stick = async () => {
+    if (!isMyTurn) {
+      alert("You can't stick - it's not your turn!");
+      setIsSticking(false);
+      return;
+    }
+
+    // if haven't rolled, can't stick.
+    // once you've rolled for the first time, you can stick at any time:
+    //   - immediately, with a score of 0 (could be useful in the case when you are very near to 10,000 so you
+    //     need a very specific score)
+    //   - after banking some scoring groups
+    //   - also immediately after any reroll (numberOfDice < 6 or numberOfDice === 6) if you don't want any possible
+    //     scoring groups
+    // Basically you can stick as soon as you've exposed yourself to the risk of blapping
+    const hasRolled = !!currentRoll;
+    if (!hasRolled) {
+      alert("You can't stick - you haven't done your first roll yet !");
+      setIsSticking(false);
+      return;
+    }
+
+    const res = await firebase.functions().httpsCallable('stick')({
+      gameId,
+    });
+
+    setIsSticking(false);
+    console.log('Done stick: ', res);
+  };
+
   const endTurnAfterBlap = async (event) => {
     event.preventDefault();
     setIsBlappingAndFinishingTurn(true);
@@ -227,6 +265,7 @@ const GameScreen = () => {
     if (!isMyTurn) {
       alert("You can't end the turn - it's not your turn!");
       setIsBlappingAndFinishingTurn(false);
+      return;
     }
 
     const res = await firebase.functions().httpsCallable('endTurnAfterBlap')({
@@ -239,6 +278,8 @@ const GameScreen = () => {
 
   let gameUiJsx;
   const hasRolled = !!currentRoll;
+  const noScoringGroups =
+    !currentScoringGroups || Object.keys(currentScoringGroups).length === 0;
   if (isMyTurn) {
     if (!hasRolled) {
       gameUiJsx = (
@@ -250,16 +291,19 @@ const GameScreen = () => {
       );
     } else if (!isBlapped) {
       gameUiJsx = (
-        <>
+        <ButtonsContainer>
           <Button onClick={() => createDiceGroup()} disabled={isGrouping}>
             {isGrouping ? 'Grouping...' : 'Group dice'}
           </Button>
+          <Button onClick={() => stick()} disabled={!hasRolled}>
+            {isSticking ? 'Sticking...' : 'Stick'}
+          </Button>
           <form onSubmit={(event) => rollDie(event)}>
-            <Button disabled={isRolling}>
+            <Button disabled={isRolling || (hasRolled && noScoringGroups)}>
               {isRolling ? 'Rolling...' : 'Roll'}
             </Button>
           </form>
-        </>
+        </ButtonsContainer>
       );
     } else {
       gameUiJsx = (
@@ -300,6 +344,7 @@ const GameScreen = () => {
             />
           ))}
       </DiceContainer>
+      {gameUiJsx}
       <ScoringGroupsContainer>
         <Text>Scoring Groups</Text>
         {turnScoreSoFar ? <Text>Turn score: {turnScoreSoFar}</Text> : null}
@@ -334,7 +379,6 @@ const GameScreen = () => {
             })}
         </div>
       </ScoringGroupsContainer>
-      {gameUiJsx}
     </>
   );
 };
