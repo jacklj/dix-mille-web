@@ -17,6 +17,7 @@ import {
   selectCurrentScoringGroups,
   selectTurnScoreSoFar,
   selectHasSomeoneWon,
+  selectTwoThrowsToDoubleIt,
 } from 'redux/game/selectors';
 import Die from './Die';
 import ScoringGroup from './ScoringGroup';
@@ -87,6 +88,8 @@ const GameScreen = () => {
   const currentRollNumber = useSelector(selectCurrentRollNumber);
   const isBlapped = useSelector(selectIsBlapped);
   const hasSomeoneWon = useSelector(selectHasSomeoneWon);
+  const twoThrowsToDoubleIt = useSelector(selectTwoThrowsToDoubleIt);
+
   const [isRolling, setIsRolling] = useState(false);
   const [isGrouping, setIsGrouping] = useState(false);
   const [isSticking, setIsSticking] = useState(false);
@@ -331,7 +334,11 @@ const GameScreen = () => {
             {isGrouping ? 'Grouping...' : 'Group dice'}
           </Button>
           <form onSubmit={(event) => rollDie(event)}>
-            <Button disabled={isRolling || (hasRolled && noScoringGroups)}>
+            <Button
+              disabled={
+                isRolling ||
+                (hasRolled && noScoringGroups && !twoThrowsToDoubleIt)
+              }>
               {isRolling ? 'Rolling...' : 'Roll'}
             </Button>
           </form>

@@ -182,6 +182,12 @@ export const selectCurrentRollNumber = (state) => {
   return rolls.length - 1;
 };
 
+export const selectTwoThrowsToDoubleIt = (state) => {
+  const currentRoll = selectCurrentRollObj(state);
+
+  return currentRoll?.twoThrowsToDoubleIt;
+};
+
 export const selectCurrentRoll = (state) => {
   const currentRoll = selectCurrentRollObj(state);
 
@@ -237,8 +243,18 @@ export const selectPreviousScoringGroupsSinceLastFullRoll = (state) => {
 
   for (let i = penultimateRollIndex; i >= 0; i--) {
     const rollObj = rolls[i];
-    const { roll, scoringGroups } = rollObj;
+    const { roll, scoringGroups, twoThrowsToDoubleIt } = rollObj;
 
+    if (!scoringGroups) {
+      if (twoThrowsToDoubleIt) {
+        // fine
+        continue;
+      } else {
+        throw new Error(
+          "A previous roll has no banked scoring groups, and is not a 'two throws to double it' roll - inconsistent.",
+        );
+      }
+    }
     Object.keys(scoringGroups).forEach((groupId) => {
       const scoringGroup = scoringGroups[groupId];
       allScoringGroups.push({ rollIndex: i, groupId, ...scoringGroup });
