@@ -273,6 +273,13 @@ export const selectTurnScoreSoFar = (state) => {
     return undefined;
   }
 
+  if (
+    currentTurn.didBlap ||
+    currentTurn.rolls[currentTurn.rolls.length - 1].isBlapped
+  ) {
+    return 0;
+  }
+
   const turnScore = rolls.reduce((accumulator, roll) => {
     const { scoringGroups } = roll;
 

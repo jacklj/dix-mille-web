@@ -382,7 +382,9 @@ const GameScreen = () => {
       {gameUiJsx}
       <ScoringGroupsContainer>
         <Text>Scoring Groups</Text>
-        {turnScoreSoFar ? <Text>Turn score: {turnScoreSoFar}</Text> : null}
+        {typeof turnScoreSoFar === 'number' ? (
+          <Text>Turn score: {turnScoreSoFar}</Text>
+        ) : null}
         <div>
           {currentScoringGroups &&
             Object.keys(currentScoringGroups).map((groupId) => {
