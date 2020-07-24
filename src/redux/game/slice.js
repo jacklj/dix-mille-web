@@ -17,6 +17,7 @@ const gameSlice = createSlice({
     currentTurn: undefined,
     playerTurnOrder: undefined,
     rounds: undefined,
+    winner: undefined,
   },
   reducers: {
     gameUpdated(state, action) {
@@ -29,6 +30,7 @@ const gameSlice = createSlice({
       state.currentTurn = payload.currentTurn;
       state.playerTurnOrder = payload.playerTurnOrder;
       state.rounds = payload.rounds;
+      state.winner = payload.winner;
     },
   },
   extraReducers: {

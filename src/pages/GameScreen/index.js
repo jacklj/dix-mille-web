@@ -5,7 +5,7 @@ import 'firebase/functions';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { loggedInAndJoinedGame } from 'redux/auth/slice';
+import { selectUid } from 'redux/auth/selectors';
 import {
   isItMyTurn,
   selectGameId,
@@ -18,6 +18,7 @@ import {
   selectPreviousScoringGroupsSinceLastFullRoll,
   selectCurrentScoringGroups,
   selectTurnScoreSoFar,
+  selectHasSomeoneWon,
 } from 'redux/game/selectors';
 import Die from './Die';
 import ScoringGroup from './ScoringGroup';
@@ -45,6 +46,18 @@ const ButtonsContainer = styled.div`
 `;
 
 const ScoringGroupsContainer = styled.div``;
+
+const WinnerOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(10, 10, 10, 0.5);
+`;
 
 const areArraysEqual = (a, b) => a.every((value, index) => value === b[index]);
 
@@ -74,6 +87,8 @@ const GameScreen = () => {
 
   const currentRollNumber = useSelector(selectCurrentRollNumber);
   const isBlapped = useSelector(selectIsBlapped);
+  const hasSomeoneWon = useSelector(selectHasSomeoneWon);
+  const myUid = useSelector(selectUid);
   const [isRolling, setIsRolling] = useState(false);
   const [isGrouping, setIsGrouping] = useState(false);
   const [isSticking, setIsSticking] = useState(false);
@@ -393,6 +408,13 @@ const GameScreen = () => {
             })}
         </div>
       </ScoringGroupsContainer>
+      {hasSomeoneWon && (
+        <WinnerOverlay>
+          <Text>{`${
+            hasSomeoneWon.didIWin ? 'You' : hasSomeoneWon.winnersName
+          } won!`}</Text>
+        </WinnerOverlay>
+      )}
     </>
   );
 };

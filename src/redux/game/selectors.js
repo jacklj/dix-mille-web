@@ -325,3 +325,22 @@ export const selectIsBlapped = (state) => {
 
   return isBlapped;
 };
+
+export const selectHasSomeoneWon = (state) => {
+  const { winner: winnerUid } = state.game;
+
+  if (!winnerUid) {
+    return false;
+  } else {
+    const myUid = selectUid(state);
+    const didIWin = myUid === winnerUid;
+
+    const allPlayers = selectPlayers(state);
+    const winnersName = allPlayers[winnerUid].name;
+
+    return {
+      didIWin,
+      winnersName,
+    };
+  }
+};
