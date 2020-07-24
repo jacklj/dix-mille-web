@@ -272,12 +272,16 @@ const GameScreen = () => {
       return;
     }
 
-    const res = await firebase.functions().httpsCallable('stick')({
-      gameId,
-    });
+    try {
+      const res = await firebase.functions().httpsCallable('stick')({
+        gameId,
+      });
+      console.log('Done stick: ', res);
+    } catch (error) {
+      alert(error.message);
+    }
 
     setIsSticking(false);
-    console.log('Done stick: ', res);
   };
 
   const endTurnAfterBlap = async (event) => {
@@ -290,12 +294,16 @@ const GameScreen = () => {
       return;
     }
 
-    const res = await firebase.functions().httpsCallable('endTurnAfterBlap')({
-      gameId,
-    });
+    try {
+      const res = await firebase.functions().httpsCallable('endTurnAfterBlap')({
+        gameId,
+      });
+      console.log(res);
+    } catch (error) {
+      alert(error.message);
+    }
 
     setIsBlappingAndFinishingTurn(false);
-    console.log(res);
   };
 
   let gameUiJsx;

@@ -33,14 +33,20 @@ const Start = () => {
       }: ${uid}`,
     );
 
-    const res = await firebase
-      .functions()
-      .httpsCallable('createUserProfileAndCreateGame')();
+    let res;
+    try {
+      res = await firebase
+        .functions()
+        .httpsCallable('createUserProfileAndCreateGame')();
+    } catch (error) {
+      alert(error.message);
+      setIsStartingGame(false);
+      return;
+    }
 
     console.log('cf done: ', res); // could return user and game data here, but also need to subscribe to the game obj
     const { data } = res;
-    const gameId = data.gameId;
-    const gameCode = data.gameCode;
+    const { gameId, gameCode } = data;
 
     dispatch(
       loggedInAndCreatedGame({
