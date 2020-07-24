@@ -341,23 +341,6 @@ export const selectHasSomeoneWon = (state) => {
 };
 
 // scores table
-// export const selectUidToNameMap = (state) => {
-//   const allPlayers = selectPlayers(state);
-
-//   if (!allPlayers) {
-//     return undefined;
-//   }
-
-//   const uidToNameMap = {};
-
-//   Object.keys(allPlayers).forEach((uid) => {
-//     uidToNameMap[uid] = allPlayers[uid].name;
-//   });
-
-//   return uidToNameMap;
-// };
-
-
 export const selectPlayerNamesInTurnOrder = (state) => {
   const turnOrder = selectPlayerTurnOrder(state);
 
