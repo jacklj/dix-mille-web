@@ -276,13 +276,13 @@ export const selectTurnScoreSoFar = (state) => {
     rounds,
   } = state.game;
 
-  const currentTurn = rounds?.[currentRoundId]?.turns?.[currentTurnId];
+  const currentTurnObj = rounds?.[currentRoundId]?.turns?.[currentTurnId];
 
-  if (!currentTurn) {
+  if (!currentTurnObj) {
     return undefined;
   }
 
-  const { rolls } = currentTurn;
+  const { rolls } = currentTurnObj;
 
   if (!rolls || !Array.isArray(rolls)) {
     // if no rolls yet, no scoring groups
@@ -290,19 +290,28 @@ export const selectTurnScoreSoFar = (state) => {
   }
 
   if (
-    currentTurn.didBlap ||
-    currentTurn.rolls[currentTurn.rolls.length - 1].isBlapped
+    currentTurnObj.didBlap ||
+    currentTurnObj.rolls[currentTurnObj.rolls.length - 1].isBlapped
   ) {
     return 0;
   }
 
   const turnScore = rolls.reduce((accumulator, rollObj) => {
+    // each roll
     const { scoringGroups, twoThrowsToDoubleIt } = rollObj;
 
-    // this ensures even when you have the 1st roll of 2 throws to double it not being
-    //  a 1 or 5? This should crash?
+    // this deals with the special case of the 1st roll of "two throws to double it" not being
+    // a 1 or 5 - it doesn't have any scoring groups but it's not blapped.
     if (!scoringGroups || Object.keys(scoringGroups).length === 0) {
-      return accumulator;
+      if (twoThrowsToDoubleIt === 1) {
+        return accumulator;
+      } else {
+        // we've already dealt with the blapped case above, so this should never happen
+        // unless there's been an error
+        throw new Error(
+          "No scoring groups found for a roll that wasn't 'two throws to double it' and wasn't blapped",
+        );
+      }
     }
 
     const rollScore = Object.values(scoringGroups).reduce(
@@ -314,7 +323,7 @@ export const selectTurnScoreSoFar = (state) => {
     );
 
     const rollWasASuccessful2ThrowsToDoubleIt =
-      twoThrowsToDoubleIt && scoringGroups.length === 1;
+      twoThrowsToDoubleIt && Object.keys(scoringGroups).length === 1;
     if (rollWasASuccessful2ThrowsToDoubleIt) {
       return 2 * (accumulator + rollScore);
     }
