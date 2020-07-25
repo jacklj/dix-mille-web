@@ -10,6 +10,11 @@ const authSlice = createSlice({
   },
   reducers: {
     userUpdated(state, action) {
+      if (!action.payload) {
+        throw new Error(
+          'Error in auth reducer - user data in DB was probably deleted.',
+        );
+      }
       const { name, avatarId, type } = action.payload;
       // N.B. createSlice wraps your function with `produce` from the `Immer` library. This means
       // you can write code that "mutates" the state inside the reducer, and Immer will safely

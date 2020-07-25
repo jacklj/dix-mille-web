@@ -296,10 +296,12 @@ export const selectTurnScoreSoFar = (state) => {
     return 0;
   }
 
-  const turnScore = rolls.reduce((accumulator, roll) => {
-    const { scoringGroups } = roll;
+  const turnScore = rolls.reduce((accumulator, rollObj) => {
+    const { scoringGroups, twoThrowsToDoubleIt } = rollObj;
 
-    if (!scoringGroups || Object.values(scoringGroups).length === 0) {
+    // this ensures even when you have the 1st roll of 2 throws to double it not being
+    //  a 1 or 5? This should crash?
+    if (!scoringGroups || Object.keys(scoringGroups).length === 0) {
       return accumulator;
     }
 
@@ -310,6 +312,12 @@ export const selectTurnScoreSoFar = (state) => {
       },
       0,
     );
+
+    const rollWasASuccessful2ThrowsToDoubleIt =
+      twoThrowsToDoubleIt && scoringGroups.length === 1;
+    if (rollWasASuccessful2ThrowsToDoubleIt) {
+      return 2 * (accumulator + rollScore);
+    }
     return accumulator + rollScore;
   }, 0);
 
