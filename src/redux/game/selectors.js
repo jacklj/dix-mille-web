@@ -1,6 +1,7 @@
 // import moment from 'moment';
 import { selectAllAvatars } from 'redux/avatars/selectors';
 import { selectUid } from 'redux/auth/selectors';
+import Constants from 'services/constants';
 
 export const selectGameCode = (state) => state.game.gameCode;
 
@@ -99,9 +100,9 @@ export const selectAllAvatarsWithChosenStatus = (state) => {
 };
 
 // game play
-export const selectCurrentTurn = (state) => state.game.currentTurn;
+export const selectCurrentTurnId = (state) => state.game.currentTurn;
 
-export const selectCurrentRound = (state) => state.game.currentRound;
+export const selectCurrentRoundId = (state) => state.game.currentRound;
 
 export const selectPlayerTurnOrder = (state) => state.game.playerTurnOrder;
 
@@ -185,7 +186,12 @@ export const selectCurrentRollNumber = (state) => {
 export const selectTwoThrowsToDoubleIt = (state) => {
   const currentRoll = selectCurrentRollObj(state);
 
-  return currentRoll?.twoThrowsToDoubleIt;
+  return (
+    currentRoll?.rollType ===
+      Constants.ROLL_TYPES.TWO_THROWS_TO_DOUBLE_IT.FIRST ||
+    currentRoll?.rollType ===
+      Constants.ROLL_TYPES.TWO_THROWS_TO_DOUBLE_IT.SECOND
+  );
 };
 
 export const selectCurrentRoll = (state) => {
@@ -243,10 +249,13 @@ export const selectPreviousScoringGroupsSinceLastFullRoll = (state) => {
 
   for (let i = penultimateRollIndex; i >= 0; i--) {
     const rollObj = rolls[i];
-    const { roll, scoringGroups, twoThrowsToDoubleIt } = rollObj;
+    const { roll, scoringGroups, rollType } = rollObj;
 
     if (!scoringGroups) {
-      if (twoThrowsToDoubleIt) {
+      if (
+        rollType === Constants.ROLL_TYPES.TWO_THROWS_TO_DOUBLE_IT.FIRST ||
+        rollType === Constants.ROLL_TYPES.TWO_THROWS_TO_DOUBLE_IT.SECOND
+      ) {
         // fine
         continue;
       } else {
@@ -269,7 +278,7 @@ export const selectPreviousScoringGroupsSinceLastFullRoll = (state) => {
   return allScoringGroups;
 };
 
-export const selectTurnScoreSoFar = (state) => {
+const selectCurrentTurn = (state) => {
   const {
     currentRound: currentRoundId,
     currentTurn: currentTurnId,
@@ -278,32 +287,49 @@ export const selectTurnScoreSoFar = (state) => {
 
   const currentTurnObj = rounds?.[currentRoundId]?.turns?.[currentTurnId];
 
+  return currentTurnObj;
+};
+
+export const selectTurnScoreSoFar = (state) => {
+  const currentTurnObj = selectCurrentTurn(state);
+
   if (!currentTurnObj) {
     return undefined;
   }
 
-  const { rolls } = currentTurnObj;
+  const { turnState, rolls } = currentTurnObj;
 
   if (!rolls || !Array.isArray(rolls)) {
     // if no rolls yet, no scoring groups
     return undefined;
   }
 
+  const lastRollObj = rolls[rolls.length - 1];
+  const { rollState } = lastRollObj;
+
   if (
-    currentTurnObj.didBlap ||
-    currentTurnObj.rolls[currentTurnObj.rolls.length - 1].isBlapped
+    turnState === Constants.TURN_STATES.BLAPPED ||
+    rollState === Constants.ROLL_STATES.BLAPPED
   ) {
     return 0;
   }
 
-  const turnScore = rolls.reduce((accumulator, rollObj) => {
+  const turnScore = rolls.reduce((accumulator, rollObj, rollIndex) => {
     // each roll
-    const { scoringGroups, twoThrowsToDoubleIt } = rollObj;
+    const { scoringGroups, rollState, rollType } = rollObj;
+
+    // problem - this error is thrown when there are no scoring groups in the current roll (ie every roll).
+    // Need to make sure that it doesn't expect a scoring group in the final roll, unless it's done.
 
     // this deals with the special case of the 1st roll of "two throws to double it" not being
     // a 1 or 5 - it doesn't have any scoring groups but it's not blapped.
     if (!scoringGroups || Object.keys(scoringGroups).length === 0) {
-      if (twoThrowsToDoubleIt === 1) {
+      if (rollState === Constants.ROLL_STATES.BANKING_DICE) {
+        // turn is in progress - ok for it to have no scoring types yet, the user is making them
+        return accumulator;
+      } else if (
+        rollType === Constants.ROLL_TYPES.TWO_THROWS_TO_DOUBLE_IT.FIRST
+      ) {
         return accumulator;
       } else {
         // we've already dealt with the blapped case above, so this should never happen
@@ -323,7 +349,10 @@ export const selectTurnScoreSoFar = (state) => {
     );
 
     const rollWasASuccessful2ThrowsToDoubleIt =
-      twoThrowsToDoubleIt && Object.keys(scoringGroups).length === 1;
+      (rollType === Constants.ROLL_TYPES.TWO_THROWS_TO_DOUBLE_IT.FIRST ||
+        rollType === Constants.ROLL_TYPES.TWO_THROWS_TO_DOUBLE_IT.SECOND) &&
+      Object.keys(scoringGroups).length === 1;
+
     if (rollWasASuccessful2ThrowsToDoubleIt) {
       return 2 * (accumulator + rollScore);
     }
@@ -361,9 +390,9 @@ export const selectIsBlapped = (state) => {
     return undefined;
   }
 
-  const { isBlapped } = currentRoll;
+  const { rollState } = currentRoll;
 
-  return isBlapped;
+  return rollState === Constants.ROLL_STATES.BLAPPED;
 };
 
 export const selectHasSomeoneWon = (state) => {

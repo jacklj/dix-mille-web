@@ -9,8 +9,8 @@ import {
   selectGameId,
   selectCurrentRoll,
   selectIsBlapped,
-  selectCurrentTurn,
-  selectCurrentRound,
+  selectCurrentTurnId,
+  selectCurrentRoundId,
   selectCurrentRollNumber,
   selectCurrentRollMinusScoringGroups,
   selectPreviousScoringGroupsSinceLastFullRoll,
@@ -73,8 +73,8 @@ const diceSelectedInitialState = {
 const GameScreen = () => {
   const isMyTurn = useSelector(isItMyTurn);
   const gameId = useSelector(selectGameId);
-  const currentRound = useSelector(selectCurrentRound);
-  const currentTurn = useSelector(selectCurrentTurn);
+  const currentRoundId = useSelector(selectCurrentRoundId);
+  const currentTurnId = useSelector(selectCurrentTurnId);
   const currentRoll = useSelector(selectCurrentRoll);
   const currentDiceRollMinusScoringGroups = useSelector(
     selectCurrentRollMinusScoringGroups,
@@ -226,7 +226,7 @@ const GameScreen = () => {
       await firebase
         .database()
         .ref(
-          `games/${gameId}/rounds/${currentRound}/turns/${currentTurn}/rolls/${currentRollNumber}/scoringGroups`,
+          `games/${gameId}/rounds/${currentRoundId}/turns/${currentTurnId}/rolls/${currentRollNumber}/scoringGroups`,
         )
         .push({
           dice,
@@ -246,7 +246,7 @@ const GameScreen = () => {
     await firebase
       .database()
       .ref(
-        `games/${gameId}/rounds/${currentRound}/turns/${currentTurn}/rolls/${currentRollNumber}/scoringGroups/${groupId}`,
+        `games/${gameId}/rounds/${currentRoundId}/turns/${currentTurnId}/rolls/${currentRollNumber}/scoringGroups/${groupId}`,
       )
       .remove();
   };
