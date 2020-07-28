@@ -120,7 +120,7 @@ const GameScreen = () => {
         gameId,
       });
     } catch (error) {
-      console.error(error);
+      alert(error.message);
     }
     setIsRolling(false);
   };
