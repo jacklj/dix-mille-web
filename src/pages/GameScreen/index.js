@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import * as firebase from 'firebase/app';
 import 'firebase/functions';
 import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 
 import {
   isItMyTurn,
@@ -17,7 +16,6 @@ import {
   selectPreviousScoringGroupsSinceLastFullRoll,
   selectCurrentScoringGroups,
   selectTurnScoreSoFar,
-  selectHasSomeoneWon,
   selectTwoThrowsToDoubleIt,
 } from 'redux/game/selectors';
 import Die from './Die';
@@ -25,6 +23,7 @@ import ScoringGroup from './ScoringGroup';
 import ScoresTable from './ScoresTable';
 import PreviousTurnOutcome from './PreviousTurnOutcome';
 import Constants from 'services/constants';
+import WinnerOverlay from './WinnerOverlay';
 
 const Text = styled.div`
   color: white;
@@ -52,35 +51,6 @@ const ButtonsContainer = styled.div`
 
 const ScoringGroupsContainer = styled.div``;
 
-const WinnerOverlay = styled.div`
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  top: 0;
-  width: 100vw;
-  height: 100vh;
-
-  background-color: rgba(10, 10, 10, 0.7);
-  overflow-y: scroll;
-`;
-
-const WinnerScrollContainer = styled.div`
-  position: static;
-
-  display: flex;
-  flex-direction: column;
-  padding-top: 100px;
-  padding-bottom: 50px;
-  align-items: center;
-`;
-
-const WinnerText = styled.div`
-  color: white;
-  font-size: 2em;
-  margin-bottom: 40px;
-`;
-
 const areArraysEqual = (a, b) => a.every((value, index) => value === b[index]);
 
 const diceSelectedInitialState = {
@@ -93,7 +63,6 @@ const diceSelectedInitialState = {
 };
 
 const GameScreen = () => {
-  const history = useHistory();
   const isMyTurn = useSelector(isItMyTurn);
   const gameId = useSelector(selectGameId);
   const currentRoundId = useSelector(selectCurrentRoundId);
@@ -110,7 +79,6 @@ const GameScreen = () => {
 
   const currentRollNumber = useSelector(selectCurrentRollNumber);
   const isBlapped = useSelector(selectIsBlapped);
-  const hasSomeoneWon = useSelector(selectHasSomeoneWon);
   const twoThrowsToDoubleIt = useSelector(selectTwoThrowsToDoubleIt);
 
   const [isRolling, setIsRolling] = useState(false);
@@ -126,17 +94,6 @@ const GameScreen = () => {
   useEffect(() => {
     setDiceSelectedState(diceSelectedInitialState);
   }, [currentRoll]);
-
-  useEffect(() => {
-    if (hasSomeoneWon) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }, [hasSomeoneWon]);
 
   const rollDie = async (event) => {
     event.preventDefault();
@@ -343,11 +300,6 @@ const GameScreen = () => {
     setIsBlappingAndFinishingTurn(false);
   };
 
-  const goBackToHomePage = () => {
-    history.push('/');
-    // todo unsubscribe from game subscriptions, clear store
-  };
-
   let gameUiJsx;
   const hasRolled = !!currentRoll;
 
@@ -468,17 +420,7 @@ const GameScreen = () => {
         </div>
       </ScoringGroupsContainer>
       <ScoresTable />
-      {hasSomeoneWon && (
-        <WinnerOverlay>
-          <WinnerScrollContainer>
-            <WinnerText>{`${
-              hasSomeoneWon.didIWin ? 'You' : hasSomeoneWon.winnersName
-            } won!`}</WinnerText>
-            <ScoresTable />
-            <button onClick={goBackToHomePage}>Start again</button>
-          </WinnerScrollContainer>
-        </WinnerOverlay>
-      )}
+      <WinnerOverlay />
     </>
   );
 };
