@@ -15,6 +15,16 @@ const SelectionAura = styled.div`
     position: relative;
     top: ${(props) => (props.isInGroup ? '0' : '30px')};
   }
+
+  @media (max-width: 768px) {
+    padding: ${(props) => (props.isInGroup ? '0' : '9px')};
+    margin-bottom: ${(props) => (props.isInGroup ? '5px' : '15px')};
+
+    &:nth-child(even) {
+      position: relative;
+      top: ${(props) => (props.isInGroup ? '0' : '15px')};
+    }
+  }
 `;
 
 const Face = styled.div`
@@ -24,6 +34,13 @@ const Face = styled.div`
 
   width: ${(props) => (props.isInGroup ? '60px' : '90px')};
   height: ${(props) => (props.isInGroup ? '60px' : '90px')};
+
+  @media (max-width: 768px) {
+    width: ${(props) => (props.isInGroup ? '35px' : '50px')};
+    height: ${(props) => (props.isInGroup ? '35px' : '50px')};
+
+    margin: ${(props) => (props.isInGroup ? '3px' : '8px')};
+  }
 
   background-color: #e7e7e7;
   box-shadow: inset 0 5px white, inset 0 -5px #bbb, inset 5px 0 #d7d7d7,
@@ -44,6 +61,11 @@ const Pip = styled.span`
 
   width: ${(props) => (props.isInGroup ? '18px' : '22px')};
   height: ${(props) => (props.isInGroup ? '18px' : '22px')};
+
+  @media (max-width: 768px) {
+    width: ${(props) => (props.isInGroup ? '8px' : '12px')};
+    height: ${(props) => (props.isInGroup ? '8px' : '12px')};
+  }
 
   border-radius: 50%;
   background-color: #333;

@@ -39,6 +39,9 @@ const DiceContainer = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
   margin: 20px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
 `;
 
 const ButtonsContainer = styled.div`
