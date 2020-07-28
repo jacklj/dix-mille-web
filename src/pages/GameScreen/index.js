@@ -330,23 +330,22 @@ const GameScreen = () => {
         Object.keys(diceSelectedState).filter((id) => diceSelectedState[id])
           .length === 0;
 
+      const cantGroup = isGrouping || noDiceSelected;
+      const cantRoll =
+        isRolling || (hasRolled && noScoringGroups && !twoThrowsToDoubleIt);
+      const cantStick = isSticking || !hasRolled; // can stick when no scoring groups
+
       gameUiJsx = (
         <ButtonsContainer>
-          <Button
-            onClick={() => createDiceGroup()}
-            disabled={isGrouping || noDiceSelected}>
+          <Button onClick={() => createDiceGroup()} disabled={cantGroup}>
             {isGrouping ? 'Grouping...' : 'Group dice'}
           </Button>
           <form onSubmit={(event) => rollDie(event)}>
-            <Button
-              disabled={
-                isRolling ||
-                (hasRolled && noScoringGroups && !twoThrowsToDoubleIt)
-              }>
+            <Button disabled={cantRoll}>
               {isRolling ? 'Rolling...' : 'Roll'}
             </Button>
           </form>
-          <Button onClick={() => stick()} disabled={!hasRolled}>
+          <Button onClick={() => stick()} disabled={cantStick}>
             {isSticking ? 'Sticking...' : 'Stick'}
           </Button>
         </ButtonsContainer>
