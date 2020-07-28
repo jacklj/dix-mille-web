@@ -253,6 +253,8 @@ const GameScreen = () => {
   };
 
   const stick = async () => {
+    setIsSticking(true);
+
     if (!isMyTurn) {
       alert("You can't stick - it's not your turn!");
       setIsSticking(false);
