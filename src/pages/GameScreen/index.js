@@ -52,15 +52,22 @@ const ButtonsContainer = styled.div`
 const ScoringGroupsContainer = styled.div``;
 
 const WinnerOverlay = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: rgba(10, 10, 10, 0.5);
+  background-color: rgba(10, 10, 10, 0.7);
+`;
+
+const WinnerText = styled.div`
+  color: white;
+  font-size: 2em;
+  margin-bottom: 50px;
 `;
 
 const areArraysEqual = (a, b) => a.every((value, index) => value === b[index]);
@@ -107,6 +114,17 @@ const GameScreen = () => {
   useEffect(() => {
     setDiceSelectedState(diceSelectedInitialState);
   }, [currentRoll]);
+
+  useEffect(() => {
+    if (hasSomeoneWon) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [hasSomeoneWon]);
 
   const rollDie = async (event) => {
     event.preventDefault();
@@ -435,9 +453,10 @@ const GameScreen = () => {
       <ScoresTable />
       {hasSomeoneWon && (
         <WinnerOverlay>
-          <Text>{`${
+          <WinnerText>{`${
             hasSomeoneWon.didIWin ? 'You' : hasSomeoneWon.winnersName
-          } won!`}</Text>
+          } won!`}</WinnerText>
+          <ScoresTable />
         </WinnerOverlay>
       )}
     </>

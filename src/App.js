@@ -27,6 +27,7 @@ import { avatarsUpdated } from 'redux/avatars/slice';
 const Container = styled.div`
   text-align: center;
   min-height: 100vh;
+  padding-bottom: 50px;
   background-color: #282c34;
 `;
 
