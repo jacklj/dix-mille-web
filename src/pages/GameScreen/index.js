@@ -22,6 +22,7 @@ import {
 import Die from './Die';
 import ScoringGroup from './ScoringGroup';
 import ScoresTable from './ScoresTable';
+import PreviousTurnOutcome from './PreviousTurnOutcome';
 import Constants from 'services/constants';
 
 const Text = styled.div`
@@ -313,11 +314,14 @@ const GameScreen = () => {
   if (isMyTurn) {
     if (!hasRolled) {
       gameUiJsx = (
-        <form onSubmit={(event) => rollDie(event)}>
-          <Button disabled={isRolling}>
-            {isRolling ? 'Rolling...' : 'Roll'}
-          </Button>
-        </form>
+        <>
+          <PreviousTurnOutcome />
+          <form onSubmit={(event) => rollDie(event)}>
+            <Button disabled={isRolling}>
+              {isRolling ? 'Rolling...' : 'Roll'}
+            </Button>
+          </form>
+        </>
       );
     } else if (!isBlapped) {
       const noScoringGroups =
@@ -364,7 +368,8 @@ const GameScreen = () => {
   } else {
     gameUiJsx = (
       <>
-        <Text>It's not your turn yet...</Text>
+        {!hasRolled && <PreviousTurnOutcome />}
+        <Text>It's not your turn...</Text>
       </>
     );
   }

@@ -466,3 +466,49 @@ export const selectTotalScores = (state) => {
 
   return turnOrder.map((uid) => allPlayers[uid]?.currentScore);
 };
+
+export const selectPreviousTurnOutcome = (state) => {
+  // select previous turn
+  const {
+    currentRound: currentRoundId,
+    currentTurn: currentTurnId,
+    rounds,
+    players,
+  } = state.game;
+
+  let previousRoundId;
+  let previousTurnId;
+  if (currentRoundId === 0 && previousTurnId === 0) {
+    return undefined;
+  } else if (currentTurnId === 0) {
+    // && currentRoundId !== 0
+    previousRoundId = currentRoundId - 1;
+    previousTurnId = Object.keys(players).length - 1;
+  } else {
+    previousRoundId = currentRoundId;
+    previousTurnId = currentTurnId - 1;
+  }
+
+  const previousTurnObj = rounds?.[previousRoundId]?.turns?.[previousTurnId];
+
+  if (!previousTurnObj) {
+    return undefined;
+  }
+
+  // what was the outcome?
+  const { turnState, turnScore, player } = previousTurnObj;
+  const playerName = selectPlayer(player)(state).name;
+
+  let outcome;
+  if (turnState === Constants.TURN_STATES.STICKED) {
+    outcome = `${playerName} scored ${turnScore} points.`;
+  } else if (turnState === Constants.TURN_STATES.BLAPPED) {
+    outcome = `${playerName} BLAPPED!`;
+  } else if (turnState === Constants.TURN_STATES.STICKED_AND_OVERSHOT) {
+    outcome = `${playerName}'s score exceeded 10,000 - BLAP!!!`;
+  } else {
+    outcome = undefined;
+  }
+
+  return outcome;
+};
