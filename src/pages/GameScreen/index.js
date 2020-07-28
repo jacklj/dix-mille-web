@@ -330,7 +330,7 @@ const GameScreen = () => {
       gameUiJsx = (
         <ButtonsContainer>
           <Button onClick={() => createDiceGroup()} disabled={cantGroup}>
-            {isGrouping ? 'Grouping...' : 'Group dice'}
+            {isGrouping ? 'Banking...' : 'Bank dice'}
           </Button>
           <form onSubmit={(event) => rollDie(event)}>
             <Button disabled={cantRoll}>
