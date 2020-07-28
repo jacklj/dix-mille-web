@@ -11,10 +11,11 @@ describe('Game Selectors', () => {
             {
               turns: [
                 {
-                  player: 'uid1',
+                  // player: 'uid1',
                   rolls: [
                     {
-                      isBlapped: false,
+                      rollType: 'INITIAL',
+                      rollState: 'FINISHED_THEN_ROLLED_AGAIN',
                       roll: {
                         a: 1,
                         b: 2,
@@ -50,15 +51,15 @@ describe('Game Selectors', () => {
                       },
                     },
                     {
-                      isBlapped: false,
-                      twoThrowsToDoubleIt: 1,
+                      rollType: 'TWO_THROWS_TO_DOUBLE_IT.FIRST',
+                      rollState: 'FINISHED_THEN_ROLLED_AGAIN',
                       roll: {
                         b: 4,
                       },
                     },
                     {
-                      isBlapped: false,
-                      twoThrowsToDoubleIt: 2,
+                      rollType: 'TWO_THROWS_TO_DOUBLE_IT.SECOND',
+                      rollState: 'FINISHED_THEN_ROLLED_AGAIN',
                       roll: {
                         b: 1,
                       },
