@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import * as firebase from 'firebase/app';
 import 'firebase/functions';
 import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import {
   isItMyTurn,
@@ -53,21 +54,31 @@ const ScoringGroupsContainer = styled.div``;
 
 const WinnerOverlay = styled.div`
   position: fixed;
-  top: 0;
+  bottom: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  right: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+
+  background-color: rgba(10, 10, 10, 0.7);
+  overflow-y: scroll;
+`;
+
+const WinnerScrollContainer = styled.div`
+  position: static;
+
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  padding-top: 100px;
+  padding-bottom: 50px;
   align-items: center;
-  background-color: rgba(10, 10, 10, 0.7);
 `;
 
 const WinnerText = styled.div`
   color: white;
   font-size: 2em;
-  margin-bottom: 50px;
+  margin-bottom: 40px;
 `;
 
 const areArraysEqual = (a, b) => a.every((value, index) => value === b[index]);
@@ -82,6 +93,7 @@ const diceSelectedInitialState = {
 };
 
 const GameScreen = () => {
+  const history = useHistory();
   const isMyTurn = useSelector(isItMyTurn);
   const gameId = useSelector(selectGameId);
   const currentRoundId = useSelector(selectCurrentRoundId);
@@ -331,6 +343,11 @@ const GameScreen = () => {
     setIsBlappingAndFinishingTurn(false);
   };
 
+  const goBackToHomePage = () => {
+    history.push('/');
+    // todo unsubscribe from game subscriptions, clear store
+  };
+
   let gameUiJsx;
   const hasRolled = !!currentRoll;
 
@@ -453,10 +470,13 @@ const GameScreen = () => {
       <ScoresTable />
       {hasSomeoneWon && (
         <WinnerOverlay>
-          <WinnerText>{`${
-            hasSomeoneWon.didIWin ? 'You' : hasSomeoneWon.winnersName
-          } won!`}</WinnerText>
-          <ScoresTable />
+          <WinnerScrollContainer>
+            <WinnerText>{`${
+              hasSomeoneWon.didIWin ? 'You' : hasSomeoneWon.winnersName
+            } won!`}</WinnerText>
+            <ScoresTable />
+            <button onClick={goBackToHomePage}>Start again</button>
+          </WinnerScrollContainer>
         </WinnerOverlay>
       )}
     </>

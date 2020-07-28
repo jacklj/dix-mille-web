@@ -15,6 +15,7 @@ const Table = styled.table`
   margin-left: auto;
   margin-right: auto;
   margin-top: 40px;
+  margin-bottom: 40px;
 `;
 
 const Th = styled.th`
