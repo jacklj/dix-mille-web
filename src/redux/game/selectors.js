@@ -317,6 +317,7 @@ export const selectTurnScoreSoFar = (state) => {
   const turnScore = rolls.reduce((accumulator, rollObj, rollIndex) => {
     // each roll
     const { scoringGroups, rollState, rollType } = rollObj;
+    const isLastRoll = rollIndex === rolls.length - 1;
 
     // problem - this error is thrown when there are no scoring groups in the current roll (ie every roll).
     // Need to make sure that it doesn't expect a scoring group in the final roll, unless it's done.
@@ -326,6 +327,11 @@ export const selectTurnScoreSoFar = (state) => {
     if (!scoringGroups || Object.keys(scoringGroups).length === 0) {
       if (rollState === Constants.ROLL_STATES.BANKING_DICE) {
         // turn is in progress - ok for it to have no scoring types yet, the user is making them
+        return accumulator;
+      } else if (isLastRoll) {
+        // the player may have rolled some scoring dice on the last roll, but chosen not to bank them and
+        // just sticked.
+        // TODO do we need both these top two conditions? Not sure atm.
         return accumulator;
       } else if (
         rollType === Constants.ROLL_TYPES.TWO_THROWS_TO_DOUBLE_IT.FIRST
