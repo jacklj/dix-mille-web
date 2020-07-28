@@ -377,7 +377,9 @@ const GameScreen = () => {
               selected={diceSelectedState[id]}
               onClick={() => {
                 console.log(`Clicked on dice '${id}'`);
-                setDiceSelectedState((x) => ({ ...x, [id]: !x[id] }));
+                if (isMyTurn) {
+                  setDiceSelectedState((x) => ({ ...x, [id]: !x[id] }));
+                }
               }}
             />
           ))}
