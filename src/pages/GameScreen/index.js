@@ -124,7 +124,8 @@ const GameScreen = () => {
       return;
     }
 
-    // check on front end for invalid groups, then write to DB (less secure but quicker for current turn player)
+    // NB all validation logic must be done here, as we are writing directly to the DB from the frontend,
+    // there's no cloud function involved.
     const selectedDiceIds = Object.keys(diceSelectedState).filter(
       (id) => diceSelectedState[id],
     );
@@ -210,7 +211,24 @@ const GameScreen = () => {
         isValidGroup = false;
       }
     } else {
-      alert("That's not a valid set of dice");
+      // give more detail if they've tried to bank 2 dice
+      if (diceValues.length === 2) {
+        if (diceValues[0] === 1 && diceValues[1] === 1) {
+          alert(
+            "Two 1s is not a valid dice group - try banking each '1' individually",
+          );
+        } else if (diceValues[0] === 5 && diceValues[1] === 5) {
+          alert(
+            "Two 5s is not a valid dice group - try banking each '5' individually",
+          );
+        } else if (diceValues[0] === diceValues[1]) {
+          alert('Two of a kind is not a valid dice group.');
+        } else {
+          alert("That's not a valid set of dice");
+        }
+      } else {
+        alert("That's not a valid set of dice");
+      }
       isValidGroup = false;
     }
     if (isValidGroup) {
