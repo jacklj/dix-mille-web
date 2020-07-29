@@ -360,6 +360,7 @@ const GameScreen = () => {
     gameUiJsx = (
       <>
         {!hasRolled && <PreviousTurnOutcome />}
+        {isBlapped ? <Text>BLAP!</Text> : null}
         <Text>It's not your turn...</Text>
       </>
     );
