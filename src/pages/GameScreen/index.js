@@ -22,7 +22,6 @@ import Die from './Die';
 import ScoringGroup from './ScoringGroup';
 import ScoresTable from './ScoresTable';
 import PreviousTurnOutcome from './PreviousTurnOutcome';
-import Constants from 'services/constants';
 import WinnerOverlay from './WinnerOverlay';
 import GameLogic from 'services/GameLogic';
 
