@@ -140,6 +140,7 @@ const GameScreen = () => {
 
     const {
       isValidGroup,
+      invalidReason,
       groupType,
       score,
       scoringGroupDice,
@@ -156,6 +157,8 @@ const GameScreen = () => {
           score,
           dice: scoringGroupDice,
         });
+    } else {
+      alert(invalidReason);
     }
     setIsGrouping(false);
   };

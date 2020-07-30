@@ -8,6 +8,7 @@ const getValidScoringGroups = (selectedDice) => {
   const diceValues = Object.values(selectedDice);
 
   let isValidGroup;
+  let invalidReason;
   let groupType;
   let score;
   let scoringGroupDice;
@@ -21,7 +22,7 @@ const getValidScoringGroups = (selectedDice) => {
       score = diceValues[0] === 1 ? 100 : 50;
       scoringGroupDice = { ...selectedDice };
     } else {
-      alert("That's not a valid set of dice");
+      invalidReason = "That's not a valid set of dice";
       isValidGroup = false;
     }
   } else if (numberOfDice === 3) {
@@ -35,7 +36,7 @@ const getValidScoringGroups = (selectedDice) => {
       score = diceValues[0] === 1 ? 1000 : diceValues[0] * 100;
       scoringGroupDice = { ...selectedDice };
     } else {
-      alert("That's not a valid set of dice");
+      invalidReason = "That's not a valid set of dice";
       isValidGroup = false;
     }
   } else if (numberOfDice === 6) {
@@ -73,33 +74,32 @@ const getValidScoringGroups = (selectedDice) => {
       score = 1500;
       scoringGroupDice = { ...selectedDice };
     } else {
-      alert("That's not a valid set of dice");
+      invalidReason = "That's not a valid set of dice";
       isValidGroup = false;
     }
   } else {
     // give more detail if they've tried to bank 2 dice
     if (diceValues.length === 2) {
       if (diceValues[0] === 1 && diceValues[1] === 1) {
-        alert(
-          "Two 1s is not a valid dice group - try banking each '1' individually",
-        );
+        invalidReason =
+          "Two 1s is not a valid dice group - try banking each '1' individually";
       } else if (diceValues[0] === 5 && diceValues[1] === 5) {
-        alert(
-          "Two 5s is not a valid dice group - try banking each '5' individually",
-        );
+        invalidReason =
+          "Two 5s is not a valid dice group - try banking each '5' individually";
       } else if (diceValues[0] === diceValues[1]) {
-        alert('Two of a kind is not a valid dice group.');
+        invalidReason = 'Two of a kind is not a valid dice group.';
       } else {
-        alert("That's not a valid set of dice");
+        invalidReason = "That's not a valid set of dice";
       }
     } else {
-      alert("That's not a valid set of dice");
+      invalidReason = "That's not a valid set of dice";
     }
     isValidGroup = false;
   }
 
   return {
     isValidGroup,
+    invalidReason,
     groupType,
     score,
     scoringGroupDice,
