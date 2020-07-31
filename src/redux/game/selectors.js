@@ -200,6 +200,11 @@ export const selectCurrentRoll = (state) => {
   return currentRoll?.roll;
 };
 
+export const selectSelectedDice = (state) => {
+  const currentRoll = selectCurrentRollObj(state);
+  return currentRoll?.selectedDice;
+};
+
 export const selectCurrentScoringGroups = (state) => {
   const currentRoll = selectCurrentRollObj(state);
 

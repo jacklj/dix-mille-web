@@ -8,6 +8,7 @@ import {
   isItMyTurn,
   selectGameId,
   selectCurrentRoll,
+  selectSelectedDice,
   selectIsBlapped,
   selectCurrentTurnId,
   selectCurrentRoundId,
@@ -66,6 +67,7 @@ const GameScreen = () => {
   const currentRoundId = useSelector(selectCurrentRoundId);
   const currentTurnId = useSelector(selectCurrentTurnId);
   const currentRoll = useSelector(selectCurrentRoll);
+  const selectedDice = useSelector(selectSelectedDice);
   const currentDiceRollMinusScoringGroups = useSelector(
     selectCurrentRollMinusScoringGroups,
   );
@@ -85,13 +87,14 @@ const GameScreen = () => {
   const [isBlappingAndFinishingTurn, setIsBlappingAndFinishingTurn] = useState(
     false,
   );
-  const [diceSelectedState, setDiceSelectedState] = useState(
-    diceSelectedInitialState,
-  );
+  // const [diceSelectedState, setDiceSelectedState] = useState(
+  //   diceSelectedInitialState,
+  // );
 
-  useEffect(() => {
-    setDiceSelectedState(diceSelectedInitialState);
-  }, [currentRoll]);
+  // TODO do this in roll() cf
+  // useEffect(() => {
+  //   setDiceSelectedState(diceSelectedInitialState);
+  // }, [currentRoll]);
 
   const rollDie = async (event) => {
     event.preventDefault();
@@ -113,11 +116,21 @@ const GameScreen = () => {
     setIsRolling(false);
   };
 
-  const selectOrUnselectDie = (diceId) => {
+  const selectOrUnselectDie = async (diceId) => {
     console.log(`Clicked on dice '${diceId}'`);
-    if (isMyTurn) {
-      setDiceSelectedState((x) => ({ ...x, [diceId]: !x[diceId] }));
+    if (!isMyTurn) {
+      console.warn("Can't select dice when it's not your turn");
+      return;
     }
+
+    // toggle die selected state
+    const path = `games/${gameId}/rounds/${currentRoundId}/turns/${currentTurnId}/rolls/${currentRollNumber}/selectedDice`;
+    await firebase
+      .database()
+      .ref(path)
+      .update({
+        [diceId]: !selectedDice?.[diceId],
+      });
   };
 
   const createDiceGroup = async () => {
@@ -131,25 +144,28 @@ const GameScreen = () => {
 
     // N.B. all validation logic must be done here, as we are writing directly to the DB from the
     // frontend - there's no cloud function involved.
-    const selectedDice = {};
-    Object.keys(diceSelectedState)
-      .filter((id) => diceSelectedState[id])
-      .forEach((id) => {
-        const value = currentRoll[id];
-        selectedDice[id] = value;
-      });
-
-    if (Object.keys(selectedDice).length === 0) {
+    if (
+      !selectedDice ||
+      Object.values(selectedDice).filter((x) => x).length === 0
+    ) {
       alert('No dice selected');
       setIsGrouping(false);
       return;
     }
 
+    const selectedDiceWithValues = {}; // [diceId]: diceValue
+    Object.keys(selectedDice)
+      .filter((diceId) => selectedDice[diceId])
+      .forEach((diceId) => {
+        const value = currentRoll[diceId];
+        selectedDiceWithValues[diceId] = value;
+      });
+
     const {
       isValidGroups,
       invalidReason,
       groups,
-    } = GameLogic.getValidScoringGroups(selectedDice);
+    } = GameLogic.getValidScoringGroups(selectedDiceWithValues);
 
     if (isValidGroups) {
       const updateObject = {};
@@ -256,8 +272,8 @@ const GameScreen = () => {
       const noScoringGroups =
         !currentScoringGroups || Object.keys(currentScoringGroups).length === 0;
       const noDiceSelected =
-        Object.keys(diceSelectedState).filter((id) => diceSelectedState[id])
-          .length === 0;
+        !selectedDice ||
+        Object.values(selectedDice).filter((x) => x).length === 0;
 
       const cantGroup = isGrouping || noDiceSelected;
       const cantRoll =
@@ -312,7 +328,7 @@ const GameScreen = () => {
               id={id}
               key={id}
               value={currentRoll[id]}
-              selected={diceSelectedState[id]}
+              selected={selectedDice && selectedDice[id]}
               onClick={() => selectOrUnselectDie(id)}
             />
           ))}
