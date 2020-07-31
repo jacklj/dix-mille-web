@@ -1,6 +1,6 @@
 const diceGroupTypes = {
-  threeOfAKind: 'threeOfAKind',
   oneOrFive: 'oneOrFive',
+  threeOfAKind: 'threeOfAKind',
   sixOfAKind: 'sixOfAKind',
   threePairs: 'threePairs',
   run: 'run',

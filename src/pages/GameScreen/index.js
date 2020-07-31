@@ -122,7 +122,7 @@ const GameScreen = () => {
       return;
     }
 
-    // NB all validation logic must be done here, as we are writing directly to the DB from the
+    // N.B. all validation logic must be done here, as we are writing directly to the DB from the
     // frontend - there's no cloud function involved.
     const selectedDice = {};
     Object.keys(diceSelectedState)
@@ -139,24 +139,19 @@ const GameScreen = () => {
     }
 
     const {
-      isValidGroup,
+      isValidGroups,
       invalidReason,
-      groupType,
-      score,
-      scoringGroupDice,
+      groups,
     } = GameLogic.getValidScoringGroups(selectedDice);
 
-    if (isValidGroup) {
-      await firebase
-        .database()
-        .ref(
-          `games/${gameId}/rounds/${currentRoundId}/turns/${currentTurnId}/rolls/${currentRollNumber}/scoringGroups`,
-        )
-        .push({
-          groupType,
-          score,
-          dice: scoringGroupDice,
-        });
+    if (isValidGroups) {
+      const updateObject = {};
+      const path = `games/${gameId}/rounds/${currentRoundId}/turns/${currentTurnId}/rolls/${currentRollNumber}/scoringGroups`;
+      groups.forEach((scoringGroup) => {
+        const newPushKey = firebase.database().ref(path).push().key;
+        updateObject[newPushKey] = scoringGroup;
+      });
+      await firebase.database().ref(path).update(updateObject);
     } else {
       alert(invalidReason);
     }

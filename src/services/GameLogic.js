@@ -7,102 +7,125 @@ const getValidScoringGroups = (selectedDice) => {
   const numberOfDice = Object.keys(selectedDice).length;
   const diceValues = Object.values(selectedDice);
 
-  let isValidGroup;
+  const is1or5 =
+    numberOfDice === 1 && (diceValues[0] === 1 || diceValues[0] === 5);
+  if (is1or5) {
+    console.log('Valid group: 1 or 5!');
+
+    return {
+      isValidGroups: true,
+      groups: [
+        {
+          groupType: Constants.diceGroupTypes.oneOrFive,
+          score: diceValues[0] === 1 ? 100 : 50,
+          dice: { ...selectedDice },
+        },
+      ],
+    };
+  }
+
+  const is3OfAKind =
+    numberOfDice === 3 && diceValues.every((value) => value === diceValues[0]);
+  if (is3OfAKind) {
+    console.log('Valid group: 3 of a kind!');
+
+    return {
+      isValidGroups: true,
+      groups: [
+        {
+          groupType: Constants.diceGroupTypes.threeOfAKind,
+          score: diceValues[0] === 1 ? 1000 : diceValues[0] * 100,
+          dice: { ...selectedDice },
+        },
+      ],
+    };
+  }
+
+  // N.B. must check 6 of a kind before we check for 3 pairs, as 6 of a kind is a subset of 3 pairs
+  const isSixOfAKind =
+    numberOfDice === 6 && diceValues.every((value) => value === diceValues[0]);
+  if (isSixOfAKind) {
+    // 6 of a kind (=instant win!)
+    console.log('Valid group: 6 of a kind!');
+
+    return {
+      isValidGroups: true,
+      groups: [
+        {
+          groupType: Constants.diceGroupTypes.sixOfAKind,
+          score: 10000, // TODO it's actually an instant win, not just 10,000 score - sort this.
+          dice: { ...selectedDice },
+        },
+      ],
+    };
+  }
+
+  const sorted = diceValues.sort();
+  const is3Pairs =
+    numberOfDice === 6 &&
+    sorted[0] === sorted[1] &&
+    sorted[2] === sorted[3] &&
+    sorted[4] === sorted[5];
+  if (is3Pairs) {
+    // 3 pairs (=1000)
+    console.log("That's a valid group: 3 pairs!");
+
+    return {
+      isValidGroups: true,
+      groups: [
+        {
+          groupType: Constants.diceGroupTypes.threePairs,
+          score: 1000,
+          dice: { ...selectedDice },
+        },
+      ],
+    };
+  }
+
+  const isRun =
+    numberOfDice === 6 && areArraysEqual(sorted, [1, 2, 3, 4, 5, 6]);
+
+  if (isRun) {
+    // 1 2 3 4 5 6 (=1500)
+    console.log("That's a valid group: a run!");
+
+    return {
+      isValidGroups: true,
+      group: [
+        {
+          groupType: Constants.diceGroupTypes.run,
+          score: 1500,
+          dice: { ...selectedDice },
+        },
+      ],
+    };
+  }
+
+  // all 'pure' groups done (ie the user selected exlusively a single scoring group)
+
+  // TODO deal with 'impure' groups
+
+  // error messages
   let invalidReason;
-  let groupType;
-  let score;
-  let scoringGroupDice;
-
-  if (numberOfDice === 1) {
-    if (diceValues[0] === 1 || diceValues[0] === 5) {
-      console.log("That's a valid group: 1 or 5!");
-
-      isValidGroup = true;
-      groupType = Constants.diceGroupTypes.oneOrFive;
-      score = diceValues[0] === 1 ? 100 : 50;
-      scoringGroupDice = { ...selectedDice };
+  if (diceValues.length === 2) {
+    if (diceValues[0] === 1 && diceValues[1] === 1) {
+      invalidReason =
+        "Two 1s is not a valid dice group - try banking each '1' individually";
+    } else if (diceValues[0] === 5 && diceValues[1] === 5) {
+      invalidReason =
+        "Two 5s is not a valid dice group - try banking each '5' individually";
+    } else if (diceValues[0] === diceValues[1]) {
+      invalidReason = 'Two of a kind is not a valid dice group.';
     } else {
       invalidReason = "That's not a valid set of dice";
-      isValidGroup = false;
-    }
-  } else if (numberOfDice === 3) {
-    // 3 of a kind?
-    const allTheSame = diceValues.every((value) => value === diceValues[0]);
-    if (allTheSame) {
-      console.log("That's a valid group: 3 of a kind!");
-
-      isValidGroup = true;
-      groupType = Constants.diceGroupTypes.threeOfAKind;
-      score = diceValues[0] === 1 ? 1000 : diceValues[0] * 100;
-      scoringGroupDice = { ...selectedDice };
-    } else {
-      invalidReason = "That's not a valid set of dice";
-      isValidGroup = false;
-    }
-  } else if (numberOfDice === 6) {
-    const sixOfAKind = diceValues.every((value) => value === diceValues[0]);
-    const sorted = diceValues.sort();
-    const threePairs =
-      sorted[0] === sorted[1] &&
-      sorted[2] === sorted[3] &&
-      sorted[4] === sorted[5];
-    const run = areArraysEqual(sorted, [1, 2, 3, 4, 5, 6]);
-
-    if (sixOfAKind) {
-      // 6 of a kind (=instant win!)
-      // N.B. must check this before we check for 3 pairs, as 6 of a kind is a subset of 3 pairs
-      console.log("That's a valid group: 6 of a kind!");
-
-      isValidGroup = true;
-      groupType = Constants.diceGroupTypes.sixOfAKind;
-      score = 10000; // TODO it's actually an instant win, not just 10,000 score - sort this.
-      scoringGroupDice = { ...selectedDice };
-    } else if (threePairs) {
-      // 3 pairs (=1000)
-      console.log("That's a valid group: 3 pairs!");
-
-      isValidGroup = true;
-      groupType = Constants.diceGroupTypes.threePairs;
-      score = 1000;
-      scoringGroupDice = { ...selectedDice };
-    } else if (run) {
-      // 1 2 3 4 5 6 (=1500)
-      console.log("That's a valid group: a run!");
-
-      isValidGroup = true;
-      groupType = Constants.diceGroupTypes.run;
-      score = 1500;
-      scoringGroupDice = { ...selectedDice };
-    } else {
-      invalidReason = "That's not a valid set of dice";
-      isValidGroup = false;
     }
   } else {
-    // give more detail if they've tried to bank 2 dice
-    if (diceValues.length === 2) {
-      if (diceValues[0] === 1 && diceValues[1] === 1) {
-        invalidReason =
-          "Two 1s is not a valid dice group - try banking each '1' individually";
-      } else if (diceValues[0] === 5 && diceValues[1] === 5) {
-        invalidReason =
-          "Two 5s is not a valid dice group - try banking each '5' individually";
-      } else if (diceValues[0] === diceValues[1]) {
-        invalidReason = 'Two of a kind is not a valid dice group.';
-      } else {
-        invalidReason = "That's not a valid set of dice";
-      }
-    } else {
-      invalidReason = "That's not a valid set of dice";
-    }
-    isValidGroup = false;
+    invalidReason = "That's not a valid set of dice";
   }
 
   return {
-    isValidGroup,
+    isValidGroups: false,
     invalidReason,
-    groupType,
-    score,
-    scoringGroupDice,
   };
 };
 
