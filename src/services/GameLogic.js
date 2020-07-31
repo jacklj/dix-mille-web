@@ -177,13 +177,149 @@ const getValidScoringGroups = (selectedDice) => {
     }
   }
 
-  // if (numberOfDice === 4) {
-  //   // 3 of a kind + 1, 3 of a kind + 5, 1 1 5 5
-  // }
+  if (numberOfDice === 4) {
+    // 3 of a kind + 1, 3 of a kind + 5, 1 1 5 5 (includes 4 1s and 4 5s)
+    const valuesToKeys = {}; // { 1: ['c'], 3: ['b', 'd', 'e'], 5: ['a']}
+    Object.keys(selectedDice).forEach((key) => {
+      const value = selectedDice[key];
+      if (!valuesToKeys[value]) {
+        valuesToKeys[value] = [];
+      }
+      valuesToKeys[value].push(key);
+    });
+
+    // 4 1s or 4 5s
+    if (
+      Object.values(valuesToKeys)[0].length === 4 &&
+      (Object.keys(valuesToKeys)[0] === 1 || Object.keys(valuesToKeys)[0] === 5)
+    ) {
+      const is1s = Object.keys(valuesToKeys)[0] === 1;
+      const lastDiceId = Object.keys(selectedDice)[3];
+      const threeOfAKindDice = delete { ...selectedDice }[lastDiceId];
+      return {
+        isValidGroups: true,
+        groups: [
+          {
+            groupType: Constants.diceGroupTypes.threeOfAKind,
+            score: is1s ? 1000 : 500,
+            dice: threeOfAKindDice,
+          },
+          {
+            groupType: Constants.diceGroupTypes.oneOrFive,
+            score: is1s ? 100 : 50,
+            dice: { [lastDiceId]: is1s ? 1 : 5 },
+          },
+        ],
+      };
+    }
+
+    // 4 1s or 4 5s
+    if (
+      Object.values(valuesToKeys).some(keys => keys.length === 3) &&
+      (Object.keys(valuesToKeys)[0] === 1 || Object.keys(valuesToKeys)[0] === 5)
+    ) {
+  }
 
   // if (numberOfDice === 5) {
   //   // 3 of a kind + 1 1, 3 of a kind + 1 5, 3 of a kind + 5 5,
   // }
+
+  const sortedDiceEntries = diceEntries.sort((a, b) => a[1] - b[1]); // sorted by value
+  const valuesString = sortedDiceEntries.map(entry => entry[1]).join('');
+  const idsString = sortedDiceEntries.map(entry => entry[0]).join('');
+
+
+  // else its 3 of a kind
+  switch(valuesString) {
+    case '1155': {
+      const groups = [0,1,2,3].map(i => ({
+        groupType: Constants.diceGroupTypes.oneOrFive,
+        score: valuesString[i] == 1 ? 100 : 50,
+        dice: { [idsString[i]]: valuesString[i] },
+      }))
+      return {
+        isValidGroups: true,
+        groups,
+      }
+    }
+
+    case '1111': 
+    case '1222':
+    case '1333':
+    case '1444':
+    case '1555':
+    case '1666':
+      return {
+        isValidGroups: true,
+        groups: [
+          {
+            groupType: Constants.diceGroupTypes.oneOrFive,
+            score: 100,
+            dice: { [idsString[0]]: 1 },
+          },
+          {
+            groupType: Constants.diceGroupTypes.threeOfAKind,
+            score: Number(valuesString[1]) === 1 ? 1000 : Number(valuesString[1]) * 100,
+            dice: {
+              [idsString[1]]: Number(valuesString[1]),
+              [idsString[2]]: Number(valuesString[1]),
+              [idsString[3]]: Number(valuesString[1]),
+            },
+          },
+          
+        ]
+      };
+    case '1115':
+    case '2225':
+    case '3335':
+    case '4445':
+    case '5555':
+      return {
+        isValidGroups: true,
+        groups: [
+          {
+            groupType: Constants.diceGroupTypes.oneOrFive,
+            score: 50,
+            dice: { [idsString[3]]: 5 },
+          },
+          {
+            groupType: Constants.diceGroupTypes.threeOfAKind,
+            score: Number(valuesString[0]) === 1 ? 1000 : Number(valuesString[0]) * 100,
+            dice: {
+              [idsString[0]]: Number(valuesString[0]),
+              [idsString[1]]: Number(valuesString[0]),
+              [idsString[2]]: Number(valuesString[0]),
+            },
+          },
+          
+        ],
+      };
+    case '5666':
+      return {
+        isValidGroups: true,
+        groups: [
+          {
+            groupType: Constants.diceGroupTypes.oneOrFive,
+            score: 50,
+            dice: { [idsString[0]]: 5 },
+          },
+          {
+            groupType: Constants.diceGroupTypes.threeOfAKind,
+            score: 600,
+            dice: {
+              [idsString[1]]: 6,
+              [idsString[2]]: 6,
+              [idsString[3]]: 6,
+            },
+          },
+          
+        ],
+      };
+    default:
+      break;
+  }
+
+
 
   return {
     isValidGroups: false,
