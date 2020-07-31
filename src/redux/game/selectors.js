@@ -290,8 +290,37 @@ const selectCurrentTurn = (state) => {
   return currentTurnObj;
 };
 
+const hasRolledSixOfAKind = (currentTurnObj) => {
+  const { rolls } = currentTurnObj;
+
+  if (!rolls || !Array.isArray(rolls)) {
+    // if no rolls yet, no scoring groups, so they cant have
+    return false;
+  }
+
+  return rolls.some((rollObj) => {
+    const { scoringGroups } = rollObj;
+
+    if (!scoringGroups || Object.keys(scoringGroups).length === 0) {
+      return false;
+    }
+
+    return Object.values(scoringGroups).some(
+      (sg) => sg.groupType === Constants.diceGroupTypes.sixOfAKind,
+    );
+  });
+};
+
+const selectMyCurrentScore = (state) => {
+  const uid = selectUid(state);
+  const allPlayers = selectPlayers(state);
+
+  return allPlayers?.[uid]?.currentScore;
+};
+
 export const selectTurnScoreSoFar = (state) => {
   const currentTurnObj = selectCurrentTurn(state);
+  const currentScore = selectMyCurrentScore(state);
 
   if (!currentTurnObj) {
     return undefined;
@@ -314,57 +343,63 @@ export const selectTurnScoreSoFar = (state) => {
     return 0;
   }
 
-  const turnScore = rolls.reduce((accumulator, rollObj, rollIndex) => {
-    // each roll
-    const { scoringGroups, rollState, rollType } = rollObj;
-    const isLastRoll = rollIndex === rolls.length - 1;
+  let turnScore;
+  // exception to turn score calculation - rolling 6 of a kind - special 'insta-win' roll.
+  if (hasRolledSixOfAKind(currentTurnObj)) {
+    turnScore = 10000 - currentScore;
+  } else {
+    // calculate turn score 'properly'
+    turnScore = rolls.reduce((accumulator, rollObj, rollIndex) => {
+      // each roll
+      const { scoringGroups, rollState, rollType } = rollObj;
+      const isLastRoll = rollIndex === rolls.length - 1;
 
-    // problem - this error is thrown when there are no scoring groups in the current roll (ie every roll).
-    // Need to make sure that it doesn't expect a scoring group in the final roll, unless it's done.
+      // problem - this error is thrown when there are no scoring groups in the current roll (ie every roll).
+      // Need to make sure that it doesn't expect a scoring group in the final roll, unless it's done.
 
-    // this deals with the special case of the 1st roll of "two throws to double it" not being
-    // a 1 or 5 - it doesn't have any scoring groups but it's not blapped.
-    if (!scoringGroups || Object.keys(scoringGroups).length === 0) {
-      if (rollState === Constants.ROLL_STATES.BANKING_DICE) {
-        // turn is in progress - ok for it to have no scoring types yet, the user is making them
-        return accumulator;
-      } else if (isLastRoll) {
-        // the player may have rolled some scoring dice on the last roll, but chosen not to bank them and
-        // just sticked.
-        // TODO do we need both these top two conditions? Not sure atm.
-        return accumulator;
-      } else if (
-        rollType === Constants.ROLL_TYPES.TWO_THROWS_TO_DOUBLE_IT.FIRST
-      ) {
-        return accumulator;
-      } else {
-        // we've already dealt with the blapped case above, so this should never happen
-        // unless there's been an error
-        throw new Error(
-          "No scoring groups found for a roll that wasn't 'two throws to double it' and wasn't blapped",
-        );
+      // this deals with the special case of the 1st roll of "two throws to double it" not being
+      // a 1 or 5 - it doesn't have any scoring groups but it's not blapped.
+      if (!scoringGroups || Object.keys(scoringGroups).length === 0) {
+        if (rollState === Constants.ROLL_STATES.BANKING_DICE) {
+          // turn is in progress - ok for it to have no scoring types yet, the user is making them
+          return accumulator;
+        } else if (isLastRoll) {
+          // the player may have rolled some scoring dice on the last roll, but chosen not to bank them and
+          // just sticked.
+          // TODO do we need both these top two conditions? Not sure atm.
+          return accumulator;
+        } else if (
+          rollType === Constants.ROLL_TYPES.TWO_THROWS_TO_DOUBLE_IT.FIRST
+        ) {
+          return accumulator;
+        } else {
+          // we've already dealt with the blapped case above, so this should never happen
+          // unless there's been an error
+          throw new Error(
+            "No scoring groups found for a roll that wasn't 'two throws to double it' and wasn't blapped",
+          );
+        }
       }
-    }
 
-    const rollScore = Object.values(scoringGroups).reduce(
-      (acc, scoringGroup) => {
-        const { score } = scoringGroup;
-        return acc + score;
-      },
-      0,
-    );
+      const rollScore = Object.values(scoringGroups).reduce(
+        (acc, scoringGroup) => {
+          const { score } = scoringGroup;
+          return acc + score;
+        },
+        0,
+      );
 
-    const rollWasASuccessful2ThrowsToDoubleIt =
-      (rollType === Constants.ROLL_TYPES.TWO_THROWS_TO_DOUBLE_IT.FIRST ||
-        rollType === Constants.ROLL_TYPES.TWO_THROWS_TO_DOUBLE_IT.SECOND) &&
-      Object.keys(scoringGroups).length === 1;
+      const rollWasASuccessful2ThrowsToDoubleIt =
+        (rollType === Constants.ROLL_TYPES.TWO_THROWS_TO_DOUBLE_IT.FIRST ||
+          rollType === Constants.ROLL_TYPES.TWO_THROWS_TO_DOUBLE_IT.SECOND) &&
+        Object.keys(scoringGroups).length === 1;
 
-    if (rollWasASuccessful2ThrowsToDoubleIt) {
-      return 2 * (accumulator + rollScore);
-    }
-    return accumulator + rollScore;
-  }, 0);
-
+      if (rollWasASuccessful2ThrowsToDoubleIt) {
+        return 2 * (accumulator + rollScore);
+      }
+      return accumulator + rollScore;
+    }, 0);
+  }
   return turnScore;
 };
 

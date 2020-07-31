@@ -4,6 +4,9 @@ describe('Game Selectors', () => {
   describe('selectTurnScoreSoFar', () => {
     it('should handle two throws to double it', () => {
       const state = {
+        auth: {
+          uid: 'uid123',
+        },
         game: {
           currentRound: 0,
           currentTurn: 0,
