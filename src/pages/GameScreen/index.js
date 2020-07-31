@@ -113,6 +113,13 @@ const GameScreen = () => {
     setIsRolling(false);
   };
 
+  const selectOrUnselectDie = (diceId) => {
+    console.log(`Clicked on dice '${diceId}'`);
+    if (isMyTurn) {
+      setDiceSelectedState((x) => ({ ...x, [diceId]: !x[diceId] }));
+    }
+  };
+
   const createDiceGroup = async () => {
     setIsGrouping(true);
 
@@ -306,12 +313,7 @@ const GameScreen = () => {
               key={id}
               value={currentRoll[id]}
               selected={diceSelectedState[id]}
-              onClick={() => {
-                console.log(`Clicked on dice '${id}'`);
-                if (isMyTurn) {
-                  setDiceSelectedState((x) => ({ ...x, [id]: !x[id] }));
-                }
-              }}
+              onClick={() => selectOrUnselectDie(id)}
             />
           ))}
       </DiceContainer>
