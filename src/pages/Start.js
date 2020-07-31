@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import styled from 'styled-components';
 import 'firebase/functions';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -6,6 +7,14 @@ import * as firebase from 'firebase/app';
 import 'firebase/functions';
 
 import { loggedInAndCreatedGame } from 'redux/auth/slice';
+
+const Container = styled.div`
+  color: white;
+`;
+
+const IntroText = styled.div`
+  margin-bottom: 40px;
+`;
 
 const Start = () => {
   const history = useHistory();
@@ -61,7 +70,8 @@ const Start = () => {
   };
 
   return (
-    <>
+    <Container>
+      <IntroText>Play the classic French café table dice game.</IntroText>
       <div>
         <button
           onClick={() => createAnonymousProfileAndGame()}
@@ -72,7 +82,7 @@ const Start = () => {
       <div>
         <button onClick={() => history.push('/joinGame')}>Join game</button>
       </div>
-    </>
+    </Container>
   );
 };
 

@@ -28,7 +28,7 @@ const Container = styled.div`
   text-align: center;
   min-height: 100vh;
   padding-bottom: 20px;
-  background-color: #282c34;
+  background-color: #076324; # card table green
 `;
 
 const ContentContainer = styled.div`

@@ -5,9 +5,10 @@ import { useSelector } from 'react-redux';
 
 import { selectMyAvatarUrl } from 'redux/game/selectors';
 import { selectName } from 'redux/auth/selectors';
+import woodBackground from './woodBackground.jpg';
 
 const Container = styled.header`
-  min-height: 20vh;
+  height: 10vh;
   background-color: #565a61;
   display: flex;
   flex-direction: row;
@@ -16,11 +17,14 @@ const Container = styled.header`
   font-size: calc(10px + 2vmin);
   color: white;
   padding: 10px;
+
+  background-image: url("${woodBackground}");
+
 `;
 
 const Title = styled.div`
   font-size: 2em;
-  font-style: italic;
+  font-family: Limelight;
 `;
 
 const ProfileContainer = styled.div`
@@ -41,7 +45,7 @@ const Header = () => {
 
   return (
     <Container>
-      <Title>dix mille</Title>
+      <Title>Dix Mille</Title>
       <ProfileContainer>
         {avatarUrl && <ProfileImage src={avatarUrl} />}
 
