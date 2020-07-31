@@ -168,13 +168,20 @@ const GameScreen = () => {
     } = GameLogic.getValidScoringGroups(selectedDiceWithValues);
 
     if (isValidGroups) {
-      const updateObject = {};
-      const path = `games/${gameId}/rounds/${currentRoundId}/turns/${currentTurnId}/rolls/${currentRollNumber}/scoringGroups`;
+      const updates = {};
+      const rollPath = `games/${gameId}/rounds/${currentRoundId}/turns/${currentTurnId}/rolls/${currentRollNumber}`;
       groups.forEach((scoringGroup) => {
-        const newPushKey = firebase.database().ref(path).push().key;
-        updateObject[newPushKey] = scoringGroup;
+        const newPushKey = firebase
+          .database()
+          .ref(`${rollPath}/scoringGroups`)
+          .push().key;
+        updates[`scoringGroups/${newPushKey}`] = scoringGroup;
       });
-      await firebase.database().ref(path).update(updateObject);
+
+      // also clear selected dice, as they've all been put in a group
+      updates.selectedDice = null; // https://firebase.google.com/docs/database/web/read-and-write#delete_data
+
+      await firebase.database().ref(rollPath).update(updates);
     } else {
       alert(invalidReason);
     }
