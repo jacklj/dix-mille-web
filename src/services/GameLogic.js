@@ -91,7 +91,7 @@ const getValidScoringGroups = (selectedDice) => {
 
     return {
       isValidGroups: true,
-      group: [
+      groups: [
         {
           groupType: Constants.diceGroupTypes.run,
           score: 1500,
@@ -103,29 +103,91 @@ const getValidScoringGroups = (selectedDice) => {
 
   // all 'pure' groups done (ie the user selected exlusively a single scoring group)
 
-  // TODO deal with 'impure' groups
+  // accept 'impure' selected groups (ie 2 or more scoring groups)
+  const diceEntries = Object.entries(selectedDice); // list of [key, value] pairs (so we know which key relates to which value)
+  const sortedDiceEntries = diceEntries.sort((a, b) => a[1] - b[1]);
 
-  // error messages
-  let invalidReason;
-  if (diceValues.length === 2) {
-    if (diceValues[0] === 1 && diceValues[1] === 1) {
-      invalidReason =
-        "Two 1s is not a valid dice group - try banking each '1' individually";
-    } else if (diceValues[0] === 5 && diceValues[1] === 5) {
-      invalidReason =
-        "Two 5s is not a valid dice group - try banking each '5' individually";
-    } else if (diceValues[0] === diceValues[1]) {
-      invalidReason = 'Two of a kind is not a valid dice group.';
-    } else {
-      invalidReason = "That's not a valid set of dice";
+  if (numberOfDice === 2) {
+    const d0 = sortedDiceEntries[0];
+    const d1 = sortedDiceEntries[1];
+
+    const isTwo1s = d0[1] === 1 && d1[1] === 1;
+    const is1And5 = d0[1] === 1 && d1[1] === 5;
+    const isTwo5s = d0[1] === 5 && d1[1] === 5;
+    if (isTwo1s || is1And5 || isTwo5s) {
+      console.log(
+        `${
+          isTwo1s ? '(1,1)' : is1And5 ? '(1,5)' : '(5,5)'
+        } is not a valid dice group, 
+        but we'll bank them as 2 separate groups`,
+      );
+      return {
+        isValidGroups: true,
+        groups: [
+          {
+            groupType: Constants.diceGroupTypes.oneOrFive,
+            score: d0[1] === 1 ? 100 : 50,
+            dice: { [d0[0]]: d0[1] },
+          },
+          {
+            groupType: Constants.diceGroupTypes.oneOrFive,
+            score: d1[1] === 1 ? 100 : 50,
+            dice: { [d1[0]]: d1[1] },
+          },
+        ],
+      };
     }
-  } else {
-    invalidReason = "That's not a valid set of dice";
   }
+
+  if (numberOfDice === 3) {
+    // 1 1 5, 1 5 5
+    const d0 = sortedDiceEntries[0];
+    const d1 = sortedDiceEntries[1];
+    const d2 = sortedDiceEntries[2];
+
+    const is115 = d0[1] === 1 && d1[1] === 1 && d2[1] === 5;
+    const is155 = d0[1] === 1 && d1[1] === 5 && d2[1] === 5;
+
+    if (is115 || is155) {
+      console.log(
+        `${
+          is115 ? '1,1,5' : '1,5,5'
+        } is not a valid dice group, but we'll bank them as 3 separate groups`,
+      );
+      return {
+        isValidGroups: true,
+        groups: [
+          {
+            groupType: Constants.diceGroupTypes.oneOrFive,
+            score: d0[1] === 1 ? 100 : 50,
+            dice: { [d0[0]]: [d0[1]] },
+          },
+          {
+            groupType: Constants.diceGroupTypes.oneOrFive,
+            score: d1[1] === 1 ? 100 : 50,
+            dice: { [d1[0]]: d1[1] },
+          },
+          {
+            groupType: Constants.diceGroupTypes.oneOrFive,
+            score: d2[1] === 1 ? 100 : 50,
+            dice: { [d2[0]]: d2[1] },
+          },
+        ],
+      };
+    }
+  }
+
+  // if (numberOfDice === 4) {
+  //   // 3 of a kind + 1, 3 of a kind + 5, 1 1 5 5
+  // }
+
+  // if (numberOfDice === 5) {
+  //   // 3 of a kind + 1 1, 3 of a kind + 1 5, 3 of a kind + 5 5,
+  // }
 
   return {
     isValidGroups: false,
-    invalidReason,
+    invalidReason: "That's not a valid set of dice",
   };
 };
 
