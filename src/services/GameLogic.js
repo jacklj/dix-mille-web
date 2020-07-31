@@ -53,7 +53,7 @@ const getValidScoringGroups = (selectedDice) => {
       groups: [
         {
           groupType: Constants.diceGroupTypes.sixOfAKind,
-          score: 10000, // TODO it's actually an instant win, not just 10,000 score - sort this.
+          score: 10000, // NB special value as it's 'insta-win' (keep it a number so DB validation rules work)
           dice: { ...selectedDice },
         },
       ],
