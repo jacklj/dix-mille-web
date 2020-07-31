@@ -66,7 +66,9 @@ const getValidScoringGroups = (selectedDice) => {
     sorted[0] === sorted[1] &&
     sorted[2] === sorted[3] &&
     sorted[4] === sorted[5];
-  if (is3Pairs) {
+  // Exception to 3 pairs: [1 1 1 1 5 5] -> {1 1 1} {1} {5} {5} >  {1 1} {1 1} {5 5})
+  const isException = sorted.join('') === '111155';
+  if (is3Pairs && !isException) {
     // 3 pairs (=1000)
     console.log("That's a valid group: 3 pairs!");
 
@@ -428,6 +430,173 @@ const getValidScoringGroups = (selectedDice) => {
                 [idsString[2]]: Number(valuesString[2]),
                 [idsString[3]]: Number(valuesString[2]),
                 [idsString[4]]: Number(valuesString[2]),
+              },
+            },
+          ],
+        };
+      default:
+        break;
+    }
+  }
+
+  if (numberOfDice === 6) {
+    switch (valuesString) {
+      // 3 of a kind + 3 of a kind, minus 6 of the same and 3 pairs, as both are always higher
+      // than other possibilities (except 1 1 1 1 5 5 - {1 1 1} {1} {5} {5} >  {1 1} {1 1} {5 5})
+      case '111222':
+      case '111333':
+      case '111444':
+      case '111555':
+      case '111666':
+      case '222333':
+      case '222444':
+      case '222555':
+      case '222666':
+      case '333444':
+      case '333555':
+      case '333666':
+      case '444555':
+      case '444666':
+      case '555666':
+        return {
+          isValidGroups: true,
+          groups: [
+            {
+              groupType: Constants.diceGroupTypes.threeOfAKind,
+              score:
+                Number(valuesString[0]) === 1
+                  ? 1000
+                  : Number(valuesString[0]) * 100,
+              dice: {
+                [idsString[0]]: Number(valuesString[0]),
+                [idsString[1]]: Number(valuesString[1]),
+                [idsString[2]]: Number(valuesString[2]),
+              },
+            },
+            {
+              groupType: Constants.diceGroupTypes.threeOfAKind,
+              score:
+                Number(valuesString[3]) === 1
+                  ? 1000
+                  : Number(valuesString[3]) * 100,
+              dice: {
+                [idsString[3]]: Number(valuesString[3]),
+                [idsString[4]]: Number(valuesString[3]),
+                [idsString[5]]: Number(valuesString[3]),
+              },
+            },
+          ],
+        };
+
+      // 3 of a kind + 115 or 155
+      // first group membership shape: 1 1 3 3 3 5
+      case '111115':
+      case '112225':
+      case '113335':
+      case '114445':
+        // case '115555': 3 pairs
+        return {
+          isValidGroups: true,
+          groups: [
+            {
+              groupType: Constants.diceGroupTypes.oneOrFive,
+              score: 100,
+              dice: { [idsString[0]]: 1 },
+            },
+            {
+              groupType: Constants.diceGroupTypes.oneOrFive,
+              score: 100,
+              dice: { [idsString[1]]: 1 },
+            },
+            {
+              groupType: Constants.diceGroupTypes.oneOrFive,
+              score: 50,
+              dice: { [idsString[5]]: 5 },
+            },
+            {
+              groupType: Constants.diceGroupTypes.threeOfAKind,
+              score:
+                Number(valuesString[2]) === 1
+                  ? 1000
+                  : Number(valuesString[2]) * 100,
+              dice: {
+                [idsString[2]]: Number(valuesString[2]),
+                [idsString[3]]: Number(valuesString[2]),
+                [idsString[4]]: Number(valuesString[2]),
+              },
+            },
+          ],
+        };
+
+      // group membership shape: 1 3 3 3 5 5
+      case '111155': // 3 pairs exception - doing it as multiple groups makes a higher score
+      case '122255':
+      case '133355':
+      case '144455':
+      case '155555':
+        return {
+          isValidGroups: true,
+          groups: [
+            {
+              groupType: Constants.diceGroupTypes.oneOrFive,
+              score: 100,
+              dice: { [idsString[0]]: 1 },
+            },
+            {
+              groupType: Constants.diceGroupTypes.oneOrFive,
+              score: 50,
+              dice: { [idsString[4]]: 5 },
+            },
+            {
+              groupType: Constants.diceGroupTypes.oneOrFive,
+              score: 50,
+              dice: { [idsString[5]]: 5 },
+            },
+            {
+              groupType: Constants.diceGroupTypes.threeOfAKind,
+              score:
+                Number(valuesString[1]) === 1
+                  ? 1000
+                  : Number(valuesString[1]) * 100,
+              dice: {
+                [idsString[1]]: Number(valuesString[1]),
+                [idsString[2]]: Number(valuesString[1]),
+                [idsString[3]]: Number(valuesString[1]),
+              },
+            },
+          ],
+        };
+      // group membership shape: 1 1/5 5 3 3 3
+      case '115666':
+      case '155666':
+        return {
+          isValidGroups: true,
+          groups: [
+            {
+              groupType: Constants.diceGroupTypes.oneOrFive,
+              score: 100,
+              dice: { [idsString[0]]: 1 },
+            },
+            {
+              groupType: Constants.diceGroupTypes.oneOrFive,
+              score: Number(valuesString[1]) === 1 ? 100 : 50,
+              dice: { [idsString[1]]: valuesString[1] },
+            },
+            {
+              groupType: Constants.diceGroupTypes.oneOrFive,
+              score: 50,
+              dice: { [idsString[2]]: 5 },
+            },
+            {
+              groupType: Constants.diceGroupTypes.threeOfAKind,
+              score:
+                Number(valuesString[3]) === 1
+                  ? 1000
+                  : Number(valuesString[3]) * 100,
+              dice: {
+                [idsString[3]]: Number(valuesString[3]),
+                [idsString[4]]: Number(valuesString[3]),
+                [idsString[5]]: Number(valuesString[3]),
               },
             },
           ],

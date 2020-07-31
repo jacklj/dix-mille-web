@@ -41,5 +41,31 @@ describe('Game Logic', () => {
         { dice: { a: 5, d: 5, e: 5 }, groupType: 'threeOfAKind', score: 500 },
       ]);
     });
+
+    it('should return the correct scoring groups for 6 dice', () => {
+      const selectedDice = { a: 3, b: 1, c: 3, d: 5, e: 3, f: 1 };
+
+      const res = GameLogic.getValidScoringGroups(selectedDice);
+      expect(res.isValidGroups).toEqual(true);
+      expect(res.groups).toEqual([
+        { dice: { b: 1 }, groupType: 'oneOrFive', score: 100 },
+        { dice: { f: 1 }, groupType: 'oneOrFive', score: 100 },
+        { dice: { d: 5 }, groupType: 'oneOrFive', score: 50 },
+        { dice: { a: 3, c: 3, e: 3 }, groupType: 'threeOfAKind', score: 300 },
+      ]);
+    });
+
+    it('should always return the highest scoring combination of groups (even with 3 pairs possibility)', () => {
+      const selectedDice = { a: 5, b: 1, c: 1, d: 5, e: 1, f: 1 };
+
+      const res = GameLogic.getValidScoringGroups(selectedDice);
+      expect(res.isValidGroups).toEqual(true);
+      expect(res.groups).toEqual([
+        { dice: { b: 1 }, groupType: 'oneOrFive', score: 100 },
+        { dice: { a: 5 }, groupType: 'oneOrFive', score: 50 },
+        { dice: { d: 5 }, groupType: 'oneOrFive', score: 50 },
+        { dice: { c: 1, e: 1, f: 1 }, groupType: 'threeOfAKind', score: 1000 },
+      ]);
+    });
   });
 });

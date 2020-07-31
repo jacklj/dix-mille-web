@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import * as firebase from 'firebase/app';
 import 'firebase/functions';
@@ -52,15 +52,6 @@ const ButtonsContainer = styled.div`
 
 const ScoringGroupsContainer = styled.div``;
 
-const diceSelectedInitialState = {
-  a: false,
-  b: false,
-  c: false,
-  d: false,
-  e: false,
-  f: false,
-};
-
 const GameScreen = () => {
   const isMyTurn = useSelector(isItMyTurn);
   const gameId = useSelector(selectGameId);
@@ -87,14 +78,6 @@ const GameScreen = () => {
   const [isBlappingAndFinishingTurn, setIsBlappingAndFinishingTurn] = useState(
     false,
   );
-  // const [diceSelectedState, setDiceSelectedState] = useState(
-  //   diceSelectedInitialState,
-  // );
-
-  // TODO do this in roll() cf
-  // useEffect(() => {
-  //   setDiceSelectedState(diceSelectedInitialState);
-  // }, [currentRoll]);
 
   const rollDie = async (event) => {
     event.preventDefault();
