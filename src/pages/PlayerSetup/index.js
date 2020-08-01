@@ -15,6 +15,11 @@ import {
 import { selectUid } from 'redux/auth/selectors';
 import Button from 'components/ArtDecoButton';
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 const Label = styled.label`
   color: white;
   margin-right: 6px;
@@ -93,7 +98,7 @@ const PlayerSetup = () => {
   };
 
   return (
-    <>
+    <Container>
       <GameCode />
 
       <form onSubmit={(event) => writePlayerProfileAndGoToWaitingRoom(event)}>
@@ -119,7 +124,7 @@ const PlayerSetup = () => {
           {isSavingPlayerDetails ? 'Loading...' : 'Next'}
         </Button>
       </form>
-    </>
+    </Container>
   );
 };
 

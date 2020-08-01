@@ -20,7 +20,7 @@ const Container = styled.div`
   // background-blend-mode: multiply;). This is removed when you start the proper 
   // game, so the table surface is fully unveiled.
 
-  background-color: rgba(0,0,0,.5); // Tint color
+  background-color: rgba(0,0,0,.6); // Tint color
   background-blend-mode: ${(props) =>
     props.route === '/gameScreen' ? 'normal' : 'multiply'};
 `;

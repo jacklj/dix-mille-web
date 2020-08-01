@@ -7,8 +7,14 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import { selectGameCode } from 'redux/game/selectors';
 
+const Container = styled.div`
+  display: flex;
+  align-self: center;
+`;
+
 const Text = styled.div`
   color: white;
+  margin-right: 5px;
 `;
 
 const GameCode = () => {
@@ -16,12 +22,12 @@ const GameCode = () => {
   const [isCopied, setIsCopied] = useState(false);
 
   return (
-    <div>
+    <Container>
       <Text>{`Game code: ${gameCode}`}</Text>
       <CopyToClipboard text={gameCode} onCopy={() => setIsCopied(true)}>
         <button>{isCopied ? '✅ Copied. ' : 'Copy to clipboard'}</button>
       </CopyToClipboard>
-    </div>
+    </Container>
   );
 };
 
