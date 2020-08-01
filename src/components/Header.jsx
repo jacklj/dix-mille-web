@@ -5,11 +5,11 @@ import { useSelector } from 'react-redux';
 
 import { selectMyAvatarUrl } from 'redux/game/selectors';
 import { selectName } from 'redux/auth/selectors';
-import woodBackground from './woodBackground.jpg';
+import diceIcon from './diceIcon.png';
 
 const Container = styled.header`
   height: 10vh;
-  background-color: #565a61;
+  background-color: rgba(10, 10, 10, 0.5);
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -17,14 +17,23 @@ const Container = styled.header`
   font-size: calc(10px + 2vmin);
   color: white;
   padding: 10px;
-
-  background-image: url("${woodBackground}");
-
 `;
 
 const Title = styled.div`
+  display: flex;
+  margin-left: 10px;
+`;
+
+const TitleText = styled.div`
   font-size: 2em;
   font-family: Limelight;
+  text-shadow: 2px 4px 4px #000000;
+`;
+
+const DiceIcon = styled.img`
+  height: 2em;
+  width: auto;
+  margin-right: 6px;
 `;
 
 const ProfileContainer = styled.div`
@@ -45,7 +54,10 @@ const Header = () => {
 
   return (
     <Container>
-      <Title>Dix Mille</Title>
+      <Title>
+        <DiceIcon src={diceIcon} />
+        <TitleText>Dix Mille</TitleText>
+      </Title>
       <ProfileContainer>
         {avatarUrl && <ProfileImage src={avatarUrl} />}
 

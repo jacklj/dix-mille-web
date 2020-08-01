@@ -23,12 +23,21 @@ import { selectUid } from 'redux/auth/selectors';
 import { userUpdated } from 'redux/auth/slice';
 import { gameUpdated } from 'redux/game/slice';
 import { avatarsUpdated } from 'redux/avatars/slice';
+import cardTableSurface from './card-table-surface-1.jpeg';
 
+console.log(cardTableSurface);
 const Container = styled.div`
   text-align: center;
   min-height: 100vh;
-  padding-bottom: 20px;
-  background-color: #076324; # card table green
+  // padding-bottom: 20px;
+
+  // background-color: #076324; // card table green
+
+  background-image: url("${cardTableSurface}");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+
 `;
 
 const ContentContainer = styled.div`
