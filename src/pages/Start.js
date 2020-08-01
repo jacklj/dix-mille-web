@@ -9,16 +9,14 @@ import 'firebase/functions';
 import { loggedInAndCreatedGame } from 'redux/auth/slice';
 import Button from 'components/ArtDecoButton';
 
-const Container = styled.div`
-  color: white;
-  font-size: 1.5em;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-`;
+const Container = styled.div``;
 
 const IntroText = styled.div`
   margin-top: 40px;
   margin-bottom: 80px;
+
+  color: #ffdc73;
+  font-size: 1.5em;
 `;
 
 const Start = () => {
