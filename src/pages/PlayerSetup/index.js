@@ -13,14 +13,11 @@ import {
   selectAllUsedNames,
 } from 'redux/game/selectors';
 import { selectUid } from 'redux/auth/selectors';
+import Button from 'components/ArtDecoButton';
 
 const Label = styled.label`
   color: white;
   margin-right: 6px;
-`;
-
-const Button = styled.button`
-  margin: 20px;
 `;
 
 const PlayerSetup = () => {

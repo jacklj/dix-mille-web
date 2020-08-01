@@ -5,13 +5,18 @@ import { CarouselProvider, Slider, Slide } from 'pure-react-carousel';
 import 'pure-react-carousel/dist/react-carousel.es.css';
 
 import AvatarSlide from './AvatarSlide';
-
-const Button = styled.button`
-  margin: 20px;
-`;
+import ArtDecoButton from 'components/ArtDecoButton';
 
 const CarouselContainer = styled.div`
   margin: 20px;
+`;
+
+const Button = styled(ArtDecoButton)`
+  margin: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 0;
+  padding-bottom: 0;
 `;
 
 const AvatarCarousel = ({

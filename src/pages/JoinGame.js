@@ -6,14 +6,11 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { loggedInAndJoinedGame } from 'redux/auth/slice';
+import Button from 'components/ArtDecoButton';
 
 const Label = styled.label`
   color: white;
   margin-right: 6px;
-`;
-
-const Button = styled.button`
-  margin: 20px;
 `;
 
 const JoinGame = () => {
