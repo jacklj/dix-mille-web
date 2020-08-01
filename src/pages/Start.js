@@ -10,10 +10,33 @@ import { loggedInAndCreatedGame } from 'redux/auth/slice';
 
 const Container = styled.div`
   color: white;
+  font-size: 1.5em;
+  font-weight: 600;
+  letter-spacing: 0.5px;
 `;
 
 const IntroText = styled.div`
+  margin-top: 40px;
+  margin-bottom: 80px;
+`;
+
+const Button = styled.button`
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: red;
+  border: 2px dashed white;
+  border-radius: 50px;
   margin-bottom: 40px;
+
+  color: white;
+  font-family: 'Poiret One', 'Helvetica Neue', sans-serif;
+  font-weight: 600;
+  font-size: 1.3em;
+
+  &:active {
+    background-color: rgb(200, 50, 50);
+  }
 `;
 
 const Start = () => {
@@ -73,14 +96,14 @@ const Start = () => {
     <Container>
       <IntroText>Play the classic French café table dice game.</IntroText>
       <div>
-        <button
+        <Button
           onClick={() => createAnonymousProfileAndGame()}
           disabled={isStartingGame}>
           {isStartingGame ? 'Starting...' : 'Start a new game'}
-        </button>
+        </Button>
       </div>
       <div>
-        <button onClick={() => history.push('/joinGame')}>Join game</button>
+        <Button onClick={() => history.push('/joinGame')}>Join game</Button>
       </div>
     </Container>
   );
