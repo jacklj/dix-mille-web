@@ -5,6 +5,7 @@
 body {
   margin: 0;
   font-family: 'Playfair Display', serif;
+  color: rgb(180, 176, 85);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

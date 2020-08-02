@@ -21,8 +21,23 @@ const Container = styled.div`
 `;
 
 const Label = styled.label`
-  color: white;
-  margin-right: 6px;
+  margin-right: 8px;
+  font-size: 1.2em;
+`;
+
+const Input = styled.input`
+  border: 0;
+  outline: 0;
+  background: transparent;
+  border-bottom: 2px solid rgb(180, 176, 85);
+  color: #ffbf00;
+  font-size: 1.1em;
+  font-family: 'Playfair Display', serif;
+
+  &::placeholder {
+    font-size: 1.1em;
+    color: rgba(180, 176, 85, 0.5);
+  }
 `;
 
 const PlayerSetup = () => {
@@ -103,8 +118,8 @@ const PlayerSetup = () => {
 
       <form onSubmit={(event) => writePlayerProfileAndGoToWaitingRoom(event)}>
         <div>
-          <Label htmlFor="name">Name</Label>
-          <input
+          <Label htmlFor="name">Name:</Label>
+          <Input
             id="name"
             type="text"
             placeholder="Your name"

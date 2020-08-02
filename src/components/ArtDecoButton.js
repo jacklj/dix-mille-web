@@ -4,14 +4,14 @@ const ArtDecoButton = styled.button`
   padding: 10px;
   padding-left: 20px;
   padding-right: 20px;
-  background-color: rgba(48, 25, 53, 0);
+  background-color: transparent;
   border: 6px double rgb(180, 176, 85);
   border-radius: 50px;
   margin-bottom: 40px;
 
   color: rgb(180, 176, 85);
   font-family: 'Playfair Display', serif;
-  font-size: 1.9em;
+  font-size: 1.7em;
   letter-spacing: 0.5px;
   font-weight: 700;
   text-transform: uppercase;

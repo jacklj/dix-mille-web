@@ -28,6 +28,11 @@ const TitleText = styled.div`
   font-size: 2em;
   font-family: Limelight;
   text-shadow: 2px 4px 4px #000000;
+  color: white;
+`;
+
+const Yellow = styled.span`
+  color: #ffbf00;
 `;
 
 const DiceIcon = styled.img`
@@ -56,7 +61,9 @@ const Header = () => {
     <Container>
       <Title>
         <DiceIcon src={diceIcon} />
-        <TitleText>Dix Mille</TitleText>
+        <TitleText>
+          <Yellow>D</Yellow>ix <Yellow>M</Yellow>ille
+        </TitleText>
       </Title>
       <ProfileContainer>
         {avatarUrl && <ProfileImage src={avatarUrl} />}
