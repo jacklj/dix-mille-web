@@ -11,8 +11,12 @@ import ArtDecoButton from 'components/ArtDecoButton';
 const Container = styled.div`
   align-self: center; // just this component is "align-items centered" within the parent
   display: flex;
-  align-items: center;
+  align-items: baseline;
   margin-bottom: 40px;
+`;
+
+const Yellow = styled.span`
+  color: #ffcf40;
 `;
 
 const Button = styled(ArtDecoButton)`
@@ -44,7 +48,9 @@ const GameCode = () => {
 
   return (
     <Container>
-      <Text>{`Game code: ${gameCode}`}</Text>
+      <Text>
+        Game code: <Yellow>{gameCode}</Yellow>
+      </Text>
       <CopyToClipboard text={gameCode} onCopy={() => setIsCopied(true)}>
         <Button>{isCopied ? '✅ Copied.' : 'Copy'}</Button>
       </CopyToClipboard>

@@ -7,10 +7,19 @@ import { useDispatch } from 'react-redux';
 
 import { loggedInAndJoinedGame } from 'redux/auth/slice';
 import Button from 'components/ArtDecoButton';
+import Input from 'components/Input';
+import Label from 'components/Label';
+import FieldContainer from 'components/FieldContainer';
 
-const Label = styled.label`
-  color: white;
-  margin-right: 6px;
+const Form = styled.form`
+  margin-top: 50px;
+`;
+
+const CustomFieldContainer = styled(FieldContainer)`
+  margin-bottom: 60px;
+`;
+const CodeInput = styled(Input)`
+  max-width: 120px;
 `;
 
 const JoinGame = () => {
@@ -75,20 +84,20 @@ const JoinGame = () => {
   };
 
   return (
-    <form onSubmit={(event) => createAnonymousProfileAndJoinGame(event)}>
-      <div>
-        <Label htmlFor="gameCode">Game code</Label>
-        <input
+    <Form onSubmit={(event) => createAnonymousProfileAndJoinGame(event)}>
+      <CustomFieldContainer>
+        <Label htmlFor="gameCode">Game code:</Label>
+        <CodeInput
           id="gameCode"
           type="text"
           value={gameCode}
           placeholder="Game code"
           onChange={(event) => setGameCode(event.target.value)}
         />
-      </div>
+      </CustomFieldContainer>
 
       <Button disabled={isJoining}>{isJoining ? 'Loading...' : 'Next'}</Button>
-    </form>
+    </Form>
   );
 };
 

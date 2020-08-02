@@ -29,6 +29,10 @@ const TitleText = styled.div`
   font-family: Limelight;
   text-shadow: 2px 4px 4px #000000;
   color: white;
+  text-align: left;
+
+  // so it looks good when "Dix Mille" title text goes onto two lines
+  line-height: 1em;
 `;
 
 const Yellow = styled.span`
@@ -39,6 +43,9 @@ const DiceIcon = styled.img`
   height: 2em;
   width: auto;
   margin-right: 6px;
+
+  // so it looks good when "Dix Mille" title text goes onto two lines
+  margin-top: -4px;
 `;
 
 const ProfileContainer = styled.div`
@@ -51,6 +58,7 @@ const ProfileImage = styled.img`
   height: 50px;
   width: auto;
   margin: 7px;
+  margin-left: 3px; // for small phones, give as much room as possible for the "Dix Mille" title text
 `;
 
 const Header = () => {

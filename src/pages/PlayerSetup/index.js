@@ -14,30 +14,13 @@ import {
 } from 'redux/game/selectors';
 import { selectUid } from 'redux/auth/selectors';
 import Button from 'components/ArtDecoButton';
+import Input from 'components/Input';
+import Label from 'components/Label';
+import FieldContainer from 'components/FieldContainer';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-const Label = styled.label`
-  margin-right: 8px;
-  font-size: 1.2em;
-`;
-
-const Input = styled.input`
-  border: 0;
-  outline: 0;
-  background: transparent;
-  border-bottom: 2px solid rgb(180, 176, 85);
-  color: #ffbf00;
-  font-size: 1.1em;
-  font-family: 'Playfair Display', serif;
-
-  &::placeholder {
-    font-size: 1.1em;
-    color: rgba(180, 176, 85, 0.5);
-  }
 `;
 
 const PlayerSetup = () => {
@@ -117,7 +100,7 @@ const PlayerSetup = () => {
       <GameCode />
 
       <form onSubmit={(event) => writePlayerProfileAndGoToWaitingRoom(event)}>
-        <div>
+        <FieldContainer>
           <Label htmlFor="name">Name:</Label>
           <Input
             id="name"
@@ -126,7 +109,7 @@ const PlayerSetup = () => {
             value={name}
             onChange={(event) => setName(event.target.value)}
           />
-        </div>
+        </FieldContainer>
 
         <AvatarCarousel
           avatars={avatars}

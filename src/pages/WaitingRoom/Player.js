@@ -20,7 +20,7 @@ const ProfileImage = styled.img`
 `;
 
 const Name = styled.div`
-  color: white;
+  color: #ffcf40;
   font-size: 1em;
 `;
 

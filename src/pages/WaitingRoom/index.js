@@ -12,6 +12,7 @@ import {
 import { selectLoggedInUsersDetails } from 'redux/auth/selectors';
 import GameCode from 'components/GameCode';
 import Player from './Player';
+import Button from 'components/ArtDecoButton';
 
 const Container = styled.div`
   display: flex;
@@ -19,8 +20,13 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const Text = styled.div`
+const Title = styled.h2`
+  font-family: Limelight;
   color: white;
+  font-size: 2.2em;
+  font-weight: normal;
+  margin: 0;
+  margin-bottom: 20px;
 `;
 
 const PlayersContainer = styled.div`
@@ -31,7 +37,6 @@ const PlayersContainer = styled.div`
 `;
 
 const ErrorMessage = styled.div`
-  color: white;
   margin: 5px;
 `;
 
@@ -61,7 +66,7 @@ const WaitingRoom = () => {
 
   return (
     <Container>
-      <Text>Waiting room</Text>
+      <Title>Waiting Room</Title>
       <GameCode />
 
       <PlayersContainer>
@@ -73,11 +78,11 @@ const WaitingRoom = () => {
       </PlayersContainer>
       {type === 'gameCreator' && (
         <>
-          <button
+          <Button
             onClick={() => startGame()}
             disabled={!canStartGame || isStartingGame}>
             {isStartingGame ? 'Starting...' : 'Start game'}
-          </button>
+          </Button>
           {!canStartGame && minimumNumberOfPlayers && (
             <ErrorMessage>{`Need at least ${minimumNumberOfPlayers} players to play the game`}</ErrorMessage>
           )}
