@@ -5,13 +5,13 @@ import { CarouselProvider, Slider, Slide } from 'pure-react-carousel';
 import 'pure-react-carousel/dist/react-carousel.es.css';
 
 import AvatarSlide from './AvatarSlide';
-import { ArtDecoButton } from 'components/forms';
+import { Button } from 'components/forms';
 
 const CarouselContainer = styled.div`
   margin: 20px;
 `;
 
-const Button = styled(ArtDecoButton)`
+const CustomButton = styled(Button)`
   margin: 20px;
   padding-left: 10px;
   padding-right: 10px;
@@ -44,8 +44,8 @@ const AvatarCarousel = ({
               </Slide>
             ))}
           </Slider>
-          <Button onClick={(e) => previousAvatar(e)}>{'<'}</Button>
-          <Button onClick={(e) => nextAvatar(e)}>{'>'}</Button>
+          <CustomButton onClick={(e) => previousAvatar(e)}>{'<'}</CustomButton>
+          <CustomButton onClick={(e) => nextAvatar(e)}>{'>'}</CustomButton>
         </CarouselProvider>
       )}
     </CarouselContainer>

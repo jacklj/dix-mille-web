@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import { selectGameCode } from 'redux/game/selectors';
-import { ArtDecoButton } from 'components/forms';
+import { Button } from 'components/forms';
 
 const Container = styled.div`
   align-self: center; // just this component is "align-items centered" within the parent
@@ -19,7 +19,7 @@ const Yellow = styled.span`
   color: #ffcf40;
 `;
 
-const Button = styled(ArtDecoButton)`
+const CustomButton = styled(Button)`
   font-size: 0.8em;
   margin-bottom: 0;
 
@@ -52,7 +52,7 @@ const GameCode = () => {
         Game code: <Yellow>{gameCode}</Yellow>
       </Text>
       <CopyToClipboard text={gameCode} onCopy={() => setIsCopied(true)}>
-        <Button>{isCopied ? '✅ Copied.' : 'Copy'}</Button>
+        <CustomButton>{isCopied ? '✅ Copied.' : 'Copy'}</CustomButton>
       </CopyToClipboard>
     </Container>
   );

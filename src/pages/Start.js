@@ -7,7 +7,7 @@ import * as firebase from 'firebase/app';
 import 'firebase/functions';
 
 import { loggedInAndCreatedGame } from 'redux/auth/slice';
-import { ArtDecoButton as Button } from 'components/forms';
+import { Button } from 'components/forms';
 
 const Container = styled.div``;
 

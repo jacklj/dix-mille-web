@@ -12,7 +12,7 @@ import {
 import { selectLoggedInUsersDetails } from 'redux/auth/selectors';
 import GameCode from 'components/GameCode';
 import Player from './Player';
-import { ArtDecoButton as Button } from 'components/forms';
+import { Button } from 'components/forms';
 
 const Container = styled.div`
   display: flex;

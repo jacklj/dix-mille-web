@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const ArtDecoButton = styled.button`
+const Button = styled.button`
   padding: 10px;
   padding-left: 20px;
   padding-right: 20px;
@@ -26,4 +26,4 @@ const ArtDecoButton = styled.button`
   }
 `;
 
-export default ArtDecoButton;
+export default Button;
