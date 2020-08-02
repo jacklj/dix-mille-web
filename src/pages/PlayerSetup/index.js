@@ -13,10 +13,12 @@ import {
   selectAllUsedNames,
 } from 'redux/game/selectors';
 import { selectUid } from 'redux/auth/selectors';
-import Button from 'components/ArtDecoButton';
-import Input from 'components/Input';
-import Label from 'components/Label';
-import FieldContainer from 'components/FieldContainer';
+import {
+  ArtDecoButton as Button,
+  Input,
+  Label,
+  FieldContainer,
+} from 'components/forms';
 
 const Container = styled.div`
   display: flex;

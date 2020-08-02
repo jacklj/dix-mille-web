@@ -6,10 +6,12 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { loggedInAndJoinedGame } from 'redux/auth/slice';
-import Button from 'components/ArtDecoButton';
-import Input from 'components/Input';
-import Label from 'components/Label';
-import FieldContainer from 'components/FieldContainer';
+import {
+  ArtDecoButton as Button,
+  Input,
+  Label,
+  FieldContainer,
+} from 'components/forms';
 
 const Form = styled.form`
   margin-top: 50px;

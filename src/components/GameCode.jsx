@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import { selectGameCode } from 'redux/game/selectors';
-import ArtDecoButton from 'components/ArtDecoButton';
+import { ArtDecoButton } from 'components/forms';
 
 const Container = styled.div`
   align-self: center; // just this component is "align-items centered" within the parent
