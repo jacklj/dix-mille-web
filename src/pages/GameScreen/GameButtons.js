@@ -20,13 +20,38 @@ import {
 import GameLogic from 'services/GameLogic';
 import { Button } from 'components/forms';
 
-const CustomButton = styled(Button)`
-  margin: 20px;
-`;
+const padding = 3;
 
-const ButtonsContainer = styled.div`
+const Container = styled.div`
+  flex: 0;
+  align-self: stretch;
+
   display: flex;
   justify-content: center;
+
+  border: 3px solid rgb(180, 176, 85);
+  padding: ${padding}px;
+`;
+
+const CustomButton = styled(Button)`
+  margin: 0;
+  padding: 0;
+  flex: 1;
+  border-radius: 3px;
+  border: 3px solid rgb(180, 176, 85);
+
+  &:hover {
+    border: 3px solid #ffcf40;
+  }
+  &:active {
+    border: 3px solid #ffbf00;
+  }
+
+  // middle button margin
+  &:nth-child(1) {
+    margin-left: ${padding}px;
+    margin-right: ${padding}px;
+  }
 `;
 
 const GameButtons = () => {
@@ -189,9 +214,9 @@ const GameButtons = () => {
   }
 
   return (
-    <ButtonsContainer>
+    <Container>
       <CustomButton onClick={() => createDiceGroup()} disabled={!canGroup}>
-        {isGrouping ? 'Banking...' : 'Bank dice'}
+        {isGrouping ? 'Banking...' : 'Bank'}
       </CustomButton>
       <form onSubmit={(event) => rollDie(event)}>
         <CustomButton disabled={!canRoll}>
@@ -201,7 +226,7 @@ const GameButtons = () => {
       <CustomButton onClick={() => stick()} disabled={!canStick}>
         {isSticking ? 'Sticking...' : 'Stick'}
       </CustomButton>
-    </ButtonsContainer>
+    </Container>
   );
 };
 

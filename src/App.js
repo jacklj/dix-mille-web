@@ -26,7 +26,11 @@ import { avatarsUpdated } from 'redux/avatars/slice';
 import TopLevelContainer from 'components/TopLevelContainer';
 
 const ContentContainer = styled.div`
-  margin-top: 50px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
+  // margin-top: 50px;
 `;
 
 function App() {

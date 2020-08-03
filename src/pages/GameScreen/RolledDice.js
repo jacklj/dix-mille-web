@@ -16,15 +16,13 @@ import {
 } from 'redux/game/selectors';
 import Die from './Die';
 
-const DiceContainer = styled.div`
+const Container = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin: 20px;
+  margin: 10px;
   max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
 `;
 
 const RolledDice = () => {
@@ -57,7 +55,7 @@ const RolledDice = () => {
   };
 
   return (
-    <DiceContainer>
+    <Container>
       {currentDiceRollMinusScoringGroups &&
         Object.keys(currentDiceRollMinusScoringGroups).map((id) => (
           <Die
@@ -68,7 +66,7 @@ const RolledDice = () => {
             onClick={() => selectOrUnselectDie(id)}
           />
         ))}
-    </DiceContainer>
+    </Container>
   );
 };
 

@@ -8,7 +8,7 @@ const SelectionAura = styled.div`
 
   padding: ${(props) => (props.isInGroup ? '0' : '15px')};
 
-  margin: 5px;
+  margin: 0px;
   margin-bottom: ${(props) => (props.isInGroup ? '5px' : '30px')};
 
   &:nth-child(even) {
