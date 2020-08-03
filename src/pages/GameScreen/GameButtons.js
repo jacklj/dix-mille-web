@@ -17,15 +17,10 @@ import {
   selectTwoThrowsToDoubleIt,
 } from 'redux/game/selectors';
 
-import PreviousTurnOutcome from './PreviousTurnOutcome';
-
 import GameLogic from 'services/GameLogic';
+import { Button } from 'components/forms';
 
-const Text = styled.div`
-  color: white;
-`;
-
-const Button = styled.button`
+const CustomButton = styled(Button)`
   margin: 20px;
 `;
 
@@ -51,9 +46,6 @@ const GameButtons = () => {
   const [isRolling, setIsRolling] = useState(false);
   const [isGrouping, setIsGrouping] = useState(false);
   const [isSticking, setIsSticking] = useState(false);
-  const [isBlappingAndFinishingTurn, setIsBlappingAndFinishingTurn] = useState(
-    false,
-  );
 
   const rollDie = async (event) => {
     event.preventDefault();
@@ -166,95 +158,51 @@ const GameButtons = () => {
     setIsSticking(false);
   };
 
-  const endTurnAfterBlap = async (event) => {
-    event.preventDefault();
-    setIsBlappingAndFinishingTurn(true);
-
-    if (!isMyTurn) {
-      alert("You can't end the turn - it's not your turn!");
-      setIsBlappingAndFinishingTurn(false);
-      return;
-    }
-
-    try {
-      const res = await firebase.functions().httpsCallable('endTurnAfterBlap')({
-        gameId,
-      });
-      console.log(res);
-    } catch (error) {
-      alert(error.message);
-    }
-
-    setIsBlappingAndFinishingTurn(false);
-  };
-
-  let gameUiJsx;
   const hasRolled = !!currentRoll;
 
-  if (isMyTurn) {
-    if (!hasRolled) {
-      gameUiJsx = (
-        <>
-          <PreviousTurnOutcome />
-          <form onSubmit={(event) => rollDie(event)}>
-            <Button disabled={isRolling}>
-              {isRolling ? 'Rolling...' : 'Roll'}
-            </Button>
-          </form>
-        </>
-      );
-    } else if (!isBlapped) {
-      const noScoringGroups =
-        !currentScoringGroups || Object.keys(currentScoringGroups).length === 0;
-      const noDiceSelected =
-        !selectedDice ||
-        Object.values(selectedDice).filter((x) => x).length === 0;
+  let canGroup, canRoll, canStick;
 
-      const cantGroup = isGrouping || noDiceSelected;
-      const cantRoll =
-        isRolling || (hasRolled && noScoringGroups && !twoThrowsToDoubleIt);
-      const cantStick = isSticking || !hasRolled; // can stick when no scoring groups
-
-      gameUiJsx = (
-        <ButtonsContainer>
-          <Button onClick={() => createDiceGroup()} disabled={cantGroup}>
-            {isGrouping ? 'Banking...' : 'Bank dice'}
-          </Button>
-          <form onSubmit={(event) => rollDie(event)}>
-            <Button disabled={cantRoll}>
-              {isRolling ? 'Rolling...' : 'Roll'}
-            </Button>
-          </form>
-          <Button onClick={() => stick()} disabled={cantStick}>
-            {isSticking ? 'Sticking...' : 'Stick'}
-          </Button>
-        </ButtonsContainer>
-      );
-    } else {
-      gameUiJsx = (
-        <>
-          <form onSubmit={(event) => endTurnAfterBlap(event)}>
-            <Button disabled={isBlappingAndFinishingTurn}>
-              {isBlappingAndFinishingTurn
-                ? 'Ending turn...'
-                : 'Blapped - end turn'}
-            </Button>
-          </form>
-          <Text>BLAP!</Text>
-        </>
-      );
-    }
+  if (!isMyTurn) {
+    canGroup = false;
+    canRoll = false;
+    canStick = false;
+  } else if (isBlapped) {
+    canGroup = false;
+    canRoll = false;
+    canStick = false;
+  } else if (!hasRolled) {
+    canGroup = false;
+    canStick = false;
+    canRoll = !isRolling;
   } else {
-    gameUiJsx = (
-      <>
-        {!hasRolled && <PreviousTurnOutcome />}
-        {isBlapped ? <Text>BLAP!</Text> : null}
-        <Text>It's not your turn...</Text>
-      </>
-    );
+    const noScoringGroups =
+      !currentScoringGroups || Object.keys(currentScoringGroups).length === 0;
+
+    const noDiceSelected =
+      !selectedDice ||
+      Object.values(selectedDice).filter((x) => x).length === 0;
+
+    canGroup = !isGrouping && !noDiceSelected;
+    canRoll =
+      !isRolling && !(hasRolled && noScoringGroups && !twoThrowsToDoubleIt);
+    canStick = !isSticking && hasRolled; // N.B. can stick when no scoring groups
   }
 
-  return gameUiJsx;
+  return (
+    <ButtonsContainer>
+      <CustomButton onClick={() => createDiceGroup()} disabled={!canGroup}>
+        {isGrouping ? 'Banking...' : 'Bank dice'}
+      </CustomButton>
+      <form onSubmit={(event) => rollDie(event)}>
+        <CustomButton disabled={!canRoll}>
+          {isRolling ? 'Rolling...' : 'Roll'}
+        </CustomButton>
+      </form>
+      <CustomButton onClick={() => stick()} disabled={!canStick}>
+        {isSticking ? 'Sticking...' : 'Stick'}
+      </CustomButton>
+    </ButtonsContainer>
+  );
 };
 
 export default GameButtons;

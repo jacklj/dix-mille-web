@@ -4,14 +4,16 @@ import ScoresTable from './ScoresTable';
 import WinnerOverlay from './WinnerOverlay';
 import RolledDice from './RolledDice';
 import ScoringGroups from './ScoringGroups';
+import GameEvents from './GameEvents';
 import GameButtons from './GameButtons';
 
 const GameScreen = () => {
   return (
     <>
       <RolledDice />
-      <GameButtons />
       <ScoringGroups />
+      <GameEvents />
+      <GameButtons />
       <ScoresTable />
       <WinnerOverlay />
     </>
