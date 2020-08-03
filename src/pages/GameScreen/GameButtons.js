@@ -14,7 +14,7 @@ import {
   selectCurrentRoundId,
   selectCurrentRollNumber,
   selectCurrentScoringGroups,
-  selectTwoThrowsToDoubleIt,
+  selectIsFirstOfTwoThrowsToDoubleIt,
 } from 'redux/game/selectors';
 
 import GameLogic from 'services/GameLogic';
@@ -107,7 +107,9 @@ const GameButtons = () => {
 
   const currentRollNumber = useSelector(selectCurrentRollNumber);
   const isBlapped = useSelector(selectIsBlapped);
-  const twoThrowsToDoubleIt = useSelector(selectTwoThrowsToDoubleIt);
+  const isFirstOfTwoThrowsToDoubleIt = useSelector(
+    selectIsFirstOfTwoThrowsToDoubleIt,
+  );
 
   const [isRolling, setIsRolling] = useState(false);
   const [isGrouping, setIsGrouping] = useState(false);
@@ -250,7 +252,8 @@ const GameButtons = () => {
 
     canGroup = !isGrouping && !noDiceSelected;
     canRoll =
-      !isRolling && !(hasRolled && noScoringGroups && !twoThrowsToDoubleIt);
+      !isRolling &&
+      !(hasRolled && noScoringGroups && !isFirstOfTwoThrowsToDoubleIt);
     canStick = !isSticking && hasRolled; // N.B. can stick when no scoring groups
   }
 

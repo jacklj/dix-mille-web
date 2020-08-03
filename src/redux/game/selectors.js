@@ -183,14 +183,11 @@ export const selectCurrentRollNumber = (state) => {
   return rolls.length - 1;
 };
 
-export const selectTwoThrowsToDoubleIt = (state) => {
+export const selectIsFirstOfTwoThrowsToDoubleIt = (state) => {
   const currentRoll = selectCurrentRollObj(state);
 
   return (
-    currentRoll?.rollType ===
-      Constants.ROLL_TYPES.TWO_THROWS_TO_DOUBLE_IT.FIRST ||
-    currentRoll?.rollType ===
-      Constants.ROLL_TYPES.TWO_THROWS_TO_DOUBLE_IT.SECOND
+    currentRoll?.rollType === Constants.ROLL_TYPES.TWO_THROWS_TO_DOUBLE_IT.FIRST
   );
 };
 
