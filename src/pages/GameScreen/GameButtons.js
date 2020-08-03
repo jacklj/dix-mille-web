@@ -22,6 +22,13 @@ import { Button } from 'components/forms';
 
 const padding = 3;
 
+const Colours = {
+  disabled: 'rgb(180, 176, 85)',
+  normal: '#ffcf40',
+  hover: '#ffbf00',
+  active: '#ffbf00',
+};
+
 const Container = styled.div`
   flex: 0;
   align-self: stretch;
@@ -29,26 +36,60 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
 
-  border: 3px solid rgb(180, 176, 85);
+  border: none;
+  border-top: 6px solid ${Colours.normal};
+
+  border-radius: 6px;
   padding: ${padding}px;
 `;
 
 const CustomButton = styled(Button)`
-  margin: 0;
-  padding: 0;
   flex: 1;
-  border-radius: 3px;
-  border: 3px solid rgb(180, 176, 85);
+
+  height: 2.5em;
+
+  // override any margin or padding
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+
+  border-radius: 6px;
+  border: 4px solid ${Colours.disabled};
+
+  text-shadow: ${(props) => (props.disabled ? 'none' : '2px 2px 8px #000000')};
+
+  text-decoration: ${(props) => (props.disabled ? 'line-through' : 'none')};
+
+  color: ${(props) => (props.disabled ? Colours.disabled : Colours.normal)};
+  border-color: ${(props) =>
+    props.disabled ? Colours.disabled : Colours.normal};
 
   &:hover {
-    border: 3px solid #ffcf40;
-  }
-  &:active {
-    border: 3px solid #ffbf00;
+    border-width: 4px;
+    border-style: solid;
+    border-color: ${(props) =>
+      props.disabled ? Colours.disabled : Colours.hover};
+    color: ${(props) => (props.disabled ? Colours.disabled : Colours.hover)};
   }
 
-  // middle button margin
-  &:nth-child(1) {
+  &:active {
+    border-width: 4px;
+    border-style: solid;
+    border-color: ${(props) =>
+      props.disabled ? Colours.disabled : Colours.active};
+    color: ${(props) => (props.disabled ? Colours.disabled : Colours.active)};
+
+    text-shadow: ${(props) =>
+      props.disabled ? 'none' : '2px 2px 20px #000000'};
+  }
+
+  // middle button margin (N.B. nth-child is 1-indexed)
+  &:nth-child(2) {
     margin-left: ${padding}px;
     margin-right: ${padding}px;
   }
@@ -218,11 +259,9 @@ const GameButtons = () => {
       <CustomButton onClick={() => createDiceGroup()} disabled={!canGroup}>
         {isGrouping ? 'Banking...' : 'Bank'}
       </CustomButton>
-      <form onSubmit={(event) => rollDie(event)}>
-        <CustomButton disabled={!canRoll}>
-          {isRolling ? 'Rolling...' : 'Roll'}
-        </CustomButton>
-      </form>
+      <CustomButton onClick={(event) => rollDie(event)} disabled={!canRoll}>
+        {isRolling ? 'Rolling...' : 'Roll'}
+      </CustomButton>
       <CustomButton onClick={() => stick()} disabled={!canStick}>
         {isSticking ? 'Sticking...' : 'Stick'}
       </CustomButton>
