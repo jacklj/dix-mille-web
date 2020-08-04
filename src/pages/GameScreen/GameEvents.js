@@ -12,7 +12,6 @@ import {
 } from 'redux/game/selectors';
 
 import PreviousTurnOutcome from './PreviousTurnOutcome';
-
 import { Button } from 'components/forms';
 
 const Text = styled.div`

@@ -14,7 +14,7 @@ import {
   selectCurrentRollNumber,
   selectCurrentRollMinusScoringGroups,
 } from 'redux/game/selectors';
-import Die from './Die';
+import Die from 'components/Die';
 
 const Container = styled.div`
   display: flex;

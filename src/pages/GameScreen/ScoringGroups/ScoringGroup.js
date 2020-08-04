@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Die from './Die';
+import Die from 'components/Die';
 
 const Container = styled.div`
   display: flex;
