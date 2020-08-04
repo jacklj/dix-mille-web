@@ -32,8 +32,8 @@ const Face = styled.div`
   margin: ${(props) => (props.isInGroup ? '5px' : '16px')};
   padding: 10px;
 
-  width: ${(props) => (props.isInGroup ? '60px' : '90px')};
-  height: ${(props) => (props.isInGroup ? '60px' : '90px')};
+  width: ${(props) => (props.isInGroup ? '60px' : '80px')};
+  height: ${(props) => (props.isInGroup ? '60px' : '80px')};
 
   @media (max-width: 768px) {
     width: ${(props) => (props.isInGroup ? '35px' : '50px')};
@@ -59,8 +59,8 @@ const Pip = styled.span`
   align-self: center;
   justify-self: center;
 
-  width: ${(props) => (props.isInGroup ? '18px' : '22px')};
-  height: ${(props) => (props.isInGroup ? '18px' : '22px')};
+  width: ${(props) => (props.isInGroup ? '16px' : '18px')};
+  height: ${(props) => (props.isInGroup ? '16px' : '18px')};
 
   @media (max-width: 768px) {
     width: ${(props) => (props.isInGroup ? '8px' : '12px')};
