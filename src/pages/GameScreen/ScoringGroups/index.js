@@ -32,8 +32,15 @@ const Hr = styled.hr`
   border-radius: 5px;
 `;
 
-const Text = styled.div`
+const TurnScoreText = styled.div`
   color: white;
+  margin-bottom: 10px;
+`;
+
+const ScoringGroupsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const ScoringGroups = () => {
@@ -65,9 +72,8 @@ const ScoringGroups = () => {
   };
 
   if (
-    (!currentScoringGroups && !previousScoringGroups) ||
-    (Object.keys(currentScoringGroups).length === 0 &&
-      Object.keys(previousScoringGroups).length === 0)
+    (!currentScoringGroups || Object.keys(currentScoringGroups).length === 0) &&
+    (!previousScoringGroups || Object.keys(previousScoringGroups).length === 0)
   ) {
     return null;
   }
@@ -76,9 +82,9 @@ const ScoringGroups = () => {
     <Container>
       <Hr />
       {typeof turnScoreSoFar === 'number' ? (
-        <Text>Turn score: {turnScoreSoFar}</Text>
+        <TurnScoreText>Turn score: {turnScoreSoFar}</TurnScoreText>
       ) : null}
-      <div>
+      <ScoringGroupsContainer>
         {currentScoringGroups &&
           Object.keys(currentScoringGroups).map((groupId) => {
             const groupObj = currentScoringGroups[groupId];
@@ -107,7 +113,7 @@ const ScoringGroups = () => {
               />
             );
           })}
-      </div>
+      </ScoringGroupsContainer>
     </Container>
   );
 };

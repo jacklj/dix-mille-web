@@ -1,19 +1,27 @@
 import React from 'react';
 import styled from 'styled-components';
+
 import Die from 'components/Die';
+import PutBackButton from './PutBackButton';
 
 const Container = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  margin-bottom: 20px;
   align-items: center;
+
+  margin-bottom: 10px;
 `;
 
 const DiceContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
+  flex-wrap: wrap;
+
+  @media (max-width: 520px) {
+    max-width: 190px;
+  }
 `;
 
 const sortDiceByValue = (diceMap) => {
@@ -49,8 +57,9 @@ const ScoringGroup = ({ groupId, dice, ungroupGroup, isMyTurn, isCurrent }) => {
             <Die id={id} key={id} value={value} isInGroup />
           ))}
       </DiceContainer>
+
       {isMyTurn && isCurrent && (
-        <button onClick={() => ungroupGroup(groupId)}>ⓧ Put back</button>
+        <PutBackButton onClick={() => ungroupGroup(groupId)} />
       )}
     </Container>
   );
