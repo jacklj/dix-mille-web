@@ -36,8 +36,8 @@ const Face = styled.div`
   height: ${(props) => (props.isInGroup ? '60px' : '80px')};
 
   @media (max-width: 768px) {
-    width: ${(props) => (props.isInGroup ? '35px' : '50px')};
-    height: ${(props) => (props.isInGroup ? '35px' : '50px')};
+    width: ${(props) => (props.isInGroup ? '35px' : '45px')};
+    height: ${(props) => (props.isInGroup ? '35px' : '45px')};
 
     margin: ${(props) => (props.isInGroup ? '3px' : '8px')};
   }

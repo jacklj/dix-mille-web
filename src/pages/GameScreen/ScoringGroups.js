@@ -16,11 +16,25 @@ import {
 } from 'redux/game/selectors';
 import ScoringGroup from './ScoringGroup';
 
+const Container = styled.div`
+  flex: 1;
+  align-self: stretch;
+`;
+
+const Hr = styled.hr`
+  height: 5px;
+  width: 80%;
+
+  margin-bottom: 3px;
+
+  background-color: rgb(180, 176, 85);
+  border: 0;
+  border-radius: 5px;
+`;
+
 const Text = styled.div`
   color: white;
 `;
-
-const ScoringGroupsContainer = styled.div``;
 
 const ScoringGroups = () => {
   const isMyTurn = useSelector(isItMyTurn);
@@ -50,9 +64,17 @@ const ScoringGroups = () => {
       .remove();
   };
 
+  if (
+    (!currentScoringGroups && !previousScoringGroups) ||
+    (Object.keys(currentScoringGroups).length === 0 &&
+      Object.keys(previousScoringGroups).length === 0)
+  ) {
+    return null;
+  }
+
   return (
-    <ScoringGroupsContainer>
-      <Text>Scoring Groups</Text>
+    <Container>
+      <Hr />
       {typeof turnScoreSoFar === 'number' ? (
         <Text>Turn score: {turnScoreSoFar}</Text>
       ) : null}
@@ -86,7 +108,7 @@ const ScoringGroups = () => {
             );
           })}
       </div>
-    </ScoringGroupsContainer>
+    </Container>
   );
 };
 
