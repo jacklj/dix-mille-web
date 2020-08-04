@@ -14,6 +14,11 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+
+  @media (min-width: 900px) {
+    width: 850px;
+    align-self: center;
+  }
 `;
 
 const GameScreen = () => {

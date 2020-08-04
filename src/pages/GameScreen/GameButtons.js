@@ -37,10 +37,15 @@ const Container = styled.div`
   justify-content: center;
 
   border: none;
-  border-top: 6px solid ${Colours.normal};
+  border-top: 5px solid ${Colours.disabled};
 
   border-radius: 6px;
   padding: ${padding}px;
+
+  @media (min-width: 900px) {
+    border: 6px solid ${Colours.disabled};
+    margin-bottom: 10px;
+  }
 `;
 
 const CustomButton = styled(Button)`
@@ -59,7 +64,7 @@ const CustomButton = styled(Button)`
   padding-bottom: 0;
 
   border-radius: 6px;
-  border: 4px solid ${Colours.disabled};
+  border: 5px solid ${Colours.disabled};
 
   text-shadow: ${(props) => (props.disabled ? 'none' : '2px 2px 8px #000000')};
 
@@ -70,7 +75,7 @@ const CustomButton = styled(Button)`
     props.disabled ? Colours.disabled : Colours.normal};
 
   &:hover {
-    border-width: 4px;
+    border-width: 5px;
     border-style: solid;
     border-color: ${(props) =>
       props.disabled ? Colours.disabled : Colours.hover};
@@ -78,7 +83,7 @@ const CustomButton = styled(Button)`
   }
 
   &:active {
-    border-width: 4px;
+    border-width: 5px;
     border-style: solid;
     border-color: ${(props) =>
       props.disabled ? Colours.disabled : Colours.active};
