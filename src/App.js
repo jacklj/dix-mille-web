@@ -29,8 +29,6 @@ const ContentContainer = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-
-  // margin-top: 50px;
 `;
 
 function App() {
