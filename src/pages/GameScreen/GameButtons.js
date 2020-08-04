@@ -39,11 +39,11 @@ const Container = styled.div`
   border: none;
   border-top: 5px solid ${Colours.disabled};
 
-  border-radius: 6px;
+  border-radius: 50px;
   padding: ${padding}px;
 
   @media (min-width: 900px) {
-    border: 6px solid ${Colours.disabled};
+    border: 5px solid ${Colours.disabled};
     margin-bottom: 10px;
   }
 `;
@@ -63,7 +63,7 @@ const CustomButton = styled(Button)`
   padding-top: 0;
   padding-bottom: 0;
 
-  border-radius: 6px;
+  border-radius: 0;
   border: 5px solid ${Colours.disabled};
 
   text-shadow: ${(props) => (props.disabled ? 'none' : '2px 2px 8px #000000')};
@@ -97,6 +97,17 @@ const CustomButton = styled(Button)`
   &:nth-child(2) {
     margin-left: ${padding}px;
     margin-right: ${padding}px;
+  }
+
+  // edges of buttons component are rounded
+  &:first-child {
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+  }
+
+  &:last-child {
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
   }
 `;
 
