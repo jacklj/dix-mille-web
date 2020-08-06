@@ -18,23 +18,11 @@ import ScoringGroup from './ScoringGroup';
 
 const Container = styled.div`
   flex: 1;
-  // overflow-y: scroll;
   flex-shrink: 0;
 
   align-self: stretch;
 
   padding-left: 32px; // so dice dont scroll into button border radius curve and look weird
-
-  // margin-right: 5px; // so scrollbar has a bit of right padding
-
-  // &::-webkit-scrollbar {
-  //   width: 6px;
-  // }
-
-  // &::-webkit-scrollbar-thumb {
-  //   background-color: rgba(180, 176, 85, 0.8);
-  //   border-radius: 6px;
-  // }
 `;
 
 const TurnScoreText = styled.div`
