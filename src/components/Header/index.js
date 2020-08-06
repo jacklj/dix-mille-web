@@ -15,25 +15,23 @@ const Container = styled.header`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  font-size: calc(10px + 2vmin);
+  font-size: 1.7em;
   color: white;
   padding: 10px;
 `;
 
 const Title = styled.div`
+  flex-shrink: 0; // ensures the title text is always on one line
+
   display: flex;
   margin-left: 10px;
 `;
 
 const TitleText = styled.div`
-  font-size: 2em;
   font-family: Limelight;
   text-shadow: 2px 4px 4px #000000;
   color: white;
   text-align: left;
-
-  // so it looks good when "Dix Mille" title text goes onto two lines
-  line-height: 1em;
 `;
 
 const Yellow = styled.span`
@@ -41,25 +39,32 @@ const Yellow = styled.span`
 `;
 
 const DiceIcon = styled.img`
-  height: 2em;
+  height: 1em;
   width: auto;
   margin-right: 6px;
-
-  // so it looks good when "Dix Mille" title text goes onto two lines
-  margin-top: -4px;
 `;
 
 const ProfileContainer = styled.div`
+  margin-left: 10px;
   display: flex;
   flex-direction: row;
   align-items: center;
+
+  overflow: hidden;
 `;
 
 const ProfileImage = styled.img`
-  height: 50px;
+  height: 1.5em;
   width: auto;
-  margin: 7px;
-  margin-left: 3px; // for small phones, give as much room as possible for the "Dix Mille" title text
+  margin-right: 7px;
+`;
+
+const UserName = styled.div`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  font-size: 0.7em;
 `;
 
 const Header = () => {
@@ -77,7 +82,7 @@ const Header = () => {
       <ProfileContainer>
         {avatarUrl && <ProfileImage src={avatarUrl} />}
 
-        {name && <div>{name}</div>}
+        {name && <UserName>{name}</UserName>}
       </ProfileContainer>
     </Container>
   );
