@@ -6,7 +6,7 @@ import cardTableSurface from './card-table-surface-1.jpeg';
 
 const Container = styled.div`
   text-align: center;
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
 
@@ -30,7 +30,6 @@ const Container = styled.div`
 const TopLevelContainer = ({ children }) => {
   const location = useLocation();
   const { pathname } = location;
-  console.log(location);
 
   return <Container route={pathname}>{children}</Container>;
 };

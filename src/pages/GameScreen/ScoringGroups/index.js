@@ -18,6 +18,7 @@ import ScoringGroup from './ScoringGroup';
 
 const Container = styled.div`
   flex: 1;
+  overflow: scroll;
   align-self: stretch;
 `;
 

@@ -8,8 +8,8 @@ import { selectName } from 'redux/auth/selectors';
 import diceIcon from './diceIcon.png';
 
 const Container = styled.header`
-  flex: 0;
-  height: 10vh;
+  flex: 1;
+
   background-color: rgba(10, 10, 10, 0.5);
   display: flex;
   flex-direction: row;

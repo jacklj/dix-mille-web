@@ -10,6 +10,8 @@ import GameButtons from './GameButtons';
 
 const Container = styled.div`
   flex: 1;
+  overflow: hidden;
+
   display: flex;
   flex-direction: column;
   justify-content: space-between;

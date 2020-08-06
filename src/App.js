@@ -26,7 +26,9 @@ import { avatarsUpdated } from 'redux/avatars/slice';
 import TopLevelContainer from 'components/TopLevelContainer';
 
 const ContentContainer = styled.div`
-  flex: 1;
+  flex: 19;
+  overflow: hidden;
+
   display: flex;
   flex-direction: column;
 `;
