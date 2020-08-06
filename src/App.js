@@ -96,27 +96,34 @@ function App() {
       {startedAt && <Redirect to="/gameScreen" />}
       <TopLevelContainer>
         <Header />
-        <ContentContainer>
-          {/* A <Switch> looks through its children <Route>s and
+
+        {/* A <Switch> looks through its children <Route>s and
           renders the first one that matches the current URL. */}
-          <Switch>
-            <Route path="/" exact>
+        <Switch>
+          <Route path="/" exact>
+            <ContentContainer>
               <Start />
-            </Route>
-            <Route path="/joinGame">
+            </ContentContainer>
+          </Route>
+          <Route path="/joinGame">
+            <ContentContainer>
               <JoinGame />
-            </Route>
-            <Route path="/playerSetup">
+            </ContentContainer>
+          </Route>
+          <Route path="/playerSetup">
+            <ContentContainer>
               <PlayerSetup />
-            </Route>
-            <Route path="/waitingRoom">
+            </ContentContainer>
+          </Route>
+          <Route path="/waitingRoom">
+            <ContentContainer>
               <WaitingRoom />
-            </Route>
-            <Route path="/gameScreen">
-              <GameScreen />
-            </Route>
-          </Switch>
-        </ContentContainer>
+            </ContentContainer>
+          </Route>
+          <Route path="/gameScreen">
+            <GameScreen />
+          </Route>
+        </Switch>
       </TopLevelContainer>
     </Router>
   );

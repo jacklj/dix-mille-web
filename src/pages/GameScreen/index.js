@@ -8,9 +8,9 @@ import ScoringGroups from './ScoringGroups';
 import GameEvents from './GameEvents';
 import GameButtons from './GameButtons';
 
-const Container = styled.div`
+const DiceZone = styled.div`
   flex: 1;
-  overflow: hidden;
+  overflow: scroll;
 
   display: flex;
   flex-direction: column;
@@ -25,14 +25,16 @@ const Container = styled.div`
 
 const GameScreen = () => {
   return (
-    <Container>
-      <RolledDice />
-      <ScoringGroups />
+    <>
+      <DiceZone>
+        <RolledDice />
+        <ScoringGroups />
+      </DiceZone>
       {/* <GameEvents /> */}
-      <GameButtons />
       {/* <ScoresTable /> */}
+      <GameButtons />
       <WinnerOverlay />
-    </Container>
+    </>
   );
 };
 

@@ -30,7 +30,7 @@ const Colours = {
 };
 
 const Container = styled.div`
-  flex: 0;
+  flex: 0 1 auto;
   align-self: stretch;
 
   display: flex;

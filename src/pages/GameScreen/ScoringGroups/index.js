@@ -18,7 +18,7 @@ import ScoringGroup from './ScoringGroup';
 
 const Container = styled.div`
   flex: 1;
-  overflow-y: scroll;
+  // overflow-y: scroll;
 
   scrollbar-color: dark;
 
