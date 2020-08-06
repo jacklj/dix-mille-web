@@ -13,6 +13,8 @@ const Container = styled.div`
   display: flex;
   align-items: baseline;
   margin-bottom: 20px;
+
+  flex-shrink: 0; // required to prevent Safari freaking out
 `;
 
 const Yellow = styled.span`

@@ -32,6 +32,8 @@ const Title = styled.h2`
   font-weight: normal;
   margin: 0;
   margin-bottom: 20px;
+
+  flex-shrink: 0; // required to prevent Safari freaking out
 `;
 
 const PlayersContainer = styled.div`
@@ -39,10 +41,14 @@ const PlayersContainer = styled.div`
   justify-content: center;
   flex-wrap: wrap;
   align-self: stretch;
+
+  flex-shrink: 0; // required to prevent Safari freaking out
 `;
 
 const CustomButton = styled(Button)`
   margin-bottom: 0;
+
+  flex-shrink: 0; // required to prevent Safari freaking out
 `;
 
 const ErrorMessage = styled.div`

@@ -8,7 +8,8 @@ import { selectName } from 'redux/auth/selectors';
 import diceIcon from './diceIcon.png';
 
 const Container = styled.header`
-  flex: 1;
+  // flex: 1;
+  flex: 0 1 auto; // so it doesn't look too bad on safari
 
   background-color: rgba(10, 10, 10, 0.5);
   display: flex;
