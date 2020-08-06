@@ -12,7 +12,7 @@ const Container = styled.div`
   align-self: center; // just this component is "align-items centered" within the parent
   display: flex;
   align-items: baseline;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 `;
 
 const Yellow = styled.span`

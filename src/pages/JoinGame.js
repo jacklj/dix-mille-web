@@ -10,7 +10,9 @@ import { Button, Input, Label, FieldContainer } from 'components/forms';
 
 const Form = styled.form`
   overflow: scroll;
-  margin-top: 50px;
+
+  padding-top: 30px;
+  padding-bottom: 20px;
 `;
 
 const CustomFieldContainer = styled(FieldContainer)`

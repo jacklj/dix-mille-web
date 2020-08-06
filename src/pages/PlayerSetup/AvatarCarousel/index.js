@@ -7,9 +7,7 @@ import 'pure-react-carousel/dist/react-carousel.es.css';
 import AvatarSlide from './AvatarSlide';
 import { Button } from 'components/forms';
 
-const CarouselContainer = styled.div`
-  margin: 20px;
-`;
+const CarouselContainer = styled.div``;
 
 const CustomButton = styled(Button)`
   margin: 20px;

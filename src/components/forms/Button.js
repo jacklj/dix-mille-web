@@ -2,12 +2,11 @@ import styled from 'styled-components';
 
 const Button = styled.button`
   padding: 10px;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: 15px;
+  padding-right: 15px;
   background-color: transparent;
   border: 6px double rgb(180, 176, 85);
   border-radius: 50px;
-  margin-bottom: 40px;
 
   color: rgb(180, 176, 85);
   font-family: 'Playfair Display', serif;

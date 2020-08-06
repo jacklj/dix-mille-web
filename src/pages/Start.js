@@ -21,6 +21,10 @@ const IntroText = styled.div`
   font-size: 1.5em;
 `;
 
+const CustomButton = styled(Button)`
+  margin-bottom: 40px;
+`;
+
 const Start = () => {
   const history = useHistory();
   const dispatch = useDispatch();
@@ -78,14 +82,16 @@ const Start = () => {
     <Container>
       <IntroText>Play the classic French café table dice game.</IntroText>
       <div>
-        <Button
+        <CustomButton
           onClick={() => createAnonymousProfileAndGame()}
           disabled={isStartingGame}>
           {isStartingGame ? 'Starting...' : 'Start a new game'}
-        </Button>
+        </CustomButton>
       </div>
       <div>
-        <Button onClick={() => history.push('/joinGame')}>Join game</Button>
+        <CustomButton onClick={() => history.push('/joinGame')}>
+          Join game
+        </CustomButton>
       </div>
     </Container>
   );

@@ -20,6 +20,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  padding-top: 20px;
+  padding-bottom: 20px;
 `;
 
 const Title = styled.h2`
@@ -38,8 +41,12 @@ const PlayersContainer = styled.div`
   align-self: stretch;
 `;
 
+const CustomButton = styled(Button)`
+  margin-bottom: 0;
+`;
+
 const ErrorMessage = styled.div`
-  margin: 5px;
+  margin-top: 10px;
 `;
 
 const WaitingRoom = () => {
@@ -68,8 +75,8 @@ const WaitingRoom = () => {
 
   return (
     <Container>
-      <Title>Waiting Room</Title>
       <GameCode />
+      <Title>Waiting Room</Title>
 
       <PlayersContainer>
         {playerUids &&
@@ -80,11 +87,11 @@ const WaitingRoom = () => {
       </PlayersContainer>
       {type === 'gameCreator' && (
         <>
-          <Button
+          <CustomButton
             onClick={() => startGame()}
             disabled={!canStartGame || isStartingGame}>
             {isStartingGame ? 'Starting...' : 'Start game'}
-          </Button>
+          </CustomButton>
           {!canStartGame && minimumNumberOfPlayers && (
             <ErrorMessage>{`Need at least ${minimumNumberOfPlayers} players to play the game`}</ErrorMessage>
           )}

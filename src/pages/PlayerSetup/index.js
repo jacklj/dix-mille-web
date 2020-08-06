@@ -20,6 +20,9 @@ const Container = styled.div`
 
   display: flex;
   flex-direction: column;
+
+  padding-top: 20px;
+  padding-bottom: 20px;
 `;
 
 const PlayerSetup = () => {
