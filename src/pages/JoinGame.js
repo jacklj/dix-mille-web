@@ -9,6 +9,7 @@ import { loggedInAndJoinedGame } from 'redux/auth/slice';
 import { Button, Input, Label, FieldContainer } from 'components/forms';
 
 const Form = styled.form`
+  overflow: scroll;
   margin-top: 50px;
 `;
 

@@ -9,7 +9,9 @@ import 'firebase/functions';
 import { loggedInAndCreatedGame } from 'redux/auth/slice';
 import { Button } from 'components/forms';
 
-const Container = styled.div``;
+const Container = styled.div`
+  overflow: scroll;
+`;
 
 const IntroText = styled.div`
   margin-top: 40px;

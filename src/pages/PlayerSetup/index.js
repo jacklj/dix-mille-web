@@ -16,6 +16,8 @@ import { selectUid } from 'redux/auth/selectors';
 import { Button, Input, Label, FieldContainer } from 'components/forms';
 
 const Container = styled.div`
+  overflow: scroll;
+
   display: flex;
   flex-direction: column;
 `;

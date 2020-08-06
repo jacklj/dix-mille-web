@@ -15,6 +15,8 @@ import Player from './Player';
 import { Button } from 'components/forms';
 
 const Container = styled.div`
+  overflow: scroll;
+
   display: flex;
   flex-direction: column;
   align-items: center;
