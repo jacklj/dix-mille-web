@@ -24,11 +24,15 @@ const Container = styled.header`
 const Title = styled.div`
   flex-shrink: 0; // ensures the title text is always on one line
 
+  flex-grow: 1; // prevents 'dix mille' text always going onto 2 lines in Safari
+
   display: flex;
   margin-left: 10px;
 `;
 
 const TitleText = styled.div`
+  flex-shrink: 0; // prevents 'dix mille' text always going onto 2 lines in Safari
+
   font-family: Limelight;
   text-shadow: 2px 4px 4px #000000;
   color: white;
