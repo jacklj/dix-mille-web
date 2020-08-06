@@ -43,6 +43,9 @@ const Container = styled.div`
   padding: ${padding}px;
 
   @media (min-width: 900px) {
+    width: 850px;
+    align-self: center;
+
     border: 5px solid ${Colours.disabled};
     margin-bottom: 10px;
   }

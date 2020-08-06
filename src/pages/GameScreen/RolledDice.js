@@ -17,6 +17,9 @@ import {
 import Die from 'components/Die';
 
 const Container = styled.div`
+  flex-shrink: 0;
+  min-height: 50px;
+
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;

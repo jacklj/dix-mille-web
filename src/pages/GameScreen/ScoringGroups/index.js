@@ -19,30 +19,26 @@ import ScoringGroup from './ScoringGroup';
 const Container = styled.div`
   flex: 1;
   // overflow-y: scroll;
-
-  scrollbar-color: dark;
+  flex-shrink: 0;
 
   align-self: stretch;
 
-  padding-left: 32px;
+  padding-left: 32px; // so dice dont scroll into button border radius curve and look weird
 
-  margin-right: 5px; // so scrollbar has a bit of right padding
+  // margin-right: 5px; // so scrollbar has a bit of right padding
 
-  display: flex;
-  flex-direction: column-reverse;
+  // &::-webkit-scrollbar {
+  //   width: 6px;
+  // }
 
-  &::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: rgba(180, 176, 85, 0.8);
-    border-radius: 6px;
-  }
+  // &::-webkit-scrollbar-thumb {
+  //   background-color: rgba(180, 176, 85, 0.8);
+  //   border-radius: 6px;
+  // }
 `;
 
 const TurnScoreText = styled.div`
-  order: 1;
+  flex-shrink: 0;
   text-align: left;
 
   color: white;
@@ -50,6 +46,7 @@ const TurnScoreText = styled.div`
 `;
 
 const ScoringGroupsContainer = styled.div`
+  flex-shrink: 0;
   display: flex;
   flex-direction: column-reverse;
 `;
