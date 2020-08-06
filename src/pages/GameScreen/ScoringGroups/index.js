@@ -18,30 +18,40 @@ import ScoringGroup from './ScoringGroup';
 
 const Container = styled.div`
   flex: 1;
-  overflow: scroll;
+  overflow-y: scroll;
+
+  scrollbar-color: dark;
+
   align-self: stretch;
-`;
 
-const Hr = styled.hr`
-  height: 5px;
-  width: 80%;
+  padding-left: 32px;
 
-  margin-bottom: 3px;
+  margin-right: 5px; // so scrollbar has a bit of right padding
 
-  background-color: rgb(180, 176, 85);
-  border: 0;
-  border-radius: 5px;
+  display: flex;
+  flex-direction: column-reverse;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(180, 176, 85, 0.8);
+    border-radius: 6px;
+  }
 `;
 
 const TurnScoreText = styled.div`
+  order: 1;
+  text-align: left;
+
   color: white;
   margin-bottom: 10px;
 `;
 
 const ScoringGroupsContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: column-reverse;
 `;
 
 const ScoringGroups = () => {
@@ -81,7 +91,6 @@ const ScoringGroups = () => {
 
   return (
     <Container>
-      <Hr />
       {typeof turnScoreSoFar === 'number' ? (
         <TurnScoreText>Turn score: {turnScoreSoFar}</TurnScoreText>
       ) : null}
