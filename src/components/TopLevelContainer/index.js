@@ -7,7 +7,7 @@ import cardTableSurface from './card-table-surface-1.jpeg';
 const Container = styled.div`
   text-align: center;
   height: 100vh;
-  // overflow: hidden;
+  overflow: hidden;
 
   display: flex;
   flex-direction: column;
