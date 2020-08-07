@@ -22,16 +22,16 @@ const Container = styled.header`
 `;
 
 const Title = styled.div`
-  flex-shrink: 0; // ensures the title text is always on one line
-
-  flex-grow: 1; // prevents 'dix mille' text always going onto 2 lines in Safari
+  flex-basis: auto; // base value is size of content
+  flex-shrink: 0; // dont shrink
+  flex-grow: 0; // don't grow
 
   display: flex;
   margin-left: 10px;
 `;
 
 const TitleText = styled.div`
-  flex-shrink: 0; // prevents 'dix mille' text always going onto 2 lines in Safari
+  flex-shrink: 0;
 
   font-family: Limelight;
   text-shadow: 2px 4px 4px #000000;
@@ -50,12 +50,18 @@ const DiceIcon = styled.img`
 `;
 
 const ProfileContainer = styled.div`
-  margin-left: 10px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex-grow: 1; // grow to take up available space
+  flex-shrink: 1; // shrink if narrow viewport
+  flex-basis: auto;
 
   overflow: hidden;
+
+  margin-left: 10px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
 `;
 
 const ProfileImage = styled.img`
