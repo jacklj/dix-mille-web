@@ -8,30 +8,35 @@ import { selectName } from 'redux/auth/selectors';
 import diceIcon from './diceIcon.png';
 
 const Container = styled.header`
-  // flex: 1;
   flex: 0 1 auto; // so it doesn't look too bad on safari
 
-  background-color: rgba(10, 10, 10, 0.5);
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-start;
+
+  background-color: rgba(10, 10, 10, 0.5);
   align-items: center;
   font-size: 1.7em;
   color: white;
   padding: 10px;
 `;
 
-const Title = styled.div`
-  flex-basis: auto; // base value is size of content
-  flex-shrink: 0; // dont shrink
-  flex-grow: 0; // don't grow
+const DiceIcon = styled.img`
+  flex-shrink: 0;
+  flex-grow: 0;
+  flex-basis: auto;
 
-  display: flex;
-  margin-left: 10px;
+  height: 1em;
+  width: auto;
+  margin-right: 6px;
 `;
 
 const TitleText = styled.div`
   flex-shrink: 0;
+  flex-grow: 0;
+  flex-basis: auto;
+
+  margin-right: auto; // flex alg pushes following items to the right
 
   font-family: Limelight;
   text-shadow: 2px 4px 4px #000000;
@@ -43,34 +48,26 @@ const Yellow = styled.span`
   color: #ffbf00;
 `;
 
-const DiceIcon = styled.img`
-  height: 1em;
-  width: auto;
-  margin-right: 6px;
-`;
-
-const ProfileContainer = styled.div`
-  flex-grow: 1; // grow to take up available space
-  flex-shrink: 1; // shrink if narrow viewport
+const ProfileImage = styled.img`
+  flex-shrink: 0;
+  flex-grow: 0;
   flex-basis: auto;
 
-  overflow: hidden;
-
-  margin-left: 10px;
-
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
-`;
-
-const ProfileImage = styled.img`
   height: 1.5em;
   width: auto;
-  margin-right: 7px;
+
+  margin-left: 10px; // minimum gap between image and "Dix Mille" title text, on narrow viewports.
 `;
 
 const UserName = styled.div`
+  flex-grow: 0;
+  flex-basis: auto;
+  flex-shrink: 1;
+
+  margin-left: 7px; // put left padding on UserName, rather than right padding on ProfileImage, in case
+  // ProfileImage isn't rendered for some reason - then there will still be a margin between UserName
+  // and the "Dix Mille" title text
+
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -84,17 +81,14 @@ const Header = () => {
 
   return (
     <Container>
-      <Title>
-        <DiceIcon src={diceIcon} />
-        <TitleText>
-          <Yellow>D</Yellow>ix <Yellow>M</Yellow>ille
-        </TitleText>
-      </Title>
-      <ProfileContainer>
-        {avatarUrl && <ProfileImage src={avatarUrl} />}
+      <DiceIcon src={diceIcon} />
+      <TitleText>
+        <Yellow>D</Yellow>ix <Yellow>M</Yellow>ille
+      </TitleText>
 
-        {name && <UserName>{name}</UserName>}
-      </ProfileContainer>
+      {avatarUrl && <ProfileImage src={avatarUrl} />}
+
+      {name && <UserName>{name}</UserName>}
     </Container>
   );
 };
