@@ -556,9 +556,9 @@ export const selectPreviousTurnOutcome = (state) => {
   if (turnState === Constants.TURN_STATES.STICKED) {
     outcome = `${playerName} scored ${turnScore} points.`;
   } else if (turnState === Constants.TURN_STATES.BLAPPED) {
-    outcome = `${playerName} BLAPPED!`;
+    outcome = `${playerName} BLAPPED.`;
   } else if (turnState === Constants.TURN_STATES.STICKED_AND_OVERSHOT) {
-    outcome = `${playerName}'s score exceeded 10,000 - BLAP!!!`;
+    outcome = `${playerName}'s score exceeded 10,000 - BLAP.`;
   } else {
     outcome = undefined;
   }
