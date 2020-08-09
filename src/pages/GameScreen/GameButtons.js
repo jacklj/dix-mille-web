@@ -271,20 +271,23 @@ const GameButtons = () => {
 
   const hasRolled = !!currentRoll;
 
-  let canGroup, canRoll, canStick;
+  let canGroup, canRoll, canStick, canEndTurnAfterBlap;
 
   if (!isMyTurn) {
     canGroup = false;
     canRoll = false;
     canStick = false;
+    canEndTurnAfterBlap = false;
   } else if (isBlapped) {
     canGroup = false;
     canRoll = false;
     canStick = false;
+    canEndTurnAfterBlap = !isFinishingTurnAfterBlapping;
   } else if (!hasRolled) {
     canGroup = false;
     canStick = false;
     canRoll = !isRolling;
+    canEndTurnAfterBlap = false;
   } else {
     const noScoringGroups =
       !currentScoringGroups || Object.keys(currentScoringGroups).length === 0;
@@ -298,6 +301,7 @@ const GameButtons = () => {
       !isRolling &&
       !(hasRolled && noScoringGroups && !isFirstOfTwoThrowsToDoubleIt);
     canStick = !isSticking && hasRolled; // N.B. can stick when no scoring groups
+    canEndTurnAfterBlap = false;
   }
 
   return (
@@ -311,7 +315,7 @@ const GameButtons = () => {
       {isBlapped ? (
         <CustomButton
           onClick={() => endTurnAfterBlap()}
-          disabled={isFinishingTurnAfterBlapping}>
+          disabled={!canEndTurnAfterBlap}>
           {isFinishingTurnAfterBlapping ? 'Ending turn...' : 'End turn'}
         </CustomButton>
       ) : (
