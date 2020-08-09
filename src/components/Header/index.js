@@ -64,11 +64,12 @@ const UserName = styled.div`
   flex-basis: auto;
   flex-shrink: 1;
 
+  overflow: hidden;
+
   margin-left: 7px; // put left padding on UserName, rather than right padding on ProfileImage, in case
   // ProfileImage isn't rendered for some reason - then there will still be a margin between UserName
   // and the "Dix Mille" title text
 
-  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 

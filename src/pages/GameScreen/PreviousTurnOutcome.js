@@ -5,6 +5,8 @@ import { useSelector } from 'react-redux';
 import { selectPreviousTurnOutcome } from 'redux/game/selectors';
 
 const Text = styled.div`
+  flex: none;
+
   color: white;
   font-size: 1.5em;
 `;

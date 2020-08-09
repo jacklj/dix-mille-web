@@ -133,9 +133,12 @@ const GameButtons = () => {
   const [isRolling, setIsRolling] = useState(false);
   const [isGrouping, setIsGrouping] = useState(false);
   const [isSticking, setIsSticking] = useState(false);
+  const [
+    isFinishingTurnAfterBlapping,
+    setIsFinishingTurnAfterBlapping,
+  ] = useState(false);
 
-  const rollDie = async (event) => {
-    event.preventDefault();
+  const rollDie = async () => {
     setIsRolling(true);
 
     if (!isMyTurn) {
@@ -245,6 +248,27 @@ const GameButtons = () => {
     setIsSticking(false);
   };
 
+  const endTurnAfterBlap = async () => {
+    setIsFinishingTurnAfterBlapping(true);
+
+    if (!isMyTurn) {
+      alert("You can't end the turn - it's not your turn!");
+      setIsFinishingTurnAfterBlapping(false);
+      return;
+    }
+
+    try {
+      const res = await firebase.functions().httpsCallable('endTurnAfterBlap')({
+        gameId,
+      });
+      console.log(res);
+    } catch (error) {
+      alert(error.message);
+    }
+
+    setIsFinishingTurnAfterBlapping(false);
+  };
+
   const hasRolled = !!currentRoll;
 
   let canGroup, canRoll, canStick;
@@ -281,12 +305,20 @@ const GameButtons = () => {
       <CustomButton onClick={() => createDiceGroup()} disabled={!canGroup}>
         {isGrouping ? 'Banking...' : 'Bank'}
       </CustomButton>
-      <CustomButton onClick={(event) => rollDie(event)} disabled={!canRoll}>
+      <CustomButton onClick={() => rollDie()} disabled={!canRoll}>
         {isRolling ? 'Rolling...' : 'Roll'}
       </CustomButton>
-      <CustomButton onClick={() => stick()} disabled={!canStick}>
-        {isSticking ? 'Sticking...' : 'Stick'}
-      </CustomButton>
+      {isBlapped ? (
+        <CustomButton
+          onClick={() => endTurnAfterBlap()}
+          disabled={isFinishingTurnAfterBlapping}>
+          {isFinishingTurnAfterBlapping ? 'Ending turn...' : 'End turn'}
+        </CustomButton>
+      ) : (
+        <CustomButton onClick={() => stick()} disabled={!canStick}>
+          {isSticking ? 'Sticking...' : 'Stick'}
+        </CustomButton>
+      )}
     </Container>
   );
 };

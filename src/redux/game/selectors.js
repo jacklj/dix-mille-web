@@ -117,6 +117,16 @@ export const selectCurrentTurnPlayerUid = (state) => {
   return playerTurnOrder[currentTurn];
 };
 
+export const selectCurrentTurnPlayerName = (state) => {
+  const uid = selectCurrentTurnPlayerUid(state);
+
+  const player = selectPlayer(uid)(state);
+
+  const { name } = player;
+
+  return name;
+};
+
 export const isItMyTurn = (state) => {
   const playerWhosTurnItIsUid = selectCurrentTurnPlayerUid(state);
 
