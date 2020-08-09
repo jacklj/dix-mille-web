@@ -72,6 +72,7 @@ const CustomButton = styled(Button)`
   text-shadow: ${(props) => (props.disabled ? 'none' : '2px 2px 8px #000000')};
 
   text-decoration: ${(props) => (props.disabled ? 'line-through' : 'none')};
+  text-decoration-thickness: 3px; // mainly for firefox, otherwise strikethrough line looks too small (1px thick)
 
   color: ${(props) => (props.disabled ? Colours.disabled : Colours.normal)};
   border-color: ${(props) =>
@@ -316,7 +317,7 @@ const GameButtons = () => {
         <CustomButton
           onClick={() => endTurnAfterBlap()}
           disabled={!canEndTurnAfterBlap}>
-          {isFinishingTurnAfterBlapping ? 'Ending turn...' : 'End turn'}
+          {isFinishingTurnAfterBlapping ? 'Ending turn...' : 'Next'}
         </CustomButton>
       ) : (
         <CustomButton onClick={() => stick()} disabled={!canStick}>
