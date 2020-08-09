@@ -14,10 +14,8 @@ import {
   selectCurrentRollNumber,
   selectCurrentRollMinusScoringGroups,
   selectIsBlapped,
-  selectCurrentTurnPlayerName,
 } from 'redux/game/selectors';
 import Die from 'components/Die';
-import PreviousTurnOutcome from './PreviousTurnOutcome';
 
 const Container = styled.div`
   flex-shrink: 0;
@@ -32,39 +30,17 @@ const Container = styled.div`
   max-width: 700px;
 `;
 
-const Text = styled.div`
-  flex: none;
-
-  font-family: Limelight;
-  font-size: 2em;
-  color: white;
-`;
-
 const BlapText = styled.div`
   flex: none;
 
   font-family: Limelight;
   font-size: 3em;
   color: #ff6961;
+  letter-spacing: 1px;
 `;
-
-const makePossessive = (word) => {
-  if (!word) {
-    return word;
-  }
-
-  const lastLetter = word[word.length - 1];
-
-  if (lastLetter.toLowerCase() === 's') {
-    return word + "'";
-  } else {
-    return word + "'s";
-  }
-};
 
 const RolledDice = () => {
   const isMyTurn = useSelector(isItMyTurn);
-  const currentTurnPlayersName = useSelector(selectCurrentTurnPlayerName);
   const gameId = useSelector(selectGameId);
   const currentRoundId = useSelector(selectCurrentRoundId);
   const currentTurnId = useSelector(selectCurrentTurnId);
@@ -75,8 +51,6 @@ const RolledDice = () => {
     selectCurrentRollMinusScoringGroups,
   );
   const isBlapped = useSelector(selectIsBlapped);
-
-  const hasRolled = !!currentRoll;
 
   const selectOrUnselectDie = async (diceId) => {
     console.log(`Clicked on dice '${diceId}'`);
@@ -95,10 +69,6 @@ const RolledDice = () => {
       });
   };
 
-  const turnMessage = `It's ${
-    isMyTurn ? 'your' : makePossessive(currentTurnPlayersName)
-  } turn!`;
-
   return (
     <>
       <Container>
@@ -113,12 +83,6 @@ const RolledDice = () => {
             />
           ))}
       </Container>
-      {!hasRolled ? (
-        <>
-          <PreviousTurnOutcome />
-          <Text>{turnMessage}</Text>
-        </>
-      ) : null}
       {isBlapped ? <BlapText>BLAP!</BlapText> : null}
     </>
   );

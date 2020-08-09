@@ -8,7 +8,7 @@ const Text = styled.div`
   flex: none;
 
   color: white;
-  font-size: 1.5em;
+  font-size: 1.3em;
 `;
 
 const PreviousTurnOutcome = () => {

@@ -1,12 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 
 import ScoresTable from './ScoresTable';
 import WinnerOverlay from './WinnerOverlay';
 import RolledDice from './RolledDice';
 import ScoringGroups from './ScoringGroups';
-import GameEvents from './GameEvents';
+import BetweenTurnMessages from './BetweenTurnMessages';
 import GameButtons from './GameButtons';
+
+import { selectCurrentRoll } from 'redux/game/selectors';
 
 const DiceZone = styled.div`
   flex: 1;
@@ -14,7 +17,7 @@ const DiceZone = styled.div`
 
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: 'space-between';
   align-items: center;
 
   @media (min-width: 900px) {
@@ -24,13 +27,21 @@ const DiceZone = styled.div`
 `;
 
 const GameScreen = () => {
+  const currentRoll = useSelector(selectCurrentRoll);
+  const hasRolled = !!currentRoll;
+
   return (
     <>
       <DiceZone>
-        <RolledDice />
-        <ScoringGroups />
+        {hasRolled ? (
+          <>
+            <RolledDice />
+            <ScoringGroups />
+          </>
+        ) : (
+          <BetweenTurnMessages />
+        )}
       </DiceZone>
-      {/* <GameEvents /> */}
       {/* <ScoresTable /> */}
       <GameButtons />
       <WinnerOverlay />
