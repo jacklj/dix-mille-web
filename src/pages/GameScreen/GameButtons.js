@@ -24,7 +24,7 @@ const padding = 3;
 
 const Colours = {
   disabled: 'rgb(180, 176, 85)',
-  normal: '#ffcf40',
+  normal: '#ffdc73',
   hover: '#ffbf00',
   active: '#ffbf00',
 };
@@ -54,7 +54,6 @@ const Container = styled.div`
 
 const CustomButton = styled(Button)`
   flex: 1;
-  height: 58px;
 
   // override any margin or padding
   margin-left: 0;
@@ -66,35 +65,19 @@ const CustomButton = styled(Button)`
   padding-top: 0;
   padding-bottom: 0;
 
+  // single border, rather than double
   border-radius: 0;
-  border: 5px solid ${Colours.disabled};
-
-  text-shadow: ${(props) => (props.disabled ? 'none' : '2px 2px 8px #000000')};
-
-  text-decoration: ${(props) => (props.disabled ? 'line-through' : 'none')};
-  text-decoration-thickness: 3px; // mainly for firefox, otherwise strikethrough line looks too small (1px thick)
-
-  color: ${(props) => (props.disabled ? Colours.disabled : Colours.normal)};
-  border-color: ${(props) =>
-    props.disabled ? Colours.disabled : Colours.normal};
+  border-width: 5px;
+  border-style: solid;
 
   &:hover {
     border-width: 5px;
     border-style: solid;
-    border-color: ${(props) =>
-      props.disabled ? Colours.disabled : Colours.hover};
-    color: ${(props) => (props.disabled ? Colours.disabled : Colours.hover)};
   }
 
   &:active {
     border-width: 5px;
     border-style: solid;
-    border-color: ${(props) =>
-      props.disabled ? Colours.disabled : Colours.active};
-    color: ${(props) => (props.disabled ? Colours.disabled : Colours.active)};
-
-    text-shadow: ${(props) =>
-      props.disabled ? 'none' : '2px 2px 20px #000000'};
   }
 
   // middle button margin (N.B. nth-child is 1-indexed)

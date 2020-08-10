@@ -14,28 +14,32 @@ const Container = styled.div`
   align-items: baseline;
   margin-bottom: 20px;
 
-  flex-shrink: 0; // required to prevent Safari freaking out
+  flex-shrink: 0; // prevents Safari freaking out
 `;
 
 const Yellow = styled.span`
   color: #ffcf40;
 `;
 
+// N.B. In iOS Safari, the button text isn't perfectly vertically centered when the button
+// sheight is small, so keep it above 24px
 const CustomButton = styled(Button)`
-  font-size: 0.8em;
+  height: 24px;
+
+  font-size: 13px;
   margin-bottom: 0;
 
-  padding-top: 1px;
-  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
 
+  border-style: solid;
   border-width: 1px;
   border-radius: 4px;
 
   &:hover,
   &:active {
     border-width: 1px;
+    border-style: solid;
   }
 `;
 

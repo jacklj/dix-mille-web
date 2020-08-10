@@ -75,17 +75,25 @@ const Start = () => {
     history.push('/playerSetup');
   };
 
+  // N.B. <div>s around buttons are to fix a bug in mobile Safari where the flex container
+  // forces the buttons to be really short (ie squished vertically)
+
   return (
     <SetupScreenContainer>
       <IntroText>Play the classic French café table dice game.</IntroText>
-      <CustomButton
-        onClick={() => createAnonymousProfileAndGame()}
-        loading={isStartingGame}>
-        Start game
-      </CustomButton>
-      <CustomButton onClick={() => history.push('/joinGame')}>
-        Join game
-      </CustomButton>
+      <div>
+        <CustomButton
+          onClick={() => createAnonymousProfileAndGame()}
+          loading={isStartingGame}
+          loadingMessage="Starting">
+          Start game
+        </CustomButton>
+      </div>
+      <div>
+        <CustomButton onClick={() => history.push('/joinGame')}>
+          Join game
+        </CustomButton>
+      </div>
     </SetupScreenContainer>
   );
 };

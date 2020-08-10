@@ -25,9 +25,9 @@ const spinning = keyframes`
 
 const Spinner = styled.div`
   display: inline-block;
-  width: 30px;
-  height: 30px;
-  // margin: 8px;
+  width: 22px;
+  height: 22px;
+
   border-radius: 50%;
   background: #ffcf40;
   animation: ${spinning} 2.4s cubic-bezier(0, 0.2, 0.8, 1) infinite;

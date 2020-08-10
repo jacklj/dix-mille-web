@@ -91,7 +91,9 @@ const JoinGame = () => {
           />
         </CustomFieldContainer>
 
-        <Button loading={isJoining}>Next</Button>
+        <Button loading={isJoining} loadingMessage="Joining">
+          Next
+        </Button>
       </form>
     </SetupScreenContainer>
   );

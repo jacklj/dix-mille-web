@@ -55,7 +55,6 @@ const Text = styled.div`
   font-size: 1.2em;
 
   text-transform: uppercase;
-  font-family: 'Limelight', serif;
 `;
 
 const PutBackButton = ({ onClick }) => {
