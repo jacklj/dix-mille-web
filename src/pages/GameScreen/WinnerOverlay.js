@@ -30,8 +30,8 @@ const ScrollContainer = styled.div`
 `;
 
 const WinnerText = styled.div`
-  color: white;
-  font-size: 2em;
+  color: #77dd77;
+  font-size: 3em;
   margin-bottom: 40px;
 `;
 
