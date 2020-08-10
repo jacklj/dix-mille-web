@@ -86,7 +86,8 @@ const WaitingRoom = () => {
           <CustomButton
             onClick={() => startGame()}
             loading={isStartingGame}
-            disabled={!canStartGame}>
+            disabled={!canStartGame}
+            loadingMessage="Starting">
             Start game
           </CustomButton>
           {!canStartGame && minimumNumberOfPlayers && (
