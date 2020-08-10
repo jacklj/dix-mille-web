@@ -16,23 +16,29 @@ const Container = styled.div`
   height: 100vh;
 
   background-color: rgba(10, 10, 10, 0.7);
-  overflow-y: scroll;
-`;
 
-const ScrollContainer = styled.div`
-  position: static;
+  overflow-y: scroll;
 
   display: flex;
   flex-direction: column;
-  padding-top: 100px;
-  padding-bottom: 50px;
+`;
+
+const InnerContainer = styled.div`
+  margin: auto; // use flex auto margins, to center without risking content overflow
+
+  display: flex;
+  flex-direction: column;
   align-items: center;
 `;
 
 const WinnerText = styled.div`
   color: white;
-  font-size: 2em;
+  font-size: 3em;
   margin-bottom: 40px;
+`;
+
+const Green = styled.span`
+  color: #77dd77;
 `;
 
 const WinnerOverlay = () => {
@@ -58,15 +64,17 @@ const WinnerOverlay = () => {
   if (!hasSomeoneWon) {
     return null;
   } else {
+    const person = hasSomeoneWon.didIWin ? 'You' : hasSomeoneWon.winnersName;
+
     return (
       <Container>
-        <ScrollContainer>
-          <WinnerText>{`${
-            hasSomeoneWon.didIWin ? 'You' : hasSomeoneWon.winnersName
-          } won!`}</WinnerText>
+        <InnerContainer>
+          <WinnerText>
+            {person} <Green>won!</Green>
+          </WinnerText>
           <ScoresTable />
           <button onClick={goBackToHomePage}>Start again</button>
-        </ScrollContainer>
+        </InnerContainer>
       </Container>
     );
   }
