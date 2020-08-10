@@ -201,6 +201,30 @@ export const selectIsFirstOfTwoThrowsToDoubleIt = (state) => {
   );
 };
 
+export const selectIsFailedFirstOfTwoThrowsToDoubleIt = (state) => {
+  const currentRoll = selectCurrentRollObj(state);
+
+  if (
+    currentRoll?.rollType !== Constants.ROLL_TYPES.TWO_THROWS_TO_DOUBLE_IT.FIRST
+  ) {
+    return false;
+  }
+
+  const { roll } = currentRoll;
+
+  if (!roll || Object.values(roll).length !== 1) {
+    return false;
+  }
+
+  const rolledValue = Object.values(roll)[0];
+
+  if (rolledValue === 1 || rolledValue === 5) {
+    return false;
+  }
+
+  return true;
+};
+
 export const selectCurrentRoll = (state) => {
   const currentRoll = selectCurrentRollObj(state);
 

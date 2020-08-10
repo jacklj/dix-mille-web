@@ -14,6 +14,7 @@ import {
   selectCurrentRollNumber,
   selectCurrentRollMinusScoringGroups,
   selectIsBlapped,
+  selectIsFailedFirstOfTwoThrowsToDoubleIt,
 } from 'redux/game/selectors';
 import Die from 'components/Die';
 
@@ -28,6 +29,15 @@ const Container = styled.div`
   justify-content: space-between;
   margin: 10px;
   max-width: 700px;
+`;
+
+const InfoText = styled.div`
+  flex: none;
+
+  font-family: Limelight;
+  font-size: 1.3em;
+  color: #fff;
+  margin-bottom: 10px;
 `;
 
 const BlapText = styled.div`
@@ -51,6 +61,9 @@ const RolledDice = () => {
     selectCurrentRollMinusScoringGroups,
   );
   const isBlapped = useSelector(selectIsBlapped);
+  const isFailedFirstOfTwoThrowsToDoubleIt = useSelector(
+    selectIsFailedFirstOfTwoThrowsToDoubleIt,
+  );
 
   const selectOrUnselectDie = async (diceId) => {
     console.log(`Clicked on dice '${diceId}'`);
@@ -83,6 +96,9 @@ const RolledDice = () => {
             />
           ))}
       </Container>
+      {isFailedFirstOfTwoThrowsToDoubleIt ? (
+        <InfoText>You have to roll again!</InfoText>
+      ) : null}
       {isBlapped ? <BlapText>BLAP!</BlapText> : null}
     </>
   );
