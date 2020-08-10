@@ -21,8 +21,8 @@ const Container = styled.header`
   padding: 10px;
 
   // so content doesn't go under the notch on notched phones
-  padding-left: env(safe-area-inset-left);
-  padding-right: env(safe-area-inset-right);
+  padding-left: max(env(safe-area-inset-left), 10px);
+  padding-right: max(env(safe-area-inset-right), 10px);
 `;
 
 const DiceIcon = styled.img`

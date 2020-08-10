@@ -24,14 +24,7 @@ import { userUpdated } from 'redux/auth/slice';
 import { gameUpdated } from 'redux/game/slice';
 import { avatarsUpdated } from 'redux/avatars/slice';
 import TopLevelContainer from 'components/TopLevelContainer';
-
-const ContentContainer = styled.div`
-  flex: 19;
-  overflow: hidden;
-
-  display: flex;
-  flex-direction: column;
-`;
+import ContentContainer from 'components/ContentContainer';
 
 function App() {
   const dispatch = useDispatch();

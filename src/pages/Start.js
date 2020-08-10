@@ -8,10 +8,7 @@ import 'firebase/functions';
 
 import { loggedInAndCreatedGame } from 'redux/auth/slice';
 import { Button } from 'components/forms';
-
-const Container = styled.div`
-  overflow: scroll;
-`;
+import SetupScreenContainer from 'components/SetupScreenContainer';
 
 const IntroText = styled.div`
   margin-top: 40px;
@@ -79,21 +76,17 @@ const Start = () => {
   };
 
   return (
-    <Container>
+    <SetupScreenContainer>
       <IntroText>Play the classic French café table dice game.</IntroText>
-      <div>
-        <CustomButton
-          onClick={() => createAnonymousProfileAndGame()}
-          loading={isStartingGame}>
-          Start game
-        </CustomButton>
-      </div>
-      <div>
-        <CustomButton onClick={() => history.push('/joinGame')}>
-          Join game
-        </CustomButton>
-      </div>
-    </Container>
+      <CustomButton
+        onClick={() => createAnonymousProfileAndGame()}
+        loading={isStartingGame}>
+        Start game
+      </CustomButton>
+      <CustomButton onClick={() => history.push('/joinGame')}>
+        Join game
+      </CustomButton>
+    </SetupScreenContainer>
   );
 };
 

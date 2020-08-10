@@ -13,17 +13,7 @@ import { selectLoggedInUsersDetails } from 'redux/auth/selectors';
 import GameCode from 'components/GameCode';
 import Player from './Player';
 import { Button } from 'components/forms';
-
-const Container = styled.div`
-  overflow: scroll;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  padding-top: 20px;
-  padding-bottom: 20px;
-`;
+import SetupScreenContainer from 'components/SetupScreenContainer';
 
 const Title = styled.h2`
   font-family: Limelight;
@@ -80,7 +70,7 @@ const WaitingRoom = () => {
   const canStartGame = totalNumberOfPlayers >= minimumNumberOfPlayers;
 
   return (
-    <Container>
+    <SetupScreenContainer>
       <GameCode />
       <Title>Waiting Room</Title>
 
@@ -104,7 +94,7 @@ const WaitingRoom = () => {
           )}
         </>
       )}
-    </Container>
+    </SetupScreenContainer>
   );
 };
 

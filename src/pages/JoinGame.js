@@ -7,13 +7,7 @@ import { useDispatch } from 'react-redux';
 
 import { loggedInAndJoinedGame } from 'redux/auth/slice';
 import { Button, Input, Label, FieldContainer } from 'components/forms';
-
-const Form = styled.form`
-  overflow: scroll;
-
-  padding-top: 30px;
-  padding-bottom: 20px;
-`;
+import SetupScreenContainer from 'components/SetupScreenContainer';
 
 const CustomFieldContainer = styled(FieldContainer)`
   margin-bottom: 60px;
@@ -84,20 +78,22 @@ const JoinGame = () => {
   };
 
   return (
-    <Form onSubmit={(event) => createAnonymousProfileAndJoinGame(event)}>
-      <CustomFieldContainer>
-        <Label htmlFor="gameCode">Game code:</Label>
-        <CodeInput
-          id="gameCode"
-          type="text"
-          value={gameCode}
-          placeholder="Game code"
-          onChange={(event) => setGameCode(event.target.value)}
-        />
-      </CustomFieldContainer>
+    <SetupScreenContainer>
+      <form onSubmit={(event) => createAnonymousProfileAndJoinGame(event)}>
+        <CustomFieldContainer>
+          <Label htmlFor="gameCode">Game code:</Label>
+          <CodeInput
+            id="gameCode"
+            type="text"
+            value={gameCode}
+            placeholder="Game code"
+            onChange={(event) => setGameCode(event.target.value)}
+          />
+        </CustomFieldContainer>
 
-      <Button loading={isJoining}>Next</Button>
-    </Form>
+        <Button loading={isJoining}>Next</Button>
+      </form>
+    </SetupScreenContainer>
   );
 };
 

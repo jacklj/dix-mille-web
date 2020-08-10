@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
 import * as firebase from 'firebase/app';
 import 'firebase/functions';
 import { useHistory } from 'react-router-dom';
@@ -14,16 +13,7 @@ import {
 } from 'redux/game/selectors';
 import { selectUid } from 'redux/auth/selectors';
 import { Button, Input, Label, FieldContainer } from 'components/forms';
-
-const Container = styled.div`
-  overflow: scroll;
-
-  display: flex;
-  flex-direction: column;
-
-  padding-top: 20px;
-  padding-bottom: 50px;
-`;
+import SetupScreenContainer from 'components/SetupScreenContainer';
 
 const PlayerSetup = () => {
   const history = useHistory();
@@ -98,7 +88,7 @@ const PlayerSetup = () => {
   };
 
   return (
-    <Container>
+    <SetupScreenContainer>
       <GameCode />
 
       <form onSubmit={(event) => writePlayerProfileAndGoToWaitingRoom(event)}>
@@ -122,7 +112,7 @@ const PlayerSetup = () => {
 
         <Button loading={isSavingPlayerDetails}>Next</Button>
       </form>
-    </Container>
+    </SetupScreenContainer>
   );
 };
 
