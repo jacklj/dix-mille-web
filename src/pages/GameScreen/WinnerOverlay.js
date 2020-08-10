@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 
 import { selectHasSomeoneWon } from 'redux/game/selectors';
 import ScoresTable from './ScoresTable';
+import { Button } from 'components/forms';
 
 const Container = styled.div`
   position: fixed;
@@ -65,7 +66,7 @@ const WinnerOverlay = () => {
             hasSomeoneWon.didIWin ? 'You' : hasSomeoneWon.winnersName
           } won!`}</WinnerText>
           <ScoresTable />
-          <button onClick={goBackToHomePage}>Start again</button>
+          <Button onClick={goBackToHomePage}>Play again</Button>
         </ScrollContainer>
       </Container>
     );
