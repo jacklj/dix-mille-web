@@ -16,7 +16,7 @@ const SelectionAura = styled.div`
     top: ${(props) => (props.isInGroup ? '0' : '30px')};
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 768px), (orientation: landscape) {
     padding: ${(props) => (props.isInGroup ? '0' : '9px')};
     margin-bottom: ${(props) => (props.isInGroup ? '5px' : '15px')};
 
@@ -35,7 +35,7 @@ const Face = styled.div`
   width: ${(props) => (props.isInGroup ? '60px' : '80px')};
   height: ${(props) => (props.isInGroup ? '60px' : '80px')};
 
-  @media (max-width: 768px) {
+  @media (max-width: 768px), (orientation: landscape) {
     width: ${(props) => (props.isInGroup ? '35px' : '45px')};
     height: ${(props) => (props.isInGroup ? '35px' : '45px')};
 
@@ -62,7 +62,7 @@ const Pip = styled.span`
   width: ${(props) => (props.isInGroup ? '16px' : '18px')};
   height: ${(props) => (props.isInGroup ? '16px' : '18px')};
 
-  @media (max-width: 768px) {
+  @media (max-width: 768px), (orientation: landscape) {
     width: ${(props) => (props.isInGroup ? '8px' : '12px')};
     height: ${(props) => (props.isInGroup ? '8px' : '12px')};
   }
