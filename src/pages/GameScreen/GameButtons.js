@@ -35,6 +35,7 @@ const Container = styled.div`
 
   display: flex;
   justify-content: center;
+  align-items: stretch;
 
   border: none;
   border-top: 5px solid ${Colours.disabled};
@@ -53,8 +54,7 @@ const Container = styled.div`
 
 const CustomButton = styled(Button)`
   flex: 1;
-
-  height: 2.5em;
+  height: 58px;
 
   // override any margin or padding
   margin-left: 0;
@@ -307,20 +307,30 @@ const GameButtons = () => {
 
   return (
     <Container>
-      <CustomButton onClick={() => createDiceGroup()} disabled={!canGroup}>
+      <CustomButton
+        onClick={() => createDiceGroup()}
+        disabled={!canGroup}
+        loading={isGrouping}>
         {isGrouping ? 'Banking...' : 'Bank'}
       </CustomButton>
-      <CustomButton onClick={() => rollDie()} disabled={!canRoll}>
+      <CustomButton
+        onClick={() => rollDie()}
+        disabled={!canRoll}
+        loading={isRolling}>
         {isRolling ? 'Rolling...' : 'Roll'}
       </CustomButton>
       {isBlapped ? (
         <CustomButton
           onClick={() => endTurnAfterBlap()}
-          disabled={!canEndTurnAfterBlap}>
+          disabled={!canEndTurnAfterBlap}
+          loading={isFinishingTurnAfterBlapping}>
           {isFinishingTurnAfterBlapping ? 'Ending turn...' : 'Next'}
         </CustomButton>
       ) : (
-        <CustomButton onClick={() => stick()} disabled={!canStick}>
+        <CustomButton
+          onClick={() => stick()}
+          disabled={!canStick}
+          loading={isSticking}>
           {isSticking ? 'Sticking...' : 'Stick'}
         </CustomButton>
       )}
