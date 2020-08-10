@@ -22,7 +22,13 @@ const Container = styled.div`
 
   align-self: stretch;
 
-  padding-left: 32px; // so dice dont scroll into button border radius curve and look weird
+  // so content doesn't go under the notch on notched phones
+  padding-left: max(
+    env(safe-area-inset-left),
+    32px
+  ); // min value of 32px, so dice dont scroll into button border radius curve and look weird
+  padding-right: max(env(safe-area-inset-right), 32px);
+  // N.B. the max() function doesnt work on Firefox for Android.
 `;
 
 const TurnScoreText = styled.div`

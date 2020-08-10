@@ -22,7 +22,7 @@ const Container = styled.div`
   flex-direction: column;
 
   padding-top: 20px;
-  padding-bottom: 20px;
+  padding-bottom: 50px;
 `;
 
 const PlayerSetup = () => {

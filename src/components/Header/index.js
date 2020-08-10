@@ -19,6 +19,10 @@ const Container = styled.header`
   font-size: 1.7em;
   color: white;
   padding: 10px;
+
+  // so content doesn't go under the notch on notched phones
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
 `;
 
 const DiceIcon = styled.img`
