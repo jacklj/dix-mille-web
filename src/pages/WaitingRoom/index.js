@@ -95,8 +95,9 @@ const WaitingRoom = () => {
         <>
           <CustomButton
             onClick={() => startGame()}
-            disabled={!canStartGame || isStartingGame}>
-            {isStartingGame ? 'Starting...' : 'Start game'}
+            loading={isStartingGame}
+            disabled={!canStartGame}>
+            Start game
           </CustomButton>
           {!canStartGame && minimumNumberOfPlayers && (
             <ErrorMessage>{`Need at least ${minimumNumberOfPlayers} players to play the game`}</ErrorMessage>

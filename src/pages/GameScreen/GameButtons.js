@@ -311,27 +311,27 @@ const GameButtons = () => {
         onClick={() => createDiceGroup()}
         disabled={!canGroup}
         loading={isGrouping}>
-        {isGrouping ? 'Banking...' : 'Bank'}
+        Bank
       </CustomButton>
       <CustomButton
         onClick={() => rollDie()}
         disabled={!canRoll}
         loading={isRolling}>
-        {isRolling ? 'Rolling...' : 'Roll'}
+        Roll
       </CustomButton>
       {isBlapped ? (
         <CustomButton
           onClick={() => endTurnAfterBlap()}
           disabled={!canEndTurnAfterBlap}
           loading={isFinishingTurnAfterBlapping}>
-          {isFinishingTurnAfterBlapping ? 'Ending turn...' : 'Next'}
+          Next
         </CustomButton>
       ) : (
         <CustomButton
           onClick={() => stick()}
           disabled={!canStick}
           loading={isSticking}>
-          {isSticking ? 'Sticking...' : 'Stick'}
+          Stick
         </CustomButton>
       )}
     </Container>

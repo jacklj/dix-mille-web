@@ -96,7 +96,7 @@ const JoinGame = () => {
         />
       </CustomFieldContainer>
 
-      <Button disabled={isJoining}>{isJoining ? 'Loading...' : 'Next'}</Button>
+      <Button loading={isJoining}>Next</Button>
     </Form>
   );
 };

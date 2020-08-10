@@ -84,9 +84,8 @@ const Start = () => {
       <div>
         <CustomButton
           onClick={() => createAnonymousProfileAndGame()}
-          loading={isStartingGame}
-          disabled={isStartingGame}>
-          {isStartingGame ? 'Starting...' : 'Start game'}
+          loading={isStartingGame}>
+          Start game
         </CustomButton>
       </div>
       <div>

@@ -120,9 +120,7 @@ const PlayerSetup = () => {
           nextAvatar={nextAvatar}
         />
 
-        <Button disabled={isSavingPlayerDetails}>
-          {isSavingPlayerDetails ? 'Loading...' : 'Next'}
-        </Button>
+        <Button loading={isSavingPlayerDetails}>Next</Button>
       </form>
     </Container>
   );
