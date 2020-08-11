@@ -60,7 +60,7 @@ const CustomButton = styled(Button)`
 
   position: fixed;
   top: 10px;
-  right: 10px;
+  right: max(env(safe-area-inset-right), 10px);
 
   background-color: black;
 `;
