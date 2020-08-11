@@ -22,7 +22,7 @@ const P = styled.p`
   max-width: 700px;
   padding-left: 10px;
   padding-right: 10px;
-  font-family: serif;
+  font-family: Palatino;
   font-size: 1.1em;
 `;
 
@@ -38,7 +38,7 @@ const ScoringDiceContainer = styled.div`
 
   color: #fff;
 
-  font-family: serif;
+  font-family: Palatino;
   font-size: 1.1em;
 `;
 
