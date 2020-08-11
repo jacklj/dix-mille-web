@@ -116,7 +116,7 @@ const Header = () => {
           <Yellow>D</Yellow>ix <Yellow>M</Yellow>ille
         </TitleText>
 
-        {!hasGameStarted ? (
+        {hasGameStarted ? (
           <HeaderButton onClick={showScores} icon={trophy}>
             Scores
           </HeaderButton>

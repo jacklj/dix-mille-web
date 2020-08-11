@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import ScoresTable from 'components/ScoresTable';
 import { Button } from 'components/forms';
 import Overlay from 'components/Overlay';
+import { selectHasSomeoneWon } from 'redux/game/selectors';
 
 const WinnerText = styled.div`
   color: #77dd77;
