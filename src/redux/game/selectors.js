@@ -9,6 +9,8 @@ export const selectGameId = (state) => state.game.gameId;
 
 export const selectGameStartedAt = (state) => state.game.startedAt;
 
+export const selectHasGameStarted = (state) => !!state.game.startedAt;
+
 export const selectPlayer = (uid) => (state) => state.game.players[uid];
 
 const selectPlayers = (state) => state.game.players;

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { useSelector } from 'react-redux';
 
-import { selectMyAvatarUrl } from 'redux/game/selectors';
+import { selectMyAvatarUrl, selectHasGameStarted } from 'redux/game/selectors';
 import { selectName } from 'redux/auth/selectors';
 import diceIcon from './diceIcon.png';
 import ScoresButton from './ScoresButton';
@@ -86,7 +86,7 @@ const UserName = styled.div`
 const Header = () => {
   const name = useSelector(selectName);
   const avatarUrl = useSelector(selectMyAvatarUrl);
-  // const hasGameStarted
+  const hasGameStarted = useSelector(selectHasGameStarted);
 
   const [isShowingScores, setIsShowingScores] = useState(false);
   const showScores = () => setIsShowingScores(true);
@@ -100,7 +100,7 @@ const Header = () => {
           <Yellow>D</Yellow>ix <Yellow>M</Yellow>ille
         </TitleText>
 
-        <ScoresButton onClick={showScores} />
+        {hasGameStarted ? <ScoresButton onClick={showScores} /> : null}
         {avatarUrl && <ProfileImage src={avatarUrl} />}
         {name && <UserName>{name}</UserName>}
       </Container>
