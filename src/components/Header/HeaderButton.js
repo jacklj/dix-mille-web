@@ -13,7 +13,7 @@ const Container = styled.div`
   flex-grow: 0;
   flex-basis: auto;
 
-  margin-right: 0.5vw;
+  margin-right: 2vw;
 
   display: flex;
   flex-direction: row;

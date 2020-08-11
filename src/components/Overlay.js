@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { Button } from 'components/forms';
+
 const Container = styled.div`
   position: fixed;
   top: 0;
@@ -29,8 +31,24 @@ const InnerContainer = styled.div`
   // Seems difficult to fix...
 `;
 
-const Overlay = ({ children }) => (
+const CustomButton = styled(Button)`
+  height: 38px;
+
+  padding-left: 10px;
+  padding-right: 10px;
+
+  font-size: 15px;
+
+  position: fixed;
+  top: 10px;
+  right: max(env(safe-area-inset-right), 10px);
+
+  background-color: black;
+`;
+
+const Overlay = ({ children, closeButton, hide }) => (
   <Container>
+    {closeButton && <CustomButton onClick={hide}>Close</CustomButton>}
     <InnerContainer>{children}</InnerContainer>
   </Container>
 );
