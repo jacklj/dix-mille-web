@@ -71,14 +71,22 @@ const Td = styled.td`
 `;
 
 // dummy scores data
-// const players = ['agora', 'mandelbrot', 'plaistow', 'gammadamma'];
-// const turnScores = [
-//   [540, 840, 350, 250],
-//   [540, 840, 350, 250],
-//   [540, 840, 350, 250],
-//   [540, 840, 350, 250],
+// const players = [
+//   'agora',
+//   'mandelbrot',
+//   'plaistow',
+//   'gammadamma',
+//   'sore spot',
+//   'gransford plaitlet',
+//   'morgon lafayette',
 // ];
-// const totalScores = [3908, 4089, 3094, 2234];
+// const turnScores = [
+//   [540, 840, 350, 250, 400, 300, 200],
+//   [540, 840, 350, 250, 400, 300, 200],
+//   [540, 840, 350, 250, 400, 300, 200],
+//   [540, 840, 350, 250, 400, 300, 200],
+// ];
+// const totalScores = [3908, 4089, 3094, 2234, 4000, 3000, 2000];
 
 const ScoresTable = ({ className }) => {
   const players = useSelector(selectPlayerNamesInTurnOrder);
