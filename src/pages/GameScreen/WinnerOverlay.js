@@ -42,6 +42,11 @@ const TableContainer = styled.div`
   margin-bottom: 30px;
 `;
 
+// dummy data
+// const hasSomeoneWon = {
+//   didIWin: true,
+// };
+
 const WinnerOverlay = () => {
   const history = useHistory();
   const hasSomeoneWon = useSelector(selectHasSomeoneWon);
