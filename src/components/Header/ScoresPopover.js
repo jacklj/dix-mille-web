@@ -14,39 +14,40 @@ const Container = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  bottom: 0;
-  right: 0;
   width: 100vw;
   height: 100vh;
 
   background-color: rgba(10, 10, 10, 0.8);
-  overflow: scroll; // scroll in both x and y directions if necessary
+  overflow: scroll-y; // scroll in both x and y directions if necessary
 `;
 
 // InnerContainer mainly for padding, as bottom padding doesnt work on some browsers when `overflow: scroll`
 const InnerContainer = styled.div`
-  margin-left: auto;
-  margin-right: auto;
-
-  padding-top: 40px;
-  padding-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  padding-top: 100px;
+  padding-bottom: 50px;
+  align-items: center;
 
   // so content doesn't go under the notch on notched phones
-  padding-left: max(env(safe-area-inset-left), 20px);
-  padding-right: max(
-    env(safe-area-inset-right),
-    30px
-  ); // some of the padding is cut off for some reason. Probably this:
-  // When overflowing on x axis, some right padding is cut off ("overscrollback")
-  // https://web.archive.org/web/20170707053030/http://www.brunildo.org/test/overscrollback.html)
-  // ~~Need to set margins on children instead~~ doesn't stop the problem
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
 
-  display: table; // stops the table overflowing from this container (don't know why it's doing this)
+  // N.B. some of the right padding is cut off for some reason. Probably "overscrollback"
+  // https://web.archive.org/web/20170707053030/http://www.brunildo.org/test/overscrollback.html)
+  // Seems difficult to fix...
 `;
 
-const CustomScoresTable = styled(ScoresTable)`
-  margin-left: auto;
-  margin-right: auto;
+const TableContainer = styled.div`
+  flex: 0;
+  align-self: stretch;
+
+  overflow-x: scroll;
+
+  padding-left: 15px;
+  padding-right: 15px; // doesnt do anything when overflowing-x (narrow screens)
+
+  margin-bottom: 30px;
 `;
 
 const CustomButton = styled(Button)`
@@ -70,7 +71,9 @@ const ScoresPopover = ({ hideScores }) => {
     <Container>
       <CustomButton onClick={hideScores}>Close</CustomButton>
       <InnerContainer>
-        <CustomScoresTable />
+        <TableContainer>
+          <ScoresTable />
+        </TableContainer>
       </InnerContainer>
     </Container>
   );
