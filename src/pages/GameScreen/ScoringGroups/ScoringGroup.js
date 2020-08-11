@@ -24,7 +24,8 @@ const DiceContainer = styled.div`
   flex-wrap: wrap;
 
   @media (max-width: 520px) {
-    max-width: 170px;
+    max-width: 170px; // magic value because flexwrap: wrap adds extra container width to the
+    // right when children wrap
   }
 `;
 
