@@ -15,6 +15,8 @@ const Container = styled.div`
   flex-grow: 0;
   flex-basis: auto;
 
+  margin-right: 0.5vw;
+
   display: flex;
   flex-direction: row;
   align-items: center;
