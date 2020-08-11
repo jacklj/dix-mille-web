@@ -10,17 +10,21 @@ const Container = styled.div`
   justify-content: flex-start;
   align-items: center;
 
+  flexwrap: nowrap;
+  overflow: hidden;
+
   margin-bottom: 10px;
 `;
 
 const DiceContainer = styled.div`
+  flex-shrink: 0;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   flex-wrap: wrap;
 
   @media (max-width: 520px) {
-    max-width: 190px;
+    max-width: 170px;
   }
 `;
 

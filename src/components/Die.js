@@ -35,13 +35,6 @@ const Face = styled.div`
   width: ${(props) => (props.isInGroup ? '60px' : '80px')};
   height: ${(props) => (props.isInGroup ? '60px' : '80px')};
 
-  @media (max-width: 768px), (orientation: landscape) {
-    width: ${(props) => (props.isInGroup ? '35px' : '45px')};
-    height: ${(props) => (props.isInGroup ? '35px' : '45px')};
-
-    margin: ${(props) => (props.isInGroup ? '3px' : '8px')};
-  }
-
   background-color: #e7e7e7;
   box-shadow: inset 0 5px white, inset 0 -5px #bbb, inset 5px 0 #d7d7d7,
     inset -5px 0 #d7d7d7;
@@ -52,6 +45,15 @@ const Face = styled.div`
     'a . c'
     'e g f'
     'd . b';
+
+  @media (max-width: 768px), (orientation: landscape) {
+    width: ${(props) => (props.isInGroup ? '30px' : '45px')};
+    height: ${(props) => (props.isInGroup ? '30px' : '45px')};
+    box-shadow: inset 0 4px white, inset 0 -4px #bbb, inset 4px 0 #d7d7d7,
+      inset -4px 0 #d7d7d7;
+
+    margin: ${(props) => (props.isInGroup ? '3px' : '8px')};
+  }
 `;
 
 const Pip = styled.span`

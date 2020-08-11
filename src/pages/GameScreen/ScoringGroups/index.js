@@ -27,7 +27,8 @@ const Container = styled.div`
     env(safe-area-inset-left),
     32px
   ); // min value of 32px, so dice dont scroll into button border radius curve and look weird
-  padding-right: max(env(safe-area-inset-right), 32px);
+  // padding-right: max(env(safe-area-inset-right), 32px); // no right padding, so the put back button can expand
+  // all the way to the edge of the screen
   // N.B. the max() function doesnt work on Firefox for Android.
 `;
 
