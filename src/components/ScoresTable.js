@@ -22,6 +22,7 @@ const Caption = styled.caption`
   font-size: 3em;
   text-transform: uppercase;
   margin-bottom: 4px;
+  color: rgb(180, 176, 85);
 `;
 
 const Th = styled.th`
