@@ -1,28 +1,22 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 
-import { selectHasSomeoneWon } from 'redux/game/selectors';
 import ScoresTable from 'components/ScoresTable';
 import { Button } from 'components/forms';
 
 const Container = styled.div`
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
   top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
 
-  background-color: rgba(10, 10, 10, 0.7);
+  background-color: rgba(10, 10, 10, 0.9);
   overflow-y: scroll;
 `;
 
-const ScrollContainer = styled.div`
-  position: static;
-
+const InnerContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding-top: 100px;
@@ -34,6 +28,18 @@ const WinnerText = styled.div`
   color: #77dd77;
   font-size: 3em;
   margin-bottom: 40px;
+`;
+
+const TableContainer = styled.div`
+  flex: 0;
+  align-self: stretch;
+
+  overflow-x: scroll;
+
+  padding-left: 15px;
+  padding-right: 15px; // doesnt do anything when overflowing-x (narrow screens)
+
+  margin-bottom: 30px;
 `;
 
 const WinnerOverlay = () => {
@@ -61,13 +67,15 @@ const WinnerOverlay = () => {
   } else {
     return (
       <Container>
-        <ScrollContainer>
+        <InnerContainer>
           <WinnerText>{`${
             hasSomeoneWon.didIWin ? 'You' : hasSomeoneWon.winnersName
           } won!`}</WinnerText>
-          <ScoresTable />
+          <TableContainer>
+            <ScoresTable />
+          </TableContainer>
           <Button onClick={goBackToHomePage}>Play again</Button>
-        </ScrollContainer>
+        </InnerContainer>
       </Container>
     );
   }

@@ -13,8 +13,8 @@ const Table = styled.table`
   border-collapse: collapse;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 40px;
-  margin-bottom: 40px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 `;
 
 const Caption = styled.caption`
