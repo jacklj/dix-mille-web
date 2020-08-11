@@ -12,6 +12,8 @@ const Container = styled.div`
 
   background-color: rgba(10, 10, 10, 0.9);
   overflow-y: scroll;
+
+  z-index: 1; // ensures it goes over the avatar carousel
 `;
 
 // InnerContainer mainly for padding, as bottom padding doesnt work on some browsers when `overflow: scroll`
