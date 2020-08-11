@@ -11,7 +11,7 @@ import {
 } from 'redux/game/selectors';
 import { selectLoggedInUsersDetails } from 'redux/auth/selectors';
 import GameCode from 'components/GameCode';
-import Player from './Player';
+import PlayerProfile from 'components/PlayerProfile';
 import { Button } from 'components/forms';
 import SetupScreenContainer from 'components/SetupScreenContainer';
 
@@ -78,7 +78,7 @@ const WaitingRoom = () => {
         {playerUids &&
           playerUids.map((uid) => {
             const isMe = uid === myUid;
-            return <Player uid={uid} key={uid} isMe={isMe} />;
+            return <PlayerProfile uid={uid} key={uid} isMe={isMe} />;
           })}{' '}
       </PlayersContainer>
       {type === 'gameCreator' && (
