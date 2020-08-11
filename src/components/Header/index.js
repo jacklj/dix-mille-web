@@ -6,8 +6,9 @@ import { useSelector } from 'react-redux';
 import { selectMyAvatarUrl, selectHasGameStarted } from 'redux/game/selectors';
 import { selectName } from 'redux/auth/selectors';
 import diceIcon from './diceIcon.png';
-import ScoresButton from './ScoresButton';
+import HeaderButton from './HeaderButton';
 import ScoresPopover from './ScoresPopover';
+import trophy from './trophy.png';
 
 const Container = styled.header`
   flex: 0 1 auto; // so it doesn't look too bad on safari
@@ -100,7 +101,11 @@ const Header = () => {
           <Yellow>D</Yellow>ix <Yellow>M</Yellow>ille
         </TitleText>
 
-        {hasGameStarted ? <ScoresButton onClick={showScores} /> : null}
+        {hasGameStarted ? (
+          <HeaderButton onClick={showScores} icon={trophy}>
+            Scores
+          </HeaderButton>
+        ) : null}
         {avatarUrl && <ProfileImage src={avatarUrl} />}
         {name && <UserName>{name}</UserName>}
       </Container>

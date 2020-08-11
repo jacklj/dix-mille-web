@@ -1,8 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import trophy from './trophy.png';
-
 const Colours = {
   disabled: 'rgb(180, 176, 85)',
   normal: '#ffdc73',
@@ -41,13 +39,13 @@ const Icon = styled.img`
   margin-top: -2px; // center it relative to text
 `;
 
-const ScoresButton = ({ onClick }) => {
+const HeaderButton = ({ icon, onClick, children }) => {
   return (
     <Container onClick={onClick}>
-      <Icon src={trophy} />
-      Scores
+      <Icon src={icon} />
+      {children}
     </Container>
   );
 };
 
-export default ScoresButton;
+export default HeaderButton;
