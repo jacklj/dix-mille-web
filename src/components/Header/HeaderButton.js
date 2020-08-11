@@ -20,8 +20,9 @@ const Container = styled.div`
   align-items: center;
 
   color: white;
-  font-size: 0.7em;
+  font-size: 0.6em;
   font-family: Limelight;
+  text-transform: uppercase;
 
   &:hover {
     color: ${Colours.hover};
@@ -30,6 +31,10 @@ const Container = styled.div`
   &:active {
     color: ${Colours.active};
   }
+
+  &:last-child {
+    margin-right: 0;
+  }
 `;
 
 const Icon = styled.img`
@@ -37,6 +42,10 @@ const Icon = styled.img`
   width: auto;
   margin-right: 4px;
   margin-top: -2px; // center it relative to text
+
+  @media (max-width: 380px) {
+    display: none;
+  }
 `;
 
 const HeaderButton = ({ icon, onClick, children }) => {

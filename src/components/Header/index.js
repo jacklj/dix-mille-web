@@ -45,6 +45,7 @@ const TitleText = styled.div`
   flex-grow: 0;
   flex-basis: auto;
 
+  padding-right: 10px; // minimum gap between title text and buttons or avatar
   margin-right: auto; // flex alg pushes following items to the right
 
   font-family: Limelight;
@@ -65,7 +66,10 @@ const ProfileImage = styled.img`
   height: 1.5em;
   width: auto;
 
-  margin-left: 10px; // minimum gap between image and "Dix Mille" title text, on narrow viewports.
+  @media (max-width: 470px) {
+    // dont display user avatar or name when narrow viewport
+    display: none;
+  }
 `;
 
 const UserName = styled.div`
@@ -82,8 +86,13 @@ const UserName = styled.div`
   text-overflow: ellipsis;
   white-space: nowrap;
 
-  font-size: 0.7em;
+  font-size: 0.6em;
   font-family: Limelight;
+
+  @media (max-width: 470px) {
+    // dont display user avatar or name when narrow viewport
+    display: none;
+  }
 `;
 
 const Header = () => {
