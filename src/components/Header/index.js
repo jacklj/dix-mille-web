@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { selectMyAvatarUrl } from 'redux/game/selectors';
 import { selectName } from 'redux/auth/selectors';
 import diceIcon from './diceIcon.png';
+import ScoresButton from './ScoresButton';
 
 const Container = styled.header`
   flex: 0 1 auto; // so it doesn't look too bad on safari
@@ -78,11 +79,13 @@ const UserName = styled.div`
   white-space: nowrap;
 
   font-size: 0.7em;
+  font-family: Limelight;
 `;
 
 const Header = () => {
   const name = useSelector(selectName);
   const avatarUrl = useSelector(selectMyAvatarUrl);
+  // const hasGameStarted
 
   return (
     <Container>
@@ -91,8 +94,8 @@ const Header = () => {
         <Yellow>D</Yellow>ix <Yellow>M</Yellow>ille
       </TitleText>
 
+      <ScoresButton />
       {avatarUrl && <ProfileImage src={avatarUrl} />}
-
       {name && <UserName>{name}</UserName>}
     </Container>
   );
