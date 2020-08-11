@@ -39,11 +39,9 @@ const Icon = styled.img`
   margin-top: -2px; // center it relative to text
 `;
 
-const ScoresButton = () => {
-  const showScores = () => alert('Scores!');
-
+const ScoresButton = ({ onClick }) => {
   return (
-    <Container onClick={showScores}>
+    <Container onClick={onClick}>
       <Icon src={trophy} />
       Scores
     </Container>

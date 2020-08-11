@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import { useSelector } from 'react-redux';
@@ -7,6 +7,7 @@ import { selectMyAvatarUrl } from 'redux/game/selectors';
 import { selectName } from 'redux/auth/selectors';
 import diceIcon from './diceIcon.png';
 import ScoresButton from './ScoresButton';
+import ScoresPopover from './ScoresPopover';
 
 const Container = styled.header`
   flex: 0 1 auto; // so it doesn't look too bad on safari
@@ -87,17 +88,24 @@ const Header = () => {
   const avatarUrl = useSelector(selectMyAvatarUrl);
   // const hasGameStarted
 
-  return (
-    <Container>
-      <DiceIcon src={diceIcon} />
-      <TitleText>
-        <Yellow>D</Yellow>ix <Yellow>M</Yellow>ille
-      </TitleText>
+  const [isShowingScores, setIsShowingScores] = useState(false);
+  const showScores = () => setIsShowingScores(true);
+  const hideScores = () => setIsShowingScores(false);
 
-      <ScoresButton />
-      {avatarUrl && <ProfileImage src={avatarUrl} />}
-      {name && <UserName>{name}</UserName>}
-    </Container>
+  return (
+    <>
+      <Container>
+        <DiceIcon src={diceIcon} />
+        <TitleText>
+          <Yellow>D</Yellow>ix <Yellow>M</Yellow>ille
+        </TitleText>
+
+        <ScoresButton onClick={showScores} />
+        {avatarUrl && <ProfileImage src={avatarUrl} />}
+        {name && <UserName>{name}</UserName>}
+      </Container>
+      {isShowingScores ? <ScoresPopover hideScores={hideScores} /> : null}
+    </>
   );
 };
 

@@ -518,6 +518,11 @@ export const selectAllTurnScores = (state) => {
 
   // get each turn score and add to scores map
   const { rounds } = state.game;
+
+  if (!rounds) {
+    return undefined;
+  }
+
   const scoresMatrix = rounds.map((round, roundIndex) => {
     const { turns } = round;
     const row = new Array(numberOfPlayers).fill('');

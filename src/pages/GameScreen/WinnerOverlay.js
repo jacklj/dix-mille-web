@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import { selectHasSomeoneWon } from 'redux/game/selectors';
-import ScoresTable from './ScoresTable';
+import ScoresTable from 'components/ScoresTable';
 import { Button } from 'components/forms';
 
 const Container = styled.div`

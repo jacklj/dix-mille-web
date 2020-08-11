@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 
-// import ScoresTable from './ScoresTable';
 import WinnerOverlay from './WinnerOverlay';
 import RolledDice from './RolledDice';
 import ScoringGroups from './ScoringGroups';
@@ -42,7 +41,6 @@ const GameScreen = () => {
           <BetweenTurnMessages />
         )}
       </DiceZone>
-      {/* <ScoresTable /> */}
       <GameButtons />
       <WinnerOverlay />
     </>
