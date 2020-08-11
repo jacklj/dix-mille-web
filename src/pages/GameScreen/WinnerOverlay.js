@@ -22,6 +22,14 @@ const InnerContainer = styled.div`
   padding-top: 100px;
   padding-bottom: 50px;
   align-items: center;
+
+  // so content doesn't go under the notch on notched phones
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+
+  // N.B. some of the right padding is cut off for some reason. Probably "overscrollback"
+  // https://web.archive.org/web/20170707053030/http://www.brunildo.org/test/overscrollback.html)
+  // Seems difficult to fix...
 `;
 
 const WinnerText = styled.div`
