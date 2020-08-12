@@ -9,7 +9,7 @@ import diceIcon from './diceIcon.png';
 import HeaderButton from './HeaderButton';
 import ScoresPopover from './ScoresPopover';
 import RulesPopover from './RulesPopover';
-import trophy from './trophy.png';
+import trophy from './trophy.svg';
 import rulesScroll from './rulesScroll.svg';
 
 const Container = styled.header`
