@@ -78,8 +78,8 @@ export const selectMyAvatarUrl = (state) => {
 
 export const selectAllAvatarsWithChosenStatus = (state) => {
   const allAvatars = selectAllAvatars(state);
-
   const allPlayers = selectPlayers(state);
+  const myUid = selectUid(state);
 
   if (!allAvatars || allAvatars.length === 0 || !allPlayers) {
     return undefined;
@@ -87,9 +87,19 @@ export const selectAllAvatarsWithChosenStatus = (state) => {
 
   const alreadyUsedAvatars = {};
 
-  Object.values(allPlayers).forEach((player) => {
+  Object.keys(allPlayers).forEach((uid) => {
+    const player = allPlayers[uid];
+
     const { avatarId } = player;
     if (avatarId || typeof avatarId === 'number') {
+      // If it's me that's chosen the avatar, don't display it as already used. This is to fix
+      // the UI 'bug' where I've just chosen an avatar, but the page hasn't navigated from
+      // PlayerSetup to WaitingRoom - then I see the avatar that I just chose being greyed out,
+      // which is confusing. So don't grey it out if it's my chosen avatar.
+      if (uid === myUid) {
+        return; // skip this iteration.
+      }
+
       // avatarId is a number, this works for strings too, in case we have string ids in future
       alreadyUsedAvatars[avatarId] = true;
     }
