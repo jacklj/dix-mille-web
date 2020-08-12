@@ -24,12 +24,32 @@ const Container = styled.div`
   font-family: Limelight;
   text-transform: uppercase;
 
+  // svg
+  & svg {
+    height: 1em;
+    width: auto;
+    margin-right: 4px;
+    margin-top: -2px; // center it relative to text
+
+    @media (max-width: 380px) {
+      display: none;
+    }
+  }
+
   &:hover {
     color: ${Colours.hover};
+
+    & svg {
+      fill: ${Colours.hover};
+    }
   }
 
   &:active {
     color: ${Colours.active};
+
+    & svg {
+      fill: ${Colours.active};
+    }
   }
 
   &:last-child {
@@ -37,21 +57,10 @@ const Container = styled.div`
   }
 `;
 
-const Icon = styled.img`
-  height: 1em;
-  width: auto;
-  margin-right: 4px;
-  margin-top: -2px; // center it relative to text
-
-  @media (max-width: 380px) {
-    display: none;
-  }
-`;
-
-const HeaderButton = ({ icon, onClick, children }) => {
+const HeaderButton = ({ Icon, onClick, children }) => {
   return (
     <Container onClick={onClick}>
-      <Icon src={icon} />
+      {Icon && <Icon />}
       {children}
     </Container>
   );

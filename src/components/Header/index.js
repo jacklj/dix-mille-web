@@ -9,8 +9,8 @@ import diceIcon from './diceIcon.png';
 import HeaderButton from './HeaderButton';
 import ScoresPopover from './ScoresPopover';
 import RulesPopover from './RulesPopover';
-import trophy from './trophy.svg';
-import rulesScroll from './rulesScroll.svg';
+import TrophyIcon from './TrophyIcon';
+import ScrollIcon from './ScrollIcon';
 
 const Container = styled.header`
   flex: 0 1 auto; // so it doesn't look too bad on safari
@@ -117,11 +117,11 @@ const Header = () => {
         </TitleText>
 
         {hasGameStarted ? (
-          <HeaderButton onClick={showScores} icon={trophy}>
+          <HeaderButton onClick={showScores} Icon={TrophyIcon}>
             Scores
           </HeaderButton>
         ) : null}
-        <HeaderButton onClick={showRules} icon={rulesScroll}>
+        <HeaderButton onClick={showRules} Icon={ScrollIcon}>
           Rules
         </HeaderButton>
         {avatarUrl && <ProfileImage src={avatarUrl} />}
