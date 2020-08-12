@@ -94,10 +94,14 @@ const Pip = styled.span`
   }
 `;
 
-const Die = ({ id, value, selected, onClick, isInGroup }) => {
+const Die = ({ id, value, selected, onClick, isInGroup, className }) => {
   const arrayWithValueItems = [...Array(value)];
   return (
-    <SelectionAura selected={selected} onClick={onClick} isInGroup={isInGroup}>
+    <SelectionAura
+      selected={selected}
+      onClick={onClick}
+      isInGroup={isInGroup}
+      className={className}>
       <Face isInGroup={isInGroup}>
         {arrayWithValueItems.map((v, k) => (
           <Pip key={k} isInGroup={isInGroup} />

@@ -26,12 +26,12 @@ const P = styled.p`
   font-size: 1.1em;
 `;
 
-const ScoringDiceContainer = styled.div`
+const ScoreDemo = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 
   padding-left: 10px;
   padding-right: 10px;
@@ -43,7 +43,18 @@ const ScoringDiceContainer = styled.div`
 `;
 
 const Dice = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-areas:
+    'a b c'
+    'd e f';
+`;
+
+const CustomDie = styled(Die)`
+  // if one die, put it in middle of grid row
+  &:nth-child(1):last-child {
+    grid-area: b;
+    background-color: red;
+  }
 `;
 
 const RulesPopover = ({ hideRules }) => {
@@ -78,60 +89,60 @@ const RulesPopover = ({ hideRules }) => {
         (N.B. a scoring group must be made up of dice from one throw: dice from
         separate throws can't be grouped together)
       </P>
-      <ScoringDiceContainer>
+      <ScoreDemo>
         <Dice>
-          <Die id={5} key={5} value={5} isInGroup />
+          <CustomDie id={5} key={5} value={5} isInGroup />
         </Dice>
         50
-      </ScoringDiceContainer>
-      <ScoringDiceContainer>
+      </ScoreDemo>
+      <ScoreDemo>
         <Dice>
-          <Die id={1} key={1} value={1} isInGroup />
+          <CustomDie id={1} key={1} value={1} isInGroup />
         </Dice>
         100
-      </ScoringDiceContainer>
-      <ScoringDiceContainer>
+      </ScoreDemo>
+      <ScoreDemo>
         <Dice>
-          <Die id={1} key={1} value={2} isInGroup />
-          <Die id={2} key={2} value={2} isInGroup />
-          <Die id={3} key={3} value={2} isInGroup />
+          <CustomDie id={1} key={1} value={2} isInGroup />
+          <CustomDie id={2} key={2} value={2} isInGroup />
+          <CustomDie id={3} key={3} value={2} isInGroup />
         </Dice>
         Three of a kind = that number in 100s, e.g. three 2s = 200. Except three
         1s is 1000.
-      </ScoringDiceContainer>
-      <ScoringDiceContainer>
+      </ScoreDemo>
+      <ScoreDemo>
         <Dice>
-          <Die id={1} key={1} value={2} isInGroup />
-          <Die id={2} key={2} value={2} isInGroup />
-          <Die id={3} key={3} value={4} isInGroup />
-          <Die id={4} key={4} value={4} isInGroup />
-          <Die id={5} key={5} value={5} isInGroup />
-          <Die id={6} key={6} value={5} isInGroup />
+          <CustomDie id={1} key={1} value={2} isInGroup />
+          <CustomDie id={4} key={4} value={4} isInGroup />
+          <CustomDie id={5} key={5} value={5} isInGroup />
+          <CustomDie id={2} key={2} value={2} isInGroup />
+          <CustomDie id={3} key={3} value={4} isInGroup />
+          <CustomDie id={6} key={6} value={5} isInGroup />
         </Dice>
         Three pairs = 1000
-      </ScoringDiceContainer>
-      <ScoringDiceContainer>
+      </ScoreDemo>
+      <ScoreDemo>
         <Dice>
-          <Die id={1} key={1} value={1} isInGroup />
-          <Die id={2} key={2} value={2} isInGroup />
-          <Die id={3} key={3} value={3} isInGroup />
-          <Die id={4} key={4} value={4} isInGroup />
-          <Die id={5} key={5} value={5} isInGroup />
-          <Die id={6} key={6} value={6} isInGroup />
+          <CustomDie id={1} key={1} value={1} isInGroup />
+          <CustomDie id={2} key={2} value={2} isInGroup />
+          <CustomDie id={3} key={3} value={3} isInGroup />
+          <CustomDie id={4} key={4} value={4} isInGroup />
+          <CustomDie id={5} key={5} value={5} isInGroup />
+          <CustomDie id={6} key={6} value={6} isInGroup />
         </Dice>
         Sequence of 1 to 6 = 1500
-      </ScoringDiceContainer>
-      <ScoringDiceContainer>
+      </ScoreDemo>
+      <ScoreDemo>
         <Dice>
-          <Die id={1} key={1} value={4} isInGroup />
-          <Die id={2} key={2} value={4} isInGroup />
-          <Die id={3} key={3} value={4} isInGroup />
-          <Die id={4} key={4} value={4} isInGroup />
-          <Die id={5} key={5} value={4} isInGroup />
-          <Die id={6} key={6} value={4} isInGroup />
+          <CustomDie id={1} key={1} value={4} isInGroup />
+          <CustomDie id={2} key={2} value={4} isInGroup />
+          <CustomDie id={3} key={3} value={4} isInGroup />
+          <CustomDie id={4} key={4} value={4} isInGroup />
+          <CustomDie id={5} key={5} value={4} isInGroup />
+          <CustomDie id={6} key={6} value={4} isInGroup />
         </Dice>
         Six of any number - you win the game!
-      </ScoringDiceContainer>
+      </ScoreDemo>
     </Overlay>
   );
 };
