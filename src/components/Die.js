@@ -2,43 +2,48 @@ import React from 'react';
 import styled from 'styled-components';
 
 const SelectionAura = styled.div`
+  // N.B. CSS variables are passed to children!
+  --size: ${(props) => (props.isInGroup ? '50px' : '60px')};
+
+  @media (max-width: 768px), (orientation: landscape) {
+    --size: ${(props) => (props.isInGroup ? '30px' : '45px')};
+  }
+
   background-color: ${(props) =>
-    props.selected ? 'rgba(0,240,0,0.5)' : 'rgba(0,240,0,0)'};
+    props.selected ? 'rgba(10,255,80,0.5)' : 'transparent'};
+
   border-radius: 50%;
 
-  padding: ${(props) => (props.isInGroup ? '0' : '15px')};
-
-  margin: 0px;
-  margin-bottom: ${(props) => (props.isInGroup ? '5px' : '30px')};
+  padding: ${(props) => (props.isInGroup ? '0' : 'calc(var(--size) * 0.1)')};
+  margin: ${(props) => (props.isInGroup ? '2px' : 'calc(var(--size) * 0.2)')};
+  margin-bottom: ${(props) =>
+    props.isInGroup ? '5px' : 'calc(var(--size) * 0.4)'};
 
   &:nth-child(even) {
     position: relative;
-    top: ${(props) => (props.isInGroup ? '0' : '30px')};
+    top: ${(props) => (props.isInGroup ? '0' : 'calc(var(--size) * 0.4)')};
   }
 
-  @media (max-width: 768px), (orientation: landscape) {
-    padding: ${(props) => (props.isInGroup ? '0' : '9px')};
-    margin-bottom: ${(props) => (props.isInGroup ? '5px' : '15px')};
-
-    &:nth-child(even) {
-      position: relative;
-      top: ${(props) => (props.isInGroup ? '0' : '15px')};
-    }
-  }
+  transform: rotate(
+    -0.0000000001deg
+  ); // fix Chrome bug with sub pixel rendering
 `;
 
 const Face = styled.div`
   flex: 0 0 auto;
-  margin: ${(props) => (props.isInGroup ? '5px' : '16px')};
-  padding: 10px;
 
-  width: ${(props) => (props.isInGroup ? '60px' : '80px')};
-  height: ${(props) => (props.isInGroup ? '60px' : '80px')};
+  width: var(--size);
+  height: var(--size);
 
-  background-color: #e7e7e7;
-  box-shadow: inset 0 5px white, inset 0 -5px #bbb, inset 5px 0 #d7d7d7,
-    inset -5px 0 #d7d7d7;
+  padding: calc(var(--size) * 0.17);
+
+  box-shadow: inset 0 calc(var(--size) * 0.1) white,
+    inset 0 calc(var(--size) * -0.1) #bbb,
+    inset calc(var(--size) * 0.1) 0 #d7d7d7,
+    inset calc(var(--size) * -0.1) 0 #d7d7d7;
+
   border-radius: 10%;
+  background-color: #e7e7e7;
 
   display: grid;
   grid-template-areas:
@@ -46,14 +51,9 @@ const Face = styled.div`
     'e g f'
     'd . b';
 
-  @media (max-width: 768px), (orientation: landscape) {
-    width: ${(props) => (props.isInGroup ? '30px' : '45px')};
-    height: ${(props) => (props.isInGroup ? '30px' : '45px')};
-    box-shadow: inset 0 4px white, inset 0 -4px #bbb, inset 4px 0 #d7d7d7,
-      inset -4px 0 #d7d7d7;
-
-    margin: ${(props) => (props.isInGroup ? '3px' : '8px')};
-  }
+  transform: rotate(
+    -0.0000000001deg
+  ); // fix Chrome bug with sub pixel rendering
 `;
 
 const Pip = styled.span`
@@ -61,17 +61,17 @@ const Pip = styled.span`
   align-self: center;
   justify-self: center;
 
-  width: ${(props) => (props.isInGroup ? '16px' : '18px')};
-  height: ${(props) => (props.isInGroup ? '16px' : '18px')};
-
-  @media (max-width: 768px), (orientation: landscape) {
-    width: ${(props) => (props.isInGroup ? '8px' : '12px')};
-    height: ${(props) => (props.isInGroup ? '8px' : '12px')};
-  }
+  width: calc(var(--size) * 0.25);
+  height: calc(var(--size) * 0.25);
 
   border-radius: 50%;
   background-color: #333;
-  box-shadow: inset 0 3px #111, inset 0 -3px #555;
+  box-shadow: inset 0 calc(var(--size) * 0.094) #111,
+    inset 0 calc(var(--size) * -0.094) #555;
+
+  transform: rotate(
+    -0.0000000001deg
+  ); // fix Chrome bug with sub pixel rendering
 
   &:nth-child(2) {
     grid-area: b;
