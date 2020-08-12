@@ -10,11 +10,13 @@ const SelectionAura = styled.div`
   }
 
   background-color: ${(props) =>
-    props.selected ? 'rgba(10,255,80,0.5)' : 'transparent'};
+    props.selected
+      ? 'rgba(100,255,150,0.5)'
+      : 'rgba(0,0,0,0)'}; // cant use 'transparent' as it causes the layout to shift
 
   border-radius: 50%;
 
-  padding: ${(props) => (props.isInGroup ? '0' : 'calc(var(--size) * 0.1)')};
+  padding: ${(props) => (props.isInGroup ? '0' : 'calc(var(--size) * 0.17)')};
   margin: ${(props) => (props.isInGroup ? '2px' : 'calc(var(--size) * 0.2)')};
   margin-bottom: ${(props) =>
     props.isInGroup ? '5px' : 'calc(var(--size) * 0.4)'};
