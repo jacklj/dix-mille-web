@@ -4,6 +4,7 @@ import * as firebase from 'firebase/app';
 import 'firebase/functions';
 import { useSelector } from 'react-redux';
 
+import BlappedMessage from './BlappedMessage';
 import {
   isItMyTurn,
   selectGameId,
@@ -40,14 +41,6 @@ const InfoText = styled.div`
   margin-bottom: 10px;
 `;
 
-const BlapText = styled.div`
-  flex: none;
-
-  font-family: Limelight;
-  font-size: 3em;
-  color: #ff6961;
-  letter-spacing: 1px;
-`;
 
 const RolledDice = () => {
   const isMyTurn = useSelector(isItMyTurn);
@@ -99,7 +92,7 @@ const RolledDice = () => {
       {isFailedFirstOfTwoThrowsToDoubleIt ? (
         <InfoText>You have to roll again!</InfoText>
       ) : null}
-      {isBlapped ? <BlapText>BLAP!</BlapText> : null}
+      {isBlapped ? <BlappedMessage /> : null}
     </>
   );
 };
