@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import volume from './volume.svg';
+import VolumeIcon from './VolumeIcon';
 
 const Container = styled.div`
   flex-shrink: 0;
@@ -19,18 +19,6 @@ const Container = styled.div`
 
   display: block;
   position: relative;
-`;
-
-const VolumeIcon = styled.img`
-  color: var(--color);
-  height: 100%;
-  width: 60%;
-  line-height: 100%;
-
-  display: block;
-
-  position: relative;
-  margin-left: 3px;
 `;
 
 const SoundWave = styled.div`
@@ -86,7 +74,7 @@ const SoundOnOffButton = () => {
 
   return (
     <Container onClick={() => setIsOn((x) => !x)}>
-      <VolumeIcon src={volume} />
+      <VolumeIcon />
       <SoundWave isOn={isOn} />
       <SoundWave isOn={isOn} />
     </Container>
