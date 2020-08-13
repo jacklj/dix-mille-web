@@ -53,6 +53,10 @@ const TitleText = styled.div`
   text-shadow: 2px 4px 4px #000000;
   color: white;
   text-align: left;
+
+  @media (max-width: 400px) {
+    font-size: 22px;
+  }
 `;
 
 const Yellow = styled.span`
