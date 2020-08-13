@@ -6,7 +6,7 @@ const bulge = keyframes`
   transform: scale(0);
 }
 50% {
-  transform: scale(1.5);
+  transform: scale(1.3);
 }
 100% {
   transform: scale(1);
@@ -30,7 +30,7 @@ const BlapText = styled.div`
   color: #ff6961;
   letter-spacing: 1px;
 
-  animation: ${bulge} 2s ease-in-out 1;
+  animation: ${bulge} 1s ease-in-out 1;
 
   span {
     position: relative;
@@ -38,7 +38,7 @@ const BlapText = styled.div`
     display: inline-block;
 
     animation: ${bounce} 0.3s ease infinite alternate;
-    animation-delay: 2s;
+    animation-delay: 1s;
 
     text-shadow: 0 1px 0 #4d0400, 0 2px 0 #4d0400, 0 3px 0 #4d0400,
       0 4px 0 #4d0400, 0 5px 0 #4d0400, 0 6px 0 transparent, 0 7px 0 transparent,
@@ -46,19 +46,19 @@ const BlapText = styled.div`
   }
 
   span:nth-child(2) {
-    animation-delay: 2.2s;
+    animation-delay: 1.1s;
   }
 
   span:nth-child(3) {
-    animation-delay: 2.4s;
+    animation-delay: 1.2s;
   }
 
   span:nth-child(4) {
-    animation-delay: 2.6s;
+    animation-delay: 1.3s;
   }
 
   span:nth-child(5) {
-    animation-delay: 2.8s;
+    animation-delay: 1.4s;
   }
 `;
 
