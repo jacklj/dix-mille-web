@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
+import useSound from 'use-sound';
+
+import blapSprites from './blapSprites.mp3';
 
 const bulge = keyframes`
 0% {
@@ -24,6 +27,8 @@ const bounce = keyframes`
 
 const BlapText = styled.div`
   flex: none;
+
+  // margin-bottom: 30px;
 
   font-family: Limelight;
   font-size: 80px;
@@ -62,14 +67,47 @@ const BlapText = styled.div`
   }
 `;
 
-const BlappedMessage = () => (
-  <BlapText>
-    <span>B</span>
-    <span>L</span>
-    <span>A</span>
-    <span>P</span>
-    <span>!</span>
-  </BlapText>
-);
+const spriteMap = {
+  annaBlap: [73, 1226],
+  edBlaaaaap: [1318, 1116],
+  edHighBlap: [2498, 918],
+  emmaBlap: [3449, 914],
+  lewisBlap: [4385, 1332],
+  madsBlap1: [5786, 1267],
+  madsBlap2: [7164, 1428],
+  madsCanYouMakeANoiseLikeThisHoho: [8725, 3770],
+  williamCrazyBlap1: [12514, 2925],
+  williamCrazyBlap2: [15485, 955],
+};
+
+const useSoundOptions = {
+  sprite: spriteMap,
+};
+
+const BlappedMessage = () => {
+  // const [playBlapSound] = useSound(blapSprites, useSoundOptions);
+
+  // useEffect(() => {
+  //   // on mount, play it
+
+  //   const blapNames = Object.keys(spriteMap);
+  //   const randomIndex = Math.floor(Math.random() * blapNames.length);
+  //   const randomSpriteName = blapNames[randomIndex];
+
+  //   console.log(`play ${randomSpriteName}!`);
+
+  //   playBlapSound(randomSpriteName);
+  // }, [playBlapSound]);
+
+  return (
+    <BlapText>
+      <span>B</span>
+      <span>L</span>
+      <span>A</span>
+      <span>P</span>
+      <span>!</span>
+    </BlapText>
+  );
+};
 
 export default BlappedMessage;
