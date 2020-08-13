@@ -1,7 +1,12 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 import { Button } from 'components/forms';
+
+const fadeIn = keyframes`
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+`;
 
 const Container = styled.div`
   position: fixed;
@@ -10,10 +15,12 @@ const Container = styled.div`
   width: 100vw;
   height: 100vh;
 
-  background-color: rgba(10, 10, 10, 0.9);
+  background-color: rgba(10, 10, 10, 0.95);
   overflow-y: scroll;
 
   z-index: 1; // ensures it goes over the avatar carousel
+
+  animation: ${fadeIn} 0.5s ease-in 1;
 `;
 
 // InnerContainer mainly for padding, as bottom padding doesnt work on some browsers when `overflow: scroll`
