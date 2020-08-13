@@ -11,6 +11,7 @@ import ScoresPopover from './ScoresPopover';
 import RulesPopover from './RulesPopover';
 import TrophyIcon from './TrophyIcon';
 import ScrollIcon from './ScrollIcon';
+import SoundOnOffButton from './SoundOnOffButton';
 
 const Container = styled.header`
   flex: 0 1 auto; // so it doesn't look too bad on safari
@@ -116,6 +117,7 @@ const Header = () => {
           <Yellow>D</Yellow>ix <Yellow>M</Yellow>ille
         </TitleText>
 
+        <SoundOnOffButton />
         {hasGameStarted ? (
           <HeaderButton onClick={showScores} Icon={TrophyIcon}>
             Scores
