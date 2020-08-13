@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
 
 import VolumeIcon from './VolumeIcon';
+import { selectIsSoundOn } from 'redux/settings/selectors';
+import { soundOn, soundOff } from 'redux/settings/slice';
 
 const Container = styled.div`
   flex-shrink: 0;
@@ -73,10 +76,19 @@ const SoundWave = styled.div`
 `;
 
 const SoundOnOffButton = () => {
-  const [isOn, setIsOn] = useState(true);
+  const isOn = useSelector(selectIsSoundOn);
+  const dispatch = useDispatch();
+
+  const toggleSound = () => {
+    if (isOn) {
+      dispatch(soundOff());
+    } else {
+      dispatch(soundOn());
+    }
+  };
 
   return (
-    <Container isOn={isOn} onClick={() => setIsOn((x) => !x)}>
+    <Container isOn={isOn} onClick={toggleSound}>
       <VolumeIcon />
       <SoundWave isOn={isOn} />
       <SoundWave isOn={isOn} />
