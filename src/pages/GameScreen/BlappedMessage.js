@@ -8,8 +8,8 @@ const bulge = keyframes`
 0% {
   transform: scale(0);
 }
-50% {
-  transform: scale(1.3);
+80% {
+  transform: scale(1.1);
 }
 100% {
   transform: scale(1);
@@ -68,7 +68,7 @@ const BlapText = styled.div`
 `;
 
 const spriteMap = {
-  annaBlap: [73, 1226],
+  annaBlap: [0, 1226],
   edBlaaaaap: [1318, 1116],
   edHighBlap: [2498, 918],
   emmaBlap: [3449, 914],
@@ -85,28 +85,30 @@ const useSoundOptions = {
 };
 
 const BlappedMessage = () => {
-  // const [playBlapSound] = useSound(blapSprites, useSoundOptions);
+  const [playBlapSound] = useSound(blapSprites, useSoundOptions);
 
-  // useEffect(() => {
-  //   // on mount, play it
+  useEffect(() => {
+    // on mount, play it
 
-  //   const blapNames = Object.keys(spriteMap);
-  //   const randomIndex = Math.floor(Math.random() * blapNames.length);
-  //   const randomSpriteName = blapNames[randomIndex];
+    const blapNames = Object.keys(spriteMap);
+    const randomIndex = Math.floor(Math.random() * blapNames.length);
+    const randomSpriteName = blapNames[randomIndex];
 
-  //   console.log(`play ${randomSpriteName}!`);
+    console.log(`play '${randomSpriteName}'`);
 
-  //   playBlapSound(randomSpriteName);
-  // }, [playBlapSound]);
+    playBlapSound({ id: randomSpriteName });
+  }, [playBlapSound]); // N.B. must have playBlapSound in the dep list, or doesn't work
 
   return (
-    <BlapText>
-      <span>B</span>
-      <span>L</span>
-      <span>A</span>
-      <span>P</span>
-      <span>!</span>
-    </BlapText>
+    <>
+      <BlapText>
+        <span>B</span>
+        <span>L</span>
+        <span>A</span>
+        <span>P</span>
+        <span>!</span>
+      </BlapText>
+    </>
   );
 };
 

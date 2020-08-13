@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import * as firebase from 'firebase/app';
 import 'firebase/functions';
 import { useSelector } from 'react-redux';
-import useSound from 'use-sound';
 
 import BlappedMessage from './BlappedMessage';
 import {
@@ -19,7 +18,6 @@ import {
   selectIsFailedFirstOfTwoThrowsToDoubleIt,
 } from 'redux/game/selectors';
 import Die from 'components/Die';
-import blapSprites from './blapSprites.mp3';
 
 const Container = styled.div`
   flex-shrink: 0;
@@ -43,23 +41,6 @@ const InfoText = styled.div`
   margin-bottom: 10px;
 `;
 
-const spriteMap = {
-  annaBlap: [73, 1226],
-  edBlaaaaap: [1318, 1116],
-  edHighBlap: [2498, 918],
-  emmaBlap: [3449, 914],
-  lewisBlap: [4385, 1332],
-  madsBlap1: [5786, 1267],
-  madsBlap2: [7164, 1428],
-  madsCanYouMakeANoiseLikeThisHoho: [8725, 3770],
-  williamCrazyBlap1: [12514, 2925],
-  williamCrazyBlap2: [15485, 955],
-};
-
-const useSoundOptions = {
-  sprite: spriteMap,
-};
-
 const RolledDice = () => {
   const isMyTurn = useSelector(isItMyTurn);
   const gameId = useSelector(selectGameId);
@@ -75,33 +56,6 @@ const RolledDice = () => {
   const isFailedFirstOfTwoThrowsToDoubleIt = useSelector(
     selectIsFailedFirstOfTwoThrowsToDoubleIt,
   );
-
-  const [playBlapSound] = useSound(blapSprites, {
-    sprite: {
-      annaBlap: [73, 1226],
-      edBlaaaaap: [1318, 1116],
-      edHighBlap: [2498, 918],
-      emmaBlap: [3449, 914],
-      lewisBlap: [4385, 1332],
-      madsBlap1: [5786, 1267],
-      madsBlap2: [7164, 1428],
-      madsCanYouMakeANoiseLikeThisHoho: [8725, 3770],
-      williamCrazyBlap1: [12514, 2925],
-      williamCrazyBlap2: [15485, 955],
-    },
-  });
-
-  useEffect(() => {
-    if (isBlapped) {
-      const blapNames = Object.keys(spriteMap);
-      const randomIndex = Math.floor(Math.random() * blapNames.length);
-      const randomSpriteName = blapNames[randomIndex];
-
-      console.log(`play ${randomSpriteName}!`);
-
-      playBlapSound('williamCrazyBlap1'); // randomSpriteName);
-    }
-  }, [isBlapped, playBlapSound]);
 
   const selectOrUnselectDie = async (diceId) => {
     console.log(`Clicked on dice '${diceId}'`);
