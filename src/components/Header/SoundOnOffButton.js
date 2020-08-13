@@ -24,13 +24,13 @@ const Container = styled.div`
 const VolumeIcon = styled.img`
   color: var(--color);
   height: 100%;
-  width: 65%;
+  width: 60%;
   line-height: 100%;
 
   display: block;
-  margin: auto;
+
   position: relative;
-  margin-left: 0;
+  margin-left: 3px;
 `;
 
 const SoundWave = styled.div`
