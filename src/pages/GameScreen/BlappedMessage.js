@@ -14,23 +14,12 @@ const bulge = keyframes`
 `;
 
 const bounce = keyframes`
-  0% {
-    top: 0;
-  }
-
-  10% {
-    top: -20px;
-  }
-
-  20% {
-    top: 0;
-  }
-
-  // delay
-
-  100% {
-    top: 0;
-  }
+100% {
+  top: -10px;
+  text-shadow: 0 1px 0 #4d0400, 0 2px 0 #4d0400, 0 3px 0 #4d0400, 0 4px 0 #4d0400,
+    0 5px 0 #4d0400, 0 6px 0 #4d0400, 0 7px 0 #4d0400, 0 8px 0 #4d0400, 0 9px 0 #4d0400,
+    0 50px 25px rgba(0, 0, 0, 0.5);
+}
 `;
 
 const BlapText = styled.div`
@@ -45,15 +34,15 @@ const BlapText = styled.div`
 
   span {
     position: relative;
-    // top: 20px;
+    top: 10px;
     display: inline-block;
 
-    animation: ${bounce} 4s ease infinite;
+    animation: ${bounce} 0.3s ease infinite alternate;
     animation-delay: 2s;
 
-    text-shadow: 0 1px 0 #ccc, 0 2px 0 #ccc, 0 3px 0 #ccc, 0 4px 0 #ccc,
-      0 5px 0 #ccc, 0 6px 0 transparent, 0 7px 0 transparent,
-      0 8px 0 transparent, 0 9px 0 transparent, 0 10px 10px rgba(0, 0, 0, 0.4);
+    text-shadow: 0 1px 0 #4d0400, 0 2px 0 #4d0400, 0 3px 0 #4d0400,
+      0 4px 0 #4d0400, 0 5px 0 #4d0400, 0 6px 0 transparent, 0 7px 0 transparent,
+      0 8px 0 transparent, 0 9px 0 transparent, 0 10px 10px rgba(0, 0, 0, 0.7);
   }
 
   span:nth-child(2) {
