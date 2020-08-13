@@ -10,7 +10,7 @@ const Container = styled.div`
 
   margin-right: 2vw;
 
-  --color: #fff;
+  --color: ${(props) => (props.isOn ? '#fff' : '#ccc')};
   --size: 25px;
   --border: calc(var(--size) / 25);
 
@@ -19,6 +19,10 @@ const Container = styled.div`
 
   display: block;
   position: relative;
+
+  &:hover {
+    --color: #ffcf40;
+  }
 `;
 
 const SoundWave = styled.div`
@@ -26,54 +30,53 @@ const SoundWave = styled.div`
   border: var(--border) solid transparent;
   border-right: var(--border) solid var(--color);
   border-radius: 50%;
-  transition: all 200ms;
+  transition: opacity 200ms;
   margin: auto;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
 
-
-
   // first line
-  width: 50%;
-  height: 50%;
+  &:nth-child(2) {
+    width: 45%;
+    height: 45%;
 
-  // second line
-  &:last-child {
-    width: 75%;
-    height: 75%;
+    transition-delay: 0;
   }
 
+  // second line
+  &:nth-child(3) {
+    width: 75%;
+    height: 75%;
 
-  // mute both
+    transition-delay: 200ms;
+  }
+
+  // mute
   ${(props) =>
     !props.isOn &&
     `
-    &, &:last-child {
-      border-radius: 0;
-      width: 50%;
-      height: 50%;
-      border-width: 0 var(--border) 0 0;
+    // both
+    &:nth-child(2), &:nth-child(3)  {
+      opacity: 0;
+    }
+
+    &:nth-child(2) {
+      transition-delay: 200ms;
+    }
+
+    &:nth-child(3) {
+      transition-delay: 0;
     }
   `}
-
-  // mute first
-  ${(props) =>
-    !props.isOn && `transform: rotate(45deg) translate3d(0, -50%, 0);`}
-
-  // mute second
-  &:last-child {
-    ${(props) =>
-      !props.isOn && `transform: rotate(-45deg) translate3d(0, 50%, 0);`}
-  }
 `;
 
 const SoundOnOffButton = () => {
   const [isOn, setIsOn] = useState(true);
 
   return (
-    <Container onClick={() => setIsOn((x) => !x)}>
+    <Container isOn={isOn} onClick={() => setIsOn((x) => !x)}>
       <VolumeIcon />
       <SoundWave isOn={isOn} />
       <SoundWave isOn={isOn} />

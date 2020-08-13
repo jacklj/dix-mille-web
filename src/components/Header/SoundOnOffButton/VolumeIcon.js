@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const Svg = styled.svg`
   fill: var(--color);
   height: 100%;
-  width: 60%;
+  width: 50%;
   line-height: 100%;
 
   display: block;
