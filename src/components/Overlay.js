@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 
 import { Button } from 'components/forms';
@@ -55,11 +55,21 @@ const CustomButton = styled(Button)`
   background-color: black;
 `;
 
-const Overlay = ({ children, closeButton, hide }) => (
-  <Container>
-    {closeButton && <CustomButton onClick={hide}>Close</CustomButton>}
-    <InnerContainer>{children}</InnerContainer>
-  </Container>
-);
+const Overlay = ({ children, closeButton, hide }) => {
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, []);
+
+  return (
+    <Container>
+      {closeButton && <CustomButton onClick={hide}>Close</CustomButton>}
+      <InnerContainer>{children}</InnerContainer>
+    </Container>
+  );
+};
 
 export default Overlay;

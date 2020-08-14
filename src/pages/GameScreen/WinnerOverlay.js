@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -34,17 +34,6 @@ const TableContainer = styled.div`
 const WinnerOverlay = () => {
   const history = useHistory();
   const hasSomeoneWon = useSelector(selectHasSomeoneWon);
-
-  useEffect(() => {
-    if (hasSomeoneWon) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }, [hasSomeoneWon]);
 
   const goBackToHomePage = () => {
     history.push('/');
