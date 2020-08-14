@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -8,12 +8,21 @@ import { Button } from 'components/forms';
 import Overlay from 'components/Overlay';
 import { selectHasSomeoneWon } from 'redux/game/selectors';
 
-const bounce = keyframes`
+const bounceLost = keyframes`
 100% {
   top: -10px;
   text-shadow: 0 1px 0 #155415, 0 2px 0 #155415, 0 3px 0 #155415, 0 4px 0 #155415,
     0 5px 0 #155415, 0 6px 0 #155415, 0 7px 0 #155415, 0 8px 0 #155415, 0 9px 0 #155415,
     0 50px 25px rgba(170, 169, 173, 0.5);
+}
+`;
+
+const bounceWon = keyframes`
+100% {
+  top: -10px;
+  text-shadow: 0 1px 0 #7F6319, 0 2px 0 #7F6319, 0 3px 0 #7F6319, 0 4px 0 #7F6319,
+    0 5px 0 #7F6319, 0 6px 0 #7F6319, 0 7px 0 #7F6319, 0 8px 0 #7F6319, 0 9px 0 #7F6319,
+    0 50px 25px rgba(255, 220, 127, 0.5);
 }
 `;
 
@@ -35,7 +44,7 @@ const Container = styled.div`
 
   font-size: 80px;
   font-family: Limelight;
-  color: #77dd77;
+  color: ${(props) => (props.didIWin ? '#FFC019' : '#77dd77')};
 
   @media (max-width: 480px) {
     font-size: 55px;
@@ -47,36 +56,78 @@ const Container = styled.div`
     top: 10px;
     display: inline-block;
 
-    animation: ${bounce} 0.3s ease infinite alternate;
+    ${(props) =>
+      props.didIWin
+        ? css`
+            animation: ${bounceWon} 0.3s ease infinite alternate;
 
-    text-shadow: 0 1px 0 #155415, 0 2px 0 #155415, 0 3px 0 #155415,
-      0 4px 0 #155415, 0 5px 0 #155415, 0 6px 0 transparent, 0 7px 0 transparent,
-      0 8px 0 transparent, 0 9px 0 transparent,
-      0 10px 10px rgba(170, 169, 173, 0.7);
+            text-shadow: 0 1px 0 #7f6319, 0 2px 0 #7f6319, 0 3px 0 #7f6319,
+              0 4px 0 #7f6319, 0 5px 0 #7f6319, 0 6px 0 transparent,
+              0 7px 0 transparent, 0 8px 0 transparent, 0 9px 0 transparent,
+              0 10px 10px rgba(255, 220, 127, 0.7);
+          `
+        : css`
+            animation: ${bounceLost} 0.3s ease infinite alternate;
+
+            text-shadow: 0 1px 0 #155415, 0 2px 0 #155415, 0 3px 0 #155415,
+              0 4px 0 #155415, 0 5px 0 #155415, 0 6px 0 transparent,
+              0 7px 0 transparent, 0 8px 0 transparent, 0 9px 0 transparent,
+              0 10px 10px rgba(170, 169, 173, 0.7);
+          `}
   }
 
-  ${nthChildCss}  
-}
+  ${nthChildCss}
+
+  ${(props) => !props.didIWin && `filter: url("#flyOn");`}
+`;
+
+const Svg = styled.svg`
+  // hide it!
+  display: absolute;
+  top: 0;
+  left: 0;
+  height: 1px;
+  width: 1px;
+  z-index: -1;
 `;
 
 // dummy data
 const hasSomeoneWon = {
-  didIWin: true,
+  didIWin: false,
+  winnersName: 'Granchester Mike',
 };
 
 const WinnerText = () => {
   // const hasSomeoneWon = useSelector(selectHasSomeoneWon);
 
-  const message = `${
-    hasSomeoneWon.didIWin ? 'You' : hasSomeoneWon.winnersName
-  } won!`;
+  const { didIWin } = hasSomeoneWon;
+
+  const message = `${didIWin ? 'You' : hasSomeoneWon.winnersName} won!`;
 
   // wrap every character (except space) in a span
   const jsx = (
     <>{message.split('').map((x) => (x === ' ' ? x : <span>{x}</span>))}</>
   );
 
-  return <Container>{jsx}</Container>;
+  return (
+    <>
+      <Container didIWin={didIWin}>{jsx}</Container>
+      <Svg>
+        <defs>
+          <filter id="flyOn">
+            <feTurbulence
+              id="turbulence"
+              baseFrequency="0.02"
+              numOctaves="3"
+              result="noise"
+              seed="3"
+            />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="15" />
+          </filter>
+        </defs>
+      </Svg>
+    </>
+  );
 };
 
 export default WinnerText;
