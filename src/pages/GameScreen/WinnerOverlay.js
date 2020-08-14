@@ -7,12 +7,7 @@ import ScoresTable from 'components/ScoresTable';
 import { Button } from 'components/forms';
 import Overlay from 'components/Overlay';
 import { selectHasSomeoneWon } from 'redux/game/selectors';
-
-const WinnerText = styled.div`
-  color: #77dd77;
-  font-size: 3em;
-  margin-bottom: 40px;
-`;
+import WinnerText from './WinnerText';
 
 const TableContainer = styled.div`
   flex: 0;
@@ -45,12 +40,7 @@ const WinnerOverlay = () => {
   } else {
     return (
       <Overlay>
-        <WinnerText>{`${
-          hasSomeoneWon.didIWin ? 'You' : hasSomeoneWon.winnersName
-        } won!`}</WinnerText>
-        <TableContainer>
-          <ScoresTable />
-        </TableContainer>
+        <WinnerText />
         <Button onClick={goBackToHomePage}>Play again</Button>
       </Overlay>
     );
