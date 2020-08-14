@@ -17,6 +17,8 @@ const IntroText = styled.div`
 
   color: #ffdc73;
   font-size: 1.5em;
+
+  text-shadow: 0 8px 8px rgba(0, 0, 0, 0.5);
 `;
 
 const CustomButton = styled(Button)`

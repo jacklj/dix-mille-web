@@ -3,8 +3,9 @@ import styled, { keyframes } from 'styled-components';
 import useSound from 'use-sound';
 import { useSelector } from 'react-redux';
 
-import blapSprites from './blapSprites.mp3';
 import { selectIsSoundOn } from 'redux/settings/selectors';
+import blapSprites from 'media/sounds/blapSprites.mp3';
+import spriteMap from 'media/sounds/spriteMap';
 
 const bulge = keyframes`
 0% {
@@ -68,19 +69,6 @@ const BlapText = styled.div`
     animation-delay: 1.4s;
   }
 `;
-
-const spriteMap = {
-  annaBlap: [0, 1226],
-  edBlaaaaap: [1318, 1116],
-  edHighBlap: [2498, 918],
-  emmaBlap: [3449, 914],
-  lewisBlap: [4385, 1332],
-  madsBlap1: [5786, 1267],
-  madsBlap2: [7164, 1428],
-  madsCanYouMakeANoiseLikeThisHoho: [8725, 3770],
-  williamCrazyBlap1: [12514, 2925],
-  williamCrazyBlap2: [15485, 955],
-};
 
 const useSoundOptions = {
   sprite: spriteMap,

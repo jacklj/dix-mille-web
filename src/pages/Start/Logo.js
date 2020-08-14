@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
+import useSound from 'use-sound';
+import { useSelector } from 'react-redux';
+
+import { selectIsSoundOn } from 'redux/settings/selectors';
+import blapSprites from 'media/sounds/blapSprites.mp3';
+import spriteMap from 'media/sounds/spriteMap';
 
 const bulge = keyframes`
 0% {
@@ -80,13 +86,32 @@ const Yellow = styled.span`
   }
 `;
 
+const useSoundOptions = {
+  sprite: spriteMap,
+};
+
 const Logo = () => {
   const [playingAnimation, setPlayingAnimation] = useState(false);
+  const isSoundOn = useSelector(selectIsSoundOn);
+  const [playBlapSound] = useSound(blapSprites, useSoundOptions);
+
+  const onClick = () => {
+    setPlayingAnimation(true);
+
+    if (isSoundOn) {
+      const blapNames = Object.keys(spriteMap);
+      const randomIndex = Math.floor(Math.random() * blapNames.length);
+      const randomSpriteName = blapNames[randomIndex];
+
+      console.log(`play '${randomSpriteName}'`);
+      playBlapSound({ id: randomSpriteName });
+    }
+  };
 
   return (
     <Container
       playingAnimation={playingAnimation}
-      onClick={() => setPlayingAnimation(true)}
+      onClick={onClick}
       onAnimationEnd={() => setPlayingAnimation(false)}>
       <Yellow playingAnimation={playingAnimation}>D</Yellow>
       <span>i</span>
