@@ -1,11 +1,7 @@
 import React from 'react';
 import styled, { css, keyframes } from 'styled-components';
-import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import ScoresTable from 'components/ScoresTable';
-import { Button } from 'components/forms';
-import Overlay from 'components/Overlay';
 import { selectHasSomeoneWon } from 'redux/game/selectors';
 
 const bounceLost = keyframes`
@@ -92,13 +88,13 @@ const Svg = styled.svg`
 `;
 
 // dummy data
-const hasSomeoneWon = {
-  didIWin: false,
-  winnersName: 'Granchester Mike',
-};
+// const hasSomeoneWon = {
+//   didIWin: false,
+//   winnersName: 'Granchester Mike',
+// };
 
 const WinnerText = () => {
-  // const hasSomeoneWon = useSelector(selectHasSomeoneWon);
+  const hasSomeoneWon = useSelector(selectHasSomeoneWon);
 
   const { didIWin } = hasSomeoneWon;
 

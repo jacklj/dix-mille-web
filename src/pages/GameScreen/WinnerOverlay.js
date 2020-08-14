@@ -41,6 +41,9 @@ const WinnerOverlay = () => {
     return (
       <Overlay>
         <WinnerText />
+        <TableContainer>
+          <ScoresTable />
+        </TableContainer>
         <Button onClick={goBackToHomePage}>Play again</Button>
       </Overlay>
     );
