@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import * as firebase from 'firebase/app';
 import 'firebase/functions';
 
+import Logo from './Logo';
 import { loggedInAndCreatedGame } from 'redux/auth/slice';
 import { Button } from 'components/forms';
 import SetupScreenContainer from 'components/SetupScreenContainer';
@@ -80,6 +81,7 @@ const Start = () => {
 
   return (
     <SetupScreenContainer>
+      <Logo />
       <IntroText>Play the classic French café table dice game.</IntroText>
       <div>
         <CustomButton
