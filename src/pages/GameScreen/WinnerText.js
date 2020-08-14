@@ -13,9 +13,22 @@ const bounce = keyframes`
   top: -10px;
   text-shadow: 0 1px 0 #155415, 0 2px 0 #155415, 0 3px 0 #155415, 0 4px 0 #155415,
     0 5px 0 #155415, 0 6px 0 #155415, 0 7px 0 #155415, 0 8px 0 #155415, 0 9px 0 #155415,
-    0 50px 25px rgba(200, 200, 200, 0.5);
+    0 50px 25px rgba(170, 169, 173, 0.5);
 }
 `;
+
+let nthChildCss = ``;
+
+for (let i = 2; i < 60; i++) {
+  nthChildCss =
+    nthChildCss +
+    `
+  span:nth-child(${i}) {
+    animation-delay: ${0.1 * (i - 1)}s;
+  }
+
+  `;
+}
 
 const Container = styled.div`
   margin-bottom: 40px;
@@ -39,24 +52,11 @@ const Container = styled.div`
     text-shadow: 0 1px 0 #155415, 0 2px 0 #155415, 0 3px 0 #155415,
       0 4px 0 #155415, 0 5px 0 #155415, 0 6px 0 transparent, 0 7px 0 transparent,
       0 8px 0 transparent, 0 9px 0 transparent,
-      0 10px 10px rgba(200, 200, 200, 0.7);
+      0 10px 10px rgba(170, 169, 173, 0.7);
   }
 
-  span:nth-child(2) {
-    animation-delay: 0.1s;
-  }
-
-  span:nth-child(3) {
-    animation-delay: 0.2s;
-  }
-
-  span:nth-child(4) {
-    animation-delay: 0.3s;
-  }
-
-  span:nth-child(5) {
-    animation-delay: 0.4s;
-  }
+  ${nthChildCss}  
+}
 `;
 
 // dummy data
