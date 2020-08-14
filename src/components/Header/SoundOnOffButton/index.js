@@ -1,10 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
+import useSound from 'use-sound';
 
 import VolumeIcon from './VolumeIcon';
 import { selectIsSoundOn } from 'redux/settings/selectors';
 import { soundOn, soundOff } from 'redux/settings/slice';
+import switchOff from './switchOff.mp3';
+import switchOn from './switchOn.mp3';
 
 const Container = styled.div`
   flex-shrink: 0;
@@ -78,11 +81,15 @@ const SoundWave = styled.div`
 const SoundOnOffButton = () => {
   const isOn = useSelector(selectIsSoundOn);
   const dispatch = useDispatch();
+  const [playSwitchOn] = useSound(switchOn, { volume: 0.4 });
+  const [playSwitchOff] = useSound(switchOff);
 
   const toggleSound = () => {
     if (isOn) {
+      playSwitchOff();
       dispatch(soundOff());
     } else {
+      playSwitchOn();
       dispatch(soundOn());
     }
   };
