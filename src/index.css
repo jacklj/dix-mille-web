@@ -18,6 +18,8 @@ body {
   color: rgb(180, 176, 85);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  user-select: none;
 }
 
 code {
