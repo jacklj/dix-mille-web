@@ -17,8 +17,10 @@ const Container = styled.div`
   flex-shrink: 0; // prevents Safari freaking out
 `;
 
-const Yellow = styled.span`
+const Code = styled.span`
   color: #ffcf40;
+  cursor: text;
+  user-select: text;
 `;
 
 // N.B. In iOS Safari, the button text isn't perfectly vertically centered when the button
@@ -55,7 +57,7 @@ const GameCode = () => {
   return (
     <Container>
       <Text>
-        Game code: <Yellow>{gameCode}</Yellow>
+        Game code: <Code>{gameCode}</Code>
       </Text>
       <CopyToClipboard text={gameCode} onCopy={() => setIsCopied(true)}>
         <CustomButton>{isCopied ? '✅ Copied.' : 'Copy'}</CustomButton>

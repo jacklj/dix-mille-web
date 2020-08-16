@@ -46,6 +46,8 @@ const Container = styled.div`
   font-family: Limelight;
   color: white;
 
+  cursor: pointer;
+
   text-shadow: 0 1px 0 #bbb, 0 2px 0 #bbb, 0 3px 0 #bbb, 0 4px 0 #bbb,
     0 5px 0 #bbb, 0 6px 0 transparent, 0 7px 0 transparent, 0 8px 0 transparent,
     0 9px 0 transparent, 0 10px 10px rgba(0, 0, 0, 0.7);

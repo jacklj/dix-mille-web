@@ -23,6 +23,8 @@ const Container = styled.div`
   width: var(--size);
   height: var(--size);
 
+  cursor: pointer;
+
   display: block;
   position: relative;
 

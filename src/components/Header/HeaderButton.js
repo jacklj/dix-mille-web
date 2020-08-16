@@ -24,6 +24,8 @@ const Container = styled.div`
   font-family: Limelight;
   text-transform: uppercase;
 
+  cursor: pointer;
+
   // svg
   & svg {
     height: 1em;

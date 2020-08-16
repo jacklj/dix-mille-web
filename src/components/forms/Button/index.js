@@ -37,6 +37,8 @@ const BasicButton = styled.button`
   border-color: ${Colours.normal};
   text-shadow: 2px 2px 8px #000000;
 
+  cursor: pointer;
+
   ${({ isDisabled }) =>
     isDisabled &&
     `
