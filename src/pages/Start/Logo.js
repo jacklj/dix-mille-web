@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import useSound from 'use-sound';
 import { useSelector } from 'react-redux';
@@ -88,26 +88,34 @@ const Yellow = styled.span`
   }
 `;
 
-const useSoundOptions = {
-  sprite: spriteMap,
-};
-
 const Logo = () => {
   const [playingAnimation, setPlayingAnimation] = useState(false);
   const isSoundOn = useSelector(selectIsSoundOn);
-  const [playBlapSound] = useSound(blapSprites, useSoundOptions);
+
+  const [playBlapSound, { stop, isPlaying }] = useSound(blapSprites, {
+    sprite: spriteMap,
+    interrupt: false, // if a sound is already playing, overlap it (rather than stopping it when starting a new one)
+    soundEnabled: isSoundOn, // not reactive...
+    // loop: true, // can't `stop()` looped sounds after the first loop...
+  });
+
+  useEffect(() => {
+    // N.B. if multiple sounds are playing concurrently, not all of them will be stopped by calling `stop()`...
+    console.log('effect', { isPlaying, isSoundOn });
+    if (isPlaying && !isSoundOn) {
+      stop();
+    }
+  }, [isPlaying, isSoundOn, stop]);
 
   const onClick = () => {
     setPlayingAnimation(true);
 
-    if (isSoundOn) {
-      const blapNames = Object.keys(spriteMap);
-      const randomIndex = Math.floor(Math.random() * blapNames.length);
-      const randomSpriteName = blapNames[randomIndex];
+    const blapNames = Object.keys(spriteMap);
+    const randomIndex = Math.floor(Math.random() * blapNames.length);
+    const randomSpriteName = blapNames[randomIndex];
 
-      console.log(`play '${randomSpriteName}'`);
-      playBlapSound({ id: randomSpriteName });
-    }
+    console.log(`play '${randomSpriteName}'`);
+    playBlapSound({ id: randomSpriteName });
   };
 
   return (
