@@ -373,60 +373,54 @@ const GameButtons = () => {
 
   const hasRolled = !!currentRoll;
 
-  let canGroup, canStick, canEndTurnAfterBlap;
+  let canGroup,
+    canStick,
+    canEndTurnAfterBlap,
+    isRollDisabled,
+    isRollEffectivelyLoading;
 
   if (!isMyTurn) {
+    // not your turn - all disabled.
     canGroup = false;
     canStick = false;
     canEndTurnAfterBlap = false;
-    // isRollDisabled = true;
+    isRollDisabled = true;
+    isRollEffectivelyLoading = false;
   } else if (isRolling) {
+    // it's your turn and you're rolling
     canGroup = false;
     canStick = false;
     canEndTurnAfterBlap = false;
+    isRollDisabled = false;
+    isRollEffectivelyLoading = true;
+  } else if (!hasRolled) {
+    // it's your turn, you're not rolling, and you haven't rolled yet
+    canGroup = false;
+    canStick = false;
+    canEndTurnAfterBlap = false;
+    isRollDisabled = false;
+    isRollEffectivelyLoading = false;
   } else if (isBlapped) {
+    // it's your turn, you've rolled with a blap.
     canGroup = false;
     canStick = false;
     canEndTurnAfterBlap = !isFinishingTurnAfterBlapping;
-    // isRollDisabled = true;
-  } else if (!hasRolled) {
-    canGroup = false;
-    canStick = false;
-    canEndTurnAfterBlap = false;
-    // isRollDisabled = false;
+    isRollDisabled = true;
+    isRollEffectivelyLoading = false;
   } else {
-    // it's your turn, youve rolled, and you havent blapped.
+    // it's your turn, you've rolled, and you havent blapped.
     const noDiceSelected =
       !selectedDice ||
       Object.values(selectedDice).filter((x) => x).length === 0;
 
     canGroup = !isGrouping && !noDiceSelected;
-    // isRollDisabled =
-    //   // !isHoldingDownRollButton &&
-    //   !(hasRolled && noScoringGroups && !isFirstOfTwoThrowsToDoubleIt);
     canStick = !isSticking && hasRolled; // N.B. can stick when no scoring groups
     canEndTurnAfterBlap = false;
-  }
 
-  let isRollDisabled, isRollEffectivelyLoading;
-  if (!isMyTurn) {
-    // not your turn - disabled.
-    isRollDisabled = true;
-  } else if (isRolling) {
-    // it's your turn and you're rolling
-    isRollEffectivelyLoading = true;
-  } else if (!hasRolled) {
-    // it's your turn, you're not rolling, and you havent rolled yet
-  } else {
-    // it's your turn and you've already rolled
-
-    if (isBlapped) {
-      isRollDisabled = true;
-    } else {
-      const noScoringGroups =
-        !currentScoringGroups || Object.keys(currentScoringGroups).length === 0;
-      isRollDisabled = noScoringGroups && !isFirstOfTwoThrowsToDoubleIt;
-    }
+    const noScoringGroups =
+      !currentScoringGroups || Object.keys(currentScoringGroups).length === 0;
+    isRollDisabled = noScoringGroups && !isFirstOfTwoThrowsToDoubleIt;
+    isRollEffectivelyLoading = false;
   }
 
   return (
@@ -442,6 +436,8 @@ const GameButtons = () => {
         onMouseUp={rollDiceMouseUp}
         onMouseLeave={rollDiceMouseUp}
         disabled={isRollDisabled}
+        // N.B. roll button can't use `loading` prop, as this disables the button, and then the mouse
+        // events aren't fired.
         isEffectivelyLoading={isRollEffectivelyLoading}>
         Roll
       </CustomButton>
