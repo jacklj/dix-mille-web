@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import * as firebase from 'firebase/app';
 import 'firebase/functions';
@@ -124,9 +124,67 @@ const GameButtons = () => {
     setIsFinishingTurnAfterBlapping,
   ] = useState(false);
 
+  const [isRolling, setIsRolling] = useState(false);
+
   // do an effect for [isHoldingDownRollButton, isRollingCloud] - sets
-  // isRolling from to true when isHoldingDownRollButton !x => x, and to false
+  // isRolling to true when isHoldingDownRollButton !x => x, and to false
   // on the second of either going from x => !x
+  // NB could there be a race condition when, for some reason, the 'stop rolling'
+  // instruction reaches DB before the 'start rolling' one does????? TODO
+  const previousIsHoldingDownRollButton = useRef(false);
+  const previousIsRollingCloud = useRef(false);
+
+  useEffect(() => {
+    console.log('effect ran', isHoldingDownRollButton, isRollingCloud);
+    if (!isMyTurn) {
+      console.log('not your turn - dont run effect');
+      return;
+    }
+    const writeIsRollingFalse = async () => {
+      const path = `games/${gameId}/rounds/${currentRoundId}/turns/${currentTurnId}/isRolling`;
+      await firebase.database().ref(path).set(false);
+    };
+
+    if (
+      previousIsHoldingDownRollButton.current === false &&
+      isHoldingDownRollButton
+    ) {
+      setIsRolling(true);
+      console.log(
+        '!previousIsHoldingDownRollButton && isHoldingDownRollButton',
+      );
+    } else if (isRollingCloud && !isHoldingDownRollButton) {
+      console.log('PREVENT RACE CONDITION');
+      writeIsRollingFalse();
+    } else if (
+      (isRollingCloud === false &&
+        previousIsHoldingDownRollButton.current &&
+        isHoldingDownRollButton === false) ||
+      (isHoldingDownRollButton === false &&
+        previousIsRollingCloud.current &&
+        isRollingCloud === false)
+    ) {
+      console.log(
+        'second of cloud and local rolling flags has gone back to false',
+        previousIsRollingCloud.current,
+        isRollingCloud,
+        previousIsHoldingDownRollButton.current,
+        isHoldingDownRollButton,
+      );
+      setIsRolling(false);
+    }
+
+    // update 'previous' values
+    previousIsHoldingDownRollButton.current = isHoldingDownRollButton;
+    previousIsRollingCloud.current = isRollingCloud;
+  }, [
+    currentRoundId,
+    currentTurnId,
+    gameId,
+    isHoldingDownRollButton,
+    isMyTurn,
+    isRollingCloud,
+  ]);
 
   const rollDiceMouseDown = async (event) => {
     console.log('mouse down');
@@ -154,6 +212,7 @@ const GameButtons = () => {
       await firebase.functions().httpsCallable('rollDice')({
         gameId,
       });
+      console.log('cf returned!');
 
       // if (!isHoldingDownRollButton) {
       //   // when the cf returned, user had already let go of Roll button
@@ -176,7 +235,9 @@ const GameButtons = () => {
   const rollDiceMouseUp = async (event) => {
     console.log('mouse up');
     if (!isHoldingDownRollButton) {
+      console.log('isnt holdihg down roll button - dont do anything');
       // user wasn't holding the button down - dont do anything
+      return;
     }
     event.stopPropagation();
 
@@ -184,6 +245,9 @@ const GameButtons = () => {
 
     if (!isRollingCloud) {
       // cloud function hasn't returned yet - dont write to DB
+      console.log(
+        '[rollDiceMouseUp] cf hasnt returned yet - dont write isRolling: false',
+      );
       return;
     }
 
@@ -191,7 +255,6 @@ const GameButtons = () => {
     console.log(
       'user let go of roll button, and roll has been received - set isRolling: false',
     );
-
     const path = `games/${gameId}/rounds/${currentRoundId}/turns/${currentTurnId}/isRolling`;
     await firebase.database().ref(path).set(false);
   };
@@ -357,7 +420,7 @@ const GameButtons = () => {
         // disabled={!isRollDisabled}
         // loading={isRollLoading}
       >
-        {isRollLoading ? 'Rolling' : 'Roll'}
+        {isRolling ? 'Rolling' : 'Roll'}
       </CustomButton>
       {isBlapped ? (
         <CustomButton
