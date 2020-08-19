@@ -93,7 +93,9 @@ const Button = ({
   loadingMessage = null,
   children,
   className,
-  onClick,
+  onClick = () => {},
+  onMouseDown = () => {},
+  onMouseUp = () => {},
   disabled,
 }) => {
   return (
@@ -102,7 +104,9 @@ const Button = ({
       disabled={disabled || loading} // native <button /> 'disabled' attribute
       isDisabled={disabled} // for conditional styling
       isLoading={loading}
-      onClick={onClick}>
+      onClick={onClick}
+      onMouseDown={onMouseDown}
+      onMouseUp={onMouseUp}>
       <FlexSpan>
         {loading ? (
           <>

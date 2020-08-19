@@ -338,6 +338,18 @@ const selectCurrentTurn = (state) => {
   return currentTurnObj;
 };
 
+export const selectIsRolling = (state) => {
+  const currentTurn = selectCurrentTurn(state);
+
+  if (!currentTurn) {
+    return undefined;
+  }
+
+  const { isRolling } = currentTurn;
+
+  return isRolling;
+};
+
 const hasRolledSixOfAKind = (currentTurnObj) => {
   const { rolls } = currentTurnObj;
 

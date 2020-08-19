@@ -16,6 +16,7 @@ import {
   selectCurrentRollMinusScoringGroups,
   selectIsBlapped,
   selectIsFailedFirstOfTwoThrowsToDoubleIt,
+  selectIsRolling,
 } from 'redux/game/selectors';
 import Die from 'components/Die';
 
@@ -56,6 +57,7 @@ const RolledDice = () => {
   const isFailedFirstOfTwoThrowsToDoubleIt = useSelector(
     selectIsFailedFirstOfTwoThrowsToDoubleIt,
   );
+  const isRollingCloud = useSelector(selectIsRolling);
 
   const selectOrUnselectDie = async (diceId) => {
     console.log(`Clicked on dice '${diceId}'`);
@@ -77,6 +79,7 @@ const RolledDice = () => {
   return (
     <>
       <Container>
+        {isRollingCloud && <InfoText>ROLLING</InfoText>}
         {currentDiceRollMinusScoringGroups &&
           Object.keys(currentDiceRollMinusScoringGroups).map((id) => (
             <Die

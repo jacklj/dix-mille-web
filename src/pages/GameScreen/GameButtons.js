@@ -15,6 +15,7 @@ import {
   selectCurrentRollNumber,
   selectCurrentScoringGroups,
   selectIsFirstOfTwoThrowsToDoubleIt,
+  selectIsRolling,
 } from 'redux/game/selectors';
 
 import GameLogic from 'services/GameLogic';
@@ -105,6 +106,7 @@ const GameButtons = () => {
   const currentTurnId = useSelector(selectCurrentTurnId);
   const currentRoll = useSelector(selectCurrentRoll);
   const selectedDice = useSelector(selectSelectedDice);
+  const isRollingCloud = useSelector(selectIsRolling);
 
   const currentScoringGroups = useSelector(selectCurrentScoringGroups);
 
@@ -114,7 +116,7 @@ const GameButtons = () => {
     selectIsFirstOfTwoThrowsToDoubleIt,
   );
 
-  const [isRolling, setIsRolling] = useState(false);
+  const [isHoldingDownRollButton, setIsHoldingDownRollButton] = useState(false);
   const [isGrouping, setIsGrouping] = useState(false);
   const [isSticking, setIsSticking] = useState(false);
   const [
@@ -122,12 +124,29 @@ const GameButtons = () => {
     setIsFinishingTurnAfterBlapping,
   ] = useState(false);
 
-  const rollDie = async () => {
-    setIsRolling(true);
+  // do an effect for [isHoldingDownRollButton, isRollingCloud] - sets
+  // isRolling from to true when isHoldingDownRollButton !x => x, and to false
+  // on the second of either going from x => !x
+
+  const rollDiceMouseDown = async (event) => {
+    console.log('mouse down');
+    event.stopPropagation();
+
+    if (isHoldingDownRollButton) {
+      // already rolling - user probably mouse up'ed off the button, then tried to fix it
+      // by clicking on Roll button again
+      return;
+    }
+
+    setIsHoldingDownRollButton(true);
+    console.log(
+      'setIsHoldingDownRollButton has just been set to true: ',
+      isHoldingDownRollButton,
+    );
 
     if (!isMyTurn) {
       alert("You can't roll - it's not your turn!");
-      setIsRolling(false);
+      setIsHoldingDownRollButton(false);
       return;
     }
 
@@ -135,10 +154,46 @@ const GameButtons = () => {
       await firebase.functions().httpsCallable('rollDice')({
         gameId,
       });
+
+      // if (!isHoldingDownRollButton) {
+      //   // when the cf returned, user had already let go of Roll button
+      //   console.log(
+      //     'when roll cf returned, user had already let go of roll button - write isRolling: false to DB',
+      //     isHoldingDownRollButton,
+      //   );
+      //   const path = `games/${gameId}/rounds/${currentRoundId}/turns/${currentTurnId}/isRolling`;
+      //   await firebase.database().ref(path).set(false);
+
+      //   // setIsHoldingDownRollButton(false);
+      // }
     } catch (error) {
       alert(error.message);
+      // write isRolling: false to DB (or catch error in cloud function and do this?)
+      // setIsHoldingDownRollButton(false);
     }
-    setIsRolling(false);
+  };
+
+  const rollDiceMouseUp = async (event) => {
+    console.log('mouse up');
+    if (!isHoldingDownRollButton) {
+      // user wasn't holding the button down - dont do anything
+    }
+    event.stopPropagation();
+
+    setIsHoldingDownRollButton(false);
+
+    if (!isRollingCloud) {
+      // cloud function hasn't returned yet - dont write to DB
+      return;
+    }
+
+    // TODO check that roll has been received
+    console.log(
+      'user let go of roll button, and roll has been received - set isRolling: false',
+    );
+
+    const path = `games/${gameId}/rounds/${currentRoundId}/turns/${currentTurnId}/isRolling`;
+    await firebase.database().ref(path).set(false);
   };
 
   const createDiceGroup = async () => {
@@ -255,22 +310,23 @@ const GameButtons = () => {
 
   const hasRolled = !!currentRoll;
 
-  let canGroup, canRoll, canStick, canEndTurnAfterBlap;
+  let canGroup, isRollDisabled, canStick, canEndTurnAfterBlap;
+  const isRollLoading = isRollingCloud || isHoldingDownRollButton;
 
   if (!isMyTurn) {
     canGroup = false;
-    canRoll = false;
+    isRollDisabled = false;
     canStick = false;
     canEndTurnAfterBlap = false;
   } else if (isBlapped) {
     canGroup = false;
-    canRoll = false;
+    isRollDisabled = false;
     canStick = false;
     canEndTurnAfterBlap = !isFinishingTurnAfterBlapping;
   } else if (!hasRolled) {
     canGroup = false;
     canStick = false;
-    canRoll = !isRolling;
+    isRollDisabled = !isHoldingDownRollButton;
     canEndTurnAfterBlap = false;
   } else {
     const noScoringGroups =
@@ -281,13 +337,12 @@ const GameButtons = () => {
       Object.values(selectedDice).filter((x) => x).length === 0;
 
     canGroup = !isGrouping && !noDiceSelected;
-    canRoll =
-      !isRolling &&
+    isRollDisabled =
+      // !isHoldingDownRollButton &&
       !(hasRolled && noScoringGroups && !isFirstOfTwoThrowsToDoubleIt);
     canStick = !isSticking && hasRolled; // N.B. can stick when no scoring groups
     canEndTurnAfterBlap = false;
   }
-
   return (
     <Container>
       <CustomButton
@@ -297,10 +352,12 @@ const GameButtons = () => {
         Bank
       </CustomButton>
       <CustomButton
-        onClick={() => rollDie()}
-        disabled={!canRoll}
-        loading={isRolling}>
-        Roll
+        onMouseDown={rollDiceMouseDown}
+        onMouseUp={rollDiceMouseUp}
+        // disabled={!isRollDisabled}
+        // loading={isRollLoading}
+      >
+        {isRollLoading ? 'Rolling' : 'Roll'}
       </CustomButton>
       {isBlapped ? (
         <CustomButton
