@@ -90,29 +90,32 @@ const FlexSpan = styled.span`
 
 const Button = ({
   loading,
-  isEffectivelyLoading, // for Roll button - we can't `disable` the button as then the mouse
-  // events aren't triggered
   loadingMessage = null,
   children,
   className,
-  onClick = () => {},
-  onMouseDown = () => {},
-  onMouseUp = () => {},
-  onMouseLeave = () => {},
+  onClick,
+  onMouseDown,
+  onMouseUp,
+  onMouseLeave,
   disabled,
 }) => {
   return (
     <BasicButton
       className={className}
-      disabled={disabled || loading} // native <button /> 'disabled' attribute
+      // N.B. when a native html <button> element has the `disabled` attribute, it no longer fires mouse events
+      // like onMouseUp and onMouseLeave. So if we disable the button when it's in the loading state, then
+      // these don't work. Solution: if any such events have handlers defined, don't disable the button - the
+      // event handlers will have to perform validity checks themselves.
+      // The button will still look disabled as the props are passed through to the styled component.
+      disabled={disabled || (loading && !(onMouseUp || onMouseLeave))} // native <button /> 'disabled' attribute
       isDisabled={disabled} // for conditional styling
-      isLoading={loading || isEffectivelyLoading}
-      onClick={onClick}
-      onMouseDown={onMouseDown}
-      onMouseUp={onMouseUp}
-      onMouseLeave={onMouseLeave}>
+      isLoading={loading}
+      onClick={onClick && onClick}
+      onMouseDown={onMouseDown && onMouseDown}
+      onMouseUp={onMouseUp && onMouseUp}
+      onMouseLeave={onMouseLeave && onMouseLeave}>
       <FlexSpan>
-        {loading || isEffectivelyLoading ? (
+        {loading ? (
           <>
             <LoadingSpinner />
             {loadingMessage && (

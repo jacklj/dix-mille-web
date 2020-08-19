@@ -373,11 +373,7 @@ const GameButtons = () => {
 
   const hasRolled = !!currentRoll;
 
-  let canGroup,
-    canStick,
-    canEndTurnAfterBlap,
-    isRollDisabled,
-    isRollEffectivelyLoading;
+  let canGroup, canStick, canEndTurnAfterBlap, isRollDisabled, isRollLoading;
 
   if (!isMyTurn) {
     // not your turn - all disabled.
@@ -385,28 +381,28 @@ const GameButtons = () => {
     canStick = false;
     canEndTurnAfterBlap = false;
     isRollDisabled = true;
-    isRollEffectivelyLoading = false;
+    isRollLoading = false;
   } else if (isRolling) {
     // it's your turn and you're rolling
     canGroup = false;
     canStick = false;
     canEndTurnAfterBlap = false;
     isRollDisabled = false;
-    isRollEffectivelyLoading = true;
+    isRollLoading = true;
   } else if (!hasRolled) {
     // it's your turn, you're not rolling, and you haven't rolled yet
     canGroup = false;
     canStick = false;
     canEndTurnAfterBlap = false;
     isRollDisabled = false;
-    isRollEffectivelyLoading = false;
+    isRollLoading = false;
   } else if (isBlapped) {
     // it's your turn, you've rolled with a blap.
     canGroup = false;
     canStick = false;
     canEndTurnAfterBlap = !isFinishingTurnAfterBlapping;
     isRollDisabled = true;
-    isRollEffectivelyLoading = false;
+    isRollLoading = false;
   } else {
     // it's your turn, you've rolled, and you havent blapped.
     const noDiceSelected =
@@ -420,7 +416,7 @@ const GameButtons = () => {
     const noScoringGroups =
       !currentScoringGroups || Object.keys(currentScoringGroups).length === 0;
     isRollDisabled = noScoringGroups && !isFirstOfTwoThrowsToDoubleIt;
-    isRollEffectivelyLoading = false;
+    isRollLoading = false;
   }
 
   return (
@@ -436,12 +432,13 @@ const GameButtons = () => {
         onMouseUp={rollDiceMouseUp}
         onMouseLeave={rollDiceMouseUp}
         disabled={isRollDisabled}
-        // N.B. roll button can't use `loading` prop, as this disables the button, and then the mouse
-        // events aren't fired.
-        isEffectivelyLoading={isRollEffectivelyLoading}>
+        // N.B. the `loading` prop won't cause the underlying <button> element to be disabled,
+        // becase we have defined onMouseUp and onMouseLeave event handlers. Disabing the button would
+        // prevent these from firing.
+        loading={isRollLoading}>
         Roll
       </CustomButton>
-      {isBlapped && !isRollEffectivelyLoading ? (
+      {isBlapped && !isRollLoading ? (
         <CustomButton
           onClick={() => endTurnAfterBlap()}
           disabled={!canEndTurnAfterBlap}
