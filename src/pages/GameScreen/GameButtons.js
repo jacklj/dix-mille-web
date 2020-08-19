@@ -124,8 +124,6 @@ const GameButtons = () => {
     setIsFinishingTurnAfterBlapping,
   ] = useState(false);
 
-  const [isRolling, setIsRolling] = useState(false);
-
   // do an effect for [isHoldingDownRollButton, isRollingCloud] - sets
   // isRolling to true when isHoldingDownRollButton !x => x, and to false
   // on the second of either going from x => !x
@@ -140,38 +138,14 @@ const GameButtons = () => {
       console.log('not your turn - dont run effect');
       return;
     }
-    const writeIsRollingFalse = async () => {
-      const path = `games/${gameId}/rounds/${currentRoundId}/turns/${currentTurnId}/isRolling`;
-      await firebase.database().ref(path).set(false);
-    };
 
-    if (
-      previousIsHoldingDownRollButton.current === false &&
-      isHoldingDownRollButton
-    ) {
-      setIsRolling(true);
-      console.log(
-        '!previousIsHoldingDownRollButton && isHoldingDownRollButton',
-      );
-    } else if (isRollingCloud && !isHoldingDownRollButton) {
+    if (isRollingCloud && !isHoldingDownRollButton) {
       console.log('PREVENT RACE CONDITION');
+      const writeIsRollingFalse = async () => {
+        const path = `games/${gameId}/rounds/${currentRoundId}/turns/${currentTurnId}/isRolling`;
+        await firebase.database().ref(path).set(false);
+      };
       writeIsRollingFalse();
-    } else if (
-      (isRollingCloud === false &&
-        previousIsHoldingDownRollButton.current &&
-        isHoldingDownRollButton === false) ||
-      (isHoldingDownRollButton === false &&
-        previousIsRollingCloud.current &&
-        isRollingCloud === false)
-    ) {
-      console.log(
-        'second of cloud and local rolling flags has gone back to false',
-        previousIsRollingCloud.current,
-        isRollingCloud,
-        previousIsHoldingDownRollButton.current,
-        isHoldingDownRollButton,
-      );
-      setIsRolling(false);
     }
 
     // update 'previous' values
@@ -420,7 +394,7 @@ const GameButtons = () => {
         // disabled={!isRollDisabled}
         // loading={isRollLoading}
       >
-        {isRolling ? 'Rolling' : 'Roll'}
+        {isRollLoading ? 'Rolling' : 'Roll'}
       </CustomButton>
       {isBlapped ? (
         <CustomButton
