@@ -209,7 +209,7 @@ const GameButtons = () => {
   const rollDiceMouseUp = async (event) => {
     console.log('mouse up');
     if (!isHoldingDownRollButton) {
-      console.log('isnt holdihg down roll button - dont do anything');
+      console.log('isnt holding down roll button - dont do anything');
       // user wasn't holding the button down - dont do anything
       return;
     }
@@ -391,6 +391,7 @@ const GameButtons = () => {
       <CustomButton
         onMouseDown={rollDiceMouseDown}
         onMouseUp={rollDiceMouseUp}
+        onMouseLeave={rollDiceMouseUp}
         // disabled={!isRollDisabled}
         // loading={isRollLoading}
       >
