@@ -1,11 +1,9 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React from 'react';
 import styled, { keyframes } from 'styled-components';
-import useSound from 'use-sound';
-import { useSelector } from 'react-redux';
 
-import { selectIsSoundOn } from 'redux/settings/selectors';
 import blapSprites from 'media/sounds/blapSprites.mp3';
 import spriteMap from 'media/sounds/spriteMap';
+import { usePlaySoundOnMount } from 'services/hooks';
 
 const bulge = keyframes`
 0% {
@@ -75,42 +73,15 @@ const useSoundOptions = {
 };
 
 const BlappedMessage = () => {
-  const isSoundOn = useSelector(selectIsSoundOn);
-  const [playBlapSound, { isPlaying, stop }] = useSound(
-    blapSprites,
-    useSoundOptions,
-  );
+  const blapNames = Object.keys(spriteMap);
+  const randomIndex = Math.floor(Math.random() * blapNames.length);
+  const randomSpriteName = blapNames[randomIndex];
 
-  // const [hasAttemptedToPlayOnce, setHasAttemptedToPlayOnce] = useState(false);
-
-  // use `useCallback` so we have the latest value of `isSoundOn` without it being in the useEffect
-  // dependency list, as in that case, every time the user switches the sound on, this component would
-  // play a sound effect.
-  const onMount = useCallback(() => {
-    // on mount, play it
-    if (!isSoundOn) {
-      // dont just play it when sound is turned on!
-      return;
-    }
-
-    const blapNames = Object.keys(spriteMap);
-    const randomIndex = Math.floor(Math.random() * blapNames.length);
-    const randomSpriteName = blapNames[randomIndex];
-    console.log(`play '${randomSpriteName}'`);
-
-    playBlapSound({ id: 'madsCanYouMakeANoiseLikeThisHoho' });
-  }, [isSoundOn, playBlapSound]);
-
-  useEffect(onMount, [playBlapSound]);
-  // N.B. must have playBlapSound in the dep list, or doesn't work.
-  // This is becase the first time the `useSound` hook is run, it starts lazy loading the Howler lib.
-  // So the first value of playBlapSound can't play any sound - it's the second value that works
-
-  useEffect(() => {
-    if (isPlaying && !isSoundOn) {
-      stop();
-    }
-  }, [isPlaying, isSoundOn, stop]);
+  usePlaySoundOnMount({
+    soundFile: blapSprites,
+    options: useSoundOptions,
+    spriteName: randomSpriteName,
+  });
 
   return (
     <>
