@@ -76,10 +76,11 @@ const RolledDice = () => {
       });
   };
 
-  return (
+  return isRollingCloud ? (
+    <InfoText>ROLLING</InfoText>
+  ) : (
     <>
       <Container>
-        {isRollingCloud && <InfoText>ROLLING</InfoText>}
         {currentDiceRollMinusScoringGroups &&
           Object.keys(currentDiceRollMinusScoringGroups).map((id) => (
             <Die
