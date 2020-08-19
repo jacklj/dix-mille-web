@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import * as firebase from 'firebase/app';
 import 'firebase/functions';
 import { useSelector } from 'react-redux';
+import useSound from 'use-sound';
 
 import {
   isItMyTurn,
@@ -17,9 +18,10 @@ import {
   selectIsFirstOfTwoThrowsToDoubleIt,
   selectIsRolling,
 } from 'redux/game/selectors';
-
 import GameLogic from 'services/GameLogic';
 import { Button } from 'components/forms';
+import { selectIsSoundOn } from 'redux/settings/selectors';
+import shakingDiceSound from './shakingDice.mp3';
 
 const padding = 3;
 
@@ -123,6 +125,24 @@ const GameButtons = () => {
     isFinishingTurnAfterBlapping,
     setIsFinishingTurnAfterBlapping,
   ] = useState(false);
+
+  // play dice shaking sound
+  const isSoundOn = useSelector(selectIsSoundOn);
+
+  const [play, { stop }] = useSound(shakingDiceSound, {
+    interrupt: false, // if already playing, dont play again and overlap
+    soundEnabled: isSoundOn,
+    loop: true,
+  });
+  const isRolling = isRollingCloud || isHoldingDownRollButton;
+  useEffect(() => {
+    if (isRolling) {
+      // start playing sound if its not already playing
+      play();
+    } else {
+      stop();
+    }
+  }, [isRolling, play, stop]);
 
   // do an effect for [isHoldingDownRollButton, isRollingCloud] - sets
   // isRolling to true when isHoldingDownRollButton !x => x, and to false
@@ -348,7 +368,6 @@ const GameButtons = () => {
   const hasRolled = !!currentRoll;
 
   let canGroup, isRollDisabled, canStick, canEndTurnAfterBlap;
-  const isRollLoading = isRollingCloud || isHoldingDownRollButton;
 
   if (!isMyTurn) {
     canGroup = false;
@@ -393,9 +412,9 @@ const GameButtons = () => {
         onMouseUp={rollDiceMouseUp}
         onMouseLeave={rollDiceMouseUp}
         // disabled={!isRollDisabled}
-        // loading={isRollLoading}
+        // loading={isRolling}
       >
-        {isRollLoading ? 'Rolling' : 'Roll'}
+        {isRolling ? 'Rolling' : 'Roll'}
       </CustomButton>
       {isBlapped ? (
         <CustomButton
