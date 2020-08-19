@@ -21,7 +21,7 @@ import {
 import GameLogic from 'services/GameLogic';
 import { Button } from 'components/forms';
 import { selectIsSoundOn } from 'redux/settings/selectors';
-import shakingDiceSound from './shakingDice.mp3';
+import shakingDiceSound from 'media/sounds/shakingDice.mp3';
 
 const padding = 3;
 
