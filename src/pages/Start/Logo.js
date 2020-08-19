@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 
 import { selectIsSoundOn } from 'redux/settings/selectors';
 import blapSprites from 'media/sounds/blapSprites.mp3';
-import spriteMap from 'media/sounds/spriteMap';
+import spriteMap from 'media/sounds/blapSpriteMap';
 
 const bulge = keyframes`
 0% {

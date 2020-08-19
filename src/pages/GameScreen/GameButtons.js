@@ -22,6 +22,8 @@ import GameLogic from 'services/GameLogic';
 import { Button } from 'components/forms';
 import { selectIsSoundOn } from 'redux/settings/selectors';
 import shakingDiceSound from 'media/sounds/shakingDice.mp3';
+import castingDiceSprites from 'media/sounds/castingDiceSprites.mp3';
+import spriteMap from 'media/sounds/castingDiceSpriteMap';
 
 const padding = 3;
 
@@ -129,11 +131,14 @@ const GameButtons = () => {
   // play dice shaking sound
   const isSoundOn = useSelector(selectIsSoundOn);
 
-  const [play, { stop, sound }] = useSound(shakingDiceSound, {
-    interrupt: false, // if already playing, dont play again and overlap
-    soundEnabled: isSoundOn,
-    loop: true,
-  });
+  const [playShakingSound, { stop: stopShakingSound, sound }] = useSound(
+    shakingDiceSound,
+    {
+      interrupt: false, // if already playing, dont play again and overlap
+      soundEnabled: isSoundOn,
+      loop: true,
+    },
+  );
   const isRolling = isRollingCloud || isHoldingDownRollButton;
   useEffect(() => {
     console.log('sound effect fired', isRolling);
@@ -144,11 +149,34 @@ const GameButtons = () => {
       const randomPosition = Math.random() * lengthInS;
       sound.seek(randomPosition);
       console.log('play from ', randomPosition);
-      play();
+      playShakingSound();
     } else {
-      stop();
+      stopShakingSound();
     }
-  }, [isRolling, play, sound, stop]);
+  }, [isRolling, playShakingSound, sound, stopShakingSound]);
+
+  // play dice casting sound
+  const [playCastingSound] = useSound(castingDiceSprites, {
+    sprite: spriteMap,
+    interrupt: false, // if a sound is already playing, overlap it (rather than stopping it when starting a new one)
+    soundEnabled: isSoundOn, // not reactive...
+    // loop: true, // can't `stop()` looped sounds after the first loop...
+  });
+
+  const previousIsRolling = useRef(false);
+  useEffect(() => {
+    const justStoppedRolling = previousIsRolling.current && !isRolling;
+    if (justStoppedRolling) {
+      const spriteNames = Object.keys(spriteMap);
+      const randomIndex = Math.floor(Math.random() * spriteNames.length);
+      const randomSpriteName = spriteNames[randomIndex];
+
+      console.log(`play '${randomSpriteName}'`);
+      playCastingSound({ id: randomSpriteName });
+    }
+
+    previousIsRolling.current = isRolling;
+  }, [isRolling, playCastingSound]);
 
   // do an effect for [isHoldingDownRollButton, isRollingCloud] - sets
   // isRolling to true when isHoldingDownRollButton !x => x, and to false

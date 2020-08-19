@@ -2,7 +2,7 @@ import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
 import blapSprites from 'media/sounds/blapSprites.mp3';
-import spriteMap from 'media/sounds/spriteMap';
+import spriteMap from 'media/sounds/blapSpriteMap';
 import { usePlaySoundOnMount } from 'services/hooks';
 
 const bulge = keyframes`
