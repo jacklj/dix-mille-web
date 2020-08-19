@@ -90,6 +90,8 @@ const FlexSpan = styled.span`
 
 const Button = ({
   loading,
+  isEffectivelyLoading, // for Roll button - we can't `disable` the button as then the mouse
+  // events aren't triggered
   loadingMessage = null,
   children,
   className,
@@ -104,13 +106,13 @@ const Button = ({
       className={className}
       disabled={disabled || loading} // native <button /> 'disabled' attribute
       isDisabled={disabled} // for conditional styling
-      isLoading={loading}
+      isLoading={loading || isEffectivelyLoading}
       onClick={onClick}
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
       onMouseLeave={onMouseLeave}>
       <FlexSpan>
-        {loading ? (
+        {loading || isEffectivelyLoading ? (
           <>
             <LoadingSpinner />
             {loadingMessage && (
