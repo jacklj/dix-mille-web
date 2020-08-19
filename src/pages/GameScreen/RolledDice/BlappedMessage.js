@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import styled, { keyframes } from 'styled-components';
 import useSound from 'use-sound';
 import { useSelector } from 'react-redux';
@@ -77,21 +77,23 @@ const BlappedMessage = () => {
     soundEnabled: isSoundOn,
   });
 
-  // use `useCallback` so we have the latest value of `isSoundOn` without it being in the useEffect
-  // dependency list, as in that case, every time the user switches the sound on, this component would
-  // play a sound effect.
-  const onMount = useCallback(() => {
-    // dont just play it when sound is turned on!
-    const blapNames = Object.keys(spriteMap);
-    const randomIndex = Math.floor(Math.random() * blapNames.length);
-    const randomSpriteName = blapNames[randomIndex];
+  const [hasAttemptedToPlayOnce, setHasAttemptedToPlayOnce] = useState(false);
 
-    console.log(`play '${randomSpriteName}'`);
+  useEffect(() => {
+    // dont just play it when sound is turned on (which will cause playBlapSound to change),
+    // only play on mount (if sound is on)
+    console.log('BLAP useEffect ran', hasAttemptedToPlayOnce);
+    if (!hasAttemptedToPlayOnce) {
+      const blapNames = Object.keys(spriteMap);
+      const randomIndex = Math.floor(Math.random() * blapNames.length);
+      const randomSpriteName = blapNames[randomIndex];
 
-    playBlapSound({ id: randomSpriteName });
-  }, [playBlapSound]);
+      console.log(`play '${randomSpriteName}'`);
+      playBlapSound({ id: randomSpriteName });
 
-  useEffect(onMount, [playBlapSound]); // N.B. must have playBlapSound in the dep list, or doesn't work
+      setHasAttemptedToPlayOnce(true);
+    }
+  }, [hasAttemptedToPlayOnce, playBlapSound]); // N.B. must have playBlapSound in the dep list, or doesn't work
 
   return (
     <>
