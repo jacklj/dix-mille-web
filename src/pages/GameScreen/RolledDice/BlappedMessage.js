@@ -70,23 +70,17 @@ const BlapText = styled.div`
   }
 `;
 
-const useSoundOptions = {
-  sprite: spriteMap,
-};
-
 const BlappedMessage = () => {
   const isSoundOn = useSelector(selectIsSoundOn);
-  const [playBlapSound] = useSound(blapSprites, useSoundOptions);
+  const [playBlapSound] = useSound(blapSprites, {
+    sprite: spriteMap,
+    soundEnabled: isSoundOn,
+  });
 
   // use `useCallback` so we have the latest value of `isSoundOn` without it being in the useEffect
   // dependency list, as in that case, every time the user switches the sound on, this component would
   // play a sound effect.
   const onMount = useCallback(() => {
-    // on mount, play it
-    if (!isSoundOn) {
-      return;
-    }
-
     // dont just play it when sound is turned on!
     const blapNames = Object.keys(spriteMap);
     const randomIndex = Math.floor(Math.random() * blapNames.length);
@@ -95,7 +89,7 @@ const BlappedMessage = () => {
     console.log(`play '${randomSpriteName}'`);
 
     playBlapSound({ id: randomSpriteName });
-  }, [isSoundOn, playBlapSound]);
+  }, [playBlapSound]);
 
   useEffect(onMount, [playBlapSound]); // N.B. must have playBlapSound in the dep list, or doesn't work
 
