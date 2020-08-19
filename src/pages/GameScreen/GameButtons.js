@@ -380,6 +380,10 @@ const GameButtons = () => {
     canStick = false;
     canEndTurnAfterBlap = false;
     // isRollDisabled = true;
+  } else if (isRolling) {
+    canGroup = false;
+    canStick = false;
+    canEndTurnAfterBlap = false;
   } else if (isBlapped) {
     canGroup = false;
     canStick = false;
@@ -392,9 +396,6 @@ const GameButtons = () => {
     // isRollDisabled = false;
   } else {
     // it's your turn, youve rolled, and you havent blapped.
-    const noScoringGroups =
-      !currentScoringGroups || Object.keys(currentScoringGroups).length === 0;
-
     const noDiceSelected =
       !selectedDice ||
       Object.values(selectedDice).filter((x) => x).length === 0;
@@ -444,7 +445,7 @@ const GameButtons = () => {
         isEffectivelyLoading={isRollEffectivelyLoading}>
         Roll
       </CustomButton>
-      {isBlapped ? (
+      {isBlapped && !isRollEffectivelyLoading ? (
         <CustomButton
           onClick={() => endTurnAfterBlap()}
           disabled={!canEndTurnAfterBlap}
