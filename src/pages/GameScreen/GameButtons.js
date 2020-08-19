@@ -129,20 +129,26 @@ const GameButtons = () => {
   // play dice shaking sound
   const isSoundOn = useSelector(selectIsSoundOn);
 
-  const [play, { stop }] = useSound(shakingDiceSound, {
+  const [play, { stop, sound }] = useSound(shakingDiceSound, {
     interrupt: false, // if already playing, dont play again and overlap
     soundEnabled: isSoundOn,
     loop: true,
   });
   const isRolling = isRollingCloud || isHoldingDownRollButton;
   useEffect(() => {
+    console.log('sound effect fired', isRolling);
     if (isRolling) {
       // start playing sound if its not already playing
+      // start in random position
+      const lengthInS = 30; // actually 35s
+      const randomPosition = Math.random() * lengthInS;
+      sound.seek(randomPosition);
+      console.log('play from ', randomPosition);
       play();
     } else {
       stop();
     }
-  }, [isRolling, play, stop]);
+  }, [isRolling, play, sound, stop]);
 
   // do an effect for [isHoldingDownRollButton, isRollingCloud] - sets
   // isRolling to true when isHoldingDownRollButton !x => x, and to false
