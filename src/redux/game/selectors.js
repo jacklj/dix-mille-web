@@ -381,6 +381,7 @@ const selectMyCurrentScore = (state) => {
 export const selectTurnScoreSoFar = (state) => {
   const currentTurnObj = selectCurrentTurn(state);
   const currentScore = selectMyCurrentScore(state);
+  const isRolling = selectIsRolling(state); // dont return score = 0 if blapped but still rolling
 
   if (!currentTurnObj) {
     return undefined;
@@ -397,8 +398,9 @@ export const selectTurnScoreSoFar = (state) => {
   const { rollState } = lastRollObj;
 
   if (
-    turnState === Constants.TURN_STATES.BLAPPED ||
-    rollState === Constants.ROLL_STATES.BLAPPED
+    (turnState === Constants.TURN_STATES.BLAPPED ||
+      rollState === Constants.ROLL_STATES.BLAPPED) &&
+    !isRolling
   ) {
     return 0;
   }
