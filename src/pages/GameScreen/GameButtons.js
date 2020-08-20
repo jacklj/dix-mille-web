@@ -214,9 +214,13 @@ const GameButtons = () => {
     isRollingCloud,
   ]);
 
-  const rollDiceMouseDown = async (event) => {
+  const startShakingDice = async (event) => {
+    // if both touch and mouse events are fired by the browser (ie onTouchStart and onMouseDown),
+    // `event.preventDefault()` is called by the first, and prevents the second from happening
+    event.preventDefault();
+
     console.log('mouse down');
-    event.stopPropagation();
+    // event.stopPropagation();
 
     if (isHoldingDownRollButton) {
       // already rolling - user probably mouse up'ed off the button, then tried to fix it
@@ -260,8 +264,13 @@ const GameButtons = () => {
     }
   };
 
-  const rollDiceMouseUp = async (event) => {
+  const stopShakingDiceAndThrow = async (event) => {
+    // if both touch and mouse events are fired by the browser (ie onTouchEnd and onMouseUp),
+    // `event.preventDefault()` is called by the first, and prevents the second from happening
+    event.preventDefault();
+
     console.log('mouse up');
+
     if (!isHoldingDownRollButton) {
       console.log('isnt holding down roll button - dont do anything');
       // user wasn't holding the button down - dont do anything
@@ -456,9 +465,11 @@ const GameButtons = () => {
         Bank
       </CustomButton>
       <CustomButton
-        onMouseDown={rollDiceMouseDown}
-        onMouseUp={rollDiceMouseUp}
-        onMouseLeave={rollDiceMouseUp}
+        onMouseDown={startShakingDice}
+        onTouchStart={startShakingDice}
+        onMouseUp={stopShakingDiceAndThrow}
+        onTouchEnd={stopShakingDiceAndThrow}
+        onMouseLeave={stopShakingDiceAndThrow}
         disabled={isRollDisabled}
         // N.B. the `loading` prop won't cause the underlying <button> element to be disabled,
         // becase we have defined onMouseUp and onMouseLeave event handlers. Disabing the button would

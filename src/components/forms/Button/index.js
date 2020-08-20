@@ -97,6 +97,8 @@ const Button = ({
   onMouseDown,
   onMouseUp,
   onMouseLeave,
+  onTouchStart,
+  onTouchEnd,
   disabled,
 }) => {
   return (
@@ -113,7 +115,9 @@ const Button = ({
       onClick={onClick && onClick}
       onMouseDown={onMouseDown && onMouseDown}
       onMouseUp={onMouseUp && onMouseUp}
-      onMouseLeave={onMouseLeave && onMouseLeave}>
+      onMouseLeave={onMouseLeave && onMouseLeave}
+      onTouchStart={onTouchStart && onTouchStart}
+      onTouchEnd={onTouchEnd && onTouchEnd}>
       <FlexSpan>
         {loading ? (
           <>
