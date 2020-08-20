@@ -220,22 +220,29 @@ const GameButtons = () => {
     event.preventDefault();
 
     console.log('mouse down');
-    // event.stopPropagation();
 
     if (isHoldingDownRollButton) {
-      // already rolling - user probably mouse up'ed off the button, then tried to fix it
-      // by clicking on Roll button again
+      // already pressing the button (somehow?) - don't do anything
+      alert("Already pressing the roll button - can't press it again?");
       return;
     }
 
     setIsHoldingDownRollButton(true);
-    console.log(
-      'setIsHoldingDownRollButton has just been set to true: ',
-      isHoldingDownRollButton,
-    );
 
     if (!isMyTurn) {
       alert("You can't roll - it's not your turn!");
+      setIsHoldingDownRollButton(false);
+      return;
+    }
+
+    const hasRolled = !!currentRoll;
+    const noScoringGroups =
+      !currentScoringGroups || Object.keys(currentScoringGroups).length === 0;
+    const noBankedDice =
+      hasRolled && noScoringGroups && !isFirstOfTwoThrowsToDoubleIt;
+
+    if (noBankedDice) {
+      alert('You need to bank at least one dice before rolling again.');
       setIsHoldingDownRollButton(false);
       return;
     }
@@ -276,7 +283,6 @@ const GameButtons = () => {
       // user wasn't holding the button down - dont do anything
       return;
     }
-    event.stopPropagation();
 
     setIsHoldingDownRollButton(false);
 
