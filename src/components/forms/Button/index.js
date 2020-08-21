@@ -112,15 +112,17 @@ const Button = ({
       disabled={disabled || (loading && !(onMouseUp || onMouseLeave))} // native <button /> 'disabled' attribute
       isDisabled={disabled} // for conditional styling
       isLoading={loading}
-      onClick={onClick && onClick}
-      onMouseDown={onMouseDown && onMouseDown}
-      onMouseUp={onMouseUp && onMouseUp}
-      onMouseLeave={onMouseLeave && onMouseLeave}
+      onClick={onClick ? onClick : undefined}
+      onMouseDown={onMouseDown ? onMouseDown : undefined}
+      onMouseUp={onMouseUp ? onMouseUp : undefined}
+      onMouseLeave={onMouseLeave ? onMouseLeave : undefined}
       // N.B. touchStart and touchEnd events aren't prevented from firing when the button is disabled,
       // because they're not native button events (https://stackoverflow.com/a/57427363/3351215)
       // So, need to manually prevent the handlers from being fired.
-      onTouchStart={!disabled && onTouchStart && onTouchStart}
-      onTouchEnd={!disabled && onTouchEnd && onTouchEnd}>
+      onTouchStart={
+        disabled ? undefined : onTouchStart ? onTouchStart : undefined
+      }
+      onTouchEnd={disabled ? undefined : onTouchEnd ? onTouchEnd : undefined}>
       <FlexSpan>
         {loading ? (
           <>
