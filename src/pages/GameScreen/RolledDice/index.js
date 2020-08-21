@@ -18,7 +18,7 @@ import {
   selectIsFailedFirstOfTwoThrowsToDoubleIt,
   selectIsRolling,
 } from 'redux/game/selectors';
-import Die from 'components/Die';
+import Die from 'components/Dice3d';
 
 const Container = styled.div`
   flex-shrink: 0;
@@ -76,9 +76,7 @@ const RolledDice = () => {
       });
   };
 
-  return isRollingCloud ? (
-    <InfoText>ROLLING</InfoText>
-  ) : (
+  return (
     <>
       <Container>
         {currentDiceRollMinusScoringGroups &&
@@ -89,6 +87,7 @@ const RolledDice = () => {
               value={currentRoll[id]}
               selected={selectedDice && selectedDice[id]}
               onClick={() => selectOrUnselectDie(id)}
+              rolling={isRollingCloud}
             />
           ))}
       </Container>

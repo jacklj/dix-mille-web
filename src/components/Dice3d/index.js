@@ -3,6 +3,27 @@ import styled, { css, keyframes } from 'styled-components';
 
 import Face from './Face';
 
+const Container = styled.div`
+  // perspective: 600px;
+
+  background-color: ${(props) =>
+    props.selected
+      ? 'rgba(100,255,150,0.5)'
+      : 'rgba(0,0,0,0)'}; // cant use 'transparent' as it causes the layout to shift
+
+  border-radius: 50%;
+
+  padding: ${(props) => (props.isInGroup ? '0' : 'calc(var(--size) * 0.17)')};
+  margin: ${(props) => (props.isInGroup ? '2px' : 'calc(var(--size) * 0.2)')};
+  margin-bottom: ${(props) =>
+    props.isInGroup ? '5px' : 'calc(var(--size) * 0.4)'};
+
+  &:nth-child(even) {
+    position: relative;
+    top: ${(props) => (props.isInGroup ? '0' : 'calc(var(--size) * 0.4)')};
+  }
+`;
+
 const spin = keyframes`
   0% { transform: translateZ(-100px) rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
   16% { transform: translateZ(-100px) rotateX(180deg) rotateY(180deg) rotateZ(0deg); }
@@ -11,10 +32,6 @@ const spin = keyframes`
   66% { transform: translateZ(-100px) rotateX(180deg) rotateY(360deg) rotateZ(270deg); }
   83% { transform: translateZ(-100px) rotateX(270deg) rotateY(180deg) rotateZ(180deg); }
   100% { transform: translateZ(-100px) rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
-`;
-
-const Container = styled.div`
-  // perspective: 600px;
 `;
 
 const DiceContainer = styled.div`
@@ -106,7 +123,15 @@ const DiceContainer = styled.div`
 
 const faces = [1, 2, 3, 4, 5, 6];
 
-const Dice = ({ value, rolling }) => {
+const Dice = ({
+  id,
+  value,
+  rolling,
+  selected,
+  onClick,
+  isInGroup,
+  className,
+}) => {
   const previousRolling = useRef(rolling);
   const [even, setEven] = useState(true);
   const [actualValue, setActualValue] = useState(value);
@@ -123,7 +148,12 @@ const Dice = ({ value, rolling }) => {
   }, [rolling, value]);
 
   return (
-    <Container>
+    <Container
+      key={id}
+      selected={selected}
+      onClick={onClick}
+      isInGroup={isInGroup}
+      className={className}>
       <DiceContainer value={actualValue} rolling={rolling} even={even}>
         {faces.map((f) => (
           <Face value={f} />
