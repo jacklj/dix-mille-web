@@ -10,6 +10,7 @@ import Logo from './Logo';
 import { loggedInAndCreatedGame } from 'redux/auth/slice';
 import { Button } from 'components/forms';
 import SetupScreenContainer from 'components/SetupScreenContainer';
+import Dice from 'components/Dice3d';
 
 const IntroText = styled.div`
   margin-top: 40px;
@@ -29,6 +30,9 @@ const Start = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [isStartingGame, setIsStartingGame] = useState(false);
+  const [diceValue, setDiceValue] = useState(3);
+  const [rolling, setRolling] = useState(false);
+  const [even, setEven] = useState(true);
 
   const createAnonymousProfileAndGame = async () => {
     setIsStartingGame(true);
@@ -83,7 +87,28 @@ const Start = () => {
 
   return (
     <SetupScreenContainer>
+      <select
+        value={diceValue}
+        onChange={(event) => {
+          setDiceValue(event.target.value);
+          setEven((x) => !x);
+        }}>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+      </select>
+
+      <button
+        onMouseDown={() => setRolling(true)}
+        onMouseUp={() => setRolling(false)}>
+        roll
+      </button>
       <Logo />
+
+      <Dice value={diceValue} rolling={rolling} even={even} />
       <IntroText>Play the classic French café table dice game.</IntroText>
       <div>
         <CustomButton
