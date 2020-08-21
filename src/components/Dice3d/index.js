@@ -28,20 +28,15 @@ const roll = keyframes`
 //   ${(props) => !props.rolling && `animation-play-state: paused;`}
 
 const Container = styled.div`
-  perspective: 600px;
+  // perspective: 600px;
 `;
 
 const DiceContainer = styled.div`
   position: relative;
   transform-style: preserve-3d;
-  ${(props) =>
-    props.even
-      ? `transition: transform 2.5s ease-out;`
-      : `transition: transform 2.5s ease-out;`}
+  transition: transform 1.5s ease-out;
 
-
-  
-    transform: ${(props) => {
+  transform: ${(props) => {
       if (props.even) {
         switch (props.value) {
           case 1:
@@ -78,12 +73,11 @@ const DiceContainer = styled.div`
         }
       }
     }}
-
-  ${(props) =>
-    props.rolling &&
-    css`
-      animation: ${spin} 1.6s infinite linear;
-    `}
+    ${(props) =>
+      props.rolling &&
+      css`
+        animation: ${spin} 1.6s infinite linear;
+      `};
 `;
 
 // ${(props) =>
