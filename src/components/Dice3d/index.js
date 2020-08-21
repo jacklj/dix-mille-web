@@ -13,20 +13,6 @@ const spin = keyframes`
   100% { transform: translateZ(-100px) rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
 `;
 
-const roll = keyframes`
-  0% { transform: translate3d(-200px,-50px,-400px) }
-  12% { transform: translate3d(0px,0,-100px) }
-  25% { transform: translate3d(200px,-50px,-400px) }
-  37% { transform: translate3d(0px,-100px,-800px) }
-  50% { transform: translate3d(-200px,-50px,-400px) }
-  62% { transform: translate3d(0px,0,-100px) }
-  75% { transform: translate3d(200px,-50px,-400px) }
-  87% { transform: translate3d(0px,-100px,-800px) }
-  100% { transform: translate3d(-200px,-50px,-400px) }
-`;
-
-//   ${(props) => !props.rolling && `animation-play-state: paused;`}
-
 const Container = styled.div`
   // perspective: 600px;
 `;
