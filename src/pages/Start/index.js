@@ -86,6 +86,20 @@ const Start = () => {
   // N.B. <div>s around buttons are to fix a bug in mobile Safari where the flex container
   // forces the buttons to be really short (ie squished vertically)
 
+  const startRolling = (event) => {
+    event.preventDefault();
+    setRolling(true);
+  };
+
+  const stopRolling = (event) => {
+    event.preventDefault();
+    setRolling(false);
+    setTimeout(() => {
+      setActualDiceValue(desiredDiceValue);
+      setEven((x) => !x);
+    }, 10);
+  };
+
   return (
     <SetupScreenContainer>
       <select
@@ -102,14 +116,10 @@ const Start = () => {
       </select>
 
       <button
-        onMouseDown={() => setRolling(true)}
-        onMouseUp={() => {
-          setRolling(false);
-          setTimeout(() => {
-            setActualDiceValue(desiredDiceValue);
-            setEven((x) => !x);
-          }, 10);
-        }}>
+        onMouseDown={startRolling}
+        onTouchStart={startRolling}
+        onMouseUp={stopRolling}
+        onTouchEnd={stopRolling}>
         roll
       </button>
       <Logo />
