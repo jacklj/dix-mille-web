@@ -34,7 +34,7 @@ const Container = styled.div`
 const DiceContainer = styled.div`
   position: relative;
   transform-style: preserve-3d;
-  transition: transform 1.5s ease-out;
+  transition: transform 1.8s ease-out;
 
   transform: ${(props) => {
       if (props.even) {
@@ -76,7 +76,7 @@ const DiceContainer = styled.div`
     ${(props) =>
       props.rolling &&
       css`
-        animation: ${spin} 1.6s infinite linear;
+        animation: ${spin} 1s infinite linear;
       `};
 `;
 
