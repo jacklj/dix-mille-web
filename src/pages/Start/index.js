@@ -97,7 +97,7 @@ const Start = () => {
     setTimeout(() => {
       setActualDiceValue(desiredDiceValue);
       setEven((x) => !x);
-    }, 20);
+    }, 50);
   };
 
   return (
