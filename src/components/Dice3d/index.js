@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 
 import Face from './Face';
@@ -106,10 +106,25 @@ const DiceContainer = styled.div`
 
 const faces = [1, 2, 3, 4, 5, 6];
 
-const Dice = ({ value, rolling, even }) => {
+const Dice = ({ value, rolling }) => {
+  const previousRolling = useRef(rolling);
+  const [even, setEven] = useState(true);
+  const [actualValue, setActualValue] = useState(value);
+
+  useEffect(() => {
+    // rolling -> not rolling
+    if (previousRolling.current && !rolling) {
+      setTimeout(() => {
+        setActualValue(value);
+        setEven((x) => !x);
+      }, 20);
+    }
+    previousRolling.current = rolling;
+  }, [rolling, value]);
+
   return (
     <Container>
-      <DiceContainer value={value} rolling={rolling} even={even}>
+      <DiceContainer value={actualValue} rolling={rolling} even={even}>
         {faces.map((f) => (
           <Face value={f} />
         ))}

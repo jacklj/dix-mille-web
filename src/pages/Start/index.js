@@ -93,11 +93,9 @@ const Start = () => {
 
   const stopRolling = (event) => {
     event.preventDefault();
+
     setRolling(false);
-    setTimeout(() => {
-      setActualDiceValue(desiredDiceValue);
-      setEven((x) => !x);
-    }, 50);
+    setActualDiceValue(desiredDiceValue);
   };
 
   return (
