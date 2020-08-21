@@ -30,7 +30,8 @@ const Start = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [isStartingGame, setIsStartingGame] = useState(false);
-  const [diceValue, setDiceValue] = useState(3);
+  const [desiredDiceValue, setDesiredDiceValue] = useState(3);
+  const [actualDiceValue, setActualDiceValue] = useState(3);
   const [rolling, setRolling] = useState(false);
   const [even, setEven] = useState(true);
 
@@ -88,10 +89,9 @@ const Start = () => {
   return (
     <SetupScreenContainer>
       <select
-        value={diceValue}
+        value={desiredDiceValue}
         onChange={(event) => {
-          setDiceValue(event.target.value);
-          setEven((x) => !x);
+          setDesiredDiceValue(parseInt(event.target.value));
         }}>
         <option value="1">1</option>
         <option value="2">2</option>
@@ -103,12 +103,18 @@ const Start = () => {
 
       <button
         onMouseDown={() => setRolling(true)}
-        onMouseUp={() => setRolling(false)}>
+        onMouseUp={() => {
+          setRolling(false);
+          setTimeout(() => {
+            setActualDiceValue(desiredDiceValue);
+            setEven((x) => !x);
+          }, 10);
+        }}>
         roll
       </button>
       <Logo />
 
-      <Dice value={diceValue} rolling={rolling} even={even} />
+      <Dice value={actualDiceValue} rolling={rolling} even={even} />
       <IntroText>Play the classic French café table dice game.</IntroText>
       <div>
         <CustomButton
