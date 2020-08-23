@@ -49,7 +49,7 @@ const spin = keyframes`
 
 const DiceContainer = styled.div`
   position: relative;
-  top: -10px;
+  // top: -10px;
   transform-style: preserve-3d;
   transition: transform 1.8s ease-out;
 
@@ -57,9 +57,9 @@ const DiceContainer = styled.div`
       if (props.even) {
         switch (props.value) {
           case 1:
-            return `rotateX(360deg) rotateY(720deg) rotateZ(360deg);`;
+            return `rotateX(360deg) rotateY(720deg) rotateZ(360deg) translateX(-7px);`;
           case 2:
-            return `rotateX(450deg) rotateY(720deg) rotateZ(360deg);`;
+            return `rotateX(450deg) rotateY(720deg) rotateZ(360deg) translateX(-7px) translateY(50px);`;
           case 3:
             return `rotateX(360deg) rotateY(630deg) rotateZ(360deg);`;
           case 4:
@@ -74,9 +74,9 @@ const DiceContainer = styled.div`
       } else {
         switch (props.value) {
           case 1:
-            return `rotateX(-360deg) rotateY(-720deg) rotateZ(-360deg);`;
+            return `rotateX(-360deg) rotateY(-720deg) rotateZ(-360deg) translateX(-7px);`;
           case 2:
-            return `rotateX(-270deg) rotateY(-720deg) rotateZ(-360deg);`;
+            return `rotateX(-270deg) rotateY(-720deg) rotateZ(-360deg) translateX(-7px) translateY(50px);`;
           case 3:
             return `rotateX(-360deg) rotateY(-810deg) rotateZ(-360deg);`;
           case 4:

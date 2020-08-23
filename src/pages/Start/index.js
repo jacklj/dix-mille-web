@@ -30,8 +30,8 @@ const Start = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [isStartingGame, setIsStartingGame] = useState(false);
-  const [desiredDiceValue, setDesiredDiceValue] = useState(3);
-  const [actualDiceValue, setActualDiceValue] = useState(3);
+  const [desiredDiceValue, setDesiredDiceValue] = useState(1);
+  const [actualDiceValue, setActualDiceValue] = useState(1);
   const [rolling, setRolling] = useState(false);
 
   const createAnonymousProfileAndGame = async () => {
