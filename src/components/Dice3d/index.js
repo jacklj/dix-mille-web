@@ -4,16 +4,29 @@ import styled, { css, keyframes } from 'styled-components';
 import Face from './Face';
 
 const Container = styled.div`
+  // N.B. CSS variables are passed to children
+  --size: ${(props) => (props.isInGroup ? '50px' : '60px')};
+
+  @media (max-width: 768px), (orientation: landscape) {
+    --size: ${(props) => (props.isInGroup ? '30px' : '45px')};
+  }
+
+  width: calc(var(--size) * 1);
+  height: calc(var(--size) * 1);
+  flex-shrink: 0;
+  flex-grow: 0;
+  flex-basis: auto;
+
   // perspective: 600px;
 
   background-color: ${(props) =>
     props.selected
       ? 'rgba(100,255,150,0.5)'
-      : 'rgba(0,0,0,0)'}; // cant use 'transparent' as it causes the layout to shift
+      : 'rgba(200,0,0,1)'}; // cant use 'transparent' as it causes the layout to shift
 
   border-radius: 50%;
 
-  padding: ${(props) => (props.isInGroup ? '0' : 'calc(var(--size) * 0.17)')};
+  padding: ${(props) => (props.isInGroup ? '0' : 'calc(var(--size) * 0.5)')};
   margin: ${(props) => (props.isInGroup ? '2px' : 'calc(var(--size) * 0.2)')};
   margin-bottom: ${(props) =>
     props.isInGroup ? '5px' : 'calc(var(--size) * 0.4)'};
@@ -36,6 +49,7 @@ const spin = keyframes`
 
 const DiceContainer = styled.div`
   position: relative;
+  top: -10px;
   transform-style: preserve-3d;
   transition: transform 1.8s ease-out;
 
@@ -156,7 +170,7 @@ const Dice = ({
       className={className}>
       <DiceContainer value={actualValue} rolling={rolling} even={even}>
         {faces.map((f) => (
-          <Face value={f} />
+          <Face value={f} selected={selected} />
         ))}
       </DiceContainer>
     </Container>

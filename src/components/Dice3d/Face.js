@@ -2,13 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  // N.B. CSS variables are passed to children
-  --size: ${(props) => (props.isInGroup ? '50px' : '60px')};
-
-  @media (max-width: 768px), (orientation: landscape) {
-    --size: ${(props) => (props.isInGroup ? '30px' : '45px')};
-  }
-
   flex: 0 0 auto;
 
   width: var(--size);
@@ -22,7 +15,8 @@ const Container = styled.div`
     inset calc(var(--size) * -0.1) 0 #d7d7d7;
 
   border-radius: 10%;
-  background-color: #e7e7e7;
+  background-color: ${(props) =>
+    props.selected ? 'rgba(0,200,0,1)' : '#e7e7e7'};
 
   display: grid;
   grid-template-areas:
@@ -96,11 +90,11 @@ const Pip = styled.span`
   }
 `;
 
-const Face = ({ value }) => {
+const Face = ({ value, selected }) => {
   const arrayWithValueItems = [...Array(value)];
 
   return (
-    <Container key={value} value={value}>
+    <Container key={value} value={value} selected={selected}>
       {arrayWithValueItems.map((v, k) => (
         <Pip key={k} />
       ))}
