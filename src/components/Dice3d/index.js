@@ -22,7 +22,7 @@ const Container = styled.div`
   background-color: ${(props) =>
     props.selected
       ? 'rgba(100,255,150,0.5)'
-      : 'rgba(200,0,0,1)'}; // cant use 'transparent' as it causes the layout to shift
+      : 'rgba(0,0,0,0)'}; // cant use 'transparent' as it causes the layout to shift
 
   border-radius: 50%;
 
@@ -57,9 +57,9 @@ const DiceContainer = styled.div`
       if (props.even) {
         switch (props.value) {
           case 1:
-            return `rotateX(360deg) rotateY(720deg) rotateZ(360deg) translateX(-7px);`;
+            return `rotateX(360deg) rotateY(720deg) rotateZ(360deg);`;
           case 2:
-            return `rotateX(450deg) rotateY(720deg) rotateZ(360deg) translateX(-7px) translateY(50px);`;
+            return `rotateX(450deg) rotateY(720deg) rotateZ(360deg);`;
           case 3:
             return `rotateX(360deg) rotateY(630deg) rotateZ(360deg);`;
           case 4:
@@ -74,9 +74,9 @@ const DiceContainer = styled.div`
       } else {
         switch (props.value) {
           case 1:
-            return `rotateX(-360deg) rotateY(-720deg) rotateZ(-360deg) translateX(-7px);`;
+            return `rotateX(-360deg) rotateY(-720deg) rotateZ(-360deg);`;
           case 2:
-            return `rotateX(-270deg) rotateY(-720deg) rotateZ(-360deg) translateX(-7px) translateY(50px);`;
+            return `rotateX(-270deg) rotateY(-720deg) rotateZ(-360deg);`;
           case 3:
             return `rotateX(-360deg) rotateY(-810deg) rotateZ(-360deg);`;
           case 4:
