@@ -97,44 +97,6 @@ const DiceContainer = styled.div`
       `};
 `;
 
-// ${(props) =>
-//   props.rolling
-//     ? css`
-//         animation: ${spin} 1.6s infinite linear;
-//       `
-//     : css`
-// ${(props) =>
-//   props.value === 1 &&
-//   (props.even
-//     ? `transform: rotateX(360deg) rotateY(720deg) rotateZ(360deg);`
-//     : `transform: rotateX(-360deg) rotateY(-720deg) rotateZ(-360deg);`)}
-// ${(props) =>
-//   props.value === 2 &&
-//   (props.even
-//     ? `transform: rotateX(450deg) rotateY(720deg) rotateZ(360deg);`
-//     : `transform: rotateX(-270deg) rotateY(-720deg) rotateZ(-360deg);`)}
-// ${(props) =>
-//   props.value === 3 &&
-//   (props.even
-//     ? `transform: rotateX(360deg) rotateY(630deg) rotateZ(360deg);`
-//     : `transform: rotateX(-360deg) rotateY(-810deg) rotateZ(-360deg);`)}
-// ${(props) =>
-//   props.value === 4 &&
-//   (props.even
-//     ? `transform: rotateX(360deg) rotateY(810deg) rotateZ(360deg);`
-//     : `transform: rotateX(-360deg) rotateY(-630deg) rotateZ(-360deg);`)}
-// ${(props) =>
-//   props.value === 5 &&
-//   (props.even
-//     ? `transform: rotateX(270deg) rotateY(720deg) rotateZ(360deg);`
-//     : `transform: rotateX(-450deg) rotateY(-720deg) rotateZ(-360deg);`)}
-// ${(props) =>
-//   props.value === 6 &&
-//   (props.even
-//     ? `transform: rotateX(360deg) rotateY(900deg) rotateZ(360deg);`
-//     : `transform: rotateX(-360deg) rotateY(-900deg) rotateZ(-360deg);`)}
-// `}
-
 const faces = [1, 2, 3, 4, 5, 6];
 
 const Dice = ({

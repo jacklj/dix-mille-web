@@ -33,7 +33,6 @@ const Start = () => {
   const [desiredDiceValue, setDesiredDiceValue] = useState(3);
   const [actualDiceValue, setActualDiceValue] = useState(3);
   const [rolling, setRolling] = useState(false);
-  const [even, setEven] = useState(true);
 
   const createAnonymousProfileAndGame = async () => {
     setIsStartingGame(true);
@@ -122,7 +121,7 @@ const Start = () => {
       </button>
       <Logo />
 
-      <Dice value={actualDiceValue} rolling={rolling} even={even} />
+      <Dice value={actualDiceValue} rolling={rolling} />
       <IntroText>Play the classic French café table dice game.</IntroText>
       <div>
         <CustomButton
