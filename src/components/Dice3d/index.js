@@ -3,7 +3,17 @@ import styled, { css, keyframes } from 'styled-components';
 
 import Face from './Face';
 
-const Container = styled.div`
+const spin = keyframes`
+  0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+  16% { transform: rotateX(180deg) rotateY(180deg) rotateZ(0deg); }
+  33% { transform: rotateX(360deg) rotateY(90deg) rotateZ(180deg); }
+  50% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
+  66% { transform: rotateX(180deg) rotateY(360deg) rotateZ(270deg); }
+  83% { transform: rotateX(270deg) rotateY(180deg) rotateZ(180deg); }
+  100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
+`;
+
+const Dice = styled.div`
   // N.B. CSS variables are passed to children
   --size: ${(props) => (props.isInGroup ? '50px' : '60px')};
 
@@ -17,35 +27,14 @@ const Container = styled.div`
   flex-grow: 0;
   flex-basis: auto;
 
-  // NB perspective and perspective-origin affects the child components, no the component itself
-
-  // perspective: 100px;
-  // perspective-origin: left;
-
-  border-radius: 50%;
-
-  padding: ${(props) => (props.isInGroup ? '0' : 'calc(var(--size) * 0.5)')};
-  margin: ${(props) => (props.isInGroup ? '2px' : 'calc(var(--size) * 0.2)')};
+  margin: ${(props) => (props.isInGroup ? '2px' : 'calc(var(--size) * 0.7)')};
   margin-bottom: ${(props) =>
-    props.isInGroup ? '5px' : 'calc(var(--size) * 0.4)'};
+    props.isInGroup ? '5px' : 'calc(var(--size) * 0.6)'};
 
   &:nth-child(even) {
-    position: relative;
-    top: ${(props) => (props.isInGroup ? '0' : 'calc(var(--size) * 0.4)')};
+    top: ${(props) => (props.isInGroup ? '0' : 'calc(var(--size) * 0.5)')};
   }
-`;
 
-const spin = keyframes`
-  0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
-  16% { transform: rotateX(180deg) rotateY(180deg) rotateZ(0deg); }
-  33% { transform: rotateX(360deg) rotateY(90deg) rotateZ(180deg); }
-  50% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
-  66% { transform: rotateX(180deg) rotateY(360deg) rotateZ(270deg); }
-  83% { transform: rotateX(270deg) rotateY(180deg) rotateZ(180deg); }
-  100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
-`;
-
-const Dice = styled.div`
   position: relative;
 
   transform-style: preserve-3d; // N.B. affects children not the element itself
@@ -96,22 +85,22 @@ const Dice = styled.div`
         animation: ${spin} 1.3s infinite linear;
       `};
 
-  ${Container}:nth-child(1) & {
+  &:nth-child(1) {
     animation-delay: 0s;
   }
-  ${Container}:nth-child(2) & {
+  &:nth-child(2) {
     animation-delay: -0.1s;
   }
-  ${Container}:nth-child(3) & {
+  &:nth-child(3) {
     animation-delay: -0.2s;
   }
-  ${Container}:nth-child(4) & {
+  &:nth-child(4) {
     animation-delay: -0.3s;
   }
-  ${Container}:nth-child(5) & {
+  &:nth-child(5) {
     animation-delay: -0.4s;
   }
-  ${Container}:nth-child(6) & {
+  &:nth-child(6) {
     animation-delay: -0.5s;
   }
 `;
@@ -143,17 +132,18 @@ const Dice3d = ({
   }, [rolling, value]);
 
   return (
-    <Container
+    <Dice
       key={id}
-      onClick={onClick}
       isInGroup={isInGroup}
-      className={className}>
-      <Dice value={actualValue} rolling={rolling} even={even}>
-        {faces.map((f) => (
-          <Face key={f} value={f} selected={selected} />
-        ))}
-      </Dice>
-    </Container>
+      className={className}
+      value={actualValue}
+      rolling={rolling}
+      even={even}
+      onClick={onClick}>
+      {faces.map((f) => (
+        <Face key={f} value={f} selected={selected} />
+      ))}
+    </Dice>
   );
 };
 
