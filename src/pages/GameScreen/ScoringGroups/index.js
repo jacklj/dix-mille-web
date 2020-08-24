@@ -49,6 +49,8 @@ const ScoringGroupsContainer = styled.div`
   flex-direction: column-reverse;
 `;
 
+const diceCastAnimationLength = 1000;
+
 const ScoringGroups = () => {
   const isMyTurn = useSelector(isItMyTurn);
   const gameId = useSelector(selectGameId);
@@ -72,7 +74,7 @@ const ScoringGroups = () => {
     if (isRollingCloud) {
       setShowTurnScore(false);
     } else if (previousIsRollingCloud.current && !isRollingCloud) {
-      setTimeout(() => setShowTurnScore(true), 1500);
+      setTimeout(() => setShowTurnScore(true), diceCastAnimationLength);
     } else {
       setShowTurnScore(true);
     }

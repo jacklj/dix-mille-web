@@ -47,6 +47,8 @@ const InfoText = styled.div`
   margin-bottom: 10px;
 `;
 
+const diceCastAnimationLength = 1000;
+
 const RolledDice = () => {
   const isMyTurn = useSelector(isItMyTurn);
   const gameId = useSelector(selectGameId);
@@ -92,7 +94,7 @@ const RolledDice = () => {
 
   useEffect(() => {
     if (isBlapped && !isRollingCloud) {
-      setTimeout(() => setShowBlapped(true), 1500);
+      setTimeout(() => setShowBlapped(true), diceCastAnimationLength);
     } else {
       setShowBlapped(false);
     }
@@ -100,7 +102,10 @@ const RolledDice = () => {
 
   useEffect(() => {
     if (isFailedFirstOfTwoThrowsToDoubleIt && !isRollingCloud) {
-      setTimeout(() => setShowFirstOfTwoThrowsMessage(true), 1500);
+      setTimeout(
+        () => setShowFirstOfTwoThrowsMessage(true),
+        diceCastAnimationLength,
+      );
     } else {
       setShowFirstOfTwoThrowsMessage(false);
     }
@@ -111,7 +116,6 @@ const RolledDice = () => {
   const [playCheerSound] = useSound(cheer, {
     soundEnabled: isSoundOn,
   });
-
   const [playDisappointedSound] = useSound(disappointed, {
     soundEnabled: isSoundOn,
   });
@@ -122,41 +126,26 @@ const RolledDice = () => {
   const previousIsFailedFirstOfTwoThrowsToDoubleIt = useRef(
     isFailedFirstOfTwoThrowsToDoubleIt,
   );
-  const previousIsRollingCloud = useRef(isRollingCloud);
 
   useEffect(() => {
     if (
-      (!isRollingCloud &&
-        !previousIsSuccessfulTwoThrowsToDoubleIt.current &&
-        isSuccessfulTwoThrowsToDoubleIt) ||
-      (isSuccessfulTwoThrowsToDoubleIt &&
-        !previousIsRollingCloud.current &&
-        isRollingCloud)
+      !previousIsSuccessfulTwoThrowsToDoubleIt.current &&
+      isSuccessfulTwoThrowsToDoubleIt
     ) {
-      setTimeout(playCheerSound, 1500);
+      setTimeout(playCheerSound, diceCastAnimationLength);
     }
-
-    if (
-      (!isRollingCloud &&
-        !previousIsFailedFirstOfTwoThrowsToDoubleIt.current &&
-        isFailedFirstOfTwoThrowsToDoubleIt) ||
-      (isFailedFirstOfTwoThrowsToDoubleIt &&
-        !previousIsRollingCloud.current &&
-        isRollingCloud)
-    ) {
-      setTimeout(playDisappointedSound, 1500);
-    }
-
     previousIsSuccessfulTwoThrowsToDoubleIt.current = isSuccessfulTwoThrowsToDoubleIt;
+  }, [isSuccessfulTwoThrowsToDoubleIt, playCheerSound]);
+
+  useEffect(() => {
+    if (
+      !previousIsFailedFirstOfTwoThrowsToDoubleIt.current &&
+      isFailedFirstOfTwoThrowsToDoubleIt
+    ) {
+      setTimeout(playDisappointedSound, diceCastAnimationLength);
+    }
     previousIsFailedFirstOfTwoThrowsToDoubleIt.current = isFailedFirstOfTwoThrowsToDoubleIt;
-    previousIsRollingCloud.current = isRollingCloud;
-  }, [
-    isFailedFirstOfTwoThrowsToDoubleIt,
-    isRollingCloud,
-    isSuccessfulTwoThrowsToDoubleIt,
-    playCheerSound,
-    playDisappointedSound,
-  ]);
+  }, [isFailedFirstOfTwoThrowsToDoubleIt, playDisappointedSound]);
 
   return (
     <>
