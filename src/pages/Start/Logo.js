@@ -129,7 +129,7 @@ const Logo = () => {
       <span>i</span>
       <span>l</span>
       <span>l</span>
-      <span playingAnimation={playingAnimation}>e</span>
+      <span>e</span>
     </Container>
   );
 };
