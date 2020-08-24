@@ -91,10 +91,10 @@ const RolledDice = () => {
             />
           ))}
       </Container>
-      {isFailedFirstOfTwoThrowsToDoubleIt ? (
+      {isFailedFirstOfTwoThrowsToDoubleIt && !isRollingCloud ? (
         <InfoText>You have to roll again!</InfoText>
       ) : null}
-      {isBlapped ? <BlappedMessage /> : null}
+      {isBlapped && !isRollingCloud ? <BlappedMessage /> : null}
     </>
   );
 };
