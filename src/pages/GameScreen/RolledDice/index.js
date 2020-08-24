@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import * as firebase from 'firebase/app';
 import 'firebase/functions';
 import { useSelector } from 'react-redux';
+import useSound from 'use-sound';
 
 import BlappedMessage from './BlappedMessage';
 import {
@@ -17,8 +18,12 @@ import {
   selectIsBlapped,
   selectIsFailedFirstOfTwoThrowsToDoubleIt,
   selectIsRolling,
+  selectIsSuccessfulTwoThrowsToDoubleIt,
 } from 'redux/game/selectors';
+import { selectIsSoundOn } from 'redux/settings/selectors';
 import Die from 'components/Dice3d';
+import cheer from 'media/sounds/cheer.mp3';
+import disappointed from 'media/sounds/disappointed.mp3';
 
 const Container = styled.div`
   flex-shrink: 0;
@@ -56,6 +61,9 @@ const RolledDice = () => {
   const isBlapped = useSelector(selectIsBlapped);
   const isFailedFirstOfTwoThrowsToDoubleIt = useSelector(
     selectIsFailedFirstOfTwoThrowsToDoubleIt,
+  );
+  const isSuccessfulTwoThrowsToDoubleIt = useSelector(
+    selectIsSuccessfulTwoThrowsToDoubleIt,
   );
   const isRollingCloud = useSelector(selectIsRolling);
 
@@ -97,6 +105,58 @@ const RolledDice = () => {
       setShowFirstOfTwoThrowsMessage(false);
     }
   }, [isFailedFirstOfTwoThrowsToDoubleIt, isRollingCloud]);
+
+  const isSoundOn = useSelector(selectIsSoundOn);
+
+  const [playCheerSound] = useSound(cheer, {
+    soundEnabled: isSoundOn,
+  });
+
+  const [playDisappointedSound] = useSound(disappointed, {
+    soundEnabled: isSoundOn,
+  });
+
+  const previousIsSuccessfulTwoThrowsToDoubleIt = useRef(
+    isSuccessfulTwoThrowsToDoubleIt,
+  );
+  const previousIsFailedFirstOfTwoThrowsToDoubleIt = useRef(
+    isFailedFirstOfTwoThrowsToDoubleIt,
+  );
+  const previousIsRollingCloud = useRef(isRollingCloud);
+
+  useEffect(() => {
+    if (
+      (!isRollingCloud &&
+        !previousIsSuccessfulTwoThrowsToDoubleIt.current &&
+        isSuccessfulTwoThrowsToDoubleIt) ||
+      (isSuccessfulTwoThrowsToDoubleIt &&
+        !previousIsRollingCloud.current &&
+        isRollingCloud)
+    ) {
+      setTimeout(playCheerSound, 1500);
+    }
+
+    if (
+      (!isRollingCloud &&
+        !previousIsFailedFirstOfTwoThrowsToDoubleIt.current &&
+        isFailedFirstOfTwoThrowsToDoubleIt) ||
+      (isFailedFirstOfTwoThrowsToDoubleIt &&
+        !previousIsRollingCloud.current &&
+        isRollingCloud)
+    ) {
+      setTimeout(playDisappointedSound, 1500);
+    }
+
+    previousIsSuccessfulTwoThrowsToDoubleIt.current = isSuccessfulTwoThrowsToDoubleIt;
+    previousIsFailedFirstOfTwoThrowsToDoubleIt.current = isFailedFirstOfTwoThrowsToDoubleIt;
+    previousIsRollingCloud.current = isRollingCloud;
+  }, [
+    isFailedFirstOfTwoThrowsToDoubleIt,
+    isRollingCloud,
+    isSuccessfulTwoThrowsToDoubleIt,
+    playCheerSound,
+    playDisappointedSound,
+  ]);
 
   return (
     <>

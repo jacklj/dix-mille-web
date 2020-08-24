@@ -215,6 +215,7 @@ export const selectIsFirstOfTwoThrowsToDoubleIt = (state) => {
 
 export const selectIsFailedFirstOfTwoThrowsToDoubleIt = (state) => {
   const currentRoll = selectCurrentRollObj(state);
+  const isRolling = selectIsRolling(state);
 
   if (
     currentRoll?.rollType !== Constants.ROLL_TYPES.TWO_THROWS_TO_DOUBLE_IT.FIRST
@@ -230,11 +231,39 @@ export const selectIsFailedFirstOfTwoThrowsToDoubleIt = (state) => {
 
   const rolledValue = Object.values(roll)[0];
 
-  if (rolledValue === 1 || rolledValue === 5) {
+  if (rolledValue === 1 || rolledValue === 5 || isRolling) {
     return false;
   }
 
   return true;
+};
+
+export const selectIsSuccessfulTwoThrowsToDoubleIt = (state) => {
+  const currentRoll = selectCurrentRollObj(state);
+  const isRolling = selectIsRolling(state);
+
+  if (
+    currentRoll?.rollType !==
+      Constants.ROLL_TYPES.TWO_THROWS_TO_DOUBLE_IT.FIRST &&
+    currentRoll?.rollType !==
+      Constants.ROLL_TYPES.TWO_THROWS_TO_DOUBLE_IT.SECOND
+  ) {
+    return false;
+  }
+
+  const { roll } = currentRoll;
+
+  if (!roll || Object.values(roll).length !== 1) {
+    return false;
+  }
+
+  const rolledValue = Object.values(roll)[0];
+
+  if ((rolledValue === 1 || rolledValue === 5) && !isRolling) {
+    return true;
+  }
+
+  return false;
 };
 
 export const selectCurrentRoll = (state) => {

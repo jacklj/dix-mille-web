@@ -24,6 +24,8 @@ import { selectIsSoundOn } from 'redux/settings/selectors';
 import shakingDiceSound from 'media/sounds/shakingDice.mp3';
 import castingDiceSprites from 'media/sounds/castingDiceSprites.mp3';
 import spriteMap from 'media/sounds/castingDiceSpriteMap';
+import bankDice from 'media/sounds/bankDice.mp3';
+import stickCashRegister from 'media/sounds/stickCashRegister.mp3';
 
 const padding = 3;
 
@@ -214,6 +216,13 @@ const GameButtons = () => {
     isRollingCloud,
   ]);
 
+  const [playBankingDiceSound] = useSound(bankDice, {
+    soundEnabled: isSoundOn,
+  });
+  const [playStickSound] = useSound(stickCashRegister, {
+    soundEnabled: isSoundOn,
+  });
+
   const startShakingDice = async (event) => {
     // if both touch and mouse events are fired by the browser (ie onTouchStart and onMouseDown),
     // `event.preventDefault()` is called by the first, and prevents the second from happening
@@ -351,6 +360,7 @@ const GameButtons = () => {
       updates.selectedDice = null; // https://firebase.google.com/docs/database/web/read-and-write#delete_data
 
       await firebase.database().ref(rollPath).update(updates);
+      playBankingDiceSound();
     } else {
       alert(invalidReason);
     }
@@ -385,6 +395,7 @@ const GameButtons = () => {
       const res = await firebase.functions().httpsCallable('stick')({
         gameId,
       });
+      playStickSound();
       console.log('Done stick: ', res);
     } catch (error) {
       alert(error.message);
