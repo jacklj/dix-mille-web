@@ -149,7 +149,7 @@ const GameButtons = () => {
       // start in random position
       const lengthInS = 30; // actually 35s
       const randomPosition = Math.random() * lengthInS;
-      sound.seek(randomPosition);
+      sound && sound.seek(randomPosition);
       console.log('play from ', randomPosition);
       playShakingSound();
     } else {
