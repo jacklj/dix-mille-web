@@ -54,42 +54,42 @@ const DiceContainer = styled.div`
   transform-origin: calc(var(--size) / 2) calc(var(--size) / 2);
 
   transform: ${(props) => {
-    if (props.even) {
-      switch (props.value) {
-        case 1:
-          return `rotateX(360deg) rotateY(720deg) rotateZ(360deg);`;
-        case 2:
-          return `rotateX(450deg) rotateY(720deg) rotateZ(360deg);`;
-        case 3:
-          return `rotateX(360deg) rotateY(630deg) rotateZ(360deg);`;
-        case 4:
-          return `rotateX(360deg) rotateY(810deg) rotateZ(360deg);`;
-        case 5:
-          return `rotateX(270deg) rotateY(720deg) rotateZ(360deg);`;
-        case 6:
-          return `rotateX(360deg) rotateY(900deg) rotateZ(360deg);`;
-        default:
-          return 'none;';
+      if (props.even) {
+        switch (props.value) {
+          case 1:
+            return `rotateX(360deg) rotateY(720deg) rotateZ(360deg);`;
+          case 2:
+            return `rotateX(450deg) rotateY(720deg) rotateZ(360deg);`;
+          case 3:
+            return `rotateX(360deg) rotateY(630deg) rotateZ(360deg);`;
+          case 4:
+            return `rotateX(360deg) rotateY(810deg) rotateZ(360deg);`;
+          case 5:
+            return `rotateX(270deg) rotateY(720deg) rotateZ(360deg);`;
+          case 6:
+            return `rotateX(360deg) rotateY(900deg) rotateZ(360deg);`;
+          default:
+            return 'none;';
+        }
+      } else {
+        switch (props.value) {
+          case 1:
+            return `rotateX(-360deg) rotateY(-720deg) rotateZ(-360deg);`;
+          case 2:
+            return `rotateX(-270deg) rotateY(-720deg) rotateZ(-360deg);`;
+          case 3:
+            return `rotateX(-360deg) rotateY(-810deg) rotateZ(-360deg);`;
+          case 4:
+            return `rotateX(-360deg) rotateY(-630deg) rotateZ(-360deg);`;
+          case 5:
+            return `rotateX(-450deg) rotateY(-720deg) rotateZ(-360deg);`;
+          case 6:
+            return `rotateX(-360deg) rotateY(-900deg) rotateZ(-360deg);`;
+          default:
+            return 'none;';
+        }
       }
-    } else {
-      switch (props.value) {
-        case 1:
-          return `rotateX(-360deg) rotateY(-720deg) rotateZ(-360deg);`;
-        case 2:
-          return `rotateX(-270deg) rotateY(-720deg) rotateZ(-360deg);`;
-        case 3:
-          return `rotateX(-360deg) rotateY(-810deg) rotateZ(-360deg);`;
-        case 4:
-          return `rotateX(-360deg) rotateY(-630deg) rotateZ(-360deg);`;
-        case 5:
-          return `rotateX(-450deg) rotateY(-720deg) rotateZ(-360deg);`;
-        case 6:
-          return `rotateX(-360deg) rotateY(-900deg) rotateZ(-360deg);`;
-        default:
-          return 'none;';
-      }
-    }
-  }}
+    }}
     ${(props) =>
       props.rolling &&
       css`
