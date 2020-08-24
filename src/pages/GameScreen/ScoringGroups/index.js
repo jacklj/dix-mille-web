@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import * as firebase from 'firebase/app';
 import 'firebase/functions';
@@ -13,6 +13,7 @@ import {
   selectPreviousScoringGroupsSinceLastFullRoll,
   selectCurrentScoringGroups,
   selectTurnScoreSoFar,
+  selectIsRolling,
 } from 'redux/game/selectors';
 import ScoringGroup from './ScoringGroup';
 
@@ -38,6 +39,8 @@ const TurnScoreText = styled.div`
 
   color: white;
   margin-bottom: 10px;
+
+  height: 1.4em; // so when the turn score is hidden, it doesn't shift the page
 `;
 
 const ScoringGroupsContainer = styled.div`
@@ -59,6 +62,23 @@ const ScoringGroups = () => {
   const turnScoreSoFar = useSelector(selectTurnScoreSoFar);
 
   const currentRollNumber = useSelector(selectCurrentRollNumber);
+  const isRollingCloud = useSelector(selectIsRolling);
+
+  const [showTurnScore, setShowTurnScore] = useState(false);
+
+  const previousIsRollingCloud = useRef(isRollingCloud);
+
+  useEffect(() => {
+    if (isRollingCloud) {
+      setShowTurnScore(false);
+    } else if (previousIsRollingCloud.current && !isRollingCloud) {
+      setTimeout(() => setShowTurnScore(true), 1500);
+    } else {
+      setShowTurnScore(true);
+    }
+
+    previousIsRollingCloud.current = isRollingCloud;
+  }, [isRollingCloud]);
 
   const ungroupGroup = async (groupId) => {
     if (!isMyTurn) {
@@ -83,9 +103,11 @@ const ScoringGroups = () => {
 
   return (
     <Container>
-      {typeof turnScoreSoFar === 'number' ? (
-        <TurnScoreText>Turn score: {turnScoreSoFar}</TurnScoreText>
-      ) : null}
+      <TurnScoreText>
+        {typeof turnScoreSoFar === 'number' && showTurnScore
+          ? `Turn score: ${turnScoreSoFar}`
+          : null}
+      </TurnScoreText>
       <ScoringGroupsContainer>
         {currentScoringGroups &&
           Object.keys(currentScoringGroups).map((groupId) => {

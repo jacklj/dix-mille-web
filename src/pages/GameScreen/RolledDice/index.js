@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import * as firebase from 'firebase/app';
 import 'firebase/functions';
@@ -76,6 +76,28 @@ const RolledDice = () => {
       });
   };
 
+  const [showBlapped, setShowBlapped] = useState(false);
+  const [
+    showFirstOfTwoThrowsMessage,
+    setShowFirstOfTwoThrowsMessage,
+  ] = useState(false);
+
+  useEffect(() => {
+    if (isBlapped && !isRollingCloud) {
+      setTimeout(() => setShowBlapped(true), 1500);
+    } else {
+      setShowBlapped(false);
+    }
+  }, [isBlapped, isRollingCloud]);
+
+  useEffect(() => {
+    if (isFailedFirstOfTwoThrowsToDoubleIt && !isRollingCloud) {
+      setTimeout(() => setShowFirstOfTwoThrowsMessage(true), 1500);
+    } else {
+      setShowFirstOfTwoThrowsMessage(false);
+    }
+  }, [isFailedFirstOfTwoThrowsToDoubleIt, isRollingCloud]);
+
   return (
     <>
       <Container>
@@ -91,10 +113,10 @@ const RolledDice = () => {
             />
           ))}
       </Container>
-      {isFailedFirstOfTwoThrowsToDoubleIt && !isRollingCloud ? (
+      {showFirstOfTwoThrowsMessage ? (
         <InfoText>You have to roll again!</InfoText>
       ) : null}
-      {isBlapped && !isRollingCloud ? <BlappedMessage /> : null}
+      {showBlapped ? <BlappedMessage /> : null}
     </>
   );
 };
