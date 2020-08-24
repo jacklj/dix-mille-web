@@ -49,7 +49,7 @@ const DiceContainer = styled.div`
   position: relative;
 
   transform-style: preserve-3d; // N.B. affects children not the element itself
-  transition: transform 1.5s ease-out;
+  transition: transform 1s ease-out;
 
   transform-origin: calc(var(--size) / 2) calc(var(--size) / 2);
 
