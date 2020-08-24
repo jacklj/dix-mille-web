@@ -128,7 +128,9 @@ const Start = () => {
       <Logo />
 
       <Dice value={actualDiceValue} rolling={rolling} selected={isSelected} />
-      <IntroText>Play the classic French café table dice game.</IntroText>
+      <IntroText>
+        Ten thousand / Farkle / Crap Out / Zilch / Greed / Hot Dice
+      </IntroText>
       <div>
         <CustomButton
           onClick={() => createAnonymousProfileAndGame()}
