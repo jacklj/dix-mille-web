@@ -17,12 +17,10 @@ const Container = styled.div`
   flex-grow: 0;
   flex-basis: auto;
 
-  // perspective: 600px;
+  // NB perspective and perspective-origin affects the child components, no the component itself
 
-  background-color: ${(props) =>
-    props.selected
-      ? 'rgba(100,255,150,0.5)'
-      : 'rgba(200,0,0,1)'}; // cant use 'transparent' as it causes the layout to shift
+  // perspective: 100px;
+  // perspective-origin: left;
 
   border-radius: 50%;
 
@@ -50,46 +48,48 @@ const spin = keyframes`
 const DiceContainer = styled.div`
   position: relative;
   // top: -10px;
-  transform-style: preserve-3d;
+  transform-style: preserve-3d; // N.B. affects children not the element itself
   transition: transform 1.8s ease-out;
 
+  transform-origin: calc(var(--size) / 2) calc(var(--size) / 2);
+
   transform: ${(props) => {
-      if (props.even) {
-        switch (props.value) {
-          case 1:
-            return `rotateX(360deg) rotateY(720deg) rotateZ(360deg) translateX(-7px);`;
-          case 2:
-            return `rotateX(450deg) rotateY(720deg) rotateZ(360deg) translateX(-7px) translateY(50px);`;
-          case 3:
-            return `rotateX(360deg) rotateY(630deg) rotateZ(360deg);`;
-          case 4:
-            return `rotateX(360deg) rotateY(810deg) rotateZ(360deg);`;
-          case 5:
-            return `rotateX(270deg) rotateY(720deg) rotateZ(360deg);`;
-          case 6:
-            return `rotateX(360deg) rotateY(900deg) rotateZ(360deg);`;
-          default:
-            return 'none;';
-        }
-      } else {
-        switch (props.value) {
-          case 1:
-            return `rotateX(-360deg) rotateY(-720deg) rotateZ(-360deg) translateX(-7px);`;
-          case 2:
-            return `rotateX(-270deg) rotateY(-720deg) rotateZ(-360deg) translateX(-7px) translateY(50px);`;
-          case 3:
-            return `rotateX(-360deg) rotateY(-810deg) rotateZ(-360deg);`;
-          case 4:
-            return `rotateX(-360deg) rotateY(-630deg) rotateZ(-360deg);`;
-          case 5:
-            return `rotateX(-450deg) rotateY(-720deg) rotateZ(-360deg);`;
-          case 6:
-            return `rotateX(-360deg) rotateY(-900deg) rotateZ(-360deg);`;
-          default:
-            return 'none;';
-        }
+    if (props.even) {
+      switch (props.value) {
+        case 1:
+          return `rotateX(360deg) rotateY(720deg) rotateZ(360deg);`;
+        case 2:
+          return `rotateX(450deg) rotateY(720deg) rotateZ(360deg);`;
+        case 3:
+          return `rotateX(360deg) rotateY(630deg) rotateZ(360deg);`;
+        case 4:
+          return `rotateX(360deg) rotateY(810deg) rotateZ(360deg);`;
+        case 5:
+          return `rotateX(270deg) rotateY(720deg) rotateZ(360deg);`;
+        case 6:
+          return `rotateX(360deg) rotateY(900deg) rotateZ(360deg);`;
+        default:
+          return 'none;';
       }
-    }}
+    } else {
+      switch (props.value) {
+        case 1:
+          return `rotateX(-360deg) rotateY(-720deg) rotateZ(-360deg);`;
+        case 2:
+          return `rotateX(-270deg) rotateY(-720deg) rotateZ(-360deg);`;
+        case 3:
+          return `rotateX(-360deg) rotateY(-810deg) rotateZ(-360deg);`;
+        case 4:
+          return `rotateX(-360deg) rotateY(-630deg) rotateZ(-360deg);`;
+        case 5:
+          return `rotateX(-450deg) rotateY(-720deg) rotateZ(-360deg);`;
+        case 6:
+          return `rotateX(-360deg) rotateY(-900deg) rotateZ(-360deg);`;
+        default:
+          return 'none;';
+      }
+    }
+  }}
     ${(props) =>
       props.rolling &&
       css`

@@ -9,15 +9,26 @@ const Container = styled.div`
 
   padding: calc(var(--size) * 0.17);
 
+  background-color: #e7e7e7;
   box-shadow: inset 0 calc(var(--size) * 0.1) white,
     inset 0 calc(var(--size) * -0.1) #bbb,
     inset calc(var(--size) * 0.1) 0 #d7d7d7,
     inset calc(var(--size) * -0.1) 0 #d7d7d7;
 
-  border-radius: 10%;
-  background-color: ${(props) =>
-    props.selected ? 'rgba(0,200,0,1)' : '#e7e7e7'};
 
+  ${(props) =>
+    props.selected &&
+    `
+    background-color: rgb(164,255,168);
+    box-shadow: inset 0 calc(var(--size) * 0.1) rgb(164,255,168),
+      inset 0 calc(var(--size) * -0.1) #rgb(154,235,148),
+      inset calc(var(--size) * 0.1) 0 rgb(164,245,158),
+      inset calc(var(--size) * -0.1) 0 rgb(164,245,158);
+
+  `}
+  
+    border-radius: 10%;
+    
   display: grid;
   grid-template-areas:
     'a . c'

@@ -121,7 +121,7 @@ const Start = () => {
       </button>
       <Logo />
 
-      <Dice value={actualDiceValue} rolling={rolling} />
+      <Dice value={actualDiceValue} rolling={rolling} selected />
       <IntroText>Play the classic French café table dice game.</IntroText>
       <div>
         <CustomButton
