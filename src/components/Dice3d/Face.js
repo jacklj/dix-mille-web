@@ -94,7 +94,7 @@ const Face = ({ value, selected }) => {
   const arrayWithValueItems = [...Array(value)];
 
   return (
-    <Container key={value} value={value} selected={selected}>
+    <Container value={value} selected={selected}>
       {arrayWithValueItems.map((v, k) => (
         <Pip key={k} />
       ))}

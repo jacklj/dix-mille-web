@@ -132,7 +132,7 @@ const Dice = ({
       className={className}>
       <DiceContainer value={actualValue} rolling={rolling} even={even}>
         {faces.map((f) => (
-          <Face value={f} selected={selected} />
+          <Face key={f} value={f} selected={selected} />
         ))}
       </DiceContainer>
     </Container>
