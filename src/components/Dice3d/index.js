@@ -126,7 +126,6 @@ const Dice = ({
   return (
     <Container
       key={id}
-      selected={selected}
       onClick={onClick}
       isInGroup={isInGroup}
       className={className}>
