@@ -19,11 +19,11 @@ const Container = styled.div`
   ${(props) =>
     props.selected &&
     `
-    background-color: rgb(164,255,168);
-    box-shadow: inset 0 calc(var(--size) * 0.1) rgb(164,255,168),
-      inset 0 calc(var(--size) * -0.1) #rgb(154,235,148),
-      inset calc(var(--size) * 0.1) 0 rgb(164,245,158),
-      inset calc(var(--size) * -0.1) 0 rgb(164,245,158);
+    background-color: #ee1a11;
+    box-shadow: inset 0 calc(var(--size) * 0.1) #f3544e,
+      inset 0 calc(var(--size) * -0.1) #ab120c,
+      inset calc(var(--size) * 0.1) 0 #d0160f,
+      inset calc(var(--size) * -0.1) 0 #d0160f;
 
   `}
   
@@ -72,6 +72,7 @@ const Pip = styled.span`
   height: calc(var(--size) * 0.25);
 
   border-radius: 50%;
+
   background-color: #333;
   box-shadow: inset 0 calc(var(--size) * 0.094) #111,
     inset 0 calc(var(--size) * -0.094) #555;
