@@ -15,7 +15,8 @@ const Container = styled.div`
     inset calc(var(--size) * -0.1) 0 #d7d7d7;
 
   border-radius: 10%;
-  background-color: #e7e7e7;
+  background-color: ${(props) =>
+    props.selected ? 'rgba(0,200,0,1)' : '#e7e7e7'};
 
   display: grid;
   grid-template-areas:

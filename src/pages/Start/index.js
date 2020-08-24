@@ -10,6 +10,7 @@ import Logo from './Logo';
 import { loggedInAndCreatedGame } from 'redux/auth/slice';
 import { Button } from 'components/forms';
 import SetupScreenContainer from 'components/SetupScreenContainer';
+import Dice from 'components/Dice3d';
 
 const IntroText = styled.div`
   margin-top: 40px;
@@ -29,6 +30,9 @@ const Start = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [isStartingGame, setIsStartingGame] = useState(false);
+  const [desiredDiceValue, setDesiredDiceValue] = useState(1);
+  const [actualDiceValue, setActualDiceValue] = useState(1);
+  const [rolling, setRolling] = useState(false);
 
   const createAnonymousProfileAndGame = async () => {
     setIsStartingGame(true);
@@ -81,11 +85,44 @@ const Start = () => {
   // N.B. <div>s around buttons are to fix a bug in mobile Safari where the flex container
   // forces the buttons to be really short (ie squished vertically)
 
+  const startRolling = (event) => {
+    event.preventDefault();
+    setRolling(true);
+  };
+
+  const stopRolling = (event) => {
+    event.preventDefault();
+
+    setRolling(false);
+    setActualDiceValue(desiredDiceValue);
+  };
+
   return (
     <SetupScreenContainer>
+      <select
+        value={desiredDiceValue}
+        onChange={(event) => {
+          setDesiredDiceValue(parseInt(event.target.value));
+        }}>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+      </select>
+
+      <button
+        onMouseDown={startRolling}
+        onTouchStart={startRolling}
+        onMouseUp={stopRolling}
+        onTouchEnd={stopRolling}>
+        roll
+      </button>
       <Logo />
 
-      <IntroText>A French dice game.</IntroText>
+      <Dice value={actualDiceValue} rolling={rolling} />
+      <IntroText>Play the classic French café table dice game.</IntroText>
       <div>
         <CustomButton
           onClick={() => createAnonymousProfileAndGame()}
