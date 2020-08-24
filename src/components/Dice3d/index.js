@@ -36,20 +36,20 @@ const Container = styled.div`
 `;
 
 const spin = keyframes`
-  0% { transform: translateZ(-100px) rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
-  16% { transform: translateZ(-100px) rotateX(180deg) rotateY(180deg) rotateZ(0deg); }
-  33% { transform: translateZ(-100px) rotateX(360deg) rotateY(90deg) rotateZ(180deg); }
-  50% { transform: translateZ(-100px) rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
-  66% { transform: translateZ(-100px) rotateX(180deg) rotateY(360deg) rotateZ(270deg); }
-  83% { transform: translateZ(-100px) rotateX(270deg) rotateY(180deg) rotateZ(180deg); }
-  100% { transform: translateZ(-100px) rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
+  0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+  16% { transform: rotateX(180deg) rotateY(180deg) rotateZ(0deg); }
+  33% { transform: rotateX(360deg) rotateY(90deg) rotateZ(180deg); }
+  50% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
+  66% { transform: rotateX(180deg) rotateY(360deg) rotateZ(270deg); }
+  83% { transform: rotateX(270deg) rotateY(180deg) rotateZ(180deg); }
+  100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
 `;
 
 const DiceContainer = styled.div`
   position: relative;
-  // top: -10px;
+
   transform-style: preserve-3d; // N.B. affects children not the element itself
-  transition: transform 1.8s ease-out;
+  transition: transform 1.5s ease-out;
 
   transform-origin: calc(var(--size) / 2) calc(var(--size) / 2);
 
@@ -93,7 +93,7 @@ const DiceContainer = styled.div`
     ${(props) =>
       props.rolling &&
       css`
-        animation: ${spin} 1s infinite linear;
+        animation: ${spin} 1.3s infinite linear;
       `};
 `;
 
@@ -118,7 +118,7 @@ const Dice = ({
       setTimeout(() => {
         setActualValue(value);
         setEven((x) => !x);
-      }, 20);
+      }, 0);
     }
     previousRolling.current = rolling;
   }, [rolling, value]);
