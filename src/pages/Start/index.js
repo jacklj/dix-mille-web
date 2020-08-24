@@ -86,7 +86,7 @@ const Start = () => {
       <Logo />
 
       <IntroText>
-        Ten thousand / Farkle / Crap Out / Zilch / Greed / Hot Dice
+        Ten thousand - Farkle - Crap Out - Zilch - Greed - Hot Dice
       </IntroText>
       <div>
         <CustomButton
