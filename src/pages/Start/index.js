@@ -33,6 +33,7 @@ const Start = () => {
   const [desiredDiceValue, setDesiredDiceValue] = useState(1);
   const [actualDiceValue, setActualDiceValue] = useState(1);
   const [rolling, setRolling] = useState(false);
+  const [isSelected, setIsSelected] = useState(false);
 
   const createAnonymousProfileAndGame = async () => {
     setIsStartingGame(true);
@@ -112,6 +113,11 @@ const Start = () => {
         <option value="6">6</option>
       </select>
 
+      <input
+        type="checkbox"
+        value={isSelected}
+        onChange={() => setIsSelected((x) => !x)}></input>
+
       <button
         onMouseDown={startRolling}
         onTouchStart={startRolling}
@@ -121,7 +127,7 @@ const Start = () => {
       </button>
       <Logo />
 
-      <Dice value={actualDiceValue} rolling={rolling} selected />
+      <Dice value={actualDiceValue} rolling={rolling} selected={isSelected} />
       <IntroText>Play the classic French café table dice game.</IntroText>
       <div>
         <CustomButton
