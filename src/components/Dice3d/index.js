@@ -45,7 +45,7 @@ const spin = keyframes`
   100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
 `;
 
-const DiceContainer = styled.div`
+const Dice = styled.div`
   position: relative;
 
   transform-style: preserve-3d; // N.B. affects children not the element itself
@@ -95,11 +95,30 @@ const DiceContainer = styled.div`
       css`
         animation: ${spin} 1.3s infinite linear;
       `};
+
+  ${Container}:nth-child(1) & {
+    animation-delay: 0s;
+  }
+  ${Container}:nth-child(2) & {
+    animation-delay: -0.1s;
+  }
+  ${Container}:nth-child(3) & {
+    animation-delay: -0.2s;
+  }
+  ${Container}:nth-child(4) & {
+    animation-delay: -0.3s;
+  }
+  ${Container}:nth-child(5) & {
+    animation-delay: -0.4s;
+  }
+  ${Container}:nth-child(6) & {
+    animation-delay: -0.5s;
+  }
 `;
 
 const faces = [1, 2, 3, 4, 5, 6];
 
-const Dice = ({
+const Dice3d = ({
   id,
   value,
   rolling,
@@ -129,13 +148,13 @@ const Dice = ({
       onClick={onClick}
       isInGroup={isInGroup}
       className={className}>
-      <DiceContainer value={actualValue} rolling={rolling} even={even}>
+      <Dice value={actualValue} rolling={rolling} even={even}>
         {faces.map((f) => (
           <Face key={f} value={f} selected={selected} />
         ))}
-      </DiceContainer>
+      </Dice>
     </Container>
   );
 };
 
-export default Dice;
+export default Dice3d;
