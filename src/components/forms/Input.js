@@ -8,6 +8,7 @@ const Input = styled.input`
   color: #ffbf00;
   font-size: 1.2em;
   font-family: 'Playfair Display', serif;
+  min-width: 50px;
 
   &::placeholder {
     font-size: 1.1em;
