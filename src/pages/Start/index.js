@@ -10,6 +10,7 @@ import Logo from './Logo';
 import { loggedInAndCreatedGame } from 'redux/auth/slice';
 import { Button } from 'components/forms';
 import SetupScreenContainer from 'components/SetupScreenContainer';
+import DiceCup from 'components/DiceCup';
 
 const IntroText = styled.div`
   margin-top: 40px;
@@ -84,6 +85,7 @@ const Start = () => {
   return (
     <SetupScreenContainer>
       <Logo />
+      <DiceCup />
 
       <IntroText>
         Ten thousand - Farkle - Crap Out - Zilch - Greed - Hot Dice
