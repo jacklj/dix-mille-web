@@ -78,18 +78,8 @@ const PlayerSetup = () => {
     history.push('/waitingRoom');
   };
 
-  const previousAvatar = (event) => {
-    event.preventDefault();
-    if (currentAvatar === 0) {
-      setCurrentAvatar(avatars.length - 1);
-    } else {
-      setCurrentAvatar((n) => n - 1);
-    }
-  };
-
-  const nextAvatar = (event) => {
-    event.preventDefault();
-    setCurrentAvatar((n) => (n + 1) % avatars.length);
+  const onAvatarSelected = (index) => {
+    setCurrentAvatar(index);
   };
 
   return (
@@ -108,12 +98,7 @@ const PlayerSetup = () => {
           />
         </FieldContainer>
 
-        <AvatarCarousel
-          avatars={avatars}
-          currentAvatar={currentAvatar}
-          previousAvatar={previousAvatar}
-          nextAvatar={nextAvatar}
-        />
+        <AvatarCarousel avatars={avatars} onAvatarSelected={onAvatarSelected} />
 
         <Button loading={isSavingPlayerDetails}>Next</Button>
       </Form>

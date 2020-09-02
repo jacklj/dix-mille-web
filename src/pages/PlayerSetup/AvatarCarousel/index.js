@@ -1,30 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
+import { CarouselProvider } from 'pure-react-carousel';
 
-import { CarouselProvider, Slider, Slide } from 'pure-react-carousel';
-import 'pure-react-carousel/dist/react-carousel.es.css';
-
-import AvatarSlide from './AvatarSlide';
-import { Button } from 'components/forms';
+import CarouselInterior from './CarouselInterior';
 
 const CarouselContainer = styled.div`
   margin-bottom: 30px;
 `;
 
-const CustomButton = styled(Button)`
-  margin: 20px;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 0;
-  padding-bottom: 0;
-`;
-
-const AvatarCarousel = ({
-  avatars,
-  currentAvatar,
-  previousAvatar,
-  nextAvatar,
-}) => {
+const AvatarCarousel = ({ avatars, onAvatarSelected }) => {
   return (
     <CarouselContainer>
       {avatars && avatars.length > 0 && (
@@ -32,20 +16,12 @@ const AvatarCarousel = ({
           naturalSlideWidth={200}
           naturalSlideHeight={250}
           totalSlides={avatars.length}
-          currentSlide={currentAvatar}
+          currentSlide={0} // badly named prop - it's actually the initial slide.
           infinite>
-          <Slider style={{ height: '200px' }}>
-            {avatars.map((avatar, key) => (
-              <Slide index={key} key={avatar.url}>
-                <AvatarSlide
-                  url={avatar.url}
-                  alreadyChosen={avatar.alreadyChosen}
-                />
-              </Slide>
-            ))}
-          </Slider>
-          <CustomButton onClick={(e) => previousAvatar(e)}>{'<'}</CustomButton>
-          <CustomButton onClick={(e) => nextAvatar(e)}>{'>'}</CustomButton>
+          <CarouselInterior
+            avatars={avatars}
+            onAvatarSelected={onAvatarSelected}
+          />
         </CarouselProvider>
       )}
     </CarouselContainer>
