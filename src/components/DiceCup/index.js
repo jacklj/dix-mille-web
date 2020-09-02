@@ -2,6 +2,13 @@ import React, { useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 
 import diceCup from './diceCup.svg';
+import diceCupTop from './diceCup-top.svg';
+
+const Container = styled.div`
+  position: relative;
+  height: 160px;
+  width: 116px;
+`;
 
 const shake = keyframes`
   0% { 
@@ -29,6 +36,10 @@ const Img = styled.img`
   transform: rotate(-40deg);
   height: 160px;
 
+  position: absolute;
+  top: 0;
+  left: 0;
+
   ${(props) =>
     props.isShaking &&
     css`
@@ -36,7 +47,13 @@ const Img = styled.img`
     `}
 `;
 
-// TODO make a separate svg for the 'inside' of the cup, so the dice can come from in between them!!!
+const BottomImg = styled(Img)`
+  z-index: 0;
+`;
+
+const TopImg = styled(Img)`
+  z-index: 2;
+`;
 
 const DiceCup = () => {
   // shaking animation, then quicker release shake animation.
@@ -45,11 +62,18 @@ const DiceCup = () => {
   // do we need js, or can we do with css only?
 
   return (
-    <Img
-      src={diceCup}
-      isShaking={isShaking}
-      onClick={() => setIsShaking((x) => !x)}
-    />
+    <Container>
+      <BottomImg
+        src={diceCup}
+        isShaking={isShaking}
+        onClick={() => setIsShaking((x) => !x)}
+      />
+      <TopImg
+        src={diceCupTop}
+        isShaking={isShaking}
+        onClick={() => setIsShaking((x) => !x)}
+      />
+    </Container>
   );
 };
 
