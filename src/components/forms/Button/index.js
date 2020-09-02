@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import LoadingSpinner from './LoadingSpinner';
 
@@ -10,7 +10,9 @@ const Colours = {
   active: '#ffbf00',
 };
 
-const BasicButton = styled.button`
+// N.B. exporting the css separately so we can reuse it for the avatar carousel 'previous'
+// and 'next' buttons
+export const buttonCss = css`
   height: 58px;
 
   // padding: 10px;
@@ -42,12 +44,12 @@ const BasicButton = styled.button`
   ${({ isDisabled }) =>
     isDisabled &&
     `
-    color: ${Colours.disabled};
-    border-color: ${Colours.disabled};
-    text-shadow: none;
-    text-decoration: line-through;
-    text-decoration-thickness: 3px; // mainly for firefox, otherwise strikethrough line looks too small (1px thick)
-  `}
+  color: ${Colours.disabled};
+  border-color: ${Colours.disabled};
+  text-shadow: none;
+  text-decoration: line-through;
+  text-decoration-thickness: 3px; // mainly for firefox, otherwise strikethrough line looks too small (1px thick)
+`}
 
   &:hover {
     border-color: ${Colours.hover};
@@ -56,9 +58,9 @@ const BasicButton = styled.button`
     ${({ isDisabled }) =>
       isDisabled &&
       `
-    color: ${Colours.disabled};
-    border-color: ${Colours.disabled};
-    `}
+  color: ${Colours.disabled};
+  border-color: ${Colours.disabled};
+  `}
   }
 
   &:active {
@@ -70,11 +72,15 @@ const BasicButton = styled.button`
     ${({ isDisabled }) =>
       isDisabled &&
       `
-    color: ${Colours.disabled};
-    border-color: ${Colours.disabled};
-    text-shadow: none;
-    `}
+  color: ${Colours.disabled};
+  border-color: ${Colours.disabled};
+  text-shadow: none;
+  `}
   }
+`;
+
+const BasicButton = styled.button`
+  ${buttonCss}
 `;
 
 const LoadingMessage = styled.span`

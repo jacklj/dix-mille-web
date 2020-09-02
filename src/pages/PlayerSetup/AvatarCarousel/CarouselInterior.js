@@ -11,8 +11,7 @@ import {
 import 'pure-react-carousel/dist/react-carousel.es.css';
 
 import AvatarSlide from './AvatarSlide';
-import { Button } from 'components/forms';
-import carouselButtonCss from './carouselButtonCss';
+import { buttonCss } from 'components/forms/Button';
 
 const buttonCustomCss = css`
   margin: 20px;
@@ -23,12 +22,12 @@ const buttonCustomCss = css`
 `;
 
 const StyledButtonBack = styled(ButtonBack)`
-  ${carouselButtonCss}
+  ${buttonCss}
   ${buttonCustomCss}
 `;
 
 const StyledButtonNext = styled(ButtonNext)`
-  ${carouselButtonCss}
+  ${buttonCss}
   ${buttonCustomCss}
 `;
 
