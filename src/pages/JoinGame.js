@@ -36,7 +36,9 @@ const JoinGame = () => {
     // LOCAL - persists across tabs
     // SESSION - persists within a tab (across page refreshes, but not shared between tabs)
     // NONE - doesnt persist at all.
-    await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
+    await firebase
+      .auth()
+      .setPersistence(firebase.auth.Auth.Persistence.SESSION);
 
     const result = await firebase.auth().signInAnonymously();
     const { additionalUserInfo, user } = result;

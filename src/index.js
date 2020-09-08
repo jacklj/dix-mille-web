@@ -4,12 +4,13 @@ import * as firebase from 'firebase/app';
 import 'firebase/functions';
 import 'firebase/database';
 import { Provider } from 'react-redux';
-import { configureStore } from '@reduxjs/toolkit';
+import { PersistGate } from 'redux-persist/integration/react';
 
 import './index.css';
 import App from './App';
+import LoadingScreen from './pages/LoadingScreen';
 import * as serviceWorker from './serviceWorker';
-import rootReducer from './redux';
+import { store, persistor } from './redux';
 
 if (window.location.hostname === 'localhost') {
   // more info here https://firebase.google.com/docs/emulator-suite/connect_and_prototype?database=RTDB
@@ -45,14 +46,12 @@ if (window.location.hostname === 'localhost') {
   firebase.initializeApp(firebaseConfig);
 }
 
-const store = configureStore({
-  reducer: rootReducer,
-});
-
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <PersistGate loading={<LoadingScreen />} persistor={persistor}>
+        <App />
+      </PersistGate>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root'),
