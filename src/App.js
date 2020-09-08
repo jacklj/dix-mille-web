@@ -9,7 +9,6 @@ import * as firebase from 'firebase/app';
 import 'firebase/database';
 import { useDispatch, useSelector } from 'react-redux';
 
-import AuthService from 'services/AuthService';
 import Header from 'components/Header';
 import Start from 'pages/Start';
 import JoinGame from 'pages/JoinGame';
@@ -32,9 +31,21 @@ function App() {
   const startedAt = useSelector(selectGameStartedAt);
 
   useEffect(() => {
-    AuthService.subscribeToAuthStateChangeListener();
-    return () => AuthService.unsubscribeFromAuthStateChangeListener();
-  }, []);
+    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        // User is signed in.
+        console.log('User signed in', user);
+        // const { displayName: name, email, uid } = user;
+        // dispatch(loggedIn({ uid, name, email }));
+      } else {
+        // User is signed out.
+        console.log('User signed out', user);
+        // dispatch(loggedOut());
+      }
+    });
+
+    return () => unsubscribe && unsubscribe();
+  }, [dispatch]);
 
   useEffect(() => {
     // subscribe to user
