@@ -63,7 +63,7 @@ const Start = () => {
       return;
     }
 
-    console.log('cf done: ', res); // could return user and game data here, but also need to subscribe to the game obj
+    // could return user and game data here, but also need to subscribe to the game obj
     const { data } = res;
     const { gameId, gameCode } = data;
 

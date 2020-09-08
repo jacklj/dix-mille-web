@@ -101,7 +101,7 @@ const Logo = () => {
 
   useEffect(() => {
     // N.B. if multiple sounds are playing concurrently, not all of them will be stopped by calling `stop()`...
-    console.log('effect', { isPlaying, isSoundOn });
+    // console.log('effect', { isPlaying, isSoundOn });
     if (isPlaying && !isSoundOn) {
       stop();
     }
