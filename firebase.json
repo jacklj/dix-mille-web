@@ -8,7 +8,7 @@
         "destination": "/index.html"
       }
     ],
-    // need to specify headers so that with Firebase Hostring frontend changes on subsequent deploys
+    // need to specify headers so that with Firebase Hosting frontend changes on subsequent deploys
     // https://github.com/facebook/create-react-app/issues/2440
     "headers": [
       {

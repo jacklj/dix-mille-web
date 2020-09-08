@@ -6,6 +6,8 @@ const ContentContainer = styled.div`
 
   display: flex;
   flex-direction: column;
+
+  z-index: 0; // establish stacking context for pages (so Overlay is always on top)
 `;
 
 export default ContentContainer;
