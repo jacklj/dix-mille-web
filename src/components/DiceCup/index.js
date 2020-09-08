@@ -5,9 +5,18 @@ import diceCup from './diceCup.svg';
 import diceCupTop from './diceCup-top.svg';
 
 const Container = styled.div`
-  position: relative;
-  height: 160px;
-  width: 116px;
+  position: absolute;
+  right: 50px;
+  bottom: 70px;
+
+  height: 179px;
+  width: 130px;
+
+  ${({ disabled }) =>
+    disabled &&
+    `
+  filter: grayscale(60%);
+  opacity: 0.7;`};
 `;
 
 const shake = keyframes`
@@ -34,11 +43,13 @@ const shake = keyframes`
 
 const Img = styled.img`
   transform: rotate(-40deg);
-  height: 160px;
+  height: 179px;
 
   position: absolute;
   top: 0;
   left: 0;
+
+  user-drag: none;
 
   ${(props) =>
     props.isShaking &&
@@ -49,30 +60,43 @@ const Img = styled.img`
 
 const BottomImg = styled(Img)`
   z-index: 0;
-  user-drag: none;
 `;
 
 const TopImg = styled(Img)`
   z-index: 2;
-  user-drag: none;
 `;
 
-const DiceCup = () => {
+const DiceCup = ({
+  onMouseDown,
+  onTouchStart,
+  onMouseUp,
+  onTouchEnd,
+  onMouseLeave,
+  disabled,
+  loading,
+}) => {
   // shaking animation, then quicker release shake animation.
   // then dice fly out!
   const [isShaking, setIsShaking] = useState(false);
   // do we need js, or can we do with css only?
 
   return (
-    <Container>
+    <Container
+      onMouseDown={onMouseDown}
+      onTouchStart={onTouchStart}
+      onMouseUp={onMouseUp}
+      onTouchEnd={onTouchEnd}
+      onMouseLeave={onMouseLeave}
+      disabled={disabled}
+      loading={loading}>
       <BottomImg
         src={diceCup}
-        isShaking={isShaking}
+        isShaking={loading}
         onClick={() => setIsShaking((x) => !x)}
       />
       <TopImg
         src={diceCupTop}
-        isShaking={isShaking}
+        isShaking={loading}
         onClick={() => setIsShaking((x) => !x)}
       />
     </Container>

@@ -19,6 +19,8 @@ import {
   selectIsRolling,
 } from 'redux/game/selectors';
 import GameLogic from 'services/GameLogic';
+import DiceCup from 'components/DiceCup';
+
 import { Button } from 'components/forms';
 import { selectIsSoundOn } from 'redux/settings/selectors';
 import shakingDiceSound from 'media/sounds/shakingDice.mp3';
@@ -476,42 +478,53 @@ const GameButtons = () => {
   }
 
   return (
-    <Container>
-      <CustomButton
-        onClick={() => createDiceGroup()}
-        disabled={!canGroup}
-        loading={isGrouping}>
-        Bank
-      </CustomButton>
-      <CustomButton
+    <>
+      <DiceCup
         onMouseDown={startShakingDice}
         onTouchStart={startShakingDice}
         onMouseUp={stopShakingDiceAndThrow}
         onTouchEnd={stopShakingDiceAndThrow}
         onMouseLeave={stopShakingDiceAndThrow}
         disabled={isRollDisabled}
-        // N.B. the `loading` prop won't cause the underlying <button> element to be disabled,
-        // becase we have defined onMouseUp and onMouseLeave event handlers. Disabing the button would
-        // prevent these from firing.
-        loading={isRollLoading}>
-        Roll
-      </CustomButton>
-      {isBlapped && !isRollLoading ? (
+        loading={isRollLoading}
+      />
+      <Container>
         <CustomButton
-          onClick={() => endTurnAfterBlap()}
-          disabled={!canEndTurnAfterBlap}
-          loading={isFinishingTurnAfterBlapping}>
-          Next
+          onClick={() => createDiceGroup()}
+          disabled={!canGroup}
+          loading={isGrouping}>
+          Bank
         </CustomButton>
-      ) : (
         <CustomButton
-          onClick={() => stick()}
-          disabled={!canStick}
-          loading={isSticking}>
-          Stick
+          onMouseDown={startShakingDice}
+          onTouchStart={startShakingDice}
+          onMouseUp={stopShakingDiceAndThrow}
+          onTouchEnd={stopShakingDiceAndThrow}
+          onMouseLeave={stopShakingDiceAndThrow}
+          disabled={isRollDisabled}
+          // N.B. the `loading` prop won't cause the underlying <button> element to be disabled,
+          // becase we have defined onMouseUp and onMouseLeave event handlers. Disabing the button would
+          // prevent these from firing.
+          loading={isRollLoading}>
+          Roll
         </CustomButton>
-      )}
-    </Container>
+        {isBlapped && !isRollLoading ? (
+          <CustomButton
+            onClick={() => endTurnAfterBlap()}
+            disabled={!canEndTurnAfterBlap}
+            loading={isFinishingTurnAfterBlapping}>
+            Next
+          </CustomButton>
+        ) : (
+          <CustomButton
+            onClick={() => stick()}
+            disabled={!canStick}
+            loading={isSticking}>
+            Stick
+          </CustomButton>
+        )}
+      </Container>
+    </>
   );
 };
 
