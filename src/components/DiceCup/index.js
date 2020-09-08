@@ -49,10 +49,12 @@ const Img = styled.img`
 
 const BottomImg = styled(Img)`
   z-index: 0;
+  user-drag: none;
 `;
 
 const TopImg = styled(Img)`
   z-index: 2;
+  user-drag: none;
 `;
 
 const DiceCup = () => {
