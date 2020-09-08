@@ -14,6 +14,8 @@ const DiceZone = styled.div`
   flex: 1;
   overflow: scroll;
 
+  z-index: 0; // establish stacking context for pages (so Overlay is always on top)
+
   display: flex;
   flex-direction: column;
   justify-content: 'space-between';

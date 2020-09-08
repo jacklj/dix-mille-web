@@ -40,6 +40,8 @@ const Container = styled.div`
   flex: 0 1 auto;
   align-self: stretch;
 
+  z-index: 0; // establish stacking context for pages (so Overlay is always on top)
+
   display: flex;
   justify-content: center;
   align-items: stretch;
