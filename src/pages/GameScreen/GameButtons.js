@@ -143,14 +143,14 @@ const GameButtons = () => {
   );
   const isRolling = isRollingCloud || isHoldingDownRollButton;
   useEffect(() => {
-    console.log('sound effect fired', isRolling);
+    // console.log('sound effect fired', isRolling);
     if (isRolling) {
       // start playing sound if its not already playing
       // start in random position
       const lengthInS = 30; // actually 35s
       const randomPosition = Math.random() * lengthInS;
       sound && sound.seek(randomPosition);
-      console.log('play from ', randomPosition);
+      // console.log('play from ', randomPosition);
       playShakingSound();
     } else {
       stopShakingSound();
@@ -173,7 +173,7 @@ const GameButtons = () => {
       const randomIndex = Math.floor(Math.random() * spriteNames.length);
       const randomSpriteName = spriteNames[randomIndex];
 
-      console.log(`play '${randomSpriteName}'`);
+      // console.log(`play '${randomSpriteName}'`);
       playCastingSound({ id: randomSpriteName });
     }
 
@@ -189,9 +189,9 @@ const GameButtons = () => {
   const previousIsRollingCloud = useRef(false);
 
   useEffect(() => {
-    console.log('effect ran', isHoldingDownRollButton, isRollingCloud);
+    // console.log('effect ran', isHoldingDownRollButton, isRollingCloud);
     if (!isMyTurn) {
-      console.log('not your turn - dont run effect');
+      // console.log('not your turn - dont run effect');
       return;
     }
 
@@ -228,7 +228,7 @@ const GameButtons = () => {
     // `event.preventDefault()` is called by the first, and prevents the second from happening
     event.preventDefault();
 
-    console.log('mouse down');
+    // console.log('mouse down');
 
     if (isHoldingDownRollButton) {
       // already pressing the button (somehow?) - don't do anything
@@ -260,7 +260,7 @@ const GameButtons = () => {
       await firebase.functions().httpsCallable('rollDice')({
         gameId,
       });
-      console.log('cf returned!');
+      // console.log('cf returned!');
 
       // if (!isHoldingDownRollButton) {
       //   // when the cf returned, user had already let go of Roll button
@@ -285,10 +285,10 @@ const GameButtons = () => {
     // `event.preventDefault()` is called by the first, and prevents the second from happening
     event.preventDefault();
 
-    console.log('mouse up');
+    // console.log('mouse up');
 
     if (!isHoldingDownRollButton) {
-      console.log('isnt holding down roll button - dont do anything');
+      // console.log('isnt holding down roll button - dont do anything');
       // user wasn't holding the button down - dont do anything
       return;
     }
@@ -297,16 +297,16 @@ const GameButtons = () => {
 
     if (!isRollingCloud) {
       // cloud function hasn't returned yet - dont write to DB
-      console.log(
-        '[rollDiceMouseUp] cf hasnt returned yet - dont write isRolling: false',
-      );
+      // console.log(
+      //   '[rollDiceMouseUp] cf hasnt returned yet - dont write isRolling: false',
+      // );
       return;
     }
 
     // TODO check that roll has been received
-    console.log(
-      'user let go of roll button, and roll has been received - set isRolling: false',
-    );
+    // console.log(
+    //   'user let go of roll button, and roll has been received - set isRolling: false',
+    // );
     const path = `games/${gameId}/rounds/${currentRoundId}/turns/${currentTurnId}/isRolling`;
     await firebase.database().ref(path).set(false);
   };
@@ -396,7 +396,7 @@ const GameButtons = () => {
         gameId,
       });
       playStickSound();
-      console.log('Done stick: ', res);
+      // console.log('Done stick: ', res);
     } catch (error) {
       alert(error.message);
     }
@@ -417,7 +417,7 @@ const GameButtons = () => {
       const res = await firebase.functions().httpsCallable('endTurnAfterBlap')({
         gameId,
       });
-      console.log(res);
+      // console.log(res);
     } catch (error) {
       alert(error.message);
     }

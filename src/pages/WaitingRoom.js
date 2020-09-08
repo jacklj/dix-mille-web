@@ -63,8 +63,8 @@ const WaitingRoom = () => {
       await firebase.functions().httpsCallable('startGame')({ gameId });
     } catch (error) {
       alert(error.message);
+      setIsStartingGame(false);
     }
-    setIsStartingGame(false);
   };
 
   const canStartGame = totalNumberOfPlayers >= minimumNumberOfPlayers;
