@@ -10,7 +10,7 @@ import {
   isItMyTurn,
   selectGameId,
   selectCurrentRoll,
-  selectBankedDice,
+  selectBankedDiceWithValues,
   selectSelectedDice,
   selectCurrentTurnId,
   selectCurrentRoundId,
@@ -58,7 +58,7 @@ const RolledDice = () => {
   const currentRoundId = useSelector(selectCurrentRoundId);
   const currentTurnId = useSelector(selectCurrentTurnId);
   const currentRoll = useSelector(selectCurrentRoll);
-  const bankedDice = useSelector(selectBankedDice);
+  const bankedDice = useSelector(selectBankedDiceWithValues);
   const currentRollNumber = useSelector(selectCurrentRollNumber);
   const selectedDice = useSelector(selectSelectedDice);
   const currentDiceRollMinusScoringGroups = useSelector(
@@ -83,27 +83,37 @@ const RolledDice = () => {
     // mark the dice as banked, and see if it updates the highest scoring combination of scoring groups from all
     // banked dice.
     setIsBanking(true);
-    console.log(`Clicked on dice '${diceId}'`);
     if (!isMyTurn) {
       console.warn("Can't bank dice when it's not your turn");
+      setIsBanking(false);
+      return;
+    }
+
+    if (bankedDice[diceId]) {
+      console.warn(`dice '${diceId}' is already banked - can't bank again.`);
+      setIsBanking(false);
+      return;
+    }
+
+    if (isBanking) {
+      console.warn(
+        `already banking a dice - can't bank another until it's done.`,
+      );
+      setIsBanking(false);
       return;
     }
 
     // calculate any scoring groups
-    const existingBankedDicePlusNewOne = { ...bankedDice, [diceId]: true };
-    const bankedDiceWithValues = {}; // [diceId]: diceValue
-    Object.keys(existingBankedDicePlusNewOne)
-      .filter((diceId) => existingBankedDicePlusNewOne[diceId]) // filter: banked === true
-      .forEach((diceId) => {
-        const value = currentRoll[diceId];
-        bankedDiceWithValues[diceId] = value;
-      });
+    const existingBankedDicePlusNewOne = {
+      ...bankedDice,
+      [diceId]: currentRoll[diceId],
+    };
 
     const {
       isValidGroups,
       invalidReason,
       groups,
-    } = GameLogic.getValidScoringGroups(bankedDiceWithValues);
+    } = GameLogic.getValidScoringGroups(existingBankedDicePlusNewOne);
 
     if (isValidGroups) {
       const updates = {};
@@ -133,23 +143,6 @@ const RolledDice = () => {
       alert(invalidReason);
     }
     setIsBanking(false);
-  };
-
-  const unbankDie = async (diceId) => {
-    console.log(`Clicked on dice '${diceId}'`);
-    if (!isMyTurn) {
-      console.warn("Can't bank dice when it's not your turn");
-      return;
-    }
-
-    // toggle die selected state
-    const path = `games/${gameId}/rounds/${currentRoundId}/turns/${currentTurnId}/rolls/${currentRollNumber}/bankedDice`;
-    await firebase
-      .database()
-      .ref(path)
-      .update({
-        [diceId]: false,
-      });
   };
 
   const [showBlapped, setShowBlapped] = useState(false);

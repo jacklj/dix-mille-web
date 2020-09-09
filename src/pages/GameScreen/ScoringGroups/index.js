@@ -107,13 +107,31 @@ const ScoringGroups = () => {
     previousIsRollingCloud.current = isRollingCloud;
   }, [isRollingCloud]);
 
+  const [isUnbanking, setIsUnbanking] = useState(false);
+
   const unbankDie = async (diceId) => {
     // mark the dice as banked, and see if it updates the highest scoring combination of scoring groups from all
     // banked dice.
-    // setIsUnbanking(true);
-    console.log(`Clicked on banked dice '${diceId}'`);
+    setIsUnbanking(true);
     if (!isMyTurn) {
       console.warn("Can't unbank dice when it's not your turn");
+      setIsUnbanking(false);
+      return;
+    }
+
+    if (!bankedDice[diceId]) {
+      console.warn(
+        `dice '${diceId}' is already unbanked - can't unbank again.`,
+      );
+      setIsUnbanking(false);
+      return;
+    }
+
+    if (isUnbanking) {
+      console.warn(
+        `already unbanking a dice - can't unbank another until it's done.`,
+      );
+      setIsUnbanking(false);
       return;
     }
 
@@ -151,7 +169,7 @@ const ScoringGroups = () => {
     } else {
       alert(invalidReason);
     }
-    // setIsUnbanking(false);
+    setIsUnbanking(false);
   };
 
   const ungroupGroup = async (groupId) => {

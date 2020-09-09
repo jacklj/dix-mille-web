@@ -88,7 +88,9 @@ const DiceCup = ({
       onTouchEnd={onTouchEnd}
       onMouseLeave={onMouseLeave}
       disabled={disabled}
-      loading={loading}>
+      isLoading={loading} // NB if prop name is just `loading`, get a React warning that native
+      // html attributes aren't allowed to be boolean
+    >
       <BottomImg
         src={diceCup}
         isShaking={loading}
