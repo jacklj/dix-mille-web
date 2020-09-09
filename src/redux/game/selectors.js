@@ -272,10 +272,25 @@ export const selectCurrentRoll = (state) => {
   return currentRoll?.roll;
 };
 
-export const selectBankedDice = state => {
+export const selectBankedDice = (state) => {
   const currentRoll = selectCurrentRollObj(state);
   return currentRoll?.bankedDice;
-}
+};
+
+export const selectBankedDiceWithValues = (state) => {
+  const bankedDice = selectBankedDice(state);
+  const currentRoll = selectCurrentRoll(state);
+
+  const bankedDiceWithValues = {}; // [diceId]: diceValue
+  Object.keys(bankedDice)
+    .filter((diceId) => bankedDice[diceId]) // filter: banked === true
+    .forEach((diceId) => {
+      const value = currentRoll[diceId];
+      bankedDiceWithValues[diceId] = value;
+    });
+
+  return bankedDiceWithValues;
+};
 
 export const selectSelectedDice = (state) => {
   const currentRoll = selectCurrentRollObj(state);

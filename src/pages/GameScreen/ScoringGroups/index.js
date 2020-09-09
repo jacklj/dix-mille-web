@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import * as firebase from 'firebase/app';
 import 'firebase/functions';
 import { useSelector } from 'react-redux';
+import useSound from 'use-sound';
 
 import {
   isItMyTurn,
@@ -14,8 +15,13 @@ import {
   selectCurrentScoringGroups,
   selectTurnScoreSoFar,
   selectIsRolling,
+  selectBankedDiceWithValues,
 } from 'redux/game/selectors';
+import { selectIsSoundOn } from 'redux/settings/selectors';
 import ScoringGroup from './ScoringGroup';
+import Die from 'components/Die';
+import GameLogic from 'services/GameLogic';
+import bankDice from 'media/sounds/bankDice.mp3';
 
 const Container = styled.div`
   flex: 1;
@@ -49,6 +55,19 @@ const ScoringGroupsContainer = styled.div`
   flex-direction: column-reverse;
 `;
 
+const DiceContainer = styled.div`
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+
+  @media (max-width: 520px) {
+    max-width: 170px; // magic value because flexwrap: wrap adds extra container width to the
+    // right when children wrap
+  }
+`;
+
 const diceCastAnimationLength = 1000;
 
 const ScoringGroups = () => {
@@ -57,6 +76,7 @@ const ScoringGroups = () => {
   const currentRoundId = useSelector(selectCurrentRoundId);
   const currentTurnId = useSelector(selectCurrentTurnId);
 
+  const bankedDice = useSelector(selectBankedDiceWithValues);
   const currentScoringGroups = useSelector(selectCurrentScoringGroups);
   const previousScoringGroups = useSelector(
     selectPreviousScoringGroupsSinceLastFullRoll,
@@ -67,6 +87,11 @@ const ScoringGroups = () => {
   const isRollingCloud = useSelector(selectIsRolling);
 
   const [showTurnScore, setShowTurnScore] = useState(false);
+
+  const isSoundOn = useSelector(selectIsSoundOn);
+  const [playBankingDiceSound] = useSound(bankDice, {
+    soundEnabled: isSoundOn,
+  });
 
   const previousIsRollingCloud = useRef(isRollingCloud);
 
@@ -81,6 +106,53 @@ const ScoringGroups = () => {
 
     previousIsRollingCloud.current = isRollingCloud;
   }, [isRollingCloud]);
+
+  const unbankDie = async (diceId) => {
+    // mark the dice as banked, and see if it updates the highest scoring combination of scoring groups from all
+    // banked dice.
+    // setIsUnbanking(true);
+    console.log(`Clicked on banked dice '${diceId}'`);
+    if (!isMyTurn) {
+      console.warn("Can't unbank dice when it's not your turn");
+      return;
+    }
+
+    // recalculate scoring groups
+    const newBankedDice = { ...bankedDice };
+    delete newBankedDice[diceId];
+
+    const {
+      isValidGroups,
+      invalidReason,
+      groups,
+    } = GameLogic.getValidScoringGroups(newBankedDice);
+
+    if (isValidGroups) {
+      const updates = {};
+      const rollPath = `games/${gameId}/rounds/${currentRoundId}/turns/${currentTurnId}/rolls/${currentRollNumber}`;
+
+      // mark dice as banked
+      updates[`bankedDice/${diceId}`] = null; // https://firebase.google.com/docs/database/web/read-and-write#delete_data
+
+      // update scoringGroups map (replace it entirely (for now?))
+      const scoringGroups = {};
+      groups.forEach((scoringGroup) => {
+        const newPushKey = firebase
+          .database()
+          .ref(`${rollPath}/scoringGroups`)
+          .push().key;
+
+        scoringGroups[newPushKey] = scoringGroup;
+      });
+      updates.scoringGroups = scoringGroups; // replace existing scoringGroups map
+
+      await firebase.database().ref(rollPath).update(updates);
+      playBankingDiceSound();
+    } else {
+      alert(invalidReason);
+    }
+    // setIsUnbanking(false);
+  };
 
   const ungroupGroup = async (groupId) => {
     if (!isMyTurn) {
@@ -110,6 +182,22 @@ const ScoringGroups = () => {
           ? `Turn score: ${turnScoreSoFar}`
           : null}
       </TurnScoreText>
+      <TurnScoreText>banked dice:</TurnScoreText>
+      {bankedDice && (
+        <DiceContainer>
+          {bankedDice &&
+            Object.entries(bankedDice).map(([id, value]) => (
+              <Die
+                id={id}
+                key={id}
+                value={value}
+                isInGroup
+                onClick={() => unbankDie(id)}
+              />
+            ))}
+        </DiceContainer>
+      )}
+      <TurnScoreText>--------------------</TurnScoreText>
       <ScoringGroupsContainer>
         {currentScoringGroups &&
           Object.keys(currentScoringGroups).map((groupId) => {
