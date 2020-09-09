@@ -23,8 +23,10 @@ import {
 } from 'redux/game/selectors';
 import { selectIsSoundOn } from 'redux/settings/selectors';
 import Die from 'components/Dice3d';
+import GameLogic from 'services/GameLogic';
 import cheer from 'media/sounds/cheer.mp3';
 import disappointed from 'media/sounds/disappointed.mp3';
+import bankDice from 'media/sounds/bankDice.mp3';
 
 const Container = styled.div`
   flex-shrink: 0;
@@ -70,22 +72,67 @@ const RolledDice = () => {
     selectIsSuccessfulTwoThrowsToDoubleIt,
   );
   const isRollingCloud = useSelector(selectIsRolling);
+  const [isBanking, setIsBanking] = useState(false);
+
+  const isSoundOn = useSelector(selectIsSoundOn);
+  const [playBankingDiceSound] = useSound(bankDice, {
+    soundEnabled: isSoundOn,
+  });
 
   const bankDie = async (diceId) => {
+    // mark the dice as banked, and see if it updates the highest scoring combination of scoring groups from all
+    // banked dice.
+    setIsBanking(true);
     console.log(`Clicked on dice '${diceId}'`);
     if (!isMyTurn) {
       console.warn("Can't bank dice when it's not your turn");
       return;
     }
 
-    // toggle die selected state
-    const path = `games/${gameId}/rounds/${currentRoundId}/turns/${currentTurnId}/rolls/${currentRollNumber}/bankedDice`;
-    await firebase
-      .database()
-      .ref(path)
-      .update({
-        [diceId]: true,
+    // calculate any scoring groups
+    const existingBankedDicePlusNewOne = { ...bankedDice, [diceId]: true };
+    const bankedDiceWithValues = {}; // [diceId]: diceValue
+    Object.keys(existingBankedDicePlusNewOne)
+      .filter((diceId) => existingBankedDicePlusNewOne[diceId]) // filter: banked === true
+      .forEach((diceId) => {
+        const value = currentRoll[diceId];
+        bankedDiceWithValues[diceId] = value;
       });
+
+    const {
+      isValidGroups,
+      invalidReason,
+      groups,
+    } = GameLogic.getValidScoringGroups(bankedDiceWithValues);
+
+    if (isValidGroups) {
+      const updates = {};
+      const rollPath = `games/${gameId}/rounds/${currentRoundId}/turns/${currentTurnId}/rolls/${currentRollNumber}`;
+
+      // mark dice as banked
+      updates[`bankedDice/${diceId}`] = true;
+
+      // update scoringGroups map (replace it entirely (for now?))
+      const scoringGroups = {};
+      groups.forEach((scoringGroup) => {
+        const newPushKey = firebase
+          .database()
+          .ref(`${rollPath}/scoringGroups`)
+          .push().key;
+
+        scoringGroups[newPushKey] = scoringGroup;
+      });
+      updates.scoringGroups = scoringGroups; // replace existing scoringGroups map
+
+      // also clear selected dice, as they've all been put in a group
+      // updates.selectedDice = null; // https://firebase.google.com/docs/database/web/read-and-write#delete_data
+
+      await firebase.database().ref(rollPath).update(updates);
+      playBankingDiceSound();
+    } else {
+      alert(invalidReason);
+    }
+    setIsBanking(false);
   };
 
   const unbankDie = async (diceId) => {
@@ -129,8 +176,6 @@ const RolledDice = () => {
       setShowFirstOfTwoThrowsMessage(false);
     }
   }, [isFailedFirstOfTwoThrowsToDoubleIt, isRollingCloud]);
-
-  const isSoundOn = useSelector(selectIsSoundOn);
 
   const [playCheerSound] = useSound(cheer, {
     soundEnabled: isSoundOn,
