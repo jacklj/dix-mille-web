@@ -281,6 +281,15 @@ export const selectBankedDiceWithValues = (state) => {
   const bankedDice = selectBankedDice(state);
   const currentRoll = selectCurrentRoll(state);
 
+  if (
+    !bankedDice ||
+    Object.keys(bankedDice).length === 0 ||
+    !currentRoll ||
+    Object.keys(currentRoll).length === 0
+  ) {
+    return undefined;
+  }
+
   const bankedDiceWithValues = {}; // [diceId]: diceValue
   Object.keys(bankedDice)
     .filter((diceId) => bankedDice[diceId]) // filter: banked === true
