@@ -68,4 +68,20 @@ describe('Game Logic', () => {
       ]);
     });
   });
+
+  describe('getHighestScoringGrouping', () => {
+    it('should return the correct result for 6 of a kind', () => {
+      const bankedDice = { a: 4, b: 4, c: 4, d: 4, e: 4, f: 4 };
+
+      const res = GameLogic.getHighestScoringGrouping(bankedDice);
+      expect(res.groups).toEqual([
+        {
+          dice: { a: 4, b: 4, c: 4, d: 4, e: 4, f: 4 },
+          groupType: 'sixOfAKind',
+          score: 10000,
+        },
+      ]);
+      expect(res.remainingDice).toEqual({});
+    });
+  });
 });

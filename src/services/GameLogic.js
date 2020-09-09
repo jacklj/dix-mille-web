@@ -612,6 +612,45 @@ const getValidScoringGroups = (selectedDice) => {
   };
 };
 
+/*
+
+  Returns the set of scoring groups, plus any remaining dice (that aren't in the scoring groups)
+*/
+const getHighestScoringGrouping = (bankedDice) => {
+  const groups = [];
+  let remainingDice = { ...bankedDice };
+  // 1. make tally map
+  const tally = {};
+  Object.entries(bankedDice).forEach(([diceId, value]) => {
+    if (!tally[value]) {
+      tally[value] = [];
+    }
+    tally[value] = [...tally[value], diceId];
+  });
+
+  // 2. check for 6-sized scoring groups
+  //
+  // i) 6 of a kind
+  //    Only one entry in `tally`, the array has 6 diceIds in it.
+  const isSixOfAKind = Object.values(tally)[0].length === 6;
+  if (isSixOfAKind) {
+    groups.push({
+      groupType: Constants.diceGroupTypes.sixOfAKind,
+      score: 10000, // NB special value as it's 'insta-win' (keep it a number so DB validation rules work)
+      dice: { ...bankedDice },
+    });
+    remainingDice = {};
+  }
+
+  // const isRun
+
+  return {
+    groups,
+    remainingDice,
+  };
+};
+
 export default {
   getValidScoringGroups,
+  getHighestScoringGrouping,
 };
