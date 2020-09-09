@@ -115,6 +115,7 @@ const Dice3d = ({
   onClick,
   isInGroup,
   className,
+  banked,
 }) => {
   const previousRolling = useRef(rolling);
   const [even, setEven] = useState(true);
@@ -141,7 +142,7 @@ const Dice3d = ({
       even={even}
       onClick={onClick}>
       {faces.map((f) => (
-        <Face key={f} value={f} selected={selected} />
+        <Face key={f} value={f} selected={selected} banked={banked} faceShown={actualValue} />
       ))}
     </Dice>
   );
