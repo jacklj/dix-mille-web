@@ -272,6 +272,11 @@ export const selectCurrentRoll = (state) => {
   return currentRoll?.roll;
 };
 
+export const selectBankedDice = state => {
+  const currentRoll = selectCurrentRollObj(state);
+  return currentRoll?.bankedDice;
+}
+
 export const selectSelectedDice = (state) => {
   const currentRoll = selectCurrentRollObj(state);
   return currentRoll?.selectedDice;

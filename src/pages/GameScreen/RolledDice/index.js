@@ -10,6 +10,7 @@ import {
   isItMyTurn,
   selectGameId,
   selectCurrentRoll,
+  selectBankedDice,
   selectSelectedDice,
   selectCurrentTurnId,
   selectCurrentRoundId,
@@ -55,6 +56,7 @@ const RolledDice = () => {
   const currentRoundId = useSelector(selectCurrentRoundId);
   const currentTurnId = useSelector(selectCurrentTurnId);
   const currentRoll = useSelector(selectCurrentRoll);
+  const bankedDice = useSelector(selectBankedDice);
   const currentRollNumber = useSelector(selectCurrentRollNumber);
   const selectedDice = useSelector(selectSelectedDice);
   const currentDiceRollMinusScoringGroups = useSelector(
@@ -69,20 +71,37 @@ const RolledDice = () => {
   );
   const isRollingCloud = useSelector(selectIsRolling);
 
-  const selectOrUnselectDie = async (diceId) => {
+  const bankDie = async (diceId) => {
     console.log(`Clicked on dice '${diceId}'`);
     if (!isMyTurn) {
-      console.warn("Can't select dice when it's not your turn");
+      console.warn("Can't bank dice when it's not your turn");
       return;
     }
 
     // toggle die selected state
-    const path = `games/${gameId}/rounds/${currentRoundId}/turns/${currentTurnId}/rolls/${currentRollNumber}/selectedDice`;
+    const path = `games/${gameId}/rounds/${currentRoundId}/turns/${currentTurnId}/rolls/${currentRollNumber}/bankedDice`;
     await firebase
       .database()
       .ref(path)
       .update({
-        [diceId]: !selectedDice?.[diceId],
+        [diceId]: true,
+      });
+  };
+
+  const unbankDie = async (diceId) => {
+    console.log(`Clicked on dice '${diceId}'`);
+    if (!isMyTurn) {
+      console.warn("Can't bank dice when it's not your turn");
+      return;
+    }
+
+    // toggle die selected state
+    const path = `games/${gameId}/rounds/${currentRoundId}/turns/${currentTurnId}/rolls/${currentRollNumber}/bankedDice`;
+    await firebase
+      .database()
+      .ref(path)
+      .update({
+        [diceId]: false,
       });
   };
 
@@ -150,15 +169,16 @@ const RolledDice = () => {
   return (
     <>
       <Container>
-        {currentDiceRollMinusScoringGroups &&
-          Object.keys(currentDiceRollMinusScoringGroups).map((id) => (
+        {currentRoll &&
+          Object.keys(currentRoll).map((id) => (
             <Die
               id={id}
               key={id}
               value={currentRoll[id]}
               selected={selectedDice && selectedDice[id]}
-              onClick={() => selectOrUnselectDie(id)}
+              onClick={() => bankDie(id)}
               rolling={isRollingCloud}
+              banked={bankedDice?.[id]}
             />
           ))}
       </Container>
