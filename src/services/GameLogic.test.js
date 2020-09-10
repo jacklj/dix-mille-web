@@ -183,5 +183,18 @@ describe('Game Logic', () => {
       ]);
       expect(res.remainingDice).toEqual({ d: 2, e: 3, f: 3 });
     });
+    it('should return the correct result for 1 set of 3 of a kind when there are more than 3 dice of that value', () => {
+      const bankedDice = { a: 3, b: 3, c: 4, d: 3, e: 3, f: 3 };
+
+      const res = GameLogic.getHighestScoringGrouping(bankedDice);
+      expect(res.groups).toEqual([
+        {
+          dice: { a: 3, b: 3, d: 3 },
+          groupType: 'threeOfAKind',
+          score: 300,
+        },
+      ]);
+      expect(res.remainingDice).toEqual({ c: 4, e: 3, f: 3 });
+    });
   });
 });

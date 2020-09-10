@@ -671,12 +671,13 @@ const getHighestScoringGrouping = (bankedDice) => {
   }
 
   // 3. 3 of a kind
-  //    Any tally entries containing 3 diceIds.
+  //    Any tally entries containing 3 *or more* diceIds.
   //    Can have 2 sets of 3 of a kind, e.g. 333666
   //    Can't have 2 sets of 3, all of the same value (e.g. 222222), as this would have been
   //    consumed already as 6 of a kind.
+  //    Can be more than 3 entries e.g. 222223 => 222 scoring dice, with 223 left.
   const entriesWith3dice = Object.entries(tally).filter(
-    ([value, tallyList]) => tallyList.length === 3,
+    ([value, tallyList]) => tallyList.length >= 3,
   );
   const has3OfAKind = entriesWith3dice.length > 0;
   if (has3OfAKind) {
@@ -694,7 +695,13 @@ const getHighestScoringGrouping = (bankedDice) => {
         score,
         dice,
       });
-      delete tally[value];
+      if (tallyList.length === 3) {
+        delete tally[value];
+      } else {
+        // there are more than 3 dice with this value - need to keep the entry, just remove the
+        // first 3 diceIds
+        tally[value] = tallyList.slice(3);
+      }
     });
   }
 
