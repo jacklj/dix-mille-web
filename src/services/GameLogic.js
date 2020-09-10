@@ -618,9 +618,9 @@ const getValidScoringGroups = (selectedDice) => {
 */
 const getHighestScoringGrouping = (bankedDice) => {
   const groups = [];
-  let remainingDice = { ...bankedDice };
+  // let remainingDice = { ...bankedDice };
   // 1. make tally map
-  const tally = {};
+  let tally = {};
   Object.entries(bankedDice).forEach(([diceId, value]) => {
     if (!tally[value]) {
       tally[value] = [];
@@ -639,10 +639,43 @@ const getHighestScoringGrouping = (bankedDice) => {
       score: 10000, // NB special value as it's 'insta-win' (keep it a number so DB validation rules work)
       dice: { ...bankedDice },
     });
-    remainingDice = {};
+    tally = {};
   }
 
-  // const isRun
+  const isRun = Object.keys(tally).length === 6;
+  if (isRun) {
+    groups.push({
+      groupType: Constants.diceGroupTypes.run,
+      score: 1500,
+      dice: { ...bankedDice },
+    });
+    tally = {};
+  }
+
+  const is3Pairs =
+    Object.keys(tally).length > 0 &&
+    Object.values(tally).every((tallyList) => tallyList.length % 2 === 0) &&
+    tally[1] !== 4;
+  // 3 sets of 2 , or a set of 2 and a set of 4 => all tallies divisible by 2!
+  // exeption - if there are 4 1's and another pair, then taking the 4 1's as 1100 is better.
+  if (is3Pairs) {
+    groups.push({
+      groupType: Constants.diceGroupTypes.threePairs,
+      score: 1000,
+      dice: { ...bankedDice },
+    });
+    tally = {};
+  }
+
+  // see what's left in the tally
+  const remainingDice = {};
+  Object.entries(tally).forEach(([value, diceIdList]) => {
+    if (diceIdList && Array.isArray(diceIdList)) {
+      diceIdList.forEach((diceId) => {
+        remainingDice[diceId] = value;
+      });
+    }
+  });
 
   return {
     groups,
