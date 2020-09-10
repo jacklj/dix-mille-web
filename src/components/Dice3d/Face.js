@@ -32,7 +32,7 @@ const Container = styled.div`
   // when we do this, we see the bottom face of the dice underneath, which is confusing. So when the
   // dice is banked, make all faces but the top face completely transparent
   opacity: ${(props) =>
-    props.banked ? (props.value === props.faceShown ? '0.5' : '0') : '1'};
+    props.banked ? (props.value === props.faceShown ? '0.3' : '0') : '1'};
 
   display: grid;
   grid-template-areas:

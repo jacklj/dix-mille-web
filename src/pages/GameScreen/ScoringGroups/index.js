@@ -181,10 +181,12 @@ const ScoringGroups = () => {
       .remove();
   };
 
-  if (
-    (!currentScoringGroups || Object.keys(currentScoringGroups).length === 0) &&
-    (!previousScoringGroups || Object.keys(previousScoringGroups).length === 0)
-  ) {
+  const noBankedDice = !bankedDice || Object.keys(bankedDice).length === 0;
+  const noCurrentScoringGroups =
+    !currentScoringGroups || Object.keys(currentScoringGroups).length === 0;
+  const noPreviousScoringGroups =
+    !previousScoringGroups || Object.keys(previousScoringGroups).length === 0;
+  if (noBankedDice && noCurrentScoringGroups && noPreviousScoringGroups) {
     return null;
   }
 
