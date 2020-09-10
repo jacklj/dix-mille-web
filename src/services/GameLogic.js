@@ -656,11 +656,11 @@ const getHighestScoringGrouping = (bankedDice) => {
 
   // iii) 3 pairs
   //      3 sets of 2 , or a set of 2 and a set of 4 => all tallies divisible by 2!
-  //      exception - if there are 4 1's and another pair, then taking the 4 1's as 1100 is better.
+  //      Exception - if there are 4 1's and another pair, then taking the 4 1's as 1100 is better.
   const is3Pairs =
     Object.values(tally).length > 0 &&
     Object.values(tally).every((tallyList) => tallyList.length % 2 === 0) &&
-    tally[1] !== 4;
+    (!tally[1] || tally[1].length !== 4);
   if (is3Pairs) {
     groups.push({
       groupType: Constants.diceGroupTypes.threePairs,
@@ -703,6 +703,31 @@ const getHighestScoringGrouping = (bankedDice) => {
         tally[value] = tallyList.slice(3);
       }
     });
+  }
+
+  // 3. 1 or 5
+  //    Do the remaining entries for 1 or 5 contain 1 or 2 diceIds?
+  const has1s = tally[1] && tally[1].length > 0;
+  const has5s = tally[5] && tally[5].length > 0;
+  if (has1s) {
+    tally[1].forEach((diceId) => {
+      groups.push({
+        groupType: Constants.diceGroupTypes.oneOrFive,
+        score: 100,
+        dice: { [diceId]: 1 },
+      });
+    });
+    delete tally[1];
+  }
+  if (has5s) {
+    tally[5].forEach((diceId) => {
+      groups.push({
+        groupType: Constants.diceGroupTypes.oneOrFive,
+        score: 50,
+        dice: { [diceId]: 5 },
+      });
+    });
+    delete tally[5];
   }
 
   // see what's left in the tally
