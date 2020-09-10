@@ -301,8 +301,31 @@ export const selectBankedDiceWithValues = (state) => {
   return bankedDiceWithValues;
 };
 
+// alternate sorting methods
+const sortByGroupScores = (a, b) => {
+  if ((a.score && !b.score) || a.score > b.score) {
+    return -1;
+  } else if ((!a.score && b.score) || a.score < b.score) {
+    return 1;
+  } else {
+    // perhaps sort by scoring group id
+    return 0;
+  }
+};
+
+const sortByScoringOrNotThenDiceValues = (a, b) => {
+  if (a.score && !b.score) {
+    return -1;
+  } else if (!a.score && b.score) {
+    return 1;
+  } else {
+    // both non scoring or both scoring - sort by dice value
+    return Number(a.value) - Number(b.value);
+  }
+};
+
 // this could be a good candidate for memoisation
-export const selectBankedDiceWithValuesAndGroupStatuses = (state) => {
+export const selectOrderedBankedDiceWithValuesAndGroupStatuses = (state) => {
   const bankedDice = selectBankedDiceWithValues(state);
   const scoringGroups = selectCurrentScoringGroups(state);
 
@@ -313,23 +336,34 @@ export const selectBankedDiceWithValuesAndGroupStatuses = (state) => {
   // construct a map which specifies which group, if any, each banked dice is in
   const diceGroupMap = {};
   if (scoringGroups) {
-    Object.entries(scoringGroups).forEach(([sgId, sgDetails]) => {
-      const { dice } = sgDetails;
+    Object.entries(scoringGroups).forEach(([scoringGroupId, sgDetails]) => {
+      const { dice, score } = sgDetails;
       Object.keys(dice).forEach((diceId) => {
-        diceGroupMap[diceId] = sgId;
+        diceGroupMap[diceId] = {
+          scoringGroupId,
+          score,
+        };
       });
     });
   }
 
-  const bankedDiceWithDetails = {};
-  Object.entries(bankedDice).forEach(([diceId, value]) => {
-    bankedDiceWithDetails[diceId] = {
-      value,
-      group: diceGroupMap[diceId],
-    };
-  });
+  const orderedBankedDiceWithDetails = Object.entries(bankedDice)
+    .map(([id, value]) => {
+      // N.B. the banked dice may not be in a scoring group
+      const scoringGroupId = diceGroupMap?.[id]?.scoringGroupId;
+      const score = diceGroupMap?.[id]?.score;
 
-  return bankedDiceWithDetails;
+      return {
+        id,
+        value,
+        scoringGroupId,
+        score,
+      };
+    })
+    // order by groupScores or by dice values
+    .sort(sortByScoringOrNotThenDiceValues);
+
+  return orderedBankedDiceWithDetails;
 };
 
 export const selectCurrentScoringGroups = (state) => {

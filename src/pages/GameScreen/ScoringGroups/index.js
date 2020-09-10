@@ -16,7 +16,7 @@ import {
   selectTurnScoreSoFar,
   selectIsRolling,
   selectBankedDiceWithValues,
-  selectBankedDiceWithValuesAndGroupStatuses,
+  selectOrderedBankedDiceWithValuesAndGroupStatuses,
 } from 'redux/game/selectors';
 import { selectIsSoundOn } from 'redux/settings/selectors';
 import ScoringGroup from './ScoringGroup';
@@ -78,8 +78,8 @@ const ScoringGroups = () => {
   const currentTurnId = useSelector(selectCurrentTurnId);
 
   const bankedDice = useSelector(selectBankedDiceWithValues);
-  const bankedDiceWithGroupDetails = useSelector(
-    selectBankedDiceWithValuesAndGroupStatuses,
+  const orderedBankedDiceWithDetails = useSelector(
+    selectOrderedBankedDiceWithValuesAndGroupStatuses,
   );
   const currentScoringGroups = useSelector(selectCurrentScoringGroups);
   const previousScoringGroups = useSelector(
@@ -202,18 +202,20 @@ const ScoringGroups = () => {
           : null}
       </TurnScoreText>
       <TurnScoreText>banked dice:</TurnScoreText>
-      {bankedDice && (
+      {orderedBankedDiceWithDetails && (
         <DiceContainer>
-          {bankedDice &&
-            Object.entries(bankedDice).map(([id, value]) => (
+          {orderedBankedDiceWithDetails.map(
+            ({ id, value, scoringGroupId, score }) => (
               <Die
                 id={id}
                 key={id}
                 value={value}
-                isInGroup={!!bankedDiceWithGroupDetails[id].group}
+                isInGroup={!!scoringGroupId}
+                score={score}
                 onClick={() => unbankDie(id)}
               />
-            ))}
+            ),
+          )}
         </DiceContainer>
       )}
       <TurnScoreText>--------------------</TurnScoreText>
