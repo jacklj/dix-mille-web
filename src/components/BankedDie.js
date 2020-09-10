@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const SelectionAura = styled.div`
+const Face = styled.div`
   // N.B. CSS variables are passed to children!
   --size: 50px;
 
@@ -9,14 +9,6 @@ const SelectionAura = styled.div`
     --size: 30px;
   }
 
-  background-color: ${(props) =>
-    props.selected
-      ? 'rgba(100,255,150,0.5)'
-      : 'rgba(0,0,0,0)'}; // cant use 'transparent' as it causes the layout to shift
-
-  border-radius: 50%;
-
-  padding: 0;
   margin: 2px;
   margin-bottom: 5px;
 
@@ -28,9 +20,7 @@ const SelectionAura = styled.div`
   transform: rotate(
     -0.0000000001deg
   ); // fix Chrome bug with sub pixel rendering
-`;
 
-const Face = styled.div`
   flex: 0 0 auto;
 
   width: var(--size);
@@ -62,10 +52,6 @@ const Face = styled.div`
     'a . c'
     'e g f'
     'd . b';
-
-  transform: rotate(
-    -0.0000000001deg
-  ); // fix Chrome bug with sub pixel rendering
 `;
 
 const Pip = styled.span`
@@ -106,20 +92,14 @@ const Pip = styled.span`
   }
 `;
 
-const Die = ({ id, value, selected, onClick, className, isInGroup }) => {
+const Die = ({ id, value, onClick, className, isInGroup }) => {
   const arrayWithValueItems = [...Array(value)];
   return (
-    <SelectionAura
-      selected={selected}
-      onClick={onClick}
-      className={className}
-      isInGroup={isInGroup}>
-      <Face isInGroup={isInGroup}>
-        {arrayWithValueItems.map((v, k) => (
-          <Pip key={k} />
-        ))}
-      </Face>
-    </SelectionAura>
+    <Face onClick={onClick} className={className} isInGroup={isInGroup}>
+      {arrayWithValueItems.map((v, k) => (
+        <Pip key={k} />
+      ))}
+    </Face>
   );
 };
 

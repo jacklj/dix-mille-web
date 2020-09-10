@@ -332,11 +332,6 @@ export const selectBankedDiceWithValuesAndGroupStatuses = (state) => {
   return bankedDiceWithDetails;
 };
 
-export const selectSelectedDice = (state) => {
-  const currentRoll = selectCurrentRollObj(state);
-  return currentRoll?.selectedDice;
-};
-
 export const selectCurrentScoringGroups = (state) => {
   const currentRoll = selectCurrentRollObj(state);
 

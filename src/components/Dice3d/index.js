@@ -113,7 +113,6 @@ const Dice3d = ({
   id,
   value,
   rolling,
-  selected,
   onClick,
   isInBankedSection,
   className,
@@ -144,13 +143,7 @@ const Dice3d = ({
       even={even}
       onClick={onClick}>
       {faces.map((f) => (
-        <Face
-          key={f}
-          value={f}
-          selected={selected}
-          banked={banked}
-          faceShown={actualValue}
-        />
+        <Face key={f} value={f} banked={banked} faceShown={actualValue} />
       ))}
     </Dice>
   );

@@ -9,16 +9,13 @@ import {
   isItMyTurn,
   selectGameId,
   selectCurrentRoll,
-  selectSelectedDice,
   selectIsBlapped,
   selectCurrentTurnId,
   selectCurrentRoundId,
-  selectCurrentRollNumber,
   selectCurrentScoringGroups,
   selectIsFirstOfTwoThrowsToDoubleIt,
   selectIsRolling,
 } from 'redux/game/selectors';
-import GameLogic from 'services/GameLogic';
 import DiceCup from 'components/DiceCup';
 
 import { Button } from 'components/forms';
@@ -26,7 +23,6 @@ import { selectIsSoundOn } from 'redux/settings/selectors';
 import shakingDiceSound from 'media/sounds/shakingDice.mp3';
 import castingDiceSprites from 'media/sounds/castingDiceSprites.mp3';
 import spriteMap from 'media/sounds/castingDiceSpriteMap';
-import bankDice from 'media/sounds/bankDice.mp3';
 import stickCashRegister from 'media/sounds/stickCashRegister.mp3';
 
 const padding = 3;
@@ -115,19 +111,16 @@ const GameButtons = () => {
   const currentRoundId = useSelector(selectCurrentRoundId);
   const currentTurnId = useSelector(selectCurrentTurnId);
   const currentRoll = useSelector(selectCurrentRoll);
-  const selectedDice = useSelector(selectSelectedDice);
   const isRollingCloud = useSelector(selectIsRolling);
 
   const currentScoringGroups = useSelector(selectCurrentScoringGroups);
 
-  const currentRollNumber = useSelector(selectCurrentRollNumber);
   const isBlapped = useSelector(selectIsBlapped);
   const isFirstOfTwoThrowsToDoubleIt = useSelector(
     selectIsFirstOfTwoThrowsToDoubleIt,
   );
 
   const [isHoldingDownRollButton, setIsHoldingDownRollButton] = useState(false);
-  const [isGrouping, setIsGrouping] = useState(false);
   const [isSticking, setIsSticking] = useState(false);
   const [
     isFinishingTurnAfterBlapping,
@@ -220,9 +213,6 @@ const GameButtons = () => {
     isRollingCloud,
   ]);
 
-  const [playBankingDiceSound] = useSound(bankDice, {
-    soundEnabled: isSoundOn,
-  });
   const [playStickSound] = useSound(stickCashRegister, {
     soundEnabled: isSoundOn,
   });
@@ -315,62 +305,6 @@ const GameButtons = () => {
     await firebase.database().ref(path).set(false);
   };
 
-  const createDiceGroup = async () => {
-    setIsGrouping(true);
-
-    if (!isMyTurn) {
-      alert("You can't create a group - it's not your turn!");
-      setIsGrouping(false);
-      return;
-    }
-
-    // N.B. all validation logic must be done here, as we are writing directly to the DB from the
-    // frontend - there's no cloud function involved.
-    if (
-      !selectedDice ||
-      Object.values(selectedDice).filter((x) => x).length === 0
-    ) {
-      alert('No dice selected');
-      setIsGrouping(false);
-      return;
-    }
-
-    const selectedDiceWithValues = {}; // [diceId]: diceValue
-    Object.keys(selectedDice)
-      .filter((diceId) => selectedDice[diceId])
-      .forEach((diceId) => {
-        const value = currentRoll[diceId];
-        selectedDiceWithValues[diceId] = value;
-      });
-
-    const {
-      isValidGroups,
-      invalidReason,
-      groups,
-    } = GameLogic.getValidScoringGroups(selectedDiceWithValues);
-
-    if (isValidGroups) {
-      const updates = {};
-      const rollPath = `games/${gameId}/rounds/${currentRoundId}/turns/${currentTurnId}/rolls/${currentRollNumber}`;
-      groups.forEach((scoringGroup) => {
-        const newPushKey = firebase
-          .database()
-          .ref(`${rollPath}/scoringGroups`)
-          .push().key;
-        updates[`scoringGroups/${newPushKey}`] = scoringGroup;
-      });
-
-      // also clear selected dice, as they've all been put in a group
-      updates.selectedDice = null; // https://firebase.google.com/docs/database/web/read-and-write#delete_data
-
-      await firebase.database().ref(rollPath).update(updates);
-      playBankingDiceSound();
-    } else {
-      alert(invalidReason);
-    }
-    setIsGrouping(false);
-  };
-
   const stick = async () => {
     setIsSticking(true);
 
@@ -431,43 +365,34 @@ const GameButtons = () => {
 
   const hasRolled = !!currentRoll;
 
-  let canGroup, canStick, canEndTurnAfterBlap, isRollDisabled, isRollLoading;
+  let canStick, canEndTurnAfterBlap, isRollDisabled, isRollLoading;
 
   if (!isMyTurn) {
     // not your turn - all disabled.
-    canGroup = false;
     canStick = false;
     canEndTurnAfterBlap = false;
     isRollDisabled = true;
     isRollLoading = false;
   } else if (isRolling) {
     // it's your turn and you're rolling
-    canGroup = false;
     canStick = false;
     canEndTurnAfterBlap = false;
     isRollDisabled = false;
     isRollLoading = true;
   } else if (!hasRolled) {
     // it's your turn, you're not rolling, and you haven't rolled yet
-    canGroup = false;
     canStick = false;
     canEndTurnAfterBlap = false;
     isRollDisabled = false;
     isRollLoading = false;
   } else if (isBlapped) {
     // it's your turn, you've rolled with a blap.
-    canGroup = false;
     canStick = false;
     canEndTurnAfterBlap = !isFinishingTurnAfterBlapping;
     isRollDisabled = true;
     isRollLoading = false;
   } else {
     // it's your turn, you've rolled, and you havent blapped.
-    const noDiceSelected =
-      !selectedDice ||
-      Object.values(selectedDice).filter((x) => x).length === 0;
-
-    canGroup = !isGrouping && !noDiceSelected;
     canStick = !isSticking && hasRolled; // N.B. can stick when no scoring groups
     canEndTurnAfterBlap = false;
 
@@ -489,12 +414,6 @@ const GameButtons = () => {
         loading={isRollLoading}
       />
       <Container>
-        <CustomButton
-          onClick={() => createDiceGroup()}
-          disabled={!canGroup}
-          loading={isGrouping}>
-          Bank
-        </CustomButton>
         <CustomButton
           onMouseDown={startShakingDice}
           onTouchStart={startShakingDice}

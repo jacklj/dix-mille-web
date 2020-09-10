@@ -11,11 +11,9 @@ import {
   selectGameId,
   selectCurrentRoll,
   selectBankedDiceWithValues,
-  selectSelectedDice,
   selectCurrentTurnId,
   selectCurrentRoundId,
   selectCurrentRollNumber,
-  selectCurrentRollMinusScoringGroups,
   selectIsBlapped,
   selectIsFailedFirstOfTwoThrowsToDoubleIt,
   selectIsRolling,
@@ -60,10 +58,6 @@ const RolledDice = () => {
   const currentRoll = useSelector(selectCurrentRoll);
   const bankedDice = useSelector(selectBankedDiceWithValues);
   const currentRollNumber = useSelector(selectCurrentRollNumber);
-  const selectedDice = useSelector(selectSelectedDice);
-  const currentDiceRollMinusScoringGroups = useSelector(
-    selectCurrentRollMinusScoringGroups,
-  );
   const isBlapped = useSelector(selectIsBlapped);
   const isFailedFirstOfTwoThrowsToDoubleIt = useSelector(
     selectIsFailedFirstOfTwoThrowsToDoubleIt,
@@ -130,9 +124,6 @@ const RolledDice = () => {
       scoringGroups[newPushKey] = scoringGroup;
     });
     updates.scoringGroups = scoringGroups; // replace existing scoringGroups map
-
-    // also clear selected dice, as they've all been put in a group
-    // updates.selectedDice = null; // https://firebase.google.com/docs/database/web/read-and-write#delete_data
 
     await firebase.database().ref(rollPath).update(updates);
     playBankingDiceSound();
@@ -207,7 +198,6 @@ const RolledDice = () => {
               id={id}
               key={id}
               value={currentRoll[id]}
-              selected={selectedDice && selectedDice[id]}
               onClick={() => bankDie(id)}
               rolling={isRollingCloud}
               banked={bankedDice?.[id]}

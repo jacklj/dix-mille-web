@@ -15,17 +15,6 @@ const Container = styled.div`
     inset calc(var(--size) * 0.1) 0 #d7d7d7,
     inset calc(var(--size) * -0.1) 0 #d7d7d7;
 
-  ${(props) =>
-    props.selected &&
-    `
-    background-color: #ee1a11;
-    box-shadow: inset 0 calc(var(--size) * 0.1) #f3544e,
-      inset 0 calc(var(--size) * -0.1) #ab120c,
-      inset calc(var(--size) * 0.1) 0 #d0160f,
-      inset calc(var(--size) * -0.1) 0 #d0160f;
-
-  `}
-
   border-radius: 10%;
 
   // if the dice is banked, make it translucent.
@@ -114,15 +103,11 @@ const Pip = styled.span`
   }
 `;
 
-const Face = ({ value, selected, banked, faceShown }) => {
+const Face = ({ value, banked, faceShown }) => {
   const arrayWithValueItems = [...Array(value)];
 
   return (
-    <Container
-      value={value}
-      selected={selected}
-      banked={banked}
-      faceShown={faceShown}>
+    <Container value={value} banked={banked} faceShown={faceShown}>
       {arrayWithValueItems.map((v, k) => (
         <Pip key={k} />
       ))}
