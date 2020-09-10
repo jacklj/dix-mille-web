@@ -196,7 +196,7 @@ describe('Game Logic', () => {
       ]);
       expect(res.remainingDice).toEqual({ c: 4, e: 3, f: 3 });
     });
-    it('should return the correct result for 2 1s and a 5 ', () => {
+    it('should return the correct result for 2 1s and a 5', () => {
       const bankedDice = { a: 3, b: 1, c: 4, d: 1, e: 5, f: 3 };
 
       const res = GameLogic.getHighestScoringGrouping(bankedDice);
@@ -207,7 +207,7 @@ describe('Game Logic', () => {
       ]);
       expect(res.remainingDice).toEqual({ a: 3, c: 4, f: 3 });
     });
-    it('should return the correct result for 115552 ', () => {
+    it('should return the correct result for 115552', () => {
       const bankedDice = { a: 5, b: 1, c: 5, d: 1, e: 5, f: 2 };
 
       const res = GameLogic.getHighestScoringGrouping(bankedDice);
@@ -217,6 +217,16 @@ describe('Game Logic', () => {
         { dice: { d: 1 }, groupType: 'oneOrFive', score: 100 },
       ]);
       expect(res.remainingDice).toEqual({ f: 2 });
+    });
+    it('should return the correct result for 11', () => {
+      const bankedDice = { a: 1, e: 1 };
+
+      const res = GameLogic.getHighestScoringGrouping(bankedDice);
+      expect(res.groups).toEqual([
+        { dice: { a: 1 }, groupType: 'oneOrFive', score: 100 },
+        { dice: { e: 1 }, groupType: 'oneOrFive', score: 100 },
+      ]);
+      expect(res.remainingDice).toEqual({});
     });
     it('should return nothing if empty set passed', () => {
       const bankedDice = {};

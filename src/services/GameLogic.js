@@ -661,10 +661,18 @@ const getHighestScoringGrouping = (bankedDice) => {
   }
 
   // iii) 3 pairs
-  //      3 sets of 2 , or a set of 2 and a set of 4 => all tallies divisible by 2!
+  //      3 sets of 2, or a set of 2 and a set of 4 => all tallies divisible by 2!
   //      Exception - if there are 4 1's and another pair, then taking the 4 1's as 1100 is better.
-  const is3Pairs =
+  //      N.B. need to check 6 dice are banked in total, as e.g. 1122 would satisfy "every tallyList's length
+  //      is divisible by 2".
+  const is6DiceInTotal =
+    tally &&
     Object.values(tally).length > 0 &&
+    Object.values(tally)
+      .filter((tallyList) => tallyList && tallyList.length > 0)
+      .reduce((accum, tallyList) => accum + tallyList.length, 0) === 6;
+  const is3Pairs =
+    is6DiceInTotal &&
     Object.values(tally).every((tallyList) => tallyList.length % 2 === 0) &&
     (!tally[1] || tally[1].length !== 4);
   if (is3Pairs) {
