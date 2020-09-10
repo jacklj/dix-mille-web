@@ -372,7 +372,9 @@ export const selectCurrentScoringGroups = (state) => {
   return currentRoll?.scoringGroups;
 };
 
-export const selectPreviousScoringGroupsSinceLastFullRoll = (state) => {
+// Gets list of previous scoring groups (since last full roll, so that there
+// are only ever 6 dice on screen)
+export const selectPreviousScoringGroups = (state) => {
   const {
     currentRound: currentRoundId,
     currentTurn: currentTurnId,

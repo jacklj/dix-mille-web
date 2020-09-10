@@ -11,7 +11,7 @@ import {
   selectCurrentTurnId,
   selectCurrentRoundId,
   selectCurrentRollNumber,
-  selectPreviousScoringGroupsSinceLastFullRoll,
+  selectPreviousScoringGroups,
   selectTurnScoreSoFar,
   selectIsRolling,
   selectBankedDiceWithValues,
@@ -80,9 +80,7 @@ const ScoringGroups = () => {
   const orderedBankedDiceWithDetails = useSelector(
     selectOrderedBankedDiceWithValuesAndGroupStatuses,
   );
-  const previousScoringGroups = useSelector(
-    selectPreviousScoringGroupsSinceLastFullRoll,
-  );
+  const previousScoringGroups = useSelector(selectPreviousScoringGroups);
   const turnScoreSoFar = useSelector(selectTurnScoreSoFar);
 
   const currentRollNumber = useSelector(selectCurrentRollNumber);
