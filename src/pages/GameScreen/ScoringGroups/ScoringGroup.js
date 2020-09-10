@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Die from 'components/Die';
+import Die from 'components/BankedDie';
 import PutBackButton from './PutBackButton';
 
 const Container = styled.div`

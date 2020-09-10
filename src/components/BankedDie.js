@@ -3,10 +3,10 @@ import styled from 'styled-components';
 
 const SelectionAura = styled.div`
   // N.B. CSS variables are passed to children!
-  --size: ${(props) => (props.isInGroup ? '50px' : '60px')};
+  --size: 50px;
 
   @media (max-width: 768px), (orientation: landscape) {
-    --size: ${(props) => (props.isInGroup ? '30px' : '45px')};
+    --size: 30px;
   }
 
   background-color: ${(props) =>
@@ -16,14 +16,13 @@ const SelectionAura = styled.div`
 
   border-radius: 50%;
 
-  padding: ${(props) => (props.isInGroup ? '0' : 'calc(var(--size) * 0.17)')};
-  margin: ${(props) => (props.isInGroup ? '2px' : 'calc(var(--size) * 0.2)')};
-  margin-bottom: ${(props) =>
-    props.isInGroup ? '5px' : 'calc(var(--size) * 0.4)'};
+  padding: 0;
+  margin: 2px;
+  margin-bottom: 5px;
 
   &:nth-child(even) {
     position: relative;
-    top: ${(props) => (props.isInGroup ? '0' : 'calc(var(--size) * 0.4)')};
+    top: 0;
   }
 
   transform: rotate(
@@ -39,13 +38,24 @@ const Face = styled.div`
 
   padding: calc(var(--size) * 0.17);
 
+  background-color: #e7e7e7;
   box-shadow: inset 0 calc(var(--size) * 0.1) white,
     inset 0 calc(var(--size) * -0.1) #bbb,
     inset calc(var(--size) * 0.1) 0 #d7d7d7,
     inset calc(var(--size) * -0.1) 0 #d7d7d7;
 
+  ${(props) =>
+    !props.isInGroup &&
+    `
+      background-color: #ee1a11;
+      box-shadow: inset 0 calc(var(--size) * 0.1) #f3544e,
+        inset 0 calc(var(--size) * -0.1) #ab120c,
+        inset calc(var(--size) * 0.1) 0 #d0160f,
+        inset calc(var(--size) * -0.1) 0 #d0160f;
+  
+    `}
+
   border-radius: 10%;
-  background-color: #e7e7e7;
 
   display: grid;
   grid-template-areas:
@@ -96,17 +106,17 @@ const Pip = styled.span`
   }
 `;
 
-const Die = ({ id, value, selected, onClick, isInGroup, className }) => {
+const Die = ({ id, value, selected, onClick, className, isInGroup }) => {
   const arrayWithValueItems = [...Array(value)];
   return (
     <SelectionAura
       selected={selected}
       onClick={onClick}
-      isInGroup={isInGroup}
-      className={className}>
+      className={className}
+      isInGroup={isInGroup}>
       <Face isInGroup={isInGroup}>
         {arrayWithValueItems.map((v, k) => (
-          <Pip key={k} isInGroup={isInGroup} />
+          <Pip key={k} />
         ))}
       </Face>
     </SelectionAura>

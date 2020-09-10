@@ -301,6 +301,37 @@ export const selectBankedDiceWithValues = (state) => {
   return bankedDiceWithValues;
 };
 
+// this could be a good candidate for memoisation
+export const selectBankedDiceWithValuesAndGroupStatuses = (state) => {
+  const bankedDice = selectBankedDiceWithValues(state);
+  const scoringGroups = selectCurrentScoringGroups(state);
+
+  if (!bankedDice || Object.keys(bankedDice).length === 0) {
+    return;
+  }
+
+  // construct a map which specifies which group, if any, each banked dice is in
+  const diceGroupMap = {};
+  if (scoringGroups) {
+    Object.entries(scoringGroups).forEach(([sgId, sgDetails]) => {
+      const { dice } = sgDetails;
+      Object.keys(dice).forEach((diceId) => {
+        diceGroupMap[diceId] = sgId;
+      });
+    });
+  }
+
+  const bankedDiceWithDetails = {};
+  Object.entries(bankedDice).forEach(([diceId, value]) => {
+    bankedDiceWithDetails[diceId] = {
+      value,
+      group: diceGroupMap[diceId],
+    };
+  });
+
+  return bankedDiceWithDetails;
+};
+
 export const selectSelectedDice = (state) => {
   const currentRoll = selectCurrentRollObj(state);
   return currentRoll?.selectedDice;

@@ -15,10 +15,10 @@ const spin = keyframes`
 
 const Dice = styled.div`
   // N.B. CSS variables are passed to children
-  --size: ${(props) => (props.isInGroup ? '50px' : '60px')};
+  --size: ${(props) => (props.isInBankedSection ? '50px' : '60px')};
 
   @media (max-width: 768px), (orientation: landscape) {
-    --size: ${(props) => (props.isInGroup ? '30px' : '45px')};
+    --size: ${(props) => (props.isInBankedSection ? '30px' : '45px')};
   }
 
   width: calc(var(--size) * 1);
@@ -27,12 +27,14 @@ const Dice = styled.div`
   flex-grow: 0;
   flex-basis: auto;
 
-  margin: ${(props) => (props.isInGroup ? '2px' : 'calc(var(--size) * 0.7)')};
+  margin: ${(props) =>
+    props.isInBankedSection ? '2px' : 'calc(var(--size) * 0.7)'};
   margin-bottom: ${(props) =>
-    props.isInGroup ? '5px' : 'calc(var(--size) * 0.6)'};
+    props.isInBankedSection ? '5px' : 'calc(var(--size) * 0.6)'};
 
   &:nth-child(even) {
-    top: ${(props) => (props.isInGroup ? '0' : 'calc(var(--size) * 0.5)')};
+    top: ${(props) =>
+      props.isInBankedSection ? '0' : 'calc(var(--size) * 0.5)'};
   }
 
   position: relative;
@@ -113,7 +115,7 @@ const Dice3d = ({
   rolling,
   selected,
   onClick,
-  isInGroup,
+  isInBankedSection,
   className,
   banked,
 }) => {
@@ -135,14 +137,20 @@ const Dice3d = ({
   return (
     <Dice
       key={id}
-      isInGroup={isInGroup}
+      isInBankedSection={isInBankedSection}
       className={className}
       value={actualValue}
       rolling={rolling}
       even={even}
       onClick={onClick}>
       {faces.map((f) => (
-        <Face key={f} value={f} selected={selected} banked={banked} faceShown={actualValue} />
+        <Face
+          key={f}
+          value={f}
+          selected={selected}
+          banked={banked}
+          faceShown={actualValue}
+        />
       ))}
     </Dice>
   );

@@ -16,10 +16,11 @@ import {
   selectTurnScoreSoFar,
   selectIsRolling,
   selectBankedDiceWithValues,
+  selectBankedDiceWithValuesAndGroupStatuses,
 } from 'redux/game/selectors';
 import { selectIsSoundOn } from 'redux/settings/selectors';
 import ScoringGroup from './ScoringGroup';
-import Die from 'components/Die';
+import Die from 'components/BankedDie';
 import GameLogic from 'services/GameLogic';
 import bankDice from 'media/sounds/bankDice.mp3';
 
@@ -77,6 +78,9 @@ const ScoringGroups = () => {
   const currentTurnId = useSelector(selectCurrentTurnId);
 
   const bankedDice = useSelector(selectBankedDiceWithValues);
+  const bankedDiceWithGroupDetails = useSelector(
+    selectBankedDiceWithValuesAndGroupStatuses,
+  );
   const currentScoringGroups = useSelector(selectCurrentScoringGroups);
   const previousScoringGroups = useSelector(
     selectPreviousScoringGroupsSinceLastFullRoll,
@@ -206,7 +210,7 @@ const ScoringGroups = () => {
                 id={id}
                 key={id}
                 value={value}
-                isInGroup
+                isInGroup={!!bankedDiceWithGroupDetails[id].group}
                 onClick={() => unbankDie(id)}
               />
             ))}

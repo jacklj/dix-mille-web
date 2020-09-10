@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import Overlay from 'components/Overlay';
-import Die from 'components/Die';
+import Die from 'components/BankedDie';
 
 const H2 = styled.h2`
   font-family: Limelight;
@@ -91,55 +91,55 @@ const RulesPopover = ({ hideRules }) => {
       </P>
       <ScoreDemo>
         <Dice>
-          <CustomDie id={5} key={5} value={5} isInGroup />
+          <CustomDie id={5} key={5} value={5} />
         </Dice>
         50
       </ScoreDemo>
       <ScoreDemo>
         <Dice>
-          <CustomDie id={1} key={1} value={1} isInGroup />
+          <CustomDie id={1} key={1} value={1} />
         </Dice>
         100
       </ScoreDemo>
       <ScoreDemo>
         <Dice>
-          <CustomDie id={1} key={1} value={2} isInGroup />
-          <CustomDie id={2} key={2} value={2} isInGroup />
-          <CustomDie id={3} key={3} value={2} isInGroup />
+          <CustomDie id={1} key={1} value={2} />
+          <CustomDie id={2} key={2} value={2} />
+          <CustomDie id={3} key={3} value={2} />
         </Dice>
         Three of a kind = that number in 100s, e.g. three 2s = 200. Except three
         1s is 1000.
       </ScoreDemo>
       <ScoreDemo>
         <Dice>
-          <CustomDie id={1} key={1} value={2} isInGroup />
-          <CustomDie id={4} key={4} value={4} isInGroup />
-          <CustomDie id={5} key={5} value={5} isInGroup />
-          <CustomDie id={2} key={2} value={2} isInGroup />
-          <CustomDie id={3} key={3} value={4} isInGroup />
-          <CustomDie id={6} key={6} value={5} isInGroup />
+          <CustomDie id={1} key={1} value={2} />
+          <CustomDie id={4} key={4} value={4} />
+          <CustomDie id={5} key={5} value={5} />
+          <CustomDie id={2} key={2} value={2} />
+          <CustomDie id={3} key={3} value={4} />
+          <CustomDie id={6} key={6} value={5} />
         </Dice>
         Three pairs = 1000
       </ScoreDemo>
       <ScoreDemo>
         <Dice>
-          <CustomDie id={1} key={1} value={1} isInGroup />
-          <CustomDie id={2} key={2} value={2} isInGroup />
-          <CustomDie id={3} key={3} value={3} isInGroup />
-          <CustomDie id={4} key={4} value={4} isInGroup />
-          <CustomDie id={5} key={5} value={5} isInGroup />
-          <CustomDie id={6} key={6} value={6} isInGroup />
+          <CustomDie id={1} key={1} value={1} />
+          <CustomDie id={2} key={2} value={2} />
+          <CustomDie id={3} key={3} value={3} />
+          <CustomDie id={4} key={4} value={4} />
+          <CustomDie id={5} key={5} value={5} />
+          <CustomDie id={6} key={6} value={6} />
         </Dice>
         Sequence of 1 to 6 = 1500
       </ScoreDemo>
       <ScoreDemo>
         <Dice>
-          <CustomDie id={1} key={1} value={4} isInGroup />
-          <CustomDie id={2} key={2} value={4} isInGroup />
-          <CustomDie id={3} key={3} value={4} isInGroup />
-          <CustomDie id={4} key={4} value={4} isInGroup />
-          <CustomDie id={5} key={5} value={4} isInGroup />
-          <CustomDie id={6} key={6} value={4} isInGroup />
+          <CustomDie id={1} key={1} value={4} />
+          <CustomDie id={2} key={2} value={4} />
+          <CustomDie id={3} key={3} value={4} />
+          <CustomDie id={4} key={4} value={4} />
+          <CustomDie id={5} key={5} value={4} />
+          <CustomDie id={6} key={6} value={4} />
         </Dice>
         Six of any number - you win the game!
       </ScoreDemo>
