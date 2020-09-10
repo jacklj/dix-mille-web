@@ -12,7 +12,6 @@ import {
   selectCurrentRoundId,
   selectCurrentRollNumber,
   selectPreviousScoringGroupsSinceLastFullRoll,
-  selectCurrentScoringGroups,
   selectTurnScoreSoFar,
   selectIsRolling,
   selectBankedDiceWithValues,
@@ -81,7 +80,6 @@ const ScoringGroups = () => {
   const orderedBankedDiceWithDetails = useSelector(
     selectOrderedBankedDiceWithValuesAndGroupStatuses,
   );
-  const currentScoringGroups = useSelector(selectCurrentScoringGroups);
   const previousScoringGroups = useSelector(
     selectPreviousScoringGroupsSinceLastFullRoll,
   );
@@ -171,26 +169,10 @@ const ScoringGroups = () => {
     setIsUnbanking(false);
   };
 
-  const ungroupGroup = async (groupId) => {
-    if (!isMyTurn) {
-      alert("You can't ungroup - it's not your turn!");
-      return;
-    }
-
-    await firebase
-      .database()
-      .ref(
-        `games/${gameId}/rounds/${currentRoundId}/turns/${currentTurnId}/rolls/${currentRollNumber}/scoringGroups/${groupId}`,
-      )
-      .remove();
-  };
-
   const noBankedDice = !bankedDice || Object.keys(bankedDice).length === 0;
-  const noCurrentScoringGroups =
-    !currentScoringGroups || Object.keys(currentScoringGroups).length === 0;
   const noPreviousScoringGroups =
     !previousScoringGroups || Object.keys(previousScoringGroups).length === 0;
-  if (noBankedDice && noCurrentScoringGroups && noPreviousScoringGroups) {
+  if (noBankedDice && noPreviousScoringGroups) {
     return null;
   }
 
@@ -201,7 +183,6 @@ const ScoringGroups = () => {
           ? `Turn score: ${turnScoreSoFar}`
           : null}
       </TurnScoreText>
-      <TurnScoreText>banked dice:</TurnScoreText>
       {orderedBankedDiceWithDetails && (
         <DiceContainer>
           {orderedBankedDiceWithDetails.map(
@@ -218,23 +199,7 @@ const ScoringGroups = () => {
           )}
         </DiceContainer>
       )}
-      <TurnScoreText>--------------------</TurnScoreText>
       <ScoringGroupsContainer>
-        {currentScoringGroups &&
-          Object.keys(currentScoringGroups).map((groupId) => {
-            const groupObj = currentScoringGroups[groupId];
-            const { dice } = groupObj;
-            return (
-              <ScoringGroup
-                key={groupId}
-                groupId={groupId}
-                dice={dice}
-                isCurrent
-                ungroupGroup={ungroupGroup}
-                isMyTurn={isMyTurn}
-              />
-            );
-          })}
         {previousScoringGroups &&
           previousScoringGroups.map((sg) => {
             const { dice, groupId } = sg;
