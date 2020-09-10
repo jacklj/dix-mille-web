@@ -218,5 +218,12 @@ describe('Game Logic', () => {
       ]);
       expect(res.remainingDice).toEqual({ f: 2 });
     });
+    it('should return nothing if empty set passed', () => {
+      const bankedDice = {};
+
+      const res = GameLogic.getHighestScoringGrouping(bankedDice);
+      expect(res.groups).toEqual([]);
+      expect(res.remainingDice).toEqual({});
+    });
   });
 });

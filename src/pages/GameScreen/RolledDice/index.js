@@ -89,7 +89,7 @@ const RolledDice = () => {
       return;
     }
 
-    if (bankedDice[diceId]) {
+    if (bankedDice && bankedDice[diceId]) {
       console.warn(`dice '${diceId}' is already banked - can't bank again.`);
       setIsBanking(false);
       return;
@@ -109,39 +109,33 @@ const RolledDice = () => {
       [diceId]: currentRoll[diceId],
     };
 
-    const {
-      isValidGroups,
-      invalidReason,
-      groups,
-    } = GameLogic.getValidScoringGroups(existingBankedDicePlusNewOne);
+    const { groups, remainingDice } = GameLogic.getHighestScoringGrouping(
+      existingBankedDicePlusNewOne,
+    );
 
-    if (isValidGroups) {
-      const updates = {};
-      const rollPath = `games/${gameId}/rounds/${currentRoundId}/turns/${currentTurnId}/rolls/${currentRollNumber}`;
+    const updates = {};
+    const rollPath = `games/${gameId}/rounds/${currentRoundId}/turns/${currentTurnId}/rolls/${currentRollNumber}`;
 
-      // mark dice as banked
-      updates[`bankedDice/${diceId}`] = true;
+    // mark dice as banked
+    updates[`bankedDice/${diceId}`] = true;
 
-      // update scoringGroups map (replace it entirely (for now?))
-      const scoringGroups = {};
-      groups.forEach((scoringGroup) => {
-        const newPushKey = firebase
-          .database()
-          .ref(`${rollPath}/scoringGroups`)
-          .push().key;
+    // update scoringGroups map (replace it entirely (for now?))
+    const scoringGroups = {};
+    groups.forEach((scoringGroup) => {
+      const newPushKey = firebase
+        .database()
+        .ref(`${rollPath}/scoringGroups`)
+        .push().key;
 
-        scoringGroups[newPushKey] = scoringGroup;
-      });
-      updates.scoringGroups = scoringGroups; // replace existing scoringGroups map
+      scoringGroups[newPushKey] = scoringGroup;
+    });
+    updates.scoringGroups = scoringGroups; // replace existing scoringGroups map
 
-      // also clear selected dice, as they've all been put in a group
-      // updates.selectedDice = null; // https://firebase.google.com/docs/database/web/read-and-write#delete_data
+    // also clear selected dice, as they've all been put in a group
+    // updates.selectedDice = null; // https://firebase.google.com/docs/database/web/read-and-write#delete_data
 
-      await firebase.database().ref(rollPath).update(updates);
-      playBankingDiceSound();
-    } else {
-      alert(invalidReason);
-    }
+    await firebase.database().ref(rollPath).update(updates);
+    playBankingDiceSound();
     setIsBanking(false);
   };
 

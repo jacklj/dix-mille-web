@@ -617,6 +617,12 @@ const getValidScoringGroups = (selectedDice) => {
   Returns the set of scoring groups, plus any remaining dice (that aren't in the scoring groups)
 */
 const getHighestScoringGrouping = (bankedDice) => {
+  if (!bankedDice || Object.keys(bankedDice).length === 0) {
+    return {
+      groups: [],
+      remainingDice: {},
+    };
+  }
   const groups = [];
   // let remainingDice = { ...bankedDice };
   // 1. make tally map
