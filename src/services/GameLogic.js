@@ -642,6 +642,8 @@ const getHighestScoringGrouping = (bankedDice) => {
     tally = {};
   }
 
+  // ii) run of 6 dice
+  //     `tally` has 6 entries (pigeonhole principle - must be a run of 1 to 6)
   const isRun = Object.keys(tally).length === 6;
   if (isRun) {
     groups.push({
@@ -652,12 +654,13 @@ const getHighestScoringGrouping = (bankedDice) => {
     tally = {};
   }
 
+  // iii) 3 pairs
+  //      3 sets of 2 , or a set of 2 and a set of 4 => all tallies divisible by 2!
+  //      exception - if there are 4 1's and another pair, then taking the 4 1's as 1100 is better.
   const is3Pairs =
-    Object.keys(tally).length > 0 &&
+    Object.values(tally).length > 0 &&
     Object.values(tally).every((tallyList) => tallyList.length % 2 === 0) &&
     tally[1] !== 4;
-  // 3 sets of 2 , or a set of 2 and a set of 4 => all tallies divisible by 2!
-  // exeption - if there are 4 1's and another pair, then taking the 4 1's as 1100 is better.
   if (is3Pairs) {
     groups.push({
       groupType: Constants.diceGroupTypes.threePairs,
@@ -667,12 +670,40 @@ const getHighestScoringGrouping = (bankedDice) => {
     tally = {};
   }
 
+  // 3. 3 of a kind
+  //    Any tally entries containing 3 diceIds.
+  //    Can have 2 sets of 3 of a kind, e.g. 333666
+  //    Can't have 2 sets of 3, all of the same value (e.g. 222222), as this would have been
+  //    consumed already as 6 of a kind.
+  const entriesWith3dice = Object.entries(tally).filter(
+    ([value, tallyList]) => tallyList.length === 3,
+  );
+  const has3OfAKind = entriesWith3dice.length > 0;
+  if (has3OfAKind) {
+    // iterate over the entries with 3 dice, because there could be one or two
+    entriesWith3dice.forEach(([value, tallyList]) => {
+      const v = Number(value);
+      const score = v === 1 ? 1000 : v * 100;
+      const dice = {
+        [tallyList[0]]: v,
+        [tallyList[1]]: v,
+        [tallyList[2]]: v,
+      };
+      groups.push({
+        groupType: Constants.diceGroupTypes.threeOfAKind,
+        score,
+        dice,
+      });
+      delete tally[value];
+    });
+  }
+
   // see what's left in the tally
   const remainingDice = {};
   Object.entries(tally).forEach(([value, diceIdList]) => {
     if (diceIdList && Array.isArray(diceIdList)) {
       diceIdList.forEach((diceId) => {
-        remainingDice[diceId] = value;
+        remainingDice[diceId] = Number(value);
       });
     }
   });
