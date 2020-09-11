@@ -280,12 +280,7 @@ export const selectAllCurrentDiceWithDetails = (state) => {
     return undefined;
   }
 
-  const {
-    roll,
-    bankedDice,
-    diceToScoringGroups,
-    scoringGroups,
-  } = currentRollObj;
+  const { roll, bankedDice, diceToScoringGroups } = currentRollObj;
 
   if (!roll || Object.keys(roll) === 0) {
     return undefined;
