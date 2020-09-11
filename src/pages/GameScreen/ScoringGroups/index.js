@@ -137,6 +137,8 @@ const ScoringGroups = () => {
     // recalculate scoring groups
     const newBankedDice = { ...bankedDice };
     delete newBankedDice[diceId];
+    console.log('old banked dice: ', bankedDice);
+    console.log('new banked dice: ', newBankedDice);
 
     const bankedDiceValuesMap = Helpers.transformDiceDetailsIntoValueMap(
       newBankedDice,
@@ -147,22 +149,31 @@ const ScoringGroups = () => {
     );
 
     const updates = {};
-    const rollPath = `games/${gameId}/rounds/${currentRoundId}/turns/${currentTurnId}/rolls/${currentRollNumber}`;
 
-    // mark dice as banked
+    // mark dice as unbanked
     updates[`bankedDice/${diceId}`] = null; // https://firebase.google.com/docs/database/web/read-and-write#delete_data
 
     // update scoringGroups map (replace it entirely (for now?))
+    // N.B. also update the denormalised `diceToScoringGroups` map
+    // N.B. need to replace whole scoringGroups map and diceToScoringGroups map, because the scoring groups may
+    // have completely changed.
+    const rollPath = `games/${gameId}/rounds/${currentRoundId}/turns/${currentTurnId}/rolls/${currentRollNumber}`;
     const scoringGroups = {};
+    const diceToScoringGroups = {};
+
     groups.forEach((scoringGroup) => {
-      const newPushKey = firebase
+      const newScoringGroupKey = firebase
         .database()
         .ref(`${rollPath}/scoringGroups`)
         .push().key;
 
-      scoringGroups[newPushKey] = scoringGroup;
+      scoringGroups[newScoringGroupKey] = scoringGroup;
+      Object.keys(scoringGroup.dice).forEach((diceId) => {
+        diceToScoringGroups[diceId] = newScoringGroupKey;
+      });
     });
     updates.scoringGroups = scoringGroups; // replace existing scoringGroups map
+    updates.diceToScoringGroups = diceToScoringGroups;
 
     await firebase.database().ref(rollPath).update(updates);
     playBankingDiceSound();
