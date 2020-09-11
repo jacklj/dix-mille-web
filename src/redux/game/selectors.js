@@ -399,7 +399,7 @@ export const selectPreviousScoringGroups = (state) => {
     return undefined;
   }
 
-  // if current roll is a full roll, dont display any previous scoring groups
+  // if current roll is a full roll, don't display any previous scoring groups
   const currentRoll = rolls[rolls.length - 1];
   const { roll } = currentRoll;
   const isSixDiceRoll = Object.keys(roll).length === 6;
@@ -413,7 +413,7 @@ export const selectPreviousScoringGroups = (state) => {
   // in between (inclusive)
   // NB add rollId to the scoring group
   // NB order: most recent first
-  const allScoringGroups = [];
+  const bankedDiceOfPreviousRolls = [];
 
   for (let i = penultimateRollIndex; i >= 0; i--) {
     const rollObj = rolls[i];
@@ -432,9 +432,17 @@ export const selectPreviousScoringGroups = (state) => {
         );
       }
     }
+    // TODO here, instead of just getting scoring groups and pushing them onto 'bankedDiceOfPreviousRolls', use the same
+    // alg as in the current banked dice selector to sort the dice.
+    // N.B. all banked dice in a previous roll will be scoring dice, as you can't roll again if
+    // any non-grouped dice are banked.
     Object.keys(scoringGroups).forEach((groupId) => {
       const scoringGroup = scoringGroups[groupId];
-      allScoringGroups.push({ rollIndex: i, groupId, ...scoringGroup });
+      bankedDiceOfPreviousRolls.push({
+        rollIndex: i,
+        groupId,
+        ...scoringGroup,
+      });
     });
 
     if (Object.keys(roll).length === 6) {
@@ -443,7 +451,7 @@ export const selectPreviousScoringGroups = (state) => {
     }
   }
 
-  return allScoringGroups;
+  return bankedDiceOfPreviousRolls;
 };
 
 const selectCurrentTurn = (state) => {
