@@ -9,8 +9,6 @@ import BlappedMessage from './BlappedMessage';
 import {
   isItMyTurn,
   selectGameId,
-  selectCurrentRoll,
-  selectBankedDiceWithValues,
   selectCurrentTurnId,
   selectCurrentRoundId,
   selectCurrentRollNumber,
@@ -18,6 +16,7 @@ import {
   selectIsFailedFirstOfTwoThrowsToDoubleIt,
   selectIsRolling,
   selectIsSuccessfulTwoThrowsToDoubleIt,
+  selectAllCurrentDiceWithDetails,
 } from 'redux/game/selectors';
 import { selectIsSoundOn } from 'redux/settings/selectors';
 import Die from 'components/Dice3d';
@@ -25,6 +24,7 @@ import GameLogic from 'services/GameLogic';
 import cheer from 'media/sounds/cheer.mp3';
 import disappointed from 'media/sounds/disappointed.mp3';
 import bankDice from 'media/sounds/bankDice.mp3';
+import Helpers from 'services/Helpers';
 
 const Container = styled.div`
   flex-shrink: 0;
@@ -55,8 +55,7 @@ const RolledDice = () => {
   const gameId = useSelector(selectGameId);
   const currentRoundId = useSelector(selectCurrentRoundId);
   const currentTurnId = useSelector(selectCurrentTurnId);
-  const currentRoll = useSelector(selectCurrentRoll);
-  const bankedDice = useSelector(selectBankedDiceWithValues);
+  const dice = useSelector(selectAllCurrentDiceWithDetails);
   const currentRollNumber = useSelector(selectCurrentRollNumber);
   const isBlapped = useSelector(selectIsBlapped);
   const isFailedFirstOfTwoThrowsToDoubleIt = useSelector(
@@ -76,19 +75,6 @@ const RolledDice = () => {
   const bankDie = async (diceId) => {
     // mark the dice as banked, and see if it updates the highest scoring combination of scoring groups from all
     // banked dice.
-    setIsBanking(true);
-    if (!isMyTurn) {
-      console.warn("Can't bank dice when it's not your turn");
-      setIsBanking(false);
-      return;
-    }
-
-    if (bankedDice && bankedDice[diceId]) {
-      console.warn(`dice '${diceId}' is already banked - can't bank again.`);
-      setIsBanking(false);
-      return;
-    }
-
     if (isBanking) {
       console.warn(
         `already banking a dice - can't bank another until it's done.`,
@@ -97,10 +83,28 @@ const RolledDice = () => {
       return;
     }
 
+    setIsBanking(true);
+
+    if (!isMyTurn) {
+      console.warn("Can't bank dice when it's not your turn");
+      setIsBanking(false);
+      return;
+    }
+
+    if (dice[diceId]?.isBanked) {
+      console.warn(`dice '${diceId}' is already banked - can't bank again.`);
+      setIsBanking(false);
+      return;
+    }
+
     // calculate any scoring groups
+    const bankedDice = Helpers.filterBankedDice(dice);
+    const bankedDiceValuesMap = Helpers.transformDiceDetailsIntoValueMap(
+      bankedDice,
+    );
     const existingBankedDicePlusNewOne = {
-      ...bankedDice,
-      [diceId]: currentRoll[diceId],
+      ...bankedDiceValuesMap,
+      [diceId]: dice[diceId].value,
     };
 
     const { groups, remainingDice } = GameLogic.getHighestScoringGrouping(
@@ -108,22 +112,28 @@ const RolledDice = () => {
     );
 
     const updates = {};
-    const rollPath = `games/${gameId}/rounds/${currentRoundId}/turns/${currentTurnId}/rolls/${currentRollNumber}`;
 
     // mark dice as banked
     updates[`bankedDice/${diceId}`] = true;
 
     // update scoringGroups map (replace it entirely (for now?))
+    // N.B. also update the denormalised `diceToScoringGroups` map
+    const rollPath = `games/${gameId}/rounds/${currentRoundId}/turns/${currentTurnId}/rolls/${currentRollNumber}`;
     const scoringGroups = {};
+    const diceToScoringGroups = {};
     groups.forEach((scoringGroup) => {
-      const newPushKey = firebase
+      const newScoringGroupKey = firebase
         .database()
         .ref(`${rollPath}/scoringGroups`)
         .push().key;
 
-      scoringGroups[newPushKey] = scoringGroup;
+      scoringGroups[newScoringGroupKey] = scoringGroup;
+      Object.keys(scoringGroup.dice).forEach((diceId) => {
+        diceToScoringGroups[diceId] = newScoringGroupKey;
+      });
     });
     updates.scoringGroups = scoringGroups; // replace existing scoringGroups map
+    updates.diceToScoringGroups = diceToScoringGroups;
 
     await firebase.database().ref(rollPath).update(updates);
     playBankingDiceSound();
@@ -192,15 +202,15 @@ const RolledDice = () => {
   return (
     <>
       <Container>
-        {currentRoll &&
-          Object.keys(currentRoll).map((id) => (
+        {dice &&
+          Object.entries(dice).map(([diceId, { value, isBanked }]) => (
             <Die
-              id={id}
-              key={id}
-              value={currentRoll[id]}
-              onClick={() => bankDie(id)}
+              id={diceId}
+              key={diceId}
+              value={value}
+              onClick={() => bankDie(diceId)}
               rolling={isRollingCloud}
-              banked={bankedDice?.[id]}
+              banked={isBanked}
             />
           ))}
       </Container>

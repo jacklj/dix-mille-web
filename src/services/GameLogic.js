@@ -613,8 +613,9 @@ const getValidScoringGroups = (selectedDice) => {
 };
 
 /*
-
   Returns the set of scoring groups, plus any remaining dice (that aren't in the scoring groups)
+  # Parameters
+    - bankedDice: { [diceId]: value }
 */
 const getHighestScoringGrouping = (bankedDice) => {
   if (!bankedDice || Object.keys(bankedDice).length === 0) {

@@ -4,6 +4,7 @@ import * as firebase from 'firebase/app';
 import 'firebase/functions';
 import { useSelector } from 'react-redux';
 import useSound from 'use-sound';
+import Helpers from 'services/Helpers';
 
 import {
   isItMyTurn,
@@ -14,8 +15,8 @@ import {
   selectPreviousScoringGroups,
   selectTurnScoreSoFar,
   selectIsRolling,
-  selectBankedDiceWithValues,
-  selectOrderedBankedDiceWithValuesAndGroupStatuses,
+  selectBankedDice,
+  selectBankedDiceOrder,
 } from 'redux/game/selectors';
 import { selectIsSoundOn } from 'redux/settings/selectors';
 import ScoringGroup from './ScoringGroup';
@@ -76,10 +77,8 @@ const ScoringGroups = () => {
   const currentRoundId = useSelector(selectCurrentRoundId);
   const currentTurnId = useSelector(selectCurrentTurnId);
 
-  const bankedDice = useSelector(selectBankedDiceWithValues);
-  const orderedBankedDiceWithDetails = useSelector(
-    selectOrderedBankedDiceWithValuesAndGroupStatuses,
-  );
+  const bankedDice = useSelector(selectBankedDice);
+  const bankedDiceOrder = useSelector(selectBankedDiceOrder);
   const previousScoringGroups = useSelector(selectPreviousScoringGroups);
   const turnScoreSoFar = useSelector(selectTurnScoreSoFar);
 
@@ -139,8 +138,12 @@ const ScoringGroups = () => {
     const newBankedDice = { ...bankedDice };
     delete newBankedDice[diceId];
 
-    const { groups, remainingDice } = GameLogic.getHighestScoringGrouping(
+    const bankedDiceValuesMap = Helpers.transformDiceDetailsIntoValueMap(
       newBankedDice,
+    );
+
+    const { groups, remainingDice } = GameLogic.getHighestScoringGrouping(
+      bankedDiceValuesMap,
     );
 
     const updates = {};
@@ -181,20 +184,21 @@ const ScoringGroups = () => {
           ? `Turn score: ${turnScoreSoFar}`
           : null}
       </TurnScoreText>
-      {orderedBankedDiceWithDetails && (
+      {bankedDiceOrder && (
         <DiceContainer>
-          {orderedBankedDiceWithDetails.map(
-            ({ id, value, scoringGroupId, score }) => (
+          {bankedDiceOrder.map((diceId) => {
+            const { value, scoringGroupId } = bankedDice[diceId];
+            const isInScoringGroup = !!scoringGroupId;
+            return (
               <Die
-                id={id}
-                key={id}
+                id={diceId}
+                key={diceId}
                 value={value}
-                isInGroup={!!scoringGroupId}
-                score={score}
-                onClick={() => unbankDie(id)}
+                isInGroup={isInScoringGroup}
+                onClick={() => unbankDie(diceId)}
               />
-            ),
-          )}
+            );
+          })}
         </DiceContainer>
       )}
       <ScoringGroupsContainer>

@@ -2,6 +2,7 @@
 import { selectAllAvatars } from 'redux/avatars/selectors';
 import { selectUid } from 'redux/auth/selectors';
 import Constants from 'services/constants';
+import Helpers from 'services/Helpers';
 
 export const selectGameCode = (state) => state.game.gameCode;
 
@@ -272,33 +273,47 @@ export const selectCurrentRoll = (state) => {
   return currentRoll?.roll;
 };
 
-export const selectBankedDice = (state) => {
-  const currentRoll = selectCurrentRollObj(state);
-  return currentRoll?.bankedDice;
-};
+export const selectAllCurrentDiceWithDetails = (state) => {
+  const currentRollObj = selectCurrentRollObj(state);
 
-export const selectBankedDiceWithValues = (state) => {
-  const bankedDice = selectBankedDice(state);
-  const currentRoll = selectCurrentRoll(state);
-
-  if (
-    !bankedDice ||
-    Object.keys(bankedDice).length === 0 ||
-    !currentRoll ||
-    Object.keys(currentRoll).length === 0
-  ) {
+  if (!currentRollObj) {
     return undefined;
   }
 
-  const bankedDiceWithValues = {}; // [diceId]: diceValue
-  Object.keys(bankedDice)
-    .filter((diceId) => bankedDice[diceId]) // filter: banked === true
-    .forEach((diceId) => {
-      const value = currentRoll[diceId];
-      bankedDiceWithValues[diceId] = value;
-    });
+  const {
+    roll,
+    bankedDice,
+    diceToScoringGroups,
+    scoringGroups,
+  } = currentRollObj;
 
-  return bankedDiceWithValues;
+  if (!roll || Object.keys(roll) === 0) {
+    return undefined;
+  }
+
+  const dice = {};
+
+  Object.entries(roll).forEach(([diceId, value]) => {
+    const isBanked = bankedDice?.[diceId];
+    const scoringGroupId = diceToScoringGroups?.[diceId];
+    dice[diceId] = {
+      value,
+      isBanked,
+      scoringGroupId,
+    };
+  });
+
+  return dice;
+};
+
+export const selectBankedDice = (state) => {
+  const dice = selectAllCurrentDiceWithDetails(state);
+  if (!dice || Object.keys(dice).length === 0) {
+    return;
+  }
+
+  const bankedDice = Helpers.filterBankedDice(dice);
+  return bankedDice;
 };
 
 // alternate sorting methods
@@ -314,9 +329,9 @@ const sortByGroupScores = (a, b) => {
 };
 
 const sortByScoringOrNotThenDiceValues = (a, b) => {
-  if (a.score && !b.score) {
+  if (a.scoringGroupId && !b.scoringGroupId) {
     return -1;
-  } else if (!a.score && b.score) {
+  } else if (!a.scoringGroupId && b.scoringGroupId) {
     return 1;
   } else {
     // both non scoring or both scoring - sort by dice value
@@ -325,45 +340,28 @@ const sortByScoringOrNotThenDiceValues = (a, b) => {
 };
 
 // this could be a good candidate for memoisation
-export const selectOrderedBankedDiceWithValuesAndGroupStatuses = (state) => {
-  const bankedDice = selectBankedDiceWithValues(state);
-  const scoringGroups = selectCurrentScoringGroups(state);
+export const selectBankedDiceOrder = (state) => {
+  const bankedDice = selectBankedDice(state);
 
   if (!bankedDice || Object.keys(bankedDice).length === 0) {
     return;
   }
 
-  // construct a map which specifies which group, if any, each banked dice is in
-  const diceGroupMap = {};
-  if (scoringGroups) {
-    Object.entries(scoringGroups).forEach(([scoringGroupId, sgDetails]) => {
-      const { dice, score } = sgDetails;
-      Object.keys(dice).forEach((diceId) => {
-        diceGroupMap[diceId] = {
-          scoringGroupId,
-          score,
-        };
-      });
-    });
-  }
-
-  const orderedBankedDiceWithDetails = Object.entries(bankedDice)
-    .map(([id, value]) => {
+  const bankedDiceOrder = Object.entries(bankedDice)
+    .map(([diceId, details]) => {
       // N.B. the banked dice may not be in a scoring group
-      const scoringGroupId = diceGroupMap?.[id]?.scoringGroupId;
-      const score = diceGroupMap?.[id]?.score;
-
       return {
-        id,
-        value,
-        scoringGroupId,
-        score,
+        diceId,
+        ...details,
+        // N.B. details doesn't include the `score` as we're not using that sorting
+        // function for now - will have to put it back if we do in future
       };
     })
     // order by groupScores or by dice values
-    .sort(sortByScoringOrNotThenDiceValues);
+    .sort(sortByScoringOrNotThenDiceValues)
+    .map((diceDetailsObj) => diceDetailsObj.diceId);
 
-  return orderedBankedDiceWithDetails;
+  return bankedDiceOrder;
 };
 
 export const selectCurrentScoringGroups = (state) => {
