@@ -15,6 +15,7 @@ import {
   selectCurrentScoringGroups,
   selectIsFirstOfTwoThrowsToDoubleIt,
   selectIsRolling,
+  selectAreAnyBankedDiceInvalid,
 } from 'redux/game/selectors';
 import DiceCup from 'components/DiceCup';
 
@@ -112,6 +113,7 @@ const GameButtons = () => {
   const currentTurnId = useSelector(selectCurrentTurnId);
   const currentRoll = useSelector(selectCurrentRoll);
   const isRollingCloud = useSelector(selectIsRolling);
+  const areAnyBankedDiceInvalid = useSelector(selectAreAnyBankedDiceInvalid);
 
   const currentScoringGroups = useSelector(selectCurrentScoringGroups);
 
@@ -238,6 +240,12 @@ const GameButtons = () => {
       return;
     }
 
+    if (areAnyBankedDiceInvalid) {
+      alert("There are invalid banked dice - can't reroll.");
+      setIsHoldingDownRollButton(false);
+      return;
+    }
+
     const hasRolled = !!currentRoll;
     const noScoringGroups =
       !currentScoringGroups || Object.keys(currentScoringGroups).length === 0;
@@ -329,6 +337,12 @@ const GameButtons = () => {
       return;
     }
 
+    if (areAnyBankedDiceInvalid) {
+      alert("There are invalid banked dice - can't stick.");
+      setIsSticking(false);
+      return;
+    }
+
     try {
       const res = await firebase.functions().httpsCallable('stick')({
         gameId,
@@ -393,12 +407,14 @@ const GameButtons = () => {
     isRollLoading = false;
   } else {
     // it's your turn, you've rolled, and you havent blapped.
-    canStick = !isSticking && hasRolled; // N.B. can stick when no scoring groups
+    canStick = !isSticking && hasRolled && !areAnyBankedDiceInvalid; // N.B. can stick when no scoring groups
     canEndTurnAfterBlap = false;
 
     const noScoringGroups =
       !currentScoringGroups || Object.keys(currentScoringGroups).length === 0;
-    isRollDisabled = noScoringGroups && !isFirstOfTwoThrowsToDoubleIt;
+    isRollDisabled =
+      (noScoringGroups && !isFirstOfTwoThrowsToDoubleIt) ||
+      areAnyBankedDiceInvalid;
     isRollLoading = false;
   }
 

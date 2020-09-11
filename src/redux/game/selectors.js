@@ -316,6 +316,16 @@ export const selectBankedDice = (state) => {
   return bankedDice;
 };
 
+export const selectAreAnyBankedDiceInvalid = (state) => {
+  const bankedDice = selectBankedDice(state);
+  return (
+    bankedDice &&
+    Object.entries(bankedDice).some(
+      ([diceId, { scoringGroupId }]) => !scoringGroupId,
+    )
+  );
+};
+
 // alternate sorting methods
 const sortByGroupScores = (a, b) => {
   if ((a.score && !b.score) || a.score > b.score) {
