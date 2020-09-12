@@ -19,7 +19,6 @@ import {
   selectBankedDiceOrder,
 } from 'redux/game/selectors';
 import { selectIsSoundOn } from 'redux/settings/selectors';
-import ScoringGroup from './ScoringGroup';
 import Die from 'components/BankedDie';
 import GameLogic from 'services/GameLogic';
 import bankDice from 'media/sounds/bankDice.mp3';
@@ -144,9 +143,7 @@ const ScoringGroups = () => {
       newBankedDice,
     );
 
-    const { groups, remainingDice } = GameLogic.getHighestScoringGrouping(
-      bankedDiceValuesMap,
-    );
+    const { groups } = GameLogic.getHighestScoringGrouping(bankedDiceValuesMap);
 
     const updates = {};
 
