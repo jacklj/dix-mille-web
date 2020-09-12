@@ -53,7 +53,7 @@ const TurnScoreText = styled.div`
 const ScoringGroupsContainer = styled.div`
   flex-shrink: 0;
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
 `;
 
 const DiceContainer = styled.div`
@@ -183,7 +183,7 @@ const ScoringGroups = () => {
 
   const noBankedDice = !bankedDice || Object.keys(bankedDice).length === 0;
   const noPreviousScoringGroups =
-    !previousScoringGroups || Object.keys(previousScoringGroups).length === 0;
+    !previousScoringGroups || previousScoringGroups.length === 0;
   if (noBankedDice && noPreviousScoringGroups) {
     return null;
   }
@@ -214,16 +214,16 @@ const ScoringGroups = () => {
       )}
       <ScoringGroupsContainer>
         {previousScoringGroups &&
-          previousScoringGroups.map((sg) => {
-            const { dice, groupId } = sg;
+          previousScoringGroups.map(({ rollIndex, dice, order }) => {
             return (
-              <ScoringGroup
-                key={groupId}
-                groupId={groupId}
-                dice={dice}
-                isCurrent={false}
-                isMyTurn={isMyTurn}
-              />
+              <DiceContainer>
+                {order.map((diceId) => {
+                  const value = dice[diceId];
+                  return (
+                    <Die id={diceId} key={diceId} value={value} isInGroup />
+                  );
+                })}
+              </DiceContainer>
             );
           })}
       </ScoringGroupsContainer>

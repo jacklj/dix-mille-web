@@ -438,18 +438,29 @@ export const selectPreviousScoringGroups = (state) => {
     // TODO here, instead of just getting scoring groups and pushing them onto 'bankedDiceOfPreviousRolls', use the same
     // alg as in the current banked dice selector to sort the dice.
     // N.B. all banked dice in a previous roll will be scoring dice, as you can't roll again if
-    // any non-grouped dice are banked.
-    Object.keys(scoringGroups).forEach((groupId) => {
-      const scoringGroup = scoringGroups[groupId];
-      bankedDiceOfPreviousRolls.push({
-        rollIndex: i,
-        groupId,
-        ...scoringGroup,
+    // any non-grouped dice are banked. So we can just get the banked dice and put them in order of value,
+
+    // i. filter `roll` - only keep banked dice
+    const { bankedDice } = rollObj;
+    const bankedDiceWithValues = {};
+    Object.entries(roll)
+      .filter(([diceId, value]) => bankedDice[diceId])
+      .forEach(([diceId, value]) => {
+        bankedDiceWithValues[diceId] = value;
       });
+
+    const bankedDiceOrder = Object.entries(bankedDiceWithValues)
+      .sort((a, b) => Number(a[1]) - Number(b[1]))
+      .map(([diceId, value]) => diceId);
+
+    bankedDiceOfPreviousRolls.push({
+      rollIndex: i,
+      dice: bankedDiceWithValues,
+      order: bankedDiceOrder,
     });
 
     if (Object.keys(roll).length === 6) {
-      // we've hit a full roll - stop looking.
+      // we've hit a full roll - now we've selected its banked dice, stop looking.
       break;
     }
   }
