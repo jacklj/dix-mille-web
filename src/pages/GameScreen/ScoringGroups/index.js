@@ -26,16 +26,14 @@ import bankDice from 'media/sounds/bankDice.mp3';
 const Container = styled.div`
   flex: 1;
   flex-shrink: 0;
-
   align-self: stretch;
 
   // so content doesn't go under the notch on notched phones
-  padding-left: max(
+  margin-left: max(
     env(safe-area-inset-left),
-    32px
+    26px
   ); // min value of 32px, so dice dont scroll into button border radius curve and look weird
-  // padding-right: max(env(safe-area-inset-right), 32px); // no right padding, so the put back button can expand
-  // all the way to the edge of the screen
+  margin-right: max(env(safe-area-inset-right), 26px);
   // N.B. the max() function doesnt work on Firefox for Android.
 `;
 
@@ -61,11 +59,6 @@ const DiceContainer = styled.div`
   flex-direction: row;
   justify-content: flex-start;
   flex-wrap: wrap;
-
-  @media (max-width: 520px) {
-    max-width: 170px; // magic value because flexwrap: wrap adds extra container width to the
-    // right when children wrap
-  }
 `;
 
 const diceCastAnimationLength = 1000;
