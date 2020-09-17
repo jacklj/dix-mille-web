@@ -203,7 +203,9 @@ const RolledDice = () => {
     <>
       <Container>
         {dice &&
-          Object.entries(dice).map(([diceId, { value, isBanked }]) => (
+          Object.entries(
+            dice,
+          ).map(([diceId, { value, isBanked, position }]) => (
             <Die
               id={diceId}
               key={diceId}
@@ -211,6 +213,7 @@ const RolledDice = () => {
               onClick={() => bankDie(diceId)}
               rolling={isRollingCloud}
               banked={isBanked}
+              rotation={position?.rotation}
             />
           ))}
       </Container>

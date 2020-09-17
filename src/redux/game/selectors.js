@@ -280,7 +280,12 @@ export const selectAllCurrentDiceWithDetails = (state) => {
     return undefined;
   }
 
-  const { roll, bankedDice, diceToScoringGroups } = currentRollObj;
+  const {
+    roll,
+    bankedDice,
+    diceToScoringGroups,
+    dicePositions,
+  } = currentRollObj;
 
   if (!roll || Object.keys(roll) === 0) {
     return undefined;
@@ -291,10 +296,13 @@ export const selectAllCurrentDiceWithDetails = (state) => {
   Object.entries(roll).forEach(([diceId, value]) => {
     const isBanked = bankedDice?.[diceId];
     const scoringGroupId = diceToScoringGroups?.[diceId];
+    const position = dicePositions?.[diceId];
+
     dice[diceId] = {
       value,
       isBanked,
       scoringGroupId,
+      position,
     };
   });
 

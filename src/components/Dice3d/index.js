@@ -3,17 +3,7 @@ import styled, { css, keyframes } from 'styled-components';
 
 import Face from './Face';
 
-const spin = keyframes`
-  0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
-  16% { transform: rotateX(180deg) rotateY(180deg) rotateZ(0deg); }
-  33% { transform: rotateX(360deg) rotateY(90deg) rotateZ(180deg); }
-  50% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
-  66% { transform: rotateX(180deg) rotateY(360deg) rotateZ(270deg); }
-  83% { transform: rotateX(270deg) rotateY(180deg) rotateZ(180deg); }
-  100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
-`;
-
-const Dice = styled.div`
+const Container = styled.div`
   // N.B. CSS variables are passed to children
   --size: ${(props) => (props.isInBankedSection ? '50px' : '60px')};
 
@@ -32,12 +22,28 @@ const Dice = styled.div`
   margin-bottom: ${(props) =>
     props.isInBankedSection ? '5px' : 'calc(var(--size) * 0.6)'};
 
+  position: relative;
   &:nth-child(even) {
     top: ${(props) =>
       props.isInBankedSection ? '0' : 'calc(var(--size) * 0.5)'};
   }
 
-  position: relative;
+  transform: rotate(${(props) => props.rotation}deg);
+`;
+
+const spin = keyframes`
+  0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+  16% { transform: rotateX(180deg) rotateY(180deg) rotateZ(0deg); }
+  33% { transform: rotateX(360deg) rotateY(90deg) rotateZ(180deg); }
+  50% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
+  66% { transform: rotateX(180deg) rotateY(360deg) rotateZ(270deg); }
+  83% { transform: rotateX(270deg) rotateY(180deg) rotateZ(180deg); }
+  100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
+`;
+
+const Dice = styled.div`
+  width: calc(var(--size) * 1);
+  height: calc(var(--size) * 1);
 
   transform-style: preserve-3d; // N.B. affects children not the element itself
   transition: transform 1s ease-out;
@@ -45,6 +51,7 @@ const Dice = styled.div`
   transform-origin: calc(var(--size) / 2) calc(var(--size) / 2);
 
   transform: ${(props) => {
+      // rotate the 3D dice so that the correct side is face up.
       if (props.even) {
         switch (props.value) {
           case 1:
@@ -87,6 +94,7 @@ const Dice = styled.div`
         animation: ${spin} 1.3s infinite linear;
       `};
 
+  // Offset the dice rotation animations, so they don't rotate at exactly the same time in unison.
   &:nth-child(1) {
     animation-delay: 0s;
   }
@@ -117,6 +125,7 @@ const Dice3d = ({
   isInBankedSection,
   className,
   banked,
+  rotation,
 }) => {
   const previousRolling = useRef(rolling);
   const [even, setEven] = useState(true);
@@ -134,18 +143,20 @@ const Dice3d = ({
   }, [rolling, value]);
 
   return (
-    <Dice
-      key={id}
-      isInBankedSection={isInBankedSection}
-      className={className}
-      value={actualValue}
-      rolling={rolling}
-      even={even}
-      onClick={onClick}>
-      {faces.map((f) => (
-        <Face key={f} value={f} banked={banked} faceShown={actualValue} />
-      ))}
-    </Dice>
+    <Container rotation={rotation}>
+      <Dice
+        key={id}
+        isInBankedSection={isInBankedSection}
+        className={className}
+        value={actualValue}
+        rolling={rolling}
+        even={even}
+        onClick={onClick}>
+        {faces.map((f) => (
+          <Face key={f} value={f} banked={banked} faceShown={actualValue} />
+        ))}
+      </Dice>
+    </Container>
   );
 };
 
