@@ -15,8 +15,8 @@ const Container = styled.div`
   height: calc(var(--size) * 1);
 
   position: absolute;
-  top: ${(props) => props.positionY}%;
-  left: ${(props) => props.positionX}vw;
+  top: calc(${(props) => props.positionY}% - (var(--size) * 0.5));
+  left: calc(${(props) => props.positionX}vw - (var(--size) * 0.5));
 
   transform: rotate(${(props) => props.rotation}deg);
 `;
@@ -105,6 +105,16 @@ const Dice = styled.div`
   }
 `;
 
+const DebugText = styled.div`
+  position: absolute;
+  top: 20px;
+  left: 10px;
+  color: red;
+  transform: rotate(-${(props) => props.rotation}deg);
+  background-color: rgba(0, 0, 0, 0.3);
+  width: 5em;
+`;
+
 const faces = [1, 2, 3, 4, 5, 6];
 
 const Dice3d = ({
@@ -148,6 +158,7 @@ const Dice3d = ({
           <Face key={f} value={f} banked={banked} faceShown={actualValue} />
         ))}
       </Dice>
+      <DebugText rotation={rotation}>{`${positionX}, ${positionY}`}</DebugText>
     </Container>
   );
 };
