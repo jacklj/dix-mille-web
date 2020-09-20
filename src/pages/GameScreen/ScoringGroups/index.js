@@ -22,7 +22,7 @@ import { selectIsSoundOn } from 'redux/settings/selectors';
 import Die from 'components/BankedDie';
 import GameLogic from 'services/GameLogic';
 import bankDice from 'media/sounds/bankDice.mp3';
-import GameButtons from '../GameButtons';
+import GameButtons from './GameButtons';
 
 const Container = styled.div`
   flex: none;

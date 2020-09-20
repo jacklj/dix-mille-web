@@ -420,7 +420,7 @@ const GameButtons = () => {
 
   return (
     <>
-      <DiceCup
+      {/* <DiceCup
         onMouseDown={startShakingDice}
         onTouchStart={startShakingDice}
         onMouseUp={stopShakingDiceAndThrow}
@@ -428,7 +428,7 @@ const GameButtons = () => {
         onMouseLeave={stopShakingDiceAndThrow}
         disabled={isRollDisabled}
         loading={isRollLoading}
-      />
+      /> */}
       <Container>
         <CustomButton
           onMouseDown={startShakingDice}
