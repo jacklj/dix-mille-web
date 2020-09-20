@@ -9,7 +9,7 @@ import BetweenTurnMessages from './BetweenTurnMessages';
 
 import { selectCurrentRoll } from 'redux/game/selectors';
 
-const DiceZone = styled.div`
+const Container = styled.div`
   flex: 1;
   overflow: scroll;
 
@@ -17,31 +17,31 @@ const DiceZone = styled.div`
 
   display: flex;
   flex-direction: column;
-  justify-content: 'space-between';
+  justify-content: space-between;
+
   align-items: center;
 
   @media (min-width: 900px) {
     width: 850px;
     align-self: center;
   }
+
+  @media (orientation: landscape) {
+    flex-direction: row-reverse;
+  }
 `;
 
 const GameScreen = () => {
-  const currentRoll = useSelector(selectCurrentRoll);
-  const hasRolled = !!currentRoll;
+  // const currentRoll = useSelector(selectCurrentRoll);
+  // const hasRolled = !!currentRoll;
 
   return (
     <>
-      <DiceZone>
-        {hasRolled ? (
-          <>
-            <RolledDice />
-            <ScoringGroups />
-          </>
-        ) : (
-          <BetweenTurnMessages />
-        )}
-      </DiceZone>
+      <Container>
+        <RolledDice />
+        <BetweenTurnMessages />
+        <ScoringGroups />
+      </Container>
       <WinnerOverlay />
     </>
   );

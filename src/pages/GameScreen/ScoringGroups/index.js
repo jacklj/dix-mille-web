@@ -29,9 +29,17 @@ const Container = styled.div`
 
   align-self: stretch;
 
-  height: calc(
-    10vw * 6 + 3em
-  ); // TODO make this dynamic, based on dice size (has a max, also depends on both screen height and width)
+  @media (orientation: portrait) {
+    height: calc(
+      10vw * 6 + 3em
+    ); // TODO make this dynamic, based on dice size (has a max, also depends on both screen height and width)
+  }
+
+  @media (orientation: landscape) {
+    width: calc(
+      10vw * 6 + 3em
+    ); // TODO make this dynamic, based on dice size (has a max, also depends on both screen height and width)
+  }
 
   display: flex;
   flex-direction: column;

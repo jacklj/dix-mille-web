@@ -31,7 +31,13 @@ const Container = styled.div`
   min-height: 50px; // so when you've banked all dice, the banked dice don't go all the way
   // to the top of the page - there's still the suggestion of a dice rolling area.
 
-  width: 100%;
+  @media (orientation: landscape) {
+    align-self: stretch;
+  }
+
+  @media (orientation: portrait) {
+    width: 100%;
+  }
 
   position: relative;
 `;
