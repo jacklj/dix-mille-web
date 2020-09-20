@@ -27,16 +27,13 @@ import bankDice from 'media/sounds/bankDice.mp3';
 import Helpers from 'services/Helpers';
 
 const Container = styled.div`
-  flex-shrink: 0;
+  flex: 1;
   min-height: 50px; // so when you've banked all dice, the banked dice don't go all the way
   // to the top of the page - there's still the suggestion of a dice rolling area.
 
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin: 10px;
-  max-width: 700px;
+  width: 100%;
+
+  position: relative;
 `;
 
 const InfoText = styled.div`
@@ -214,6 +211,8 @@ const RolledDice = () => {
               rolling={isRollingCloud}
               banked={isBanked}
               rotation={position?.rotation}
+              positionX={position?.x}
+              positionY={position?.y}
             />
           ))}
       </Container>

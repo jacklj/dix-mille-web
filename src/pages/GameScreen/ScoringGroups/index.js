@@ -24,7 +24,7 @@ import GameLogic from 'services/GameLogic';
 import bankDice from 'media/sounds/bankDice.mp3';
 
 const Container = styled.div`
-  flex: 1;
+  flex: 0;
   flex-shrink: 0;
   align-self: stretch;
 

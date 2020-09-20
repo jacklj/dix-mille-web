@@ -13,20 +13,10 @@ const Container = styled.div`
 
   width: calc(var(--size) * 1);
   height: calc(var(--size) * 1);
-  flex-shrink: 0;
-  flex-grow: 0;
-  flex-basis: auto;
 
-  margin: ${(props) =>
-    props.isInBankedSection ? '2px' : 'calc(var(--size) * 0.7)'};
-  margin-bottom: ${(props) =>
-    props.isInBankedSection ? '5px' : 'calc(var(--size) * 0.6)'};
-
-  position: relative;
-  &:nth-child(even) {
-    top: ${(props) =>
-      props.isInBankedSection ? '0' : 'calc(var(--size) * 0.5)'};
-  }
+  position: absolute;
+  top: ${(props) => props.positionY}%;
+  left: ${(props) => props.positionX}vw;
 
   transform: rotate(${(props) => props.rotation}deg);
 `;
@@ -126,6 +116,8 @@ const Dice3d = ({
   className,
   banked,
   rotation,
+  positionX,
+  positionY,
 }) => {
   const previousRolling = useRef(rolling);
   const [even, setEven] = useState(true);
@@ -143,7 +135,7 @@ const Dice3d = ({
   }, [rolling, value]);
 
   return (
-    <Container rotation={rotation}>
+    <Container rotation={rotation} positionX={positionX} positionY={positionY}>
       <Dice
         key={id}
         isInBankedSection={isInBankedSection}
