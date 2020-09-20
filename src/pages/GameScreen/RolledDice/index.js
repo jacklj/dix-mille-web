@@ -37,7 +37,9 @@ const Container = styled.div`
 `;
 
 const InfoText = styled.div`
-  flex: none;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
 
   font-family: Limelight;
   font-size: 1.3em;
@@ -215,11 +217,11 @@ const RolledDice = () => {
               positionY={position?.y}
             />
           ))}
+        {showFirstOfTwoThrowsMessage ? (
+          <InfoText>You have to roll again!</InfoText>
+        ) : null}
+        {showBlapped ? <BlappedMessage /> : null}
       </Container>
-      {showFirstOfTwoThrowsMessage ? (
-        <InfoText>You have to roll again!</InfoText>
-      ) : null}
-      {showBlapped ? <BlappedMessage /> : null}
     </>
   );
 };

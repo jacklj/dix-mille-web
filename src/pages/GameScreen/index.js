@@ -6,7 +6,6 @@ import WinnerOverlay from './WinnerOverlay';
 import RolledDice from './RolledDice';
 import ScoringGroups from './ScoringGroups';
 import BetweenTurnMessages from './BetweenTurnMessages';
-import GameButtons from './GameButtons';
 
 import { selectCurrentRoll } from 'redux/game/selectors';
 
@@ -43,7 +42,6 @@ const GameScreen = () => {
           <BetweenTurnMessages />
         )}
       </DiceZone>
-      <GameButtons />
       <WinnerOverlay />
     </>
   );

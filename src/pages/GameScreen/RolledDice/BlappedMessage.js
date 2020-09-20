@@ -27,7 +27,9 @@ const bounce = keyframes`
 `;
 
 const BlapText = styled.div`
-  flex: none;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
 
   // margin-bottom: 30px;
 
@@ -84,15 +86,13 @@ const BlappedMessage = () => {
   });
 
   return (
-    <>
-      <BlapText>
-        <span>B</span>
-        <span>L</span>
-        <span>A</span>
-        <span>P</span>
-        <span>!</span>
-      </BlapText>
-    </>
+    <BlapText>
+      <span>B</span>
+      <span>L</span>
+      <span>A</span>
+      <span>P</span>
+      <span>!</span>
+    </BlapText>
   );
 };
 
