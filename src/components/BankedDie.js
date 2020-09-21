@@ -2,13 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Face = styled.div`
-  // N.B. CSS variables are passed to children!
-  --size: 50px;
-
-  @media (max-width: 768px), (orientation: landscape) {
-    --size: 30px;
-  }
-
   margin: 2px;
   margin-bottom: 5px;
 
@@ -23,25 +16,25 @@ const Face = styled.div`
 
   flex: 0 0 auto;
 
-  width: var(--size);
-  height: var(--size);
+  width: var(--banked-dice-size);
+  height: var(--banked-dice-size);
 
-  padding: calc(var(--size) * 0.17);
+  padding: calc(var(--banked-dice-size) * 0.17);
 
   background-color: #e7e7e7;
-  box-shadow: inset 0 calc(var(--size) * 0.1) white,
-    inset 0 calc(var(--size) * -0.1) #bbb,
-    inset calc(var(--size) * 0.1) 0 #d7d7d7,
-    inset calc(var(--size) * -0.1) 0 #d7d7d7;
+  box-shadow: inset 0 calc(var(--banked-dice-size) * 0.1) white,
+    inset 0 calc(var(--banked-dice-size) * -0.1) #bbb,
+    inset calc(var(--banked-dice-size) * 0.1) 0 #d7d7d7,
+    inset calc(var(--banked-dice-size) * -0.1) 0 #d7d7d7;
 
   ${(props) =>
     !props.isInGroup &&
     `
       background-color: #ee1a11;
-      box-shadow: inset 0 calc(var(--size) * 0.1) #f3544e,
-        inset 0 calc(var(--size) * -0.1) #ab120c,
-        inset calc(var(--size) * 0.1) 0 #d0160f,
-        inset calc(var(--size) * -0.1) 0 #d0160f;
+      box-shadow: inset 0 calc(var(--banked-dice-size) * 0.1) #f3544e,
+        inset 0 calc(var(--banked-dice-size) * -0.1) #ab120c,
+        inset calc(var(--banked-dice-size) * 0.1) 0 #d0160f,
+        inset calc(var(--banked-dice-size) * -0.1) 0 #d0160f;
   
     `}
 
@@ -59,13 +52,13 @@ const Pip = styled.span`
   align-self: center;
   justify-self: center;
 
-  width: calc(var(--size) * 0.25);
-  height: calc(var(--size) * 0.25);
+  width: calc(var(--banked-dice-size) * 0.25);
+  height: calc(var(--banked-dice-size) * 0.25);
 
   border-radius: 50%;
   background-color: #333;
-  box-shadow: inset 0 calc(var(--size) * 0.094) #111,
-    inset 0 calc(var(--size) * -0.094) #555;
+  box-shadow: inset 0 calc(var(--banked-dice-size) * 0.094) #111,
+    inset 0 calc(var(--banked-dice-size) * -0.094) #555;
 
   transform: rotate(
     -0.0000000001deg

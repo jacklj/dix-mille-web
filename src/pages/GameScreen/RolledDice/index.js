@@ -205,30 +205,26 @@ const RolledDice = () => {
   }, [isFailedFirstOfTwoThrowsToDoubleIt, playDisappointedSound]);
 
   return (
-    <>
-      <Container>
-        {dice &&
-          Object.entries(
-            dice,
-          ).map(([diceId, { value, isBanked, position }]) => (
-            <Die
-              id={diceId}
-              key={diceId}
-              value={value}
-              onClick={() => bankDie(diceId)}
-              rolling={isRollingCloud}
-              banked={isBanked}
-              rotation={position?.rotation}
-              positionX={position?.x}
-              positionY={position?.y}
-            />
-          ))}
-        {showFirstOfTwoThrowsMessage ? (
-          <InfoText>You have to roll again!</InfoText>
-        ) : null}
-        {showBlapped ? <BlappedMessage /> : null}
-      </Container>
-    </>
+    <Container>
+      {dice &&
+        Object.entries(dice).map(([diceId, { value, isBanked, position }]) => (
+          <Die
+            id={diceId}
+            key={diceId}
+            value={value}
+            onClick={() => bankDie(diceId)}
+            rolling={isRollingCloud}
+            banked={isBanked}
+            rotation={position?.rotation}
+            positionX={position?.x}
+            positionY={position?.y}
+          />
+        ))}
+      {showFirstOfTwoThrowsMessage ? (
+        <InfoText>You have to roll again!</InfoText>
+      ) : null}
+      {showBlapped ? <BlappedMessage /> : null}
+    </Container>
   );
 };
 

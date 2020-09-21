@@ -31,22 +31,16 @@ const Container = styled.div`
 
   @media (orientation: portrait) {
     height: calc(
-      10vw * 6 + 3em
+      var(--banked-dice-size) * 6 + 3em
     ); // TODO make this dynamic, based on dice size (has a max, also depends on both screen height and width)
   }
 
   @media (orientation: landscape) {
     width: calc(
-      10vw * 6 + 3em
+      var(--banked-dice-size) * 6 * 1.1
     ); // TODO make this dynamic, based on dice size (has a max, also depends on both screen height and width)
   }
 
-  display: flex;
-  flex-direction: column;
-`;
-
-const AllButButtonsContainer = styled.div`
-  flex: 1;
   // so content doesn't go under the notch on notched phones
   margin-left: max(
     env(safe-area-inset-left),
@@ -54,6 +48,9 @@ const AllButButtonsContainer = styled.div`
   ); // min value of 32px, so dice dont scroll into button border radius curve and look weird
   margin-right: max(env(safe-area-inset-right), 26px);
   // N.B. the max() function doesnt work on Firefox for Android.
+
+  display: flex;
+  flex-direction: column;
 `;
 
 const TurnScoreText = styled.div`
@@ -199,45 +196,43 @@ const ScoringGroups = () => {
 
   return (
     <Container>
-      <AllButButtonsContainer>
-        <TurnScoreText>
-          {typeof turnScoreSoFar === 'number' && showTurnScore
-            ? `Turn score: ${turnScoreSoFar}`
-            : null}
-        </TurnScoreText>
-        {bankedDiceOrder && (
-          <DiceContainer>
-            {bankedDiceOrder.map((diceId) => {
-              const { value, scoringGroupId } = bankedDice[diceId];
-              const isInScoringGroup = !!scoringGroupId;
-              return (
-                <Die
-                  id={diceId}
-                  key={diceId}
-                  value={value}
-                  isInGroup={isInScoringGroup}
-                  onClick={() => unbankDie(diceId)}
-                />
-              );
-            })}
-          </DiceContainer>
-        )}
-        <ScoringGroupsContainer>
-          {previousScoringGroups &&
-            previousScoringGroups.map(({ rollIndex, dice, order }) => {
-              return (
-                <DiceContainer>
-                  {order.map((diceId) => {
-                    const value = dice[diceId];
-                    return (
-                      <Die id={diceId} key={diceId} value={value} isInGroup />
-                    );
-                  })}
-                </DiceContainer>
-              );
-            })}
-        </ScoringGroupsContainer>
-      </AllButButtonsContainer>
+      <TurnScoreText>
+        {typeof turnScoreSoFar === 'number' && showTurnScore
+          ? `Turn score: ${turnScoreSoFar}`
+          : null}
+      </TurnScoreText>
+      {bankedDiceOrder && (
+        <DiceContainer>
+          {bankedDiceOrder.map((diceId) => {
+            const { value, scoringGroupId } = bankedDice[diceId];
+            const isInScoringGroup = !!scoringGroupId;
+            return (
+              <Die
+                id={diceId}
+                key={diceId}
+                value={value}
+                isInGroup={isInScoringGroup}
+                onClick={() => unbankDie(diceId)}
+              />
+            );
+          })}
+        </DiceContainer>
+      )}
+      <ScoringGroupsContainer>
+        {previousScoringGroups &&
+          previousScoringGroups.map(({ rollIndex, dice, order }) => {
+            return (
+              <DiceContainer>
+                {order.map((diceId) => {
+                  const value = dice[diceId];
+                  return (
+                    <Die id={diceId} key={diceId} value={value} isInGroup />
+                  );
+                })}
+              </DiceContainer>
+            );
+          })}
+      </ScoringGroupsContainer>
       <GameButtons />
     </Container>
   );

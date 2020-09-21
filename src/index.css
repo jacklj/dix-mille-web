@@ -12,6 +12,18 @@
   }
 }
 
+:root {
+  /* dice size variables */
+  /* N.B. CSS variables are passed to children! */
+  --banked-dice-size: 50px;
+}
+
+@media (max-width: 768px), (orientation: landscape) {
+  :root {
+    --banked-dice-size: 30px;
+  }
+}
+
 body {
   margin: 0;
   font-family: 'Playfair Display', serif;
