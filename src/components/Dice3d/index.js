@@ -11,11 +11,11 @@ const Container = styled.div`
 
   @media (orientation: portrait) {
     top: calc(
-      (((${(props) => props.positionY} / 100) * 0.8) + 0.1) *
+      (((${(props) => props.positionY} / 100) * 0.76) + 0.12) *
         var(--rolled-dice-area-height) - (var(--rolled-dice-size) * 0.5)
     );
     left: calc(
-      ${(props) => props.positionX}vw * 0.8 + 10vw -
+      ${(props) => props.positionX}vw * 0.76 + 12vw -
         (var(--rolled-dice-size) * 0.5)
     );
   }

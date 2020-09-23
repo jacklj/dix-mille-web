@@ -17,12 +17,15 @@
   --dice-cup-height: 30vh;
   /* N.B. keeps dice cup container in proportion to the dice cup svgs*/
   --dice-cup-width: calc(var(--dice-cup-height) * (130 / 179));
-
-  --banked-dice-size: max(32px, calc((100vw - var(--dice-cup-width)) / 7));
 }
 
 @media (orientation: portrait) {
   :root {
+    --banked-dice-size: min(
+      40px,
+      max(32px, calc((100vw - var(--dice-cup-width)) / 7))
+    );
+
     --scoring-groups-area-height: calc(var(--banked-dice-size) * 1.1 * 6 + 3em);
 
     --rolled-dice-area-height: calc(
