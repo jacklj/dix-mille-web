@@ -332,7 +332,7 @@ const ScoringGroups = () => {
         ) : null}
       </TurnScoreAndStickButtonContainer>
       {bankedDiceOrder && (
-        <DiceContainer>
+        <DiceContainer key="current-roll-banking-zone">
           {bankedDiceOrder.map((diceId) => {
             const { value, scoringGroupId } = bankedDice[diceId];
             const isInScoringGroup = !!scoringGroupId;
@@ -352,11 +352,12 @@ const ScoringGroups = () => {
         {previousScoringGroups &&
           previousScoringGroups.map(({ rollIndex, dice, order }) => {
             return (
-              <DiceContainer>
+              <DiceContainer
+                key={`previous-scoring-group-for-roll-${rollIndex}`}>
                 {order.map((diceId) => {
                   const value = dice[diceId];
                   return (
-                    <Die id={diceId} key={diceId} value={value} isInGroup />
+                    <Die key={diceId} id={diceId} value={value} isInGroup />
                   );
                 })}
               </DiceContainer>
