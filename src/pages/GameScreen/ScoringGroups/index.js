@@ -316,21 +316,21 @@ const ScoringGroups = () => {
   return (
     <Container>
       <TurnScoreAndStickButtonContainer>
-        <TurnScore>
-          <div></div>
-          {typeof turnScoreSoFar === 'number' && showTurnScore ? (
-            <>
+        {typeof turnScoreSoFar === 'number' && showTurnScore ? (
+          <>
+            <TurnScore>
               <TurnScoreHeader>Turn score</TurnScoreHeader>
               <TurnScoreValue>{turnScoreSoFar}</TurnScoreValue>
-            </>
-          ) : null}
-        </TurnScore>
-        <CustomButton
-          onClick={() => stick()}
-          disabled={!canStick}
-          loading={isSticking}>
-          Stick
-        </CustomButton>
+            </TurnScore>
+
+            <CustomButton
+              onClick={() => stick()}
+              disabled={!canStick}
+              loading={isSticking}>
+              Stick
+            </CustomButton>
+          </>
+        ) : null}
       </TurnScoreAndStickButtonContainer>
       {bankedDiceOrder && (
         <DiceContainer>
