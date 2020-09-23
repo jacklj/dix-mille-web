@@ -49,6 +49,8 @@ const Img = styled.img`
   left: 0;
 
   user-drag: none;
+  webkit-touch-callout: none;
+  -webkit-user-select: none;
 
   ${(props) =>
     props.isShaking &&
