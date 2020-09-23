@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
 import * as firebase from 'firebase/app';
 import 'firebase/functions';
 import { useSelector } from 'react-redux';
@@ -18,93 +17,13 @@ import {
   selectAreAnyBankedDiceInvalid,
 } from 'redux/game/selectors';
 
-import { Button } from 'components/forms';
 import { selectIsSoundOn } from 'redux/settings/selectors';
 import shakingDiceSound from 'media/sounds/shakingDice.mp3';
 import castingDiceSprites from 'media/sounds/castingDiceSprites.mp3';
 import spriteMap from 'media/sounds/castingDiceSpriteMap';
+import DumbDiceCup from './DiceCup';
 
-const padding = 3;
-
-const Colours = {
-  disabled: 'rgb(180, 176, 85)',
-  normal: '#ffdc73',
-  hover: '#ffbf00',
-  active: '#ffbf00',
-};
-
-const Container = styled.div`
-  flex: none;
-  align-self: stretch;
-
-  z-index: 0; // establish stacking context for pages (so Overlay is always on top)
-
-  display: flex;
-  justify-content: center;
-  align-items: stretch;
-
-  border: none;
-  border-top: 5px solid ${Colours.disabled};
-
-  border-radius: 50px;
-  padding: ${padding}px;
-
-  @media (min-width: 900px) {
-    width: 850px;
-    align-self: center;
-
-    border: 5px solid ${Colours.disabled};
-    margin-bottom: 10px;
-  }
-`;
-
-const CustomButton = styled(Button)`
-  flex: 1;
-
-  // override any margin or padding
-  margin-left: 0;
-  margin-right: 0;
-  margin-top: 0;
-  margin-bottom: 0;
-  padding-left: 0;
-  padding-right: 0;
-  padding-top: 0;
-  padding-bottom: 0;
-
-  // single border, rather than double
-  border-radius: 0;
-  border-width: 5px;
-  border-style: solid;
-
-  &:hover {
-    border-width: 5px;
-    border-style: solid;
-  }
-
-  &:active {
-    border-width: 5px;
-    border-style: solid;
-  }
-
-  // middle button margin (N.B. nth-child is 1-indexed)
-  &:nth-child(2) {
-    margin-left: ${padding}px;
-    margin-right: ${padding}px;
-  }
-
-  // edges of buttons component are rounded
-  &:first-child {
-    border-top-left-radius: 50px;
-    border-bottom-left-radius: 50px;
-  }
-
-  &:last-child {
-    border-top-right-radius: 50px;
-    border-bottom-right-radius: 50px;
-  }
-`;
-
-const GameButtons = () => {
+const SmartDiceCup = () => {
   const isMyTurn = useSelector(isItMyTurn);
   const gameId = useSelector(selectGameId);
   const currentRoundId = useSelector(selectCurrentRoundId);
@@ -121,10 +40,6 @@ const GameButtons = () => {
   );
 
   const [isHoldingDownRollButton, setIsHoldingDownRollButton] = useState(false);
-  const [
-    isFinishingTurnAfterBlapping,
-    setIsFinishingTurnAfterBlapping,
-  ] = useState(false);
 
   // play dice shaking sound
   const isSoundOn = useSelector(selectIsSoundOn);
@@ -306,55 +221,32 @@ const GameButtons = () => {
     await firebase.database().ref(path).set(false);
   };
 
-  const endTurnAfterBlap = async () => {
-    setIsFinishingTurnAfterBlapping(true);
-
-    if (!isMyTurn) {
-      alert("You can't end the turn - it's not your turn!");
-      setIsFinishingTurnAfterBlapping(false);
-      return;
-    }
-
-    try {
-      const res = await firebase.functions().httpsCallable('endTurnAfterBlap')({
-        gameId,
-      });
-      // console.log(res);
-    } catch (error) {
-      alert(error.message);
-    }
-
-    setIsFinishingTurnAfterBlapping(false);
-  };
-
   const hasRolled = !!currentRoll;
 
-  let canEndTurnAfterBlap, isRollDisabled, isRollLoading;
+  let isRollDisabled, isRollLoading;
 
   if (!isMyTurn) {
     // not your turn - all disabled.
-    canEndTurnAfterBlap = false;
+
     isRollDisabled = true;
     isRollLoading = false;
   } else if (isRolling) {
     // it's your turn and you're rolling
-    canEndTurnAfterBlap = false;
+
     isRollDisabled = false;
     isRollLoading = true;
   } else if (!hasRolled) {
     // it's your turn, you're not rolling, and you haven't rolled yet
-    canEndTurnAfterBlap = false;
+
     isRollDisabled = false;
     isRollLoading = false;
   } else if (isBlapped) {
     // it's your turn, you've rolled with a blap.
-    canEndTurnAfterBlap = !isFinishingTurnAfterBlapping;
+
     isRollDisabled = true;
     isRollLoading = false;
   } else {
     // it's your turn, you've rolled, and you havent blapped.
-    canEndTurnAfterBlap = false;
-
     const noScoringGroups =
       !currentScoringGroups || Object.keys(currentScoringGroups).length === 0;
     isRollDisabled =
@@ -364,19 +256,19 @@ const GameButtons = () => {
   }
 
   return (
-    <>
-      <Container>
-        {isBlapped && !isRollLoading ? (
-          <CustomButton
-            onClick={() => endTurnAfterBlap()}
-            disabled={!canEndTurnAfterBlap}
-            loading={isFinishingTurnAfterBlapping}>
-            Next
-          </CustomButton>
-        ) : null}
-      </Container>
-    </>
+    <DumbDiceCup
+      onMouseDown={startShakingDice}
+      onTouchStart={startShakingDice}
+      onMouseUp={stopShakingDiceAndThrow}
+      onTouchEnd={stopShakingDiceAndThrow}
+      onMouseLeave={stopShakingDiceAndThrow}
+      disabled={isRollDisabled}
+      // N.B. the `loading` prop won't cause the underlying <button> element to be disabled,
+      // becase we have defined onMouseUp and onMouseLeave event handlers. Disabing the button would
+      // prevent these from firing.
+      loading={isRollLoading}
+    />
   );
 };
 
-export default GameButtons;
+export default SmartDiceCup;

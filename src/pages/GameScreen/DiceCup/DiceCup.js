@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled, { css, keyframes } from 'styled-components';
 
 import diceCup from './diceCup.svg';
@@ -6,11 +6,13 @@ import diceCupTop from './diceCup-top.svg';
 
 const Container = styled.div`
   position: absolute;
-  right: 50px;
-  bottom: 70px;
+  right: 10px;
+  bottom: 0; // becase of rotation, it looks like there's bottom margin anyway
 
-  height: 179px;
-  width: 130px;
+  --cup-height: 30vh;
+
+  height: var(--cup-height); // TODO depends on screen size
+  width: calc(var(--cup-height) * (130 / 179));
 
   ${({ disabled }) =>
     disabled &&
@@ -43,7 +45,7 @@ const shake = keyframes`
 
 const Img = styled.img`
   transform: rotate(-40deg);
-  height: 179px;
+  height: var(--cup-height);
 
   position: absolute;
   top: 0;
@@ -74,11 +76,10 @@ const DiceCup = ({
   onMouseLeave,
   disabled,
   loading,
+  isShaking,
 }) => {
   // shaking animation, then quicker release shake animation.
   // then dice fly out!
-  const [isShaking, setIsShaking] = useState(false);
-  // do we need js, or can we do with css only?
 
   return (
     <Container
@@ -91,16 +92,8 @@ const DiceCup = ({
       isLoading={loading} // NB if prop name is just `loading`, get a React warning that native
       // html attributes aren't allowed to be boolean
     >
-      <BottomImg
-        src={diceCup}
-        isShaking={loading}
-        onClick={() => setIsShaking((x) => !x)}
-      />
-      <TopImg
-        src={diceCupTop}
-        isShaking={loading}
-        onClick={() => setIsShaking((x) => !x)}
-      />
+      <BottomImg src={diceCup} isShaking={loading} />
+      <TopImg src={diceCupTop} isShaking={loading} />
     </Container>
   );
 };

@@ -6,12 +6,13 @@ import WinnerOverlay from './WinnerOverlay';
 import RolledDice from './RolledDice';
 import ScoringGroups from './ScoringGroups';
 import BetweenTurnMessages from './BetweenTurnMessages';
-
+import DiceCup from './DiceCup';
 import { selectCurrentRoll } from 'redux/game/selectors';
 
 const Container = styled.div`
   flex: 1;
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
 
   z-index: 0; // establish stacking context for pages (so Overlay is always on top)
 
@@ -41,6 +42,7 @@ const GameScreen = () => {
         <RolledDice />
         <BetweenTurnMessages />
         <ScoringGroups />
+        <DiceCup />
       </Container>
       <WinnerOverlay />
     </>
