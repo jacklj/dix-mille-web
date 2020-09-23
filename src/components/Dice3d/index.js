@@ -11,10 +11,10 @@ const Container = styled.div`
 
   // original position is inside the DiceCup
   top: calc(
-    100vh - 60px - var(--rolled-dice-size) / 2 - var(--dice-cup-height) / 2
+    100vh - 60px - var(--rolled-dice-size) / 4 - var(--dice-cup-height) / 2
   );
   left: calc(
-    100vw - var(--rolled-dice-size) / 2 - var(--dice-cup-width) / 2 - 10px
+    100vw - var(--rolled-dice-size) / 4 - var(--dice-cup-width) / 2 - 10px
   );
 
   transform: scale3d(0.5, 0.5, 0.5);
