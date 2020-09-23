@@ -1,20 +1,23 @@
 import React, { useRef, useEffect, useState } from 'react';
-import styled, { css, keyframes } from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import Face from './Face';
 
 const Container = styled.div`
+  z-index: 1;
+
   width: calc(var(--rolled-dice-size) * 1);
   height: calc(var(--rolled-dice-size) * 1);
 
   position: absolute;
 
-  // original position is inside the DiceCup
+  // original position is inside the DiceCup, 2/3rds of the way up (we want the dice to appear
+  // to come from its opening)
   top: calc(
-    100vh - 60px - var(--rolled-dice-size) / 4 - var(--dice-cup-height) / 2
+    100vh - 60px - var(--rolled-dice-size) / 4 - var(--dice-cup-height) * 0.66
   );
   left: calc(
-    100vw - var(--rolled-dice-size) / 4 - var(--dice-cup-width) / 2 - 10px
+    100vw - var(--rolled-dice-size) / 4 - var(--dice-cup-width) * 0.66 - 10px
   );
 
   transform: scale3d(0.5, 0.5, 0.5);
