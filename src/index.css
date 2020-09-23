@@ -42,11 +42,11 @@
 
     --scoring-groups-area-width: calc(var(--banked-dice-size) * 1.5 * 6);
 
+    --rolled-dice-area-height: calc(100vh - 60px - var(--dice-cup-height));
+    --rolled-dice-area-width: calc(100vw - var(--scoring-groups-area-width));
+
     --rolled-dice-size: calc(
-      min(
-          calc(100vh - 60px - var(--dice-cup-height)),
-          calc(100vw - var(--scoring-groups-area-width))
-        ) / 6
+      min(var(--rolled-dice-area-height), var(--rolled-dice-area-width)) / 6
     );
   }
 }

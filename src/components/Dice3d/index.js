@@ -20,6 +20,20 @@ const Container = styled.div`
     );
   }
 
+  @media (orientation: landscape) {
+    top: calc(
+      (((${(props) => props.positionY} / 100) * 0.76) + 0.12) *
+        var(--rolled-dice-area-height) - (var(--rolled-dice-size) * 0.5)
+    );
+    left: calc(
+      var(--scoring-groups-area-width) +
+        (
+          ((${(props) => props.positionX} * 0.76 + 12) / 100) *
+            var(--rolled-dice-area-width)
+        ) - (var(--rolled-dice-size) * 0.5)
+    );
+  }
+
   transform: rotate(${(props) => props.rotation}deg);
 `;
 
