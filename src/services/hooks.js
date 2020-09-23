@@ -23,11 +23,16 @@ export const usePlaySoundOnMount = ({ soundFile, options, spriteName }) => {
     // on mount, play it
     if (!isSoundOn) {
       // dont just play it when sound is turned on!
+      const onend = options?.onend;
+      if (onend) {
+        onend && onend();
+      }
+
       return;
     }
 
     play(spriteName ? { id: spriteName } : undefined);
-  }, [isSoundOn, play, spriteName]);
+  }, [isSoundOn, options, play, spriteName]);
 
   useEffect(onMount, [play]);
   // N.B. must have playBlapSound in the dep list, or doesn't work.

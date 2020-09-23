@@ -25,7 +25,6 @@ import { selectIsSoundOn } from 'redux/settings/selectors';
 import Die from 'components/BankedDie';
 import GameLogic from 'services/GameLogic';
 import bankDice from 'media/sounds/bankDice.mp3';
-import GameButtons from './GameButtons';
 import { Button } from 'components/forms';
 import stickCashRegister from 'media/sounds/stickCashRegister.mp3';
 
@@ -364,7 +363,6 @@ const ScoringGroups = () => {
             );
           })}
       </ScoringGroupsContainer>
-      <GameButtons />
     </Container>
   );
 };

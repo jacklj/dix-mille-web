@@ -1,6 +1,10 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
+import * as firebase from 'firebase/app';
+import 'firebase/functions';
+import { useSelector } from 'react-redux';
 
+import { isItMyTurn, selectGameId } from 'redux/game/selectors';
 import blapSprites from 'media/sounds/blapSprites.mp3';
 import spriteMap from 'media/sounds/blapSpriteMap';
 import { usePlaySoundOnMount } from 'services/hooks';
@@ -70,18 +74,45 @@ const BlapText = styled.div`
   }
 `;
 
-const useSoundOptions = {
-  sprite: spriteMap,
-};
+const delay = (t) =>
+  new Promise((res, rej) => {
+    setTimeout(() => {
+      res();
+    }, t);
+  });
 
 const BlappedMessage = () => {
+  const isMyTurn = useSelector(isItMyTurn);
+  const gameId = useSelector(selectGameId);
+
   const blapNames = Object.keys(spriteMap);
   const randomIndex = Math.floor(Math.random() * blapNames.length);
   const randomSpriteName = blapNames[randomIndex];
 
+  const endTurnAfterBlap = async () => {
+    if (!isMyTurn) {
+      console.log("not my turn - don't end turn after blap");
+      return;
+    }
+
+    await delay(3000); // wait 3 seconds after end of blap sound end
+
+    try {
+      const res = await firebase.functions().httpsCallable('endTurnAfterBlap')({
+        gameId,
+      });
+      // console.log(res);
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
   usePlaySoundOnMount({
     soundFile: blapSprites,
-    options: useSoundOptions,
+    options: {
+      sprite: spriteMap,
+      onend: endTurnAfterBlap,
+    },
     spriteName: randomSpriteName,
   });
 
