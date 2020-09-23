@@ -88,8 +88,8 @@ const DiceCup = ({
       isLoading={loading} // NB if prop name is just `loading`, get a React warning that native
       // html attributes aren't allowed to be boolean
     >
-      <BottomImg src={diceCup} isShaking={loading} />
-      <TopImg src={diceCupTop} isShaking={loading} />
+      <BottomImg src={diceCup} isShaking={isShaking} />
+      <TopImg src={diceCupTop} isShaking={isShaking} />
     </Container>
   );
 };
