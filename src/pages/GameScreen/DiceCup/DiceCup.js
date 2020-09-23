@@ -10,11 +10,6 @@ const Container = styled.div`
   bottom: 0; // becase of rotation, it looks like there's bottom margin anyway
   height: var(--dice-cup-height);
   width: var(--dice-cup-width);
-
-  ${({ disabled }) =>
-    disabled &&
-    `
-  filter: grayscale(90%);`};
 `;
 
 const shake = keyframes`
@@ -40,6 +35,12 @@ const shake = keyframes`
 `;
 
 const Img = styled.img`
+  // N.B. 'filter' css attribute must be used on each image here, rather than on the container,
+  // as using it creates a stacking context -> this means that we can't use z-indexes to position
+  // the dice between the top and bottom images.
+  // https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context
+  ${({ disabled }) => disabled && `filter: grayscale(90%);`};
+
   transform: rotate(-30deg);
   height: var(--dice-cup-height);
 
@@ -83,13 +84,9 @@ const DiceCup = ({
       onTouchStart={onTouchStart}
       onMouseUp={onMouseUp}
       onTouchEnd={onTouchEnd}
-      onMouseLeave={onMouseLeave}
-      disabled={disabled}
-      isLoading={loading} // NB if prop name is just `loading`, get a React warning that native
-      // html attributes aren't allowed to be boolean
-    >
-      <BottomImg src={diceCup} isShaking={isShaking} />
-      <TopImg src={diceCupTop} isShaking={isShaking} />
+      onMouseLeave={onMouseLeave}>
+      <BottomImg src={diceCup} isShaking={isShaking} disabled={disabled} />
+      <TopImg src={diceCupTop} isShaking={isShaking} disabled={disabled} />
     </Container>
   );
 };

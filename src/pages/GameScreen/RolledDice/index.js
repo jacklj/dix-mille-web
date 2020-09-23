@@ -28,8 +28,6 @@ import Helpers from 'services/Helpers';
 
 const Container = styled.div`
   flex: 1;
-  min-height: 50px; // so when you've banked all dice, the banked dice don't go all the way
-  // to the top of the page - there's still the suggestion of a dice rolling area.
 
   @media (orientation: landscape) {
     align-self: stretch;
@@ -38,7 +36,6 @@ const Container = styled.div`
   @media (orientation: portrait) {
     width: 100%;
   }
-
 `;
 
 const InfoText = styled.div`
@@ -204,7 +201,13 @@ const RolledDice = () => {
   }, [isFailedFirstOfTwoThrowsToDoubleIt, playDisappointedSound]);
 
   return (
-    <Container>
+    <>
+      <Container>
+        {showFirstOfTwoThrowsMessage ? (
+          <InfoText>You have to roll again!</InfoText>
+        ) : null}
+        {showBlapped ? <BlappedMessage /> : null}
+      </Container>
       {dice &&
         Object.entries(dice).map(([diceId, { value, isBanked, position }]) => (
           <Die
@@ -219,11 +222,7 @@ const RolledDice = () => {
             positionY={position?.y}
           />
         ))}
-      {showFirstOfTwoThrowsMessage ? (
-        <InfoText>You have to roll again!</InfoText>
-      ) : null}
-      {showBlapped ? <BlappedMessage /> : null}
-    </Container>
+    </>
   );
 };
 
