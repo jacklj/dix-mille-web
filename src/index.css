@@ -19,7 +19,7 @@
   --dice-cup-width: calc(var(--dice-cup-height) * (130 / 179));
 
   --rolled-dice-size: 60px;
-  --banked-dice-size: calc((100vw - var(--dice-cup-width)) / 7);
+  --banked-dice-size: max(32px, calc((100vw - var(--dice-cup-width)) / 7));
 }
 
 @media (orientation: portrait) {
