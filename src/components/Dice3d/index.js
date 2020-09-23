@@ -8,8 +8,17 @@ const Container = styled.div`
   height: calc(var(--rolled-dice-size) * 1);
 
   position: absolute;
-  top: calc(${(props) => props.positionY}% - (var(--rolled-dice-size) * 0.5));
-  left: calc(${(props) => props.positionX}vw - (var(--rolled-dice-size) * 0.5));
+
+  @media (orientation: portrait) {
+    top: calc(
+      (((${(props) => props.positionY} / 100) * 0.8) + 0.1) *
+        var(--rolled-dice-area-height) - (var(--rolled-dice-size) * 0.5)
+    );
+    left: calc(
+      ${(props) => props.positionX}vw * 0.8 + 10vw -
+        (var(--rolled-dice-size) * 0.5)
+    );
+  }
 
   transform: rotate(${(props) => props.rotation}deg);
 `;

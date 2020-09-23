@@ -25,9 +25,12 @@
   :root {
     --scoring-groups-area-height: calc(var(--banked-dice-size) * 1.1 * 6 + 3em);
 
-    --rolled-dice-size: calc(
-      min(100vw, calc(100vh - 40px - var(--scoring-groups-area-height))) / 6
+    --rolled-dice-area-height: calc(
+      100vh - 40px - var(--scoring-groups-area-height)
     );
+    /* viewportHeight - headerHeight - scoringGroupsAreaHeight */
+
+    --rolled-dice-size: calc(min(100vw, var(--rolled-dice-area-height)) / 6);
   }
 }
 @media (orientation: landscape) {

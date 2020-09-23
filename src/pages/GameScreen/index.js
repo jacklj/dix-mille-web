@@ -30,6 +30,8 @@ const Container = styled.div`
   @media (orientation: landscape) {
     flex-direction: row-reverse;
   }
+
+  position: relative;
 `;
 
 const GameScreen = () => {
