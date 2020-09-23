@@ -14,8 +14,7 @@ const Container = styled.div`
   ${({ disabled }) =>
     disabled &&
     `
-  filter: grayscale(60%);
-  opacity: 0.7;`};
+  filter: grayscale(90%);`};
 `;
 
 const shake = keyframes`
