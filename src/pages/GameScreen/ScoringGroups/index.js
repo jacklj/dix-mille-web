@@ -12,55 +12,100 @@ import {
   selectCurrentTurnId,
   selectCurrentRoundId,
   selectCurrentRollNumber,
+  selectCurrentRoll,
   selectPreviousScoringGroups,
   selectTurnScoreSoFar,
   selectIsRolling,
   selectBankedDice,
   selectBankedDiceOrder,
+  selectAreAnyBankedDiceInvalid,
+  selectIsBlapped,
 } from 'redux/game/selectors';
 import { selectIsSoundOn } from 'redux/settings/selectors';
 import Die from 'components/BankedDie';
 import GameLogic from 'services/GameLogic';
 import bankDice from 'media/sounds/bankDice.mp3';
 import GameButtons from './GameButtons';
+import { Button } from 'components/forms';
+import stickCashRegister from 'media/sounds/stickCashRegister.mp3';
 
 const Container = styled.div`
   flex: none;
 
   align-self: stretch;
 
+  // so content doesn't go under the notch on notched phones
+  margin-left: max(env(safe-area-inset-left), 15px);
+  // N.B. the max() function doesnt work on Firefox for Android.
+
   @media (orientation: portrait) {
     height: calc(
       var(--banked-dice-size) * 6 + 3em
     ); // TODO make this dynamic, based on dice size (has a max, also depends on both screen height and width)
+
+    margin-right: max(env(safe-area-inset-right), 15px);
   }
 
   @media (orientation: landscape) {
     width: calc(
       var(--banked-dice-size) * 6 * 1.1
     ); // TODO make this dynamic, based on dice size (has a max, also depends on both screen height and width)
+    margin-right: 0; // in the landscape layout, the right side of ScoringGroups is in the middle of the page, so
+    // no "safe margin" necessary
   }
-
-  // so content doesn't go under the notch on notched phones
-  margin-left: max(
-    env(safe-area-inset-left),
-    26px
-  ); // min value of 32px, so dice dont scroll into button border radius curve and look weird
-  margin-right: max(env(safe-area-inset-right), 26px);
-  // N.B. the max() function doesnt work on Firefox for Android.
 
   display: flex;
   flex-direction: column;
 `;
 
-const TurnScoreText = styled.div`
+const TurnScoreAndStickButtonContainer = styled.div`
   flex-shrink: 0;
   text-align: left;
 
-  color: white;
+  margin-top: 10px;
   margin-bottom: 10px;
+  height: 2em; // so when the turn score is hidden, it doesn't shift the page
 
-  height: 1.4em; // so when the turn score is hidden, it doesn't shift the page
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: cewnter;
+`;
+
+const TurnScore = styled.div`
+  color: white;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const TurnScoreHeader = styled.div`
+  text-transform: uppercase;
+
+  font-size: 0.6em;
+  letter-spacing: 1px;
+`;
+
+const TurnScoreValue = styled.div`
+  font-size: 1em;
+  line-height: 0.8em;
+`;
+
+const CustomButton = styled(Button)`
+  // make button smaller
+  height: 1.9em;
+  font-size: 1.3em;
+
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 0;
+  padding-bottom: 0;
 `;
 
 const ScoringGroupsContainer = styled.div`
@@ -187,6 +232,80 @@ const ScoringGroups = () => {
     setIsUnbanking(false);
   };
 
+  // stick
+  const currentRoll = useSelector(selectCurrentRoll);
+  const hasRolled = !!currentRoll;
+  const areAnyBankedDiceInvalid = useSelector(selectAreAnyBankedDiceInvalid);
+  const isBlapped = useSelector(selectIsBlapped);
+  const [isSticking, setIsSticking] = useState(false);
+  const isRolling = isRollingCloud; // || isHoldingDownRollButton; // TODO needs to take into account isHoldingDownRollButton too
+
+  const [playStickSound] = useSound(stickCashRegister, {
+    soundEnabled: isSoundOn,
+  });
+  const stick = async () => {
+    setIsSticking(true);
+
+    if (!isMyTurn) {
+      alert("You can't stick - it's not your turn!");
+      setIsSticking(false);
+      return;
+    }
+
+    // if haven't rolled, can't stick.
+    // once you've rolled for the first time, you can stick at any time:
+    //   - immediately, with a score of 0 (could be useful in the case when you are very near to 10,000 so you
+    //     need a very specific score)
+    //   - after banking some scoring groups
+    //   - also immediately after any reroll (numberOfDice < 6 or numberOfDice === 6) if you don't want any possible
+    //     scoring groups
+    // Basically you can stick as soon as you've exposed yourself to the risk of blapping
+    const hasRolled = !!currentRoll;
+    if (!hasRolled) {
+      alert("You can't stick - you haven't done your first roll yet !");
+      setIsSticking(false);
+      return;
+    }
+
+    if (areAnyBankedDiceInvalid) {
+      alert("There are invalid banked dice - can't stick.");
+      setIsSticking(false);
+      return;
+    }
+
+    try {
+      const res = await firebase.functions().httpsCallable('stick')({
+        gameId,
+      });
+      playStickSound();
+      // console.log('Done stick: ', res);
+    } catch (error) {
+      alert(error.message);
+    }
+
+    setIsSticking(false);
+  };
+
+  let canStick;
+
+  if (!isMyTurn) {
+    // not your turn - all disabled.
+    canStick = false;
+  } else if (isRolling) {
+    // TODO needs to take into account isHoldingDownRollButton too
+    // it's your turn and you're rolling
+    canStick = false;
+  } else if (!hasRolled) {
+    // it's your turn, you're not rolling, and you haven't rolled yet
+    canStick = false;
+  } else if (isBlapped) {
+    // it's your turn, you've rolled with a blap.
+    canStick = false;
+  } else {
+    // it's your turn, you've rolled, and you havent blapped.
+    canStick = !isSticking && hasRolled && !areAnyBankedDiceInvalid; // N.B. can stick when no scoring groups
+  }
+
   // const noBankedDice = !bankedDice || Object.keys(bankedDice).length === 0;
   // const noPreviousScoringGroups =
   //   !previousScoringGroups || previousScoringGroups.length === 0;
@@ -196,11 +315,23 @@ const ScoringGroups = () => {
 
   return (
     <Container>
-      <TurnScoreText>
-        {typeof turnScoreSoFar === 'number' && showTurnScore
-          ? `Turn score: ${turnScoreSoFar}`
-          : null}
-      </TurnScoreText>
+      <TurnScoreAndStickButtonContainer>
+        <TurnScore>
+          <div></div>
+          {typeof turnScoreSoFar === 'number' && showTurnScore ? (
+            <>
+              <TurnScoreHeader>Turn score</TurnScoreHeader>
+              <TurnScoreValue>{turnScoreSoFar}</TurnScoreValue>
+            </>
+          ) : null}
+        </TurnScore>
+        <CustomButton
+          onClick={() => stick()}
+          disabled={!canStick}
+          loading={isSticking}>
+          Stick
+        </CustomButton>
+      </TurnScoreAndStickButtonContainer>
       {bankedDiceOrder && (
         <DiceContainer>
           {bankedDiceOrder.map((diceId) => {

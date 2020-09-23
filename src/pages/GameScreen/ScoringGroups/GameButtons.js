@@ -24,7 +24,6 @@ import { selectIsSoundOn } from 'redux/settings/selectors';
 import shakingDiceSound from 'media/sounds/shakingDice.mp3';
 import castingDiceSprites from 'media/sounds/castingDiceSprites.mp3';
 import spriteMap from 'media/sounds/castingDiceSpriteMap';
-import stickCashRegister from 'media/sounds/stickCashRegister.mp3';
 
 const padding = 3;
 
@@ -123,7 +122,6 @@ const GameButtons = () => {
   );
 
   const [isHoldingDownRollButton, setIsHoldingDownRollButton] = useState(false);
-  const [isSticking, setIsSticking] = useState(false);
   const [
     isFinishingTurnAfterBlapping,
     setIsFinishingTurnAfterBlapping,
@@ -214,10 +212,6 @@ const GameButtons = () => {
     isMyTurn,
     isRollingCloud,
   ]);
-
-  const [playStickSound] = useSound(stickCashRegister, {
-    soundEnabled: isSoundOn,
-  });
 
   const startShakingDice = async (event) => {
     // if both touch and mouse events are fired by the browser (ie onTouchStart and onMouseDown),
@@ -313,49 +307,6 @@ const GameButtons = () => {
     await firebase.database().ref(path).set(false);
   };
 
-  const stick = async () => {
-    setIsSticking(true);
-
-    if (!isMyTurn) {
-      alert("You can't stick - it's not your turn!");
-      setIsSticking(false);
-      return;
-    }
-
-    // if haven't rolled, can't stick.
-    // once you've rolled for the first time, you can stick at any time:
-    //   - immediately, with a score of 0 (could be useful in the case when you are very near to 10,000 so you
-    //     need a very specific score)
-    //   - after banking some scoring groups
-    //   - also immediately after any reroll (numberOfDice < 6 or numberOfDice === 6) if you don't want any possible
-    //     scoring groups
-    // Basically you can stick as soon as you've exposed yourself to the risk of blapping
-    const hasRolled = !!currentRoll;
-    if (!hasRolled) {
-      alert("You can't stick - you haven't done your first roll yet !");
-      setIsSticking(false);
-      return;
-    }
-
-    if (areAnyBankedDiceInvalid) {
-      alert("There are invalid banked dice - can't stick.");
-      setIsSticking(false);
-      return;
-    }
-
-    try {
-      const res = await firebase.functions().httpsCallable('stick')({
-        gameId,
-      });
-      playStickSound();
-      // console.log('Done stick: ', res);
-    } catch (error) {
-      alert(error.message);
-    }
-
-    setIsSticking(false);
-  };
-
   const endTurnAfterBlap = async () => {
     setIsFinishingTurnAfterBlapping(true);
 
@@ -379,35 +330,30 @@ const GameButtons = () => {
 
   const hasRolled = !!currentRoll;
 
-  let canStick, canEndTurnAfterBlap, isRollDisabled, isRollLoading;
+  let canEndTurnAfterBlap, isRollDisabled, isRollLoading;
 
   if (!isMyTurn) {
     // not your turn - all disabled.
-    canStick = false;
     canEndTurnAfterBlap = false;
     isRollDisabled = true;
     isRollLoading = false;
   } else if (isRolling) {
     // it's your turn and you're rolling
-    canStick = false;
     canEndTurnAfterBlap = false;
     isRollDisabled = false;
     isRollLoading = true;
   } else if (!hasRolled) {
     // it's your turn, you're not rolling, and you haven't rolled yet
-    canStick = false;
     canEndTurnAfterBlap = false;
     isRollDisabled = false;
     isRollLoading = false;
   } else if (isBlapped) {
     // it's your turn, you've rolled with a blap.
-    canStick = false;
     canEndTurnAfterBlap = !isFinishingTurnAfterBlapping;
     isRollDisabled = true;
     isRollLoading = false;
   } else {
     // it's your turn, you've rolled, and you havent blapped.
-    canStick = !isSticking && hasRolled && !areAnyBankedDiceInvalid; // N.B. can stick when no scoring groups
     canEndTurnAfterBlap = false;
 
     const noScoringGroups =
@@ -450,14 +396,7 @@ const GameButtons = () => {
             loading={isFinishingTurnAfterBlapping}>
             Next
           </CustomButton>
-        ) : (
-          <CustomButton
-            onClick={() => stick()}
-            disabled={!canStick}
-            loading={isSticking}>
-            Stick
-          </CustomButton>
-        )}
+        ) : null}
       </Container>
     </>
   );
