@@ -64,8 +64,7 @@ const TurnScoreAndStickButtonContainer = styled.div`
 
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  align-items: cewnter;
+  align-items: center;
 `;
 
 const TurnScore = styled.div`
@@ -75,6 +74,8 @@ const TurnScore = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  margin-right: 15px;
 `;
 
 const TurnScoreHeader = styled.div`
