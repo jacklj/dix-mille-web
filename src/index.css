@@ -13,14 +13,26 @@
 }
 
 :root {
-  /* dice size variables */
   /* N.B. CSS variables are passed to children! */
-  --banked-dice-size: 50px;
+  --dice-cup-height: 30vh;
+  /* N.B. keeps dice cup container in proportion to the dice cup svgs*/
+  --dice-cup-width: calc(var(--dice-cup-height) * (130 / 179));
+
+  --rolled-dice-size: 60px;
+  --banked-dice-size: calc((100vw - var(--dice-cup-width)) / 7);
 }
 
-@media (max-width: 768px), (orientation: landscape) {
+@media (orientation: portrait) {
   :root {
-    --banked-dice-size: 30px;
+    --scoring-groups-area-height: calc(var(--banked-dice-size) * 1.1 * 6 + 3em);
+  }
+}
+@media (orientation: landscape) {
+  :root {
+    --rolled-dice-size: 45px;
+    --banked-dice-size: calc((100vw / 2) / 10);
+
+    --scoring-groups-area-width: calc(var(--banked-dice-size) * 1.5 * 6);
   }
 }
 

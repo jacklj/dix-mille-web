@@ -4,19 +4,12 @@ import styled, { css, keyframes } from 'styled-components';
 import Face from './Face';
 
 const Container = styled.div`
-  // N.B. CSS variables are passed to children
-  --size: ${(props) => (props.isInBankedSection ? '50px' : '60px')};
-
-  @media (max-width: 768px), (orientation: landscape) {
-    --size: ${(props) => (props.isInBankedSection ? '30px' : '45px')};
-  }
-
-  width: calc(var(--size) * 1);
-  height: calc(var(--size) * 1);
+  width: calc(var(--rolled-dice-size) * 1);
+  height: calc(var(--rolled-dice-size) * 1);
 
   position: absolute;
-  top: calc(${(props) => props.positionY}% - (var(--size) * 0.5));
-  left: calc(${(props) => props.positionX}vw - (var(--size) * 0.5));
+  top: calc(${(props) => props.positionY}% - (var(--rolled-dice-size) * 0.5));
+  left: calc(${(props) => props.positionX}vw - (var(--rolled-dice-size) * 0.5));
 
   transform: rotate(${(props) => props.rotation}deg);
 `;
@@ -32,13 +25,14 @@ const spin = keyframes`
 `;
 
 const Dice = styled.div`
-  width: calc(var(--size) * 1);
-  height: calc(var(--size) * 1);
+  width: calc(var(--rolled-dice-size) * 1);
+  height: calc(var(--rolled-dice-size) * 1);
 
   transform-style: preserve-3d; // N.B. affects children not the element itself
   transition: transform 1s ease-out;
 
-  transform-origin: calc(var(--size) / 2) calc(var(--size) / 2);
+  transform-origin: calc(var(--rolled-dice-size) / 2)
+    calc(var(--rolled-dice-size) / 2);
 
   transform: ${(props) => {
       // rotate the 3D dice so that the correct side is face up.

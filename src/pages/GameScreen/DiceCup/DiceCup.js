@@ -8,11 +8,8 @@ const Container = styled.div`
   position: absolute;
   right: 10px;
   bottom: 0; // becase of rotation, it looks like there's bottom margin anyway
-
-  --cup-height: 30vh;
-
-  height: var(--cup-height); // TODO depends on screen size
-  width: calc(var(--cup-height) * (130 / 179));
+  height: var(--dice-cup-height);
+  width: var(--dice-cup-width);
 
   ${({ disabled }) =>
     disabled &&
@@ -23,29 +20,29 @@ const Container = styled.div`
 
 const shake = keyframes`
   0% { 
-    transform: rotate(-40deg); 
+    transform: rotate(-30deg); 
   } 
   
   20% { 
-    transform: rotate(-20deg); 
+    transform: rotate(-10deg); 
   } 
 
   40% { 
-    transform: rotate(-60deg); 
+    transform: rotate(-50deg); 
   } 
 
   80% { 
-    transform: rotate(-20deg); 
+    transform: rotate(-10deg); 
   } 
   
   100% { 
-    transform: rotate(-40deg); 
+    transform: rotate(-30deg); 
   } 
 `;
 
 const Img = styled.img`
-  transform: rotate(-40deg);
-  height: var(--cup-height);
+  transform: rotate(-30deg);
+  height: var(--dice-cup-height);
 
   position: absolute;
   top: 0;

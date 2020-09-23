@@ -4,16 +4,16 @@ import styled from 'styled-components';
 const Container = styled.div`
   flex: 0 0 auto;
 
-  width: var(--size);
-  height: var(--size);
+  width: var(--rolled-dice-size);
+  height: var(--rolled-dice-size);
 
-  padding: calc(var(--size) * 0.17);
+  padding: calc(var(--rolled-dice-size) * 0.17);
 
   background-color: #e7e7e7;
-  box-shadow: inset 0 calc(var(--size) * 0.1) white,
-    inset 0 calc(var(--size) * -0.1) #bbb,
-    inset calc(var(--size) * 0.1) 0 #d7d7d7,
-    inset calc(var(--size) * -0.1) 0 #d7d7d7;
+  box-shadow: inset 0 calc(var(--rolled-dice-size) * 0.1) white,
+    inset 0 calc(var(--rolled-dice-size) * -0.1) #bbb,
+    inset calc(var(--rolled-dice-size) * 0.1) 0 #d7d7d7,
+    inset calc(var(--rolled-dice-size) * -0.1) 0 #d7d7d7;
 
   border-radius: 10%;
 
@@ -38,30 +38,30 @@ const Container = styled.div`
 
   ${(props) =>
     props.value === 1 &&
-    `transform: rotate3d(0, 0, 0, 90deg) translateZ(calc(var(--size) * 0.7));`}
+    `transform: rotate3d(0, 0, 0, 90deg) translateZ(calc(var(--rolled-dice-size) * 0.7));`}
   ${(props) =>
     props.value === 2 &&
-    `transform: rotate3d(-1, 0, 0, 90deg) translateZ(calc(var(--size) * 0.7));`}
+    `transform: rotate3d(-1, 0, 0, 90deg) translateZ(calc(var(--rolled-dice-size) * 0.7));`}
   ${(
     props,
   ) =>
     props.value === 3 &&
-    `transform: rotate3d(0, 1, 0, 90deg) translateZ(calc(var(--size) * 0.7));`}
+    `transform: rotate3d(0, 1, 0, 90deg) translateZ(calc(var(--rolled-dice-size) * 0.7));`}
   ${(
     props,
   ) =>
     props.value === 4 &&
-    `transform: rotate3d(0, -1, 0, 90deg) translateZ(calc(var(--size) * 0.7));`}
+    `transform: rotate3d(0, -1, 0, 90deg) translateZ(calc(var(--rolled-dice-size) * 0.7));`}
   ${(
     props,
   ) =>
     props.value === 5 &&
-    `transform: rotate3d(1, 0, 0, 90deg) translateZ(calc(var(--size) * 0.7));`}
+    `transform: rotate3d(1, 0, 0, 90deg) translateZ(calc(var(--rolled-dice-size) * 0.7));`}
   ${(
     props,
   ) =>
     props.value === 6 &&
-    `transform: rotate3d(1, 0, 0, 180deg) translateZ(calc(var(--size) * 0.7));`}
+    `transform: rotate3d(1, 0, 0, 180deg) translateZ(calc(var(--rolled-dice-size) * 0.7));`}
 `;
 
 const Pip = styled.span`
@@ -69,14 +69,14 @@ const Pip = styled.span`
   align-self: center;
   justify-self: center;
 
-  width: calc(var(--size) * 0.25);
-  height: calc(var(--size) * 0.25);
+  width: calc(var(--rolled-dice-size) * 0.25);
+  height: calc(var(--rolled-dice-size) * 0.25);
 
   border-radius: 50%;
 
   background-color: #333;
-  box-shadow: inset 0 calc(var(--size) * 0.094) #111,
-    inset 0 calc(var(--size) * -0.094) #555;
+  box-shadow: inset 0 calc(var(--rolled-dice-size) * 0.094) #111,
+    inset 0 calc(var(--rolled-dice-size) * -0.094) #555;
 
   transform: rotate(
     -0.0000000001deg

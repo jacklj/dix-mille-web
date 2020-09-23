@@ -34,21 +34,18 @@ const Container = styled.div`
   align-self: stretch;
 
   // so content doesn't go under the notch on notched phones
-  margin-left: max(env(safe-area-inset-left), 15px);
   // N.B. the max() function doesnt work on Firefox for Android.
+  margin-left: max(env(safe-area-inset-left), 15px);
 
   @media (orientation: portrait) {
-    height: calc(
-      var(--banked-dice-size) * 6 + 3em
-    ); // TODO make this dynamic, based on dice size (has a max, also depends on both screen height and width)
+    height: var(--scoring-groups-area-height);
 
     margin-right: max(env(safe-area-inset-right), 15px);
   }
 
   @media (orientation: landscape) {
-    width: calc(
-      var(--banked-dice-size) * 6 * 1.1
-    ); // TODO make this dynamic, based on dice size (has a max, also depends on both screen height and width)
+    width: var(--scoring-groups-area-width);
+
     margin-right: 0; // in the landscape layout, the right side of ScoringGroups is in the middle of the page, so
     // no "safe margin" necessary
   }
