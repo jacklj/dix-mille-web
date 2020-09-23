@@ -18,21 +18,30 @@
   /* N.B. keeps dice cup container in proportion to the dice cup svgs*/
   --dice-cup-width: calc(var(--dice-cup-height) * (130 / 179));
 
-  --rolled-dice-size: 60px;
   --banked-dice-size: max(32px, calc((100vw - var(--dice-cup-width)) / 7));
 }
 
 @media (orientation: portrait) {
   :root {
     --scoring-groups-area-height: calc(var(--banked-dice-size) * 1.1 * 6 + 3em);
+
+    --rolled-dice-size: calc(
+      min(100vw, calc(100vh - 40px - var(--scoring-groups-area-height))) / 6
+    );
   }
 }
 @media (orientation: landscape) {
   :root {
-    --rolled-dice-size: 45px;
     --banked-dice-size: calc((100vw / 2) / 10);
 
     --scoring-groups-area-width: calc(var(--banked-dice-size) * 1.5 * 6);
+
+    --rolled-dice-size: calc(
+      min(
+          calc(100vh - 60px - var(--dice-cup-height)),
+          calc(100vw - var(--scoring-groups-area-width))
+        ) / 6
+    );
   }
 }
 
