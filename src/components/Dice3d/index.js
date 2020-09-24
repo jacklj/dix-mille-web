@@ -6,19 +6,21 @@ import Face from './Face';
 const Container = styled.div`
   z-index: 1;
 
-  width: calc(var(--rolled-dice-size) * 1);
-  height: calc(var(--rolled-dice-size) * 1);
+  width: var(--rolled-dice-size);
+  height: var(--rolled-dice-size);
 
   position: absolute;
 
   // original position is inside the DiceCup, 2/3rds of the way up (we want the dice to appear
   // to come from its opening)
-  top: calc(
-    100vh - 60px - var(--rolled-dice-size) / 4 - var(--dice-cup-height) * 0.66
-  );
-  left: calc(
+  --dice-position-inside-cup-x: calc(
     100vw - var(--rolled-dice-size) / 4 - var(--dice-cup-width) * 0.66 - 10px
   );
+  --dice-position-inside-cup-y: calc(
+    100vh - 60px - var(--rolled-dice-size) / 4 - var(--dice-cup-height) * 0.66
+  );
+  top: var(--dice-position-inside-cup-y);
+  left: var(--dice-position-inside-cup);
 
   transform: scale3d(0.5, 0.5, 0.5);
 
@@ -31,25 +33,23 @@ const Container = styled.div`
   ${(props) =>
     !props.rolling &&
     css`
-      transition: top 1s ease-out, left 1s ease-out, transform 1s ease-out; // dice casting position animation
-
       @media (orientation: portrait) {
-        top: calc(
+        --dice-final-position-y: calc(
           (((${(props) => props.positionY} / 100) * 0.76) + 0.12) *
             var(--rolled-dice-area-height) - (var(--rolled-dice-size) * 0.5)
         );
-        left: calc(
+        --dice-final-position-x: calc(
           ${(props) => props.positionX}vw * 0.76 + 12vw -
             (var(--rolled-dice-size) * 0.5)
         );
       }
 
       @media (orientation: landscape) {
-        top: calc(
+        --dice-final-position-y: calc(
           (((${(props) => props.positionY} / 100) * 0.76) + 0.12) *
             var(--rolled-dice-area-height) - (var(--rolled-dice-size) * 0.5)
         );
-        left: calc(
+        --dice-final-position-x: calc(
           var(--scoring-groups-area-width) +
             (
               ((${(props) => props.positionX} * 0.76 + 12) / 100) *
@@ -58,10 +58,21 @@ const Container = styled.div`
         );
       }
 
+      --dice-transform-x: calc(
+        var(--dice-final-position-x) - var(--dice-position-inside-cup-x)
+      );
+      --dice-transform-y: calc(
+        var(--dice-final-position-y) - var(--dice-position-inside-cup-y)
+      );
+
       // also put the (non-animated) overall rotation in here, so that when the dice is rolling,
       // the rotation is 0, and so the bunch of dice "inside" the dicecup take up less space and
       // are less likely to poke out from underneath it
-      transform: rotate(${(props) => props.rotation}deg) scale3d(1, 1, 1);
+      // N.B. transforms are performed in right-to-left order.
+      transform: translate(var(--dice-transform-x), var(--dice-transform-y))
+        scale3d(1, 1, 1) rotate(${(props) => props.rotation}deg);
+
+      transition: transform 1s ease-out; // dice casting position animation
 
       opacity: 1;
     `}
@@ -122,15 +133,15 @@ const Dice = styled.div`
   }};
 `;
 
-// const DebugText = styled.div`
-//   position: absolute;
-//   top: 20px;
-//   left: 10px;
-//   color: red;
-//   transform: rotate(-${(props) => props.rotation}deg);
-//   background-color: rgba(0, 0, 0, 0.3);
-//   width: 5em;
-// `;
+const DebugText = styled.div`
+  position: absolute;
+  top: 20px;
+  left: 10px;
+  color: red;
+  transform: rotate(-${(props) => props.rotation}deg);
+  background-color: rgba(0, 0, 0, 0.3);
+  width: 5em;
+`;
 
 const faces = [1, 2, 3, 4, 5, 6];
 
@@ -179,7 +190,7 @@ const Dice3d = ({
           <Face key={f} value={f} banked={banked} faceShown={actualValue} />
         ))}
       </Dice>
-      {/* <DebugText rotation={rotation}>{`${positionX}, ${positionY}`}</DebugText> */}
+      <DebugText rotation={rotation}>{`${positionX}, ${positionY}`}</DebugText>
     </Container>
   );
 };
