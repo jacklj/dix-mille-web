@@ -262,6 +262,7 @@ const SmartDiceCup = () => {
       onMouseUp={stopShakingDiceAndThrow}
       onTouchEnd={stopShakingDiceAndThrow}
       onMouseLeave={stopShakingDiceAndThrow}
+      // onClick={() => {}}
       disabled={isRollDisabled}
       // N.B. the `loading` prop won't cause the underlying <button> element to be disabled,
       // becase we have defined onMouseUp and onMouseLeave event handlers. Disabing the button would
