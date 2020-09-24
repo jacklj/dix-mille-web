@@ -19,10 +19,17 @@ const Container = styled.div`
   --dice-position-inside-cup-y: calc(
     100vh - 60px - var(--rolled-dice-size) / 4 - var(--dice-cup-height) * 0.66
   );
-  top: var(--dice-position-inside-cup-y);
-  left: var(--dice-position-inside-cup);
+  top: 0;
+  left: 0;
 
-  transform: scale3d(0.5, 0.5, 0.5);
+  // top: var(--dice-position-inside-cup-y);
+  // left: var(--dice-position-inside-cup-x);
+
+  transform: translate(
+      var(--dice-position-inside-cup-x),
+      var(--dice-position-inside-cup-y)
+    )
+    scale3d(0.5, 0.5, 0.5);
 
   transition: none; // only animate when going from rolling -> not rolling, don't want to animate
   // not rolling -> rolling
@@ -46,7 +53,7 @@ const Container = styled.div`
 
       @media (orientation: landscape) {
         --dice-final-position-y: calc(
-          (((${(props) => props.positionY} / 100) * 0.76) + 0.12) *
+          ((${(props) => props.positionY} * 0.76 + 0.12) / 100) *
             var(--rolled-dice-area-height) - (var(--rolled-dice-size) * 0.5)
         );
         --dice-final-position-x: calc(
@@ -58,12 +65,9 @@ const Container = styled.div`
         );
       }
 
-      --dice-transform-x: calc(
-        var(--dice-final-position-x) - var(--dice-position-inside-cup-x)
-      );
-      --dice-transform-y: calc(
-        var(--dice-final-position-y) - var(--dice-position-inside-cup-y)
-      );
+      --dice-transform-x: var(--dice-final-position-x);
+
+      --dice-transform-y: var(--dice-final-position-y);
 
       // also put the (non-animated) overall rotation in here, so that when the dice is rolling,
       // the rotation is 0, and so the bunch of dice "inside" the dicecup take up less space and
@@ -133,15 +137,15 @@ const Dice = styled.div`
   }};
 `;
 
-const DebugText = styled.div`
-  position: absolute;
-  top: 20px;
-  left: 10px;
-  color: red;
-  transform: rotate(-${(props) => props.rotation}deg);
-  background-color: rgba(0, 0, 0, 0.3);
-  width: 5em;
-`;
+// const DebugText = styled.div`
+//   position: absolute;
+//   top: 20px;
+//   left: 10px;
+//   color: red;
+//   transform: rotate(-${(props) => props.rotation}deg);
+//   background-color: rgba(0, 0, 0, 0.3);
+//   width: 5em;
+// `;
 
 const faces = [1, 2, 3, 4, 5, 6];
 
@@ -190,7 +194,7 @@ const Dice3d = ({
           <Face key={f} value={f} banked={banked} faceShown={actualValue} />
         ))}
       </Dice>
-      <DebugText rotation={rotation}>{`${positionX}, ${positionY}`}</DebugText>
+      {/* <DebugText rotation={rotation}>{`${positionX}, ${positionY}`}</DebugText> */}
     </Container>
   );
 };
