@@ -330,16 +330,16 @@ export const selectAreAnyBankedDiceInvalid = (state) => {
 };
 
 // alternate sorting methods
-const sortByGroupScores = (a, b) => {
-  if ((a.score && !b.score) || a.score > b.score) {
-    return -1;
-  } else if ((!a.score && b.score) || a.score < b.score) {
-    return 1;
-  } else {
-    // perhaps sort by scoring group id
-    return 0;
-  }
-};
+// const sortByGroupScores = (a, b) => {
+//   if ((a.score && !b.score) || a.score > b.score) {
+//     return -1;
+//   } else if ((!a.score && b.score) || a.score < b.score) {
+//     return 1;
+//   } else {
+//     // perhaps sort by scoring group id
+//     return 0;
+//   }
+// };
 
 const sortByScoringOrNotThenDiceValues = (a, b) => {
   if (a.scoringGroupId && !b.scoringGroupId) {

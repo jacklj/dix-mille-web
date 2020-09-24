@@ -98,10 +98,9 @@ const BlappedMessage = () => {
     await delay(3000); // wait 3 seconds after end of blap sound end
 
     try {
-      const res = await firebase.functions().httpsCallable('endTurnAfterBlap')({
+      await firebase.functions().httpsCallable('endTurnAfterBlap')({
         gameId,
       });
-      // console.log(res);
     } catch (error) {
       alert(error.message);
     }

@@ -122,15 +122,15 @@ const Dice = styled.div`
   }};
 `;
 
-const DebugText = styled.div`
-  position: absolute;
-  top: 20px;
-  left: 10px;
-  color: red;
-  transform: rotate(-${(props) => props.rotation}deg);
-  background-color: rgba(0, 0, 0, 0.3);
-  width: 5em;
-`;
+// const DebugText = styled.div`
+//   position: absolute;
+//   top: 20px;
+//   left: 10px;
+//   color: red;
+//   transform: rotate(-${(props) => props.rotation}deg);
+//   background-color: rgba(0, 0, 0, 0.3);
+//   width: 5em;
+// `;
 
 const faces = [1, 2, 3, 4, 5, 6];
 

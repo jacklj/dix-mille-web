@@ -108,7 +108,7 @@ const RolledDice = () => {
       [diceId]: dice[diceId].value,
     };
 
-    const { groups, remainingDice } = GameLogic.getHighestScoringGrouping(
+    const { groups } = GameLogic.getHighestScoringGrouping(
       existingBankedDicePlusNewOne,
     );
 

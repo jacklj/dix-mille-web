@@ -271,11 +271,10 @@ const ScoringGroups = () => {
     }
 
     try {
-      const res = await firebase.functions().httpsCallable('stick')({
+      await firebase.functions().httpsCallable('stick')({
         gameId,
       });
       playStickSound();
-      // console.log('Done stick: ', res);
     } catch (error) {
       alert(error.message);
     }

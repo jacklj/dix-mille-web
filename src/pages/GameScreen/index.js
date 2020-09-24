@@ -1,13 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
 
 import WinnerOverlay from './WinnerOverlay';
 import RolledDice from './RolledDice';
 import ScoringGroups from './ScoringGroups';
 import BetweenTurnMessages from './BetweenTurnMessages';
 import DiceCup from './DiceCup';
-import { selectCurrentRoll } from 'redux/game/selectors';
 
 const Container = styled.div`
   flex: 1;
