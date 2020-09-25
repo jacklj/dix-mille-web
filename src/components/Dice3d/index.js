@@ -3,6 +3,63 @@ import styled, { css } from 'styled-components';
 
 import Face from './Face';
 
+const getDice3dRotationCss = ({ even, value }) => {
+  // rotate (with animation) the 3D dice so that the correct side is face up.
+  // N.B. `even` is a binary flag that flips on each dice roll (this is why we aren't using
+  // the `rolling` variable, instead we use `even` as a stateful proxy), ensuring that
+  // even if two consecutive rolls give the same value on a dice, it still
+  // rotates (in 3D)
+  let rotationCss;
+  if (even) {
+    switch (value) {
+      case 1:
+        rotationCss = `rotateX(360deg) rotateY(720deg) rotateZ(360deg)`;
+        break;
+      case 2:
+        rotationCss = `rotateX(450deg) rotateY(720deg) rotateZ(360deg)`;
+        break;
+      case 3:
+        rotationCss = `rotateX(360deg) rotateY(630deg) rotateZ(360deg)`;
+        break;
+      case 4:
+        rotationCss = `rotateX(360deg) rotateY(810deg) rotateZ(360deg)`;
+        break;
+      case 5:
+        rotationCss = `rotateX(270deg) rotateY(720deg) rotateZ(360deg)`;
+        break;
+      case 6:
+        rotationCss = `rotateX(360deg) rotateY(900deg) rotateZ(360deg)`;
+        break;
+      default:
+        rotationCss = '';
+    }
+  } else {
+    switch (value) {
+      case 1:
+        rotationCss = `rotateX(-360deg) rotateY(-720deg) rotateZ(-360deg)`;
+        break;
+      case 2:
+        rotationCss = `rotateX(-270deg) rotateY(-720deg) rotateZ(-360deg)`;
+        break;
+      case 3:
+        rotationCss = `rotateX(-360deg) rotateY(-810deg) rotateZ(-360deg)`;
+        break;
+      case 4:
+        rotationCss = `rotateX(-360deg) rotateY(-630deg) rotateZ(-360deg)`;
+        break;
+      case 5:
+        rotationCss = `rotateX(-450deg) rotateY(-720deg) rotateZ(-360deg)`;
+        break;
+      case 6:
+        rotationCss = `rotateX(-360deg) rotateY(-900deg) rotateZ(-360deg)`;
+        break;
+      default:
+        rotationCss = '';
+    }
+  }
+  return rotationCss;
+};
+
 const Container = styled.div`
   z-index: 1;
 
@@ -93,48 +150,7 @@ const Dice = styled.div`
   transform-origin: calc(var(--rolled-dice-size) / 2)
     calc(var(--rolled-dice-size) / 2);
 
-  transform: ${(props) => {
-    // rotate (with animation) the 3D dice so that the correct side is face up.
-    // N.B. `even` is a binary flag that flips on each dice roll (this is why we aren't using
-    // the `rolling` variable, instead we use `even` as a stateful proxy), ensuring that
-    // even if two consecutive rolls give the same value on a dice, it still
-    // rotates (in 3D)
-    if (props.even) {
-      switch (props.value) {
-        case 1:
-          return `rotateX(360deg) rotateY(720deg) rotateZ(360deg);`;
-        case 2:
-          return `rotateX(450deg) rotateY(720deg) rotateZ(360deg);`;
-        case 3:
-          return `rotateX(360deg) rotateY(630deg) rotateZ(360deg);`;
-        case 4:
-          return `rotateX(360deg) rotateY(810deg) rotateZ(360deg);`;
-        case 5:
-          return `rotateX(270deg) rotateY(720deg) rotateZ(360deg);`;
-        case 6:
-          return `rotateX(360deg) rotateY(900deg) rotateZ(360deg);`;
-        default:
-          return 'none;';
-      }
-    } else {
-      switch (props.value) {
-        case 1:
-          return `rotateX(-360deg) rotateY(-720deg) rotateZ(-360deg);`;
-        case 2:
-          return `rotateX(-270deg) rotateY(-720deg) rotateZ(-360deg);`;
-        case 3:
-          return `rotateX(-360deg) rotateY(-810deg) rotateZ(-360deg);`;
-        case 4:
-          return `rotateX(-360deg) rotateY(-630deg) rotateZ(-360deg);`;
-        case 5:
-          return `rotateX(-450deg) rotateY(-720deg) rotateZ(-360deg);`;
-        case 6:
-          return `rotateX(-360deg) rotateY(-900deg) rotateZ(-360deg);`;
-        default:
-          return 'none;';
-      }
-    }
-  }};
+  transform: ${(props) => getDice3dRotationCss(props)};
 `;
 
 // const DebugText = styled.div`
