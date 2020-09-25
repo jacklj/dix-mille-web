@@ -151,6 +151,8 @@ const Dice = styled.div`
     calc(var(--rolled-dice-size) / 2);
 
   transform: ${(props) => getDice3dRotationCss(props)};
+
+  -webkit-tap-highlight-color: transparent; // remove grey box that appears onTap on iOS
 `;
 
 // const DebugText = styled.div`
