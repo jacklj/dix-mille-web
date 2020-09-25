@@ -61,12 +61,21 @@ const getDice3dRotationCss = ({ even, value }) => {
 };
 
 const Container = styled.div`
+  // width: var(--rolled-dice-size);
+  // height: var(--rolled-dice-size);
+
+  ${(props) =>
+    !props.rolling &&
+    css`
+      transform: rotate(${(props) => props.rotation}deg);
+    `}
+`;
+
+const Dice = styled.div`
   z-index: 1;
 
   width: var(--rolled-dice-size);
   height: var(--rolled-dice-size);
-
-  position: absolute;
 
   // original position is inside the DiceCup, 2/3rds of the way up (we want the dice to appear
   // to come from its opening)
@@ -79,6 +88,7 @@ const Container = styled.div`
 
   // use transform, rather than changing top and left, for positioning the dice - it makes the
   // animations much more performant (otherwise it's really janky on mobile)
+  position: absolute;
   top: 0;
   left: 0;
 
@@ -93,6 +103,10 @@ const Container = styled.div`
 
   // invisible when inside the DiceCup
   opacity: 0;
+
+  transform-style: preserve-3d; // N.B. affects children not the element itself
+  transform-origin: calc(var(--rolled-dice-size) / 2)
+    calc(var(--rolled-dice-size) / 2);
 
   ${(props) =>
     !props.rolling &&
@@ -131,26 +145,12 @@ const Container = styled.div`
       // are less likely to poke out from underneath it
       // N.B. transforms are performed in right-to-left order.
       transform: translate(var(--dice-transform-x), var(--dice-transform-y))
-        scale3d(1, 1, 1) rotate(${(props) => props.rotation}deg);
+        scale3d(1, 1, 1) ${(props) => getDice3dRotationCss(props)};
 
       transition: transform 1s ease-out; // dice casting position animation
 
       opacity: 1;
     `}
-`;
-
-const Dice = styled.div`
-  width: var(--rolled-dice-size);
-  height: var(--rolled-dice-size);
-
-  transform-style: preserve-3d; // N.B. affects children not the element itself
-
-  transition: transform 1s ease-out; // dice casting 3D rotation animation
-
-  transform-origin: calc(var(--rolled-dice-size) / 2)
-    calc(var(--rolled-dice-size) / 2);
-
-  transform: ${(props) => getDice3dRotationCss(props)};
 `;
 
 // const DebugText = styled.div`
@@ -193,25 +193,22 @@ const Dice3d = ({
   }, [rolling, value]);
 
   return (
-    <Container
+    <Dice
+      key={id}
+      isInBankedSection={isInBankedSection}
+      className={className}
+      value={actualValue}
+      rolling={rolling}
       rotation={rotation}
       positionX={positionX}
       positionY={positionY}
-      rolling={rolling}>
-      <Dice
-        key={id}
-        isInBankedSection={isInBankedSection}
-        className={className}
-        value={actualValue}
-        rolling={rolling}
-        even={even}
-        onClick={onClick}>
-        {faces.map((f) => (
-          <Face key={f} value={f} banked={banked} faceShown={actualValue} />
-        ))}
-      </Dice>
+      even={even}
+      onClick={onClick}>
+      {faces.map((f) => (
+        <Face key={f} value={f} banked={banked} faceShown={actualValue} />
+      ))}
       {/* <DebugText rotation={rotation}>{`${positionX}, ${positionY}`}</DebugText> */}
-    </Container>
+    </Dice>
   );
 };
 
