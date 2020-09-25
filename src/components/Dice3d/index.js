@@ -19,11 +19,11 @@ const Container = styled.div`
   --dice-position-inside-cup-y: calc(
     100vh - 60px - var(--rolled-dice-size) / 4 - var(--dice-cup-height) * 0.66
   );
+
+  // use transform, rather than changing top and left, for positioning the dice - it makes the
+  // animations much more performant (otherwise it's really janky on mobile)
   top: 0;
   left: 0;
-
-  // top: var(--dice-position-inside-cup-y);
-  // left: var(--dice-position-inside-cup-x);
 
   transform: translate(
       var(--dice-position-inside-cup-x),
@@ -83,8 +83,8 @@ const Container = styled.div`
 `;
 
 const Dice = styled.div`
-  width: calc(var(--rolled-dice-size) * 1);
-  height: calc(var(--rolled-dice-size) * 1);
+  width: var(--rolled-dice-size);
+  height: var(--rolled-dice-size);
 
   transform-style: preserve-3d; // N.B. affects children not the element itself
 
