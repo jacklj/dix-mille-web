@@ -133,7 +133,7 @@ const ScoringGroups = () => {
   const turnScoreSoFar = useSelector(selectTurnScoreSoFar);
 
   const currentRollNumber = useSelector(selectCurrentRollNumber);
-  const isRollingCloud = useSelector(selectIsRolling);
+  const isRolling = useSelector(selectIsRolling);
 
   const [showTurnScore, setShowTurnScore] = useState(false);
 
@@ -142,19 +142,19 @@ const ScoringGroups = () => {
     soundEnabled: isSoundOn,
   });
 
-  const previousIsRollingCloud = useRef(isRollingCloud);
+  const previousIsRolling = useRef(isRolling);
 
   useEffect(() => {
-    if (isRollingCloud) {
+    if (isRolling) {
       setShowTurnScore(false);
-    } else if (previousIsRollingCloud.current && !isRollingCloud) {
+    } else if (previousIsRolling.current && !isRolling) {
       setTimeout(() => setShowTurnScore(true), diceCastAnimationLength);
     } else {
       setShowTurnScore(true);
     }
 
-    previousIsRollingCloud.current = isRollingCloud;
-  }, [isRollingCloud]);
+    previousIsRolling.current = isRolling;
+  }, [isRolling]);
 
   const [isUnbanking, setIsUnbanking] = useState(false);
 
@@ -235,7 +235,6 @@ const ScoringGroups = () => {
   const areAnyBankedDiceInvalid = useSelector(selectAreAnyBankedDiceInvalid);
   const isBlapped = useSelector(selectIsBlapped);
   const [isSticking, setIsSticking] = useState(false);
-  const isRolling = isRollingCloud; // || isHoldingDownRollButton; // TODO needs to take into account isHoldingDownRollButton too
 
   const [playStickSound] = useSound(stickCashRegister, {
     soundEnabled: isSoundOn,

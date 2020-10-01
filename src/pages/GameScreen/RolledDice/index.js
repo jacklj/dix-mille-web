@@ -65,7 +65,7 @@ const RolledDice = () => {
   const isSuccessfulTwoThrowsToDoubleIt = useSelector(
     selectIsSuccessfulTwoThrowsToDoubleIt,
   );
-  const isRollingCloud = useSelector(selectIsRolling);
+  const isRolling = useSelector(selectIsRolling);
   const [isBanking, setIsBanking] = useState(false);
 
   const isSoundOn = useSelector(selectIsSoundOn);
@@ -148,15 +148,15 @@ const RolledDice = () => {
   ] = useState(false);
 
   useEffect(() => {
-    if (isBlapped && !isRollingCloud) {
+    if (isBlapped && !isRolling) {
       setTimeout(() => setShowBlapped(true), diceCastAnimationLength);
     } else {
       setShowBlapped(false);
     }
-  }, [isBlapped, isRollingCloud]);
+  }, [isBlapped, isRolling]);
 
   useEffect(() => {
-    if (isFailedFirstOfTwoThrowsToDoubleIt && !isRollingCloud) {
+    if (isFailedFirstOfTwoThrowsToDoubleIt && !isRolling) {
       setTimeout(
         () => setShowFirstOfTwoThrowsMessage(true),
         diceCastAnimationLength,
@@ -164,7 +164,7 @@ const RolledDice = () => {
     } else {
       setShowFirstOfTwoThrowsMessage(false);
     }
-  }, [isFailedFirstOfTwoThrowsToDoubleIt, isRollingCloud]);
+  }, [isFailedFirstOfTwoThrowsToDoubleIt, isRolling]);
 
   const [playCheerSound] = useSound(cheer, {
     soundEnabled: isSoundOn,
@@ -215,7 +215,7 @@ const RolledDice = () => {
             key={diceId}
             value={value}
             onClick={() => bankDie(diceId)}
-            rolling={isRollingCloud}
+            rolling={isRolling}
             banked={isBanked}
             rotation={position?.rotation}
             positionX={position?.x}

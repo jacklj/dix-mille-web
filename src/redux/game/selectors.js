@@ -1,6 +1,7 @@
 // import moment from 'moment';
 import { selectAllAvatars } from 'redux/avatars/selectors';
 import { selectUid } from 'redux/auth/selectors';
+import { selectIsShakingCupLocal } from 'redux/ui/selectors';
 import Constants from 'services/constants';
 import Helpers from 'services/Helpers';
 
@@ -488,7 +489,7 @@ const selectCurrentTurn = (state) => {
   return currentTurnObj;
 };
 
-export const selectIsRolling = (state) => {
+export const selectIsRollingCloud = (state) => {
   const currentTurn = selectCurrentTurn(state);
 
   if (!currentTurn) {
@@ -498,6 +499,13 @@ export const selectIsRolling = (state) => {
   const { isRolling } = currentTurn;
 
   return isRolling;
+};
+
+export const selectIsRolling = (state) => {
+  const isShakingCupLocal = selectIsShakingCupLocal(state);
+  const isRollingCloud = selectIsRollingCloud(state);
+
+  return isShakingCupLocal || isRollingCloud;
 };
 
 const hasRolledSixOfAKind = (currentTurnObj) => {

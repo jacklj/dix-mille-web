@@ -8,17 +8,20 @@ import authReducer from './auth/slice';
 import gameReducer from './game/slice';
 import avatarsReducer from './avatars/slice';
 import settingsReducer from './settings/slice';
+import uiReducer from './ui/slice';
 
 const rootReducer = combineReducers({
   auth: authReducer,
   game: gameReducer,
   avatars: avatarsReducer,
   settings: settingsReducer,
+  ui: uiReducer,
 });
 
 const persistConfig = {
   key: 'root',
   storage,
+  blacklist: ['ui'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

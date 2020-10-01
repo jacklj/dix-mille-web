@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import * as firebase from 'firebase/app';
 import 'firebase/functions';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import useSound from 'use-sound';
 
 import {
@@ -14,22 +14,28 @@ import {
   selectCurrentScoringGroups,
   selectIsFirstOfTwoThrowsToDoubleIt,
   selectIsRolling,
+  selectIsRollingCloud,
   selectAreAnyBankedDiceInvalid,
 } from 'redux/game/selectors';
-
 import { selectIsSoundOn } from 'redux/settings/selectors';
+import { startedShakingCupLocal, stoppedShakingCupLocal } from 'redux/ui/slice';
+import { selectIsShakingCupLocal } from 'redux/ui/selectors';
 import shakingDiceSound from 'media/sounds/shakingDice.mp3';
 import castingDiceSprites from 'media/sounds/castingDiceSprites.mp3';
 import spriteMap from 'media/sounds/castingDiceSpriteMap';
 import DumbDiceCup from './DiceCup';
 
 const SmartDiceCup = () => {
+  const dispatch = useDispatch();
+  const isShakingCupLocal = useSelector(selectIsShakingCupLocal);
   const isMyTurn = useSelector(isItMyTurn);
   const gameId = useSelector(selectGameId);
   const currentRoundId = useSelector(selectCurrentRoundId);
   const currentTurnId = useSelector(selectCurrentTurnId);
   const currentRoll = useSelector(selectCurrentRoll);
-  const isRollingCloud = useSelector(selectIsRolling);
+  const isRolling = useSelector(selectIsRolling);
+  const isRollingLocal = useSelector(selectIsShakingCupLocal);
+  const isRollingCloud = useSelector(selectIsRollingCloud);
   const areAnyBankedDiceInvalid = useSelector(selectAreAnyBankedDiceInvalid);
 
   const currentScoringGroups = useSelector(selectCurrentScoringGroups);
@@ -38,8 +44,6 @@ const SmartDiceCup = () => {
   const isFirstOfTwoThrowsToDoubleIt = useSelector(
     selectIsFirstOfTwoThrowsToDoubleIt,
   );
-
-  const [isHoldingDownRollButton, setIsHoldingDownRollButton] = useState(false);
 
   // play dice shaking sound
   const isSoundOn = useSelector(selectIsSoundOn);
@@ -52,7 +56,6 @@ const SmartDiceCup = () => {
       loop: true,
     },
   );
-  const isRolling = isRollingCloud || isHoldingDownRollButton;
   useEffect(() => {
     // console.log('sound effect fired', isRolling);
     if (isRolling) {
@@ -96,7 +99,7 @@ const SmartDiceCup = () => {
   // on the second of either going from x => !x
   // NB could there be a race condition when, for some reason, the 'stop rolling'
   // instruction reaches DB before the 'start rolling' one does????? TODO
-  const previousIsHoldingDownRollButton = useRef(false);
+  const previousIsShakingCupLocal = useRef(false);
   const previousIsRollingCloud = useRef(false);
 
   useEffect(() => {
@@ -106,7 +109,7 @@ const SmartDiceCup = () => {
       return;
     }
 
-    if (isRollingCloud && !isHoldingDownRollButton) {
+    if (isRollingCloud && !isShakingCupLocal) {
       console.log('PREVENT RACE CONDITION');
       const writeIsRollingFalse = async () => {
         const path = `games/${gameId}/rounds/${currentRoundId}/turns/${currentTurnId}/isRolling`;
@@ -116,13 +119,13 @@ const SmartDiceCup = () => {
     }
 
     // update 'previous' values
-    previousIsHoldingDownRollButton.current = isHoldingDownRollButton;
+    previousIsShakingCupLocal.current = isShakingCupLocal;
     previousIsRollingCloud.current = isRollingCloud;
   }, [
     currentRoundId,
     currentTurnId,
     gameId,
-    isHoldingDownRollButton,
+    isShakingCupLocal,
     isMyTurn,
     isRollingCloud,
   ]);
@@ -134,23 +137,23 @@ const SmartDiceCup = () => {
 
     // console.log('mouse down');
 
-    if (isHoldingDownRollButton) {
+    if (isShakingCupLocal) {
       // already pressing the button (somehow?) - don't do anything
       alert("Already pressing the roll button - can't press it again?");
       return;
     }
 
-    setIsHoldingDownRollButton(true);
+    dispatch(startedShakingCupLocal());
 
     if (!isMyTurn) {
       alert("You can't roll - it's not your turn!");
-      setIsHoldingDownRollButton(false);
+      dispatch(stoppedShakingCupLocal());
       return;
     }
 
     if (areAnyBankedDiceInvalid) {
       alert("There are invalid banked dice - can't reroll.");
-      setIsHoldingDownRollButton(false);
+      dispatch(stoppedShakingCupLocal());
       return;
     }
 
@@ -162,7 +165,7 @@ const SmartDiceCup = () => {
 
     if (noBankedDice) {
       alert('You need to bank at least one dice before rolling again.');
-      setIsHoldingDownRollButton(false);
+      dispatch(stoppedShakingCupLocal());
       return;
     }
 
@@ -197,13 +200,13 @@ const SmartDiceCup = () => {
 
     // console.log('mouse up');
 
-    if (!isHoldingDownRollButton) {
+    if (!isShakingCupLocal) {
       // console.log('isnt holding down roll button - dont do anything');
       // user wasn't holding the button down - dont do anything
       return;
     }
 
-    setIsHoldingDownRollButton(false);
+    dispatch(stoppedShakingCupLocal());
 
     if (!isRollingCloud) {
       // cloud function hasn't returned yet - dont write to DB
@@ -268,7 +271,7 @@ const SmartDiceCup = () => {
       // becase we have defined onMouseUp and onMouseLeave event handlers. Disabing the button would
       // prevent these from firing.
       loading={isRollLoading}
-      isShaking={isRollingCloud || isHoldingDownRollButton}
+      isShaking={isRollingCloud || isShakingCupLocal}
     />
   );
 };
