@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 
 import {
   isItMyTurn,
+  selectIsRolling,
   selectCurrentRoll,
   selectCurrentTurnPlayerName,
 } from 'redux/game/selectors';
@@ -45,19 +46,19 @@ const makePossessive = (word) => {
 const BetweenTurnMessages = () => {
   const isMyTurn = useSelector(isItMyTurn);
   const currentTurnPlayersName = useSelector(selectCurrentTurnPlayerName);
+  const isRolling = useSelector(selectIsRolling);
   const currentRoll = useSelector(selectCurrentRoll);
-
   const hasRolled = !!currentRoll;
+
+  if (isRolling || hasRolled) {
+    return null;
+  }
 
   const turnMessage = `It's ${
     isMyTurn ? 'your' : makePossessive(currentTurnPlayersName)
   } turn!`;
 
-  if (hasRolled) {
-    return null;
-  }
-
-  return hasRolled ? null : (
+  return (
     <Container>
       <PreviousTurnOutcome />
       <Text>{turnMessage}</Text>
