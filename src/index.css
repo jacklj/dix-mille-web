@@ -22,10 +22,10 @@
   --game-container-height: calc(100vh - 60px);
 
   --max-banked-dice-size: 40px;
-  --min-banked-dice-size: 26px;
+  --min-banked-dice-size: 24px;
 
   /* --max-rolled-dice-size: 60px; */
-  --min-rolled-dice-size: 40px;
+  --min-rolled-dice-size: 34px;
 }
 
 @media (orientation: portrait) {
