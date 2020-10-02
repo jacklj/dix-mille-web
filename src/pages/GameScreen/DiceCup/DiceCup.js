@@ -42,6 +42,8 @@ const Container = styled.div`
   user-drag: none;
   webkit-touch-callout: none;
   -webkit-user-select: none;
+
+  cursor: ${(props) => (props.isShaking ? 'grabbing' : 'grab')};
 `;
 
 const Img = styled.img`
