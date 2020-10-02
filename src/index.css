@@ -25,7 +25,7 @@
   --min-banked-dice-size: 24px;
 
   /* --max-rolled-dice-size: 60px; */
-  --min-rolled-dice-size: 34px;
+  --min-rolled-dice-size: 28px;
 }
 
 @media (orientation: portrait) {
@@ -34,11 +34,19 @@
       var(--max-banked-dice-size),
       max(
         var(--min-banked-dice-size),
-        calc((var(--game-container-width) - var(--dice-cup-width)) / 8)
+        calc(
+          min(
+              var(--game-container-height) * 0.5,
+              var(--game-container-width) - var(--dice-cup-width)
+            ) / 8
+        )
       )
     );
 
-    --scoring-groups-area-height: calc(var(--banked-dice-size) * 1.1 * 6 + 3em);
+    --scoring-groups-area-height: min(
+      var(--banked-dice-size) * 1.1 * 6 + 3em,
+      var(--game-container-height) * 0.5
+    );
 
     --rolled-dice-area-height: calc(
       var(--game-container-height) - var(--scoring-groups-area-height)
