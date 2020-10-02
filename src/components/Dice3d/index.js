@@ -71,7 +71,8 @@ const Container = styled.div`
   // original position is inside the DiceCup, 2/3rds of the way up (we want the dice to appear
   // to come from its opening)
   --dice-position-inside-cup-x: calc(
-    100vw - var(--rolled-dice-size) / 4 - var(--dice-cup-width) * 0.66 - 10px
+    var(--game-container-width) - var(--rolled-dice-size) / 4 -
+      var(--dice-cup-width) * 0.66 - 10px
   );
   --dice-position-inside-cup-y: calc(
     100vh - 60px - var(--rolled-dice-size) / 4 - var(--dice-cup-height) * 0.66

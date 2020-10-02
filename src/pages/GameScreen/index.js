@@ -21,7 +21,8 @@ const Container = styled.div`
   align-items: center;
 
   @media (min-width: 900px) {
-    width: 850px;
+    // Unless mobile in landscape - allow to be full width?
+    width: 900px;
     align-self: center;
   }
 

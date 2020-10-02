@@ -27,14 +27,13 @@ import DumbDiceCup from './DiceCup';
 
 const SmartDiceCup = () => {
   const dispatch = useDispatch();
-  const isShakingCupLocal = useSelector(selectIsShakingCupLocal);
   const isMyTurn = useSelector(isItMyTurn);
   const gameId = useSelector(selectGameId);
   const currentRoundId = useSelector(selectCurrentRoundId);
   const currentTurnId = useSelector(selectCurrentTurnId);
   const currentRoll = useSelector(selectCurrentRoll);
   const isRolling = useSelector(selectIsRolling);
-  const isRollingLocal = useSelector(selectIsShakingCupLocal);
+  const isShakingCupLocal = useSelector(selectIsShakingCupLocal);
   const isRollingCloud = useSelector(selectIsRollingCloud);
   const areAnyBankedDiceInvalid = useSelector(selectAreAnyBankedDiceInvalid);
 

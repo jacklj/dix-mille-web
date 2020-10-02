@@ -17,36 +17,55 @@
   --dice-cup-height: 30vh;
   /* N.B. keeps dice cup container in proportion to the dice cup svgs*/
   --dice-cup-width: calc(var(--dice-cup-height) * (130 / 179));
+
+  --game-container-width: min(100vw, 900px);
+  --game-container-height: calc(100vh - 60px);
+
+  --max-banked-dice-size: 40px;
+  --min-banked-dice-size: 26px;
+
+  /* --max-rolled-dice-size: 60px; */
+  --min-rolled-dice-size: 40px;
 }
 
 @media (orientation: portrait) {
   :root {
     --banked-dice-size: min(
-      40px,
-      max(32px, calc((100vw - var(--dice-cup-width)) / 7))
+      var(--max-banked-dice-size),
+      max(
+        var(--min-banked-dice-size),
+        calc((var(--game-container-width) - var(--dice-cup-width)) / 8)
+      )
     );
 
     --scoring-groups-area-height: calc(var(--banked-dice-size) * 1.1 * 6 + 3em);
 
     --rolled-dice-area-height: calc(
-      100vh - 40px - var(--scoring-groups-area-height)
+      var(--game-container-height) - var(--scoring-groups-area-height)
     );
-    /* viewportHeight - headerHeight - scoringGroupsAreaHeight */
 
-    --rolled-dice-size: calc(min(100vw, var(--rolled-dice-area-height)) / 6);
+    --rolled-dice-size: max(
+      var(--rolled-dice-area-height) / 8,
+      var(--min-rolled-dice-size)
+    );
   }
 }
 @media (orientation: landscape) {
   :root {
-    --banked-dice-size: calc((100vw / 2) / 10);
+    --banked-dice-size: min(40px, calc((var(--game-container-width) / 2) / 10));
 
     --scoring-groups-area-width: calc(var(--banked-dice-size) * 1.5 * 6);
 
-    --rolled-dice-area-height: calc(100vh - 60px - var(--dice-cup-height));
-    --rolled-dice-area-width: calc(100vw - var(--scoring-groups-area-width));
+    --rolled-dice-area-height: calc(
+      var(--game-container-height) - var(--dice-cup-height)
+    );
+    --rolled-dice-area-width: calc(
+      var(--game-container-width) - var(--scoring-groups-area-width)
+    );
 
-    --rolled-dice-size: calc(
-      min(var(--rolled-dice-area-height), var(--rolled-dice-area-width)) / 6
+    --rolled-dice-size: max(
+      min(var(--rolled-dice-area-height), var(--rolled-dice-area-width)) / 8,
+      var(--min-rolled-dice-size)
     );
   }
 }
