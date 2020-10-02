@@ -100,11 +100,20 @@ const Container = styled.div`
   ${(props) =>
     !props.rolling &&
     css`
+      // dice y position is calculated the same way, whether portait or landscape orientation.
+      --dice-final-position-y: calc(
+        // give little bit of margin to account for dice rotation. Ideally would calculate the
+        // length of the dice's diagonal with pythagoras, but can't do square root in css maths.
+        var(--rolled-dice-size) * 0.5 + (${(props) => props.positionY} / 100) *
+          (var(--rolled-dice-area-height) - var(--rolled-dice-size) * 2)
+          // Why rolled-dice-size * 2? Account for initial offset (*0.5), then also ensure
+        // that the dice don't overflow bottom of container, even when rotated - approximation
+        // of dice-size + diagonal/2 = dice-size*1.5
+      );
+
+      // dice x position needs to be calculated differently in portrait or landscape orientation,
+      // as in landscape we need to offset it by the --scoring-groups-area-width.
       @media (orientation: portrait) {
-        --dice-final-position-y: calc(
-          (((${(props) => props.positionY} / 100) * 0.76) + 0.12) *
-            var(--rolled-dice-area-height) - (var(--rolled-dice-size) * 0.5)
-        );
         --dice-final-position-x: calc(
           ${(props) => props.positionX}vw * 0.76 + 12vw -
             (var(--rolled-dice-size) * 0.5)
@@ -112,16 +121,10 @@ const Container = styled.div`
       }
 
       @media (orientation: landscape) {
-        --dice-final-position-y: calc(
-          (${(props) => props.positionY} / 100) *
-            (var(--rolled-dice-area-height) - var(--rolled-dice-size))
-        );
         --dice-final-position-x: calc(
           var(--scoring-groups-area-width) +
-            (
-              ((${(props) => props.positionX} * 0.76 + 12) / 100) *
-                var(--rolled-dice-area-width)
-            ) - (var(--rolled-dice-size) * 0.5)
+            (${(props) => props.positionX} / 100) *
+            (var(--rolled-dice-area-width) - var(--rolled-dice-size))
         );
       }
 
