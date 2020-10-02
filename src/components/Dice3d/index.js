@@ -119,8 +119,10 @@ const Container = styled.div`
       // as in landscape we need to offset it by the --scoring-groups-area-width.
       @media (orientation: portrait) {
         --dice-final-position-x: calc(
-          ${(props) => props.positionX}vw * 0.76 + 12vw -
-            (var(--rolled-dice-size) * 0.5)
+          // give little bit of margin to account for dice rotation. Ideally would calculate the
+          // length of the dice's diagonal with pythagoras, but can't do square root in css maths.
+          var(--rolled-dice-size) * 0.5 + (${(props) => props.positionX} / 100) *
+            (var(--rolled-dice-area-width) - var(--rolled-dice-size) * 2)
         );
       }
 

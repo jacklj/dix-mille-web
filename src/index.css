@@ -51,6 +51,7 @@
     --rolled-dice-area-height: calc(
       var(--game-container-height) - var(--scoring-groups-area-height)
     );
+    --rolled-dice-area-width: var(--game-container-width);
 
     --rolled-dice-size: max(
       var(--rolled-dice-area-height) / 8,
