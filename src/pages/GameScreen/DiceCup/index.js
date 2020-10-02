@@ -137,8 +137,8 @@ const SmartDiceCup = () => {
     // console.log('mouse down');
 
     if (isShakingCupLocal) {
-      // already pressing the button (somehow?) - don't do anything
-      alert("Already pressing the roll button - can't press it again?");
+      // already pressing the button (somehow?) - may have got stuck rolling - stop rolling.
+      stopShakingDiceAndThrow();
       return;
     }
 
@@ -195,7 +195,8 @@ const SmartDiceCup = () => {
   const stopShakingDiceAndThrow = async (event) => {
     // if both touch and mouse events are fired by the browser (ie onTouchEnd and onMouseUp),
     // `event.preventDefault()` is called by the first, and prevents the second from happening
-    event.preventDefault();
+    console.log(event);
+    event && event.preventDefault();
 
     // console.log('mouse up');
 

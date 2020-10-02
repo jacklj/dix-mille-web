@@ -76,11 +76,18 @@ const RolledDice = () => {
   const bankDie = async (diceId) => {
     // mark the dice as banked, and see if it updates the highest scoring combination of scoring groups from all
     // banked dice.
+
+    if (isRolling) {
+      console.warn(
+        "Can't bank dice while rolling - the user may have accidentally clicked on a dice while it's inside the dice cup.",
+      );
+      return;
+    }
+
     if (isBanking) {
       console.warn(
         `already banking a dice - can't bank another until it's done.`,
       );
-      setIsBanking(false);
       return;
     }
 

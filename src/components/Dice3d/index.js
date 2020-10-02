@@ -94,6 +94,8 @@ const Container = styled.div`
 
   // invisible when inside the DiceCup
   opacity: 0;
+  // when inside DiceCup, shouldn't accept any pointer events - they should go straight through to the dice cup
+  pointer-events: none;
 
   ${(props) =>
     !props.rolling &&
@@ -136,7 +138,11 @@ const Container = styled.div`
 
       transition: transform 1s ease-out; // dice casting position animation
 
+      // make visible again
       opacity: 1;
+
+      // re-enable pointer events
+      pointer-events: auto;
     `}
 `;
 
