@@ -94,7 +94,11 @@ const Container = styled.div`
 
   // invisible when inside the DiceCup
   opacity: 0;
-  // when inside DiceCup, shouldn't accept any pointer events - they should go straight through to the dice cup
+
+  // when inside DiceCup, shouldn't accept any pointer events - they should go straight through to the
+  // dice cup. This prevents dice being banked while rolling, and also prevents the diceCup shaking from
+  // stopping on force touch events. Also, if the dicecup gets jammed on shaking, the user can click
+  // on the dice cup to reliably stop it shaking.
   pointer-events: none;
 
   ${(props) =>
