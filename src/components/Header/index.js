@@ -26,6 +26,10 @@ const Container = styled.header`
   color: white;
   padding: 10px;
 
+  @media (max-height: 500px) {
+    padding: 3px;
+  }
+
   // so content doesn't go under the notch on notched phones
   padding-left: max(env(safe-area-inset-left), 10px);
   padding-right: max(env(safe-area-inset-right), 10px);
@@ -68,7 +72,9 @@ const ProfileImage = styled.img`
   flex-grow: 0;
   flex-basis: auto;
 
-  height: 1.5em;
+  height: 7vh;
+  min-height: 26px;
+  max-height: 50px;
   width: auto;
 
   @media (max-width: 470px) {
