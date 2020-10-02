@@ -111,8 +111,8 @@ const Container = styled.div`
 
       @media (orientation: landscape) {
         --dice-final-position-y: calc(
-          ((${(props) => props.positionY} * 0.76 + 0.12) / 100) *
-            var(--rolled-dice-area-height) - (var(--rolled-dice-size) * 0.5)
+          (${(props) => props.positionY} / 100) *
+            (var(--rolled-dice-area-height) - var(--rolled-dice-size))
         );
         --dice-final-position-x: calc(
           var(--scoring-groups-area-width) +
