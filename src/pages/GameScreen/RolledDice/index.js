@@ -84,6 +84,11 @@ const RolledDice = () => {
       return;
     }
 
+    if (isBlapped) {
+      console.warn("can't bank dice when blapped.");
+      return;
+    }
+
     if (isBanking) {
       console.warn(
         `already banking a dice - can't bank another until it's done.`,

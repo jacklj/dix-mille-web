@@ -134,7 +134,10 @@ const SmartDiceCup = () => {
     // `event.preventDefault()` is called by the first, and prevents the second from happening
     event.preventDefault();
 
-    // console.log('mouse down');
+    if (isBlapped) {
+      console.warn("Can't roll dice when blapped.");
+      return;
+    }
 
     if (isShakingCupLocal) {
       // already pressing the button (somehow?) - may have got stuck rolling - stop rolling.
@@ -195,10 +198,9 @@ const SmartDiceCup = () => {
   const stopShakingDiceAndThrow = async (event) => {
     // if both touch and mouse events are fired by the browser (ie onTouchEnd and onMouseUp),
     // `event.preventDefault()` is called by the first, and prevents the second from happening
-    console.log(event);
+    // N.B. check event exists before calling .preventDefault(), because startShakingDice() can
+    // manually call stopShakingDiceAndThrow().
     event && event.preventDefault();
-
-    // console.log('mouse up');
 
     if (!isShakingCupLocal) {
       // console.log('isnt holding down roll button - dont do anything');
