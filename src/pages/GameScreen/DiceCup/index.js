@@ -279,7 +279,7 @@ const SmartDiceCup = () => {
       // becase we have defined onMouseUp and onMouseLeave event handlers. Disabing the button would
       // prevent these from firing.
       loading={isRollLoading}
-      isShaking={isRollingCloud || isShakingCupLocal}
+      isShaking={isRolling}
     />
   );
 };
