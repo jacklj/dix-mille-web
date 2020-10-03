@@ -30,13 +30,21 @@ const bounce = keyframes`
 }
 `;
 
-const BlapText = styled.div`
+const Container = styled.div`
   position: absolute;
   width: 100%;
-  bottom: 0;
+  height: 100%;
+  top: 0;
+  left: 0;
 
-  // margin-bottom: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
+  z-index: 3;
+`;
+
+const BlapText = styled.div`
   font-family: Limelight;
   font-size: 80px;
   color: #ff6961;
@@ -49,7 +57,7 @@ const BlapText = styled.div`
     top: 10px;
     display: inline-block;
 
-    animation: ${bounce} 0.3s ease infinite alternate;
+    animation: ${bounce} 0.3s ease 2 alternate;
     animation-delay: 1s;
 
     text-shadow: 0 1px 0 #4d0400, 0 2px 0 #4d0400, 0 3px 0 #4d0400,
@@ -116,13 +124,15 @@ const BlappedMessage = () => {
   });
 
   return (
-    <BlapText>
-      <span>B</span>
-      <span>L</span>
-      <span>A</span>
-      <span>P</span>
-      <span>!</span>
-    </BlapText>
+    <Container>
+      <BlapText>
+        <span>B</span>
+        <span>L</span>
+        <span>A</span>
+        <span>P</span>
+        <span>!</span>
+      </BlapText>
+    </Container>
   );
 };
 

@@ -218,7 +218,6 @@ const RolledDice = () => {
         {showFirstOfTwoThrowsMessage ? (
           <InfoText>You have to roll again!</InfoText>
         ) : null}
-        {showBlapped ? <BlappedMessage /> : null}
       </Container>
       {dice &&
         Object.entries(dice).map(([diceId, { value, isBanked, position }]) => (
@@ -234,6 +233,7 @@ const RolledDice = () => {
             positionY={position?.y}
           />
         ))}
+      {showBlapped ? <BlappedMessage /> : null}
     </>
   );
 };
