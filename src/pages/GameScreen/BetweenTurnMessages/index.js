@@ -10,9 +10,21 @@ import {
 } from 'redux/game/selectors';
 import PreviousTurnOutcome from './PreviousTurnOutcome';
 
-const Container = styled.div`
-  flex: 1;
+const OuterContainer = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
 
+  top: 0;
+  left: 0;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+`;
+
+const Container = styled.div`
   margin: 10px;
   max-width: 700px;
 
@@ -59,10 +71,12 @@ const BetweenTurnMessages = () => {
   } turn!`;
 
   return (
-    <Container>
-      <PreviousTurnOutcome />
-      <Text>{turnMessage}</Text>
-    </Container>
+    <OuterContainer>
+      <Container>
+        <PreviousTurnOutcome />
+        <Text>{turnMessage}</Text>
+      </Container>
+    </OuterContainer>
   );
 };
 

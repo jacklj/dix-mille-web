@@ -40,8 +40,8 @@ const GameScreen = () => {
   return (
     <>
       <Container>
-        <RolledDice />
         <BetweenTurnMessages />
+        <RolledDice />
         <ScoringGroups />
         <DiceCup />
       </Container>
