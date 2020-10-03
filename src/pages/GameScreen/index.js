@@ -9,7 +9,7 @@ import DiceCup from './DiceCup';
 
 const Container = styled.div`
   flex: 1;
-  overflow-y: scroll;
+  overflow-y: hidden;
   overflow-x: hidden;
 
   z-index: 0; // establish stacking context for pages (so Overlay is always on top)
