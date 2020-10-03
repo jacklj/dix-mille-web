@@ -311,11 +311,13 @@ const ScoringGroups = () => {
   return (
     <Container>
       <TurnScoreAndStickButtonContainer>
-        {typeof turnScoreSoFar === 'number' && showTurnScore ? (
+        {typeof turnScoreSoFar === 'number' ? (
           <>
             <TurnScore>
               <TurnScoreHeader>Turn score</TurnScoreHeader>
-              <TurnScoreValue>{turnScoreSoFar}</TurnScoreValue>
+              <TurnScoreValue>
+                {showTurnScore ? turnScoreSoFar : '~'}
+              </TurnScoreValue>
             </TurnScore>
 
             <CustomButton
