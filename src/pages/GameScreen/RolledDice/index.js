@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import useSound from 'use-sound';
 
 import BlappedMessage from './BlappedMessage';
+import YouHaveToRollAgainMessage from './YouHaveToRollAgainMessage';
 import {
   isItMyTurn,
   selectGameId,
@@ -36,17 +37,6 @@ const Container = styled.div`
   @media (orientation: portrait) {
     width: 100%;
   }
-`;
-
-const InfoText = styled.div`
-  position: absolute;
-  width: 100%;
-  bottom: 0;
-
-  font-family: Limelight;
-  font-size: 1.3em;
-  color: #fff;
-  margin-bottom: 10px;
 `;
 
 const diceCastAnimationLength = 1000;
@@ -214,11 +204,7 @@ const RolledDice = () => {
 
   return (
     <>
-      <Container>
-        {showFirstOfTwoThrowsMessage ? (
-          <InfoText>You have to roll again!</InfoText>
-        ) : null}
-      </Container>
+      <Container></Container>
       {dice &&
         Object.entries(dice).map(([diceId, { value, isBanked, position }]) => (
           <Die
@@ -234,6 +220,7 @@ const RolledDice = () => {
           />
         ))}
       {showBlapped ? <BlappedMessage /> : null}
+      {showFirstOfTwoThrowsMessage ? <YouHaveToRollAgainMessage /> : null}
     </>
   );
 };
