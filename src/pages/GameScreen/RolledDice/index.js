@@ -202,6 +202,7 @@ const RolledDice = () => {
     previousIsFailedFirstOfTwoThrowsToDoubleIt.current = isFailedFirstOfTwoThrowsToDoubleIt;
   }, [isFailedFirstOfTwoThrowsToDoubleIt, playDisappointedSound]);
 
+  // N.B. need to keep the empty <Container> component, to keep the page layout!
   return (
     <>
       <Container></Container>
