@@ -8,6 +8,7 @@ const uiSlice = createSlice({
   },
   reducers: {
     startedShakingCupLocal(state, action) {
+      // shouldnt be fired if it's not your go.
       state.isShakingCupLocal = true;
       state.isRollDiceCloudFunctionRunning = true;
     },

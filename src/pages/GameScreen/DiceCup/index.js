@@ -149,19 +149,17 @@ const SmartDiceCup = () => {
       return;
     }
 
-    dispatch(startedShakingCupLocal());
-
     if (!isMyTurn) {
       alert("You can't roll - it's not your turn!");
-      dispatch(stoppedShakingCupLocal());
       return;
     }
 
     if (areAnyBankedDiceInvalid) {
       alert("There are invalid banked dice - can't reroll.");
-      dispatch(stoppedShakingCupLocal());
       return;
     }
+
+    dispatch(startedShakingCupLocal());
 
     const hasRolled = !!currentRoll;
     const noScoringGroups =
