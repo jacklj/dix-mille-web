@@ -18,7 +18,11 @@ import {
   selectAreAnyBankedDiceInvalid,
 } from 'redux/game/selectors';
 import { selectIsSoundOn } from 'redux/settings/selectors';
-import { startedShakingCupLocal, stoppedShakingCupLocal } from 'redux/ui/slice';
+import {
+  startedShakingCupLocal,
+  stoppedShakingCupLocal,
+  rollDiceCloudFunctionReturned,
+} from 'redux/ui/slice';
 import { selectIsShakingCupLocal } from 'redux/ui/selectors';
 import shakingDiceSound from 'media/sounds/shakingDice.mp3';
 import castingDiceSprites from 'media/sounds/castingDiceSprites.mp3';
@@ -176,6 +180,7 @@ const SmartDiceCup = () => {
         gameId,
       });
       // console.log('cf returned!');
+      dispatch(rollDiceCloudFunctionReturned());
 
       // if (!isHoldingDownRollButton) {
       //   // when the cf returned, user had already let go of Roll button
@@ -189,6 +194,7 @@ const SmartDiceCup = () => {
       //   // setIsHoldingDownRollButton(false);
       // }
     } catch (error) {
+      dispatch(rollDiceCloudFunctionReturned());
       alert(error.message);
       // write isRolling: false to DB (or catch error in cloud function and do this?)
       // setIsHoldingDownRollButton(false);
