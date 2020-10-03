@@ -159,8 +159,6 @@ const SmartDiceCup = () => {
       return;
     }
 
-    dispatch(startedShakingCupLocal());
-
     const hasRolled = !!currentRoll;
     const noScoringGroups =
       !currentScoringGroups || Object.keys(currentScoringGroups).length === 0;
@@ -169,9 +167,10 @@ const SmartDiceCup = () => {
 
     if (noBankedDice) {
       alert('You need to bank at least one dice before rolling again.');
-      dispatch(stoppedShakingCupLocal());
       return;
     }
+
+    dispatch(startedShakingCupLocal());
 
     try {
       await firebase.functions().httpsCallable('rollDice')({
