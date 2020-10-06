@@ -19,9 +19,6 @@
   --dice-cup-width: calc(var(--dice-cup-height) * (130 / 179));
   --dice-cup-right-margin: 10px;
 
-  --game-container-width: min(100vw, 900px);
-  --game-container-height: calc(100vh - 60px);
-
   --max-banked-dice-size: 40px;
   --min-banked-dice-size: 10px; /* effectively no minimum banked dice size */
 
@@ -31,6 +28,9 @@
   --header-height-estimate: 50px;
 
   --turn-score-height: 52px;
+
+  --game-container-width: min(100vw, 900px);
+  --game-container-height: calc(100vh - var(--header-height-estimate));
 }
 
 @media (max-height: 500px) {
@@ -61,12 +61,14 @@
         var(--min-banked-dice-size),
         calc(
           min(
-              var(--scoring-groups-area-height) - var(--turn-score-height),
+              var(--scoring-groups-area-height) - var(--turn-score-height) -
+                40px,
               var(--scoring-groups-area-width) - var(--dice-cup-width)
             ) / (6 * 1.1) - 2px
             /* each banked dice has `margin: 1px`; -2px to account for this */
             /* N.B. dont need to account for DiceCup right margin, because it's 
               less than the horizontal margins of the ScoringGroups container */
+            /* N.B. -40px is a magic value :/ */
         )
       )
     );
@@ -95,14 +97,12 @@
 
     --banked-dice-size: min(
       var(--max-banked-dice-size),
-      max(
-        var(--min-banked-dice-size),
-        min(
-            var(--scoring-groups-area-height) - var(--turn-score-height),
-            var(--scoring-groups-area-width)
-          ) / (6 * 1.1) - 2px
-          /* each banked dice has `margin: 1px`; -2px to account for this */
-      )
+      min(
+          var(--scoring-groups-area-height) - var(--turn-score-height) - 80px,
+          var(--scoring-groups-area-width) - 60px
+        ) / (6 * 1.1) - 2px
+        /* each banked dice has `margin: 1px`; -2px to account for this */
+        /* N.B. -80px and -60px are magic values :/ */
     );
 
     --rolled-dice-size: max(
