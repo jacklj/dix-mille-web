@@ -2,8 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Face = styled.div`
-  margin: 2px;
-  margin-bottom: 5px;
+  margin: 1px;
 
   &:nth-child(even) {
     position: relative;
@@ -45,6 +44,8 @@ const Face = styled.div`
     'a . c'
     'e g f'
     'd . b';
+
+  z-index: 3; // so that the banked dice are clickable above the DiceCup container div
 `;
 
 const Pip = styled.span`

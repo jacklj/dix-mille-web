@@ -52,6 +52,7 @@ const Container = styled.div`
 
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 `;
 
 const TurnScoreAndStickButtonContainer = styled.div`
@@ -108,7 +109,7 @@ const CustomButton = styled(Button)`
 const ScoringGroupsContainer = styled.div`
   flex-shrink: 0;
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
 `;
 
 const DiceContainer = styled.div`
@@ -329,23 +330,7 @@ const ScoringGroups = () => {
           </>
         ) : null}
       </TurnScoreAndStickButtonContainer>
-      {bankedDiceOrder && (
-        <DiceContainer key="current-roll-banking-zone">
-          {bankedDiceOrder.map((diceId) => {
-            const { value, scoringGroupId } = bankedDice[diceId];
-            const isInScoringGroup = !!scoringGroupId;
-            return (
-              <Die
-                id={diceId}
-                key={diceId}
-                value={value}
-                isInGroup={isInScoringGroup}
-                onClick={() => unbankDie(diceId)}
-              />
-            );
-          })}
-        </DiceContainer>
-      )}
+
       <ScoringGroupsContainer>
         {previousScoringGroups &&
           previousScoringGroups.map(({ rollIndex, dice, order }) => {
@@ -361,6 +346,23 @@ const ScoringGroups = () => {
               </DiceContainer>
             );
           })}
+        {bankedDiceOrder && (
+          <DiceContainer key="current-roll-banking-zone">
+            {bankedDiceOrder.map((diceId) => {
+              const { value, scoringGroupId } = bankedDice[diceId];
+              const isInScoringGroup = !!scoringGroupId;
+              return (
+                <Die
+                  id={diceId}
+                  key={diceId}
+                  value={value}
+                  isInGroup={isInScoringGroup}
+                  onClick={() => unbankDie(diceId)}
+                />
+              );
+            })}
+          </DiceContainer>
+        )}
       </ScoringGroupsContainer>
     </Container>
   );

@@ -17,41 +17,59 @@
   --dice-cup-height: 30vh;
   /* N.B. keeps dice cup container in proportion to the dice cup svgs*/
   --dice-cup-width: calc(var(--dice-cup-height) * (130 / 179));
+  --dice-cup-right-margin: 10px;
 
   --game-container-width: min(100vw, 900px);
   --game-container-height: calc(100vh - 60px);
 
   --max-banked-dice-size: 40px;
-  --min-banked-dice-size: 24px;
+  --min-banked-dice-size: 10px; /* effectively no minimum banked dice size */
 
   /* --max-rolled-dice-size: 60px; */
   --min-rolled-dice-size: 28px;
+
+  --header-height-estimate: 50px;
+
+  --turn-score-height: 52px;
+}
+
+@media (max-height: 500px) {
+  :root {
+    --header-height-estimate: 33px;
+  }
 }
 
 @media (orientation: portrait) {
   :root {
+    --scoring-groups-area-height: min(
+      330px,
+      var(--game-container-height) * 0.5
+    );
+    --scoring-groups-area-width: calc(
+      100vw - 30px
+    ); /* -30px for horizontal margins */
+
+    --rolled-dice-area-height: calc(
+      var(--game-container-height) - var(--scoring-groups-area-height)
+    );
+
+    --rolled-dice-area-width: var(--game-container-width);
+
     --banked-dice-size: min(
       var(--max-banked-dice-size),
       max(
         var(--min-banked-dice-size),
         calc(
           min(
-              var(--game-container-height) * 0.5,
-              var(--game-container-width) - var(--dice-cup-width)
-            ) / 8
+              var(--scoring-groups-area-height) - var(--turn-score-height),
+              var(--scoring-groups-area-width) - var(--dice-cup-width)
+            ) / (6 * 1.1) - 2px
+            /* each banked dice has `margin: 1px`; -2px to account for this */
+            /* N.B. dont need to account for DiceCup right margin, because it's 
+              less than the horizontal margins of the ScoringGroups container */
         )
       )
     );
-
-    --scoring-groups-area-height: min(
-      var(--banked-dice-size) * 1.1 * 6 + 3em,
-      var(--game-container-height) * 0.5
-    );
-
-    --rolled-dice-area-height: calc(
-      var(--game-container-height) - var(--scoring-groups-area-height)
-    );
-    --rolled-dice-area-width: var(--game-container-width);
 
     --rolled-dice-size: max(
       var(--rolled-dice-area-height) / 8,
@@ -61,15 +79,30 @@
 }
 @media (orientation: landscape) {
   :root {
-    --banked-dice-size: min(40px, calc((var(--game-container-width) / 2) / 10));
+    --scoring-groups-area-width: min(380px, 45vw);
+    --scoring-groups-area-height: var(--game-container-height);
 
-    --scoring-groups-area-width: calc(var(--banked-dice-size) * 1.5 * 6);
+    /* calc(var(--banked-dice-size) * 1.5 * 6); */
 
     --rolled-dice-area-height: calc(
       var(--game-container-height) - var(--dice-cup-height)
     );
     --rolled-dice-area-width: calc(
       var(--game-container-width) - var(--scoring-groups-area-width)
+    );
+
+    /* --banked-dice-size: min(40px, calc((var(--game-container-width) / 2) / 10)); */
+
+    --banked-dice-size: min(
+      var(--max-banked-dice-size),
+      max(
+        var(--min-banked-dice-size),
+        min(
+            var(--scoring-groups-area-height) - var(--turn-score-height),
+            var(--scoring-groups-area-width)
+          ) / (6 * 1.1) - 2px
+          /* each banked dice has `margin: 1px`; -2px to account for this */
+      )
     );
 
     --rolled-dice-size: max(
