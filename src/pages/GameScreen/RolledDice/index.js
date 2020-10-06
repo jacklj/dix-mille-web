@@ -26,10 +26,10 @@ import cheer from 'media/sounds/cheer.mp3';
 import disappointed from 'media/sounds/disappointed.mp3';
 import bankDice from 'media/sounds/bankDice.mp3';
 import Helpers from 'services/Helpers';
-import {
-  selectWindowInnerHeight,
-  selectWindowInnerWidth,
-} from 'redux/ui/selectors';
+// import {
+//   selectWindowInnerHeight,
+//   selectWindowInnerWidth,
+// } from 'redux/ui/selectors';
 
 const Container = styled.div`
   flex: 1;
@@ -50,8 +50,8 @@ const Text = styled.div`
 const diceCastAnimationLength = 1000;
 
 const RolledDice = () => {
-  const innerHeight = useSelector(selectWindowInnerHeight);
-  const innerWidth = useSelector(selectWindowInnerWidth);
+  // const innerHeight = useSelector(selectWindowInnerHeight);
+  // const innerWidth = useSelector(selectWindowInnerWidth);
 
   const isMyTurn = useSelector(isItMyTurn);
   const gameId = useSelector(selectGameId);
@@ -217,8 +217,8 @@ const RolledDice = () => {
   return (
     <>
       <Container>
-        <Text>width: {innerWidth}</Text>
-        <Text>height: {innerHeight}</Text>
+        {/* <Text>width: {innerWidth}</Text>
+        <Text>height: {innerHeight}</Text> */}
       </Container>
       {dice &&
         Object.entries(dice).map(([diceId, { value, isBanked, position }]) => (
