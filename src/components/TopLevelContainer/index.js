@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 import { windowResized } from 'redux/ui/slice';
-import cardTableSurface from './card-table-surface-1.jpeg';
+// import cardTableSurface from './card-table-surface-1.jpeg';
 import { selectWindowInnerHeight } from 'redux/ui/selectors';
 
 const Container = styled.div`
@@ -16,10 +16,10 @@ const Container = styled.div`
   // padding-bottom: 20px;
   // background-color: #076324; // card table green
 
-  background-image: url('${cardTableSurface}');
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: cover;
+  // background-image: url('$'{cardTableSurface}');
+  // background-repeat: no-repeat;
+  // background-attachment: fixed;
+  // background-size: cover;
 
   // background image effectively has a black translucent overlay over it (using
   // background-blend-mode: multiply;). This is removed when you start the proper
