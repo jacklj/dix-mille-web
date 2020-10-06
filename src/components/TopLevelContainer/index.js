@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
+import { windowResized } from 'redux/ui/slice';
 import cardTableSurface from './card-table-surface-1.jpeg';
+import { selectWindowInnerHeight } from 'redux/ui/selectors';
 
 const Container = styled.div`
   text-align: center;
-  height: 100vh;
+  height: ${(props) => props.innerHeight}px;
   display: flex;
   flex-direction: column;
 
@@ -30,8 +33,38 @@ const Container = styled.div`
 const TopLevelContainer = ({ children }) => {
   const location = useLocation();
   const { pathname } = location;
+  const dispatch = useDispatch();
+  const innerHeight = useSelector(selectWindowInnerHeight);
 
-  return <Container route={pathname}>{children}</Container>;
+  useEffect(() => {
+    // initial
+    dispatch(
+      windowResized({
+        innerHeight: window.innerHeight,
+        innerWidth: window.innerWidth,
+      }),
+    );
+
+    document
+      .getElementsByTagName('body')[0]
+      .style.setProperty('height', window.innerHeight);
+
+    window.addEventListener('resize', function () {
+      console.log('window resized!');
+      const { innerHeight, innerWidth } = window;
+      dispatch(windowResized({ innerHeight, innerWidth }));
+      document
+        .getElementsByTagName('body')[0]
+        .style.setProperty('height', innerHeight);
+    });
+    return () => window.removeEventListener('resize');
+  }, [dispatch]);
+
+  return (
+    <Container innerHeight={innerHeight} route={pathname}>
+      {children}
+    </Container>
+  );
 };
 
 export default TopLevelContainer;
