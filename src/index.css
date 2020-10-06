@@ -123,6 +123,10 @@ body {
   cursor: default;
 
   overscroll-behavior: none;
+  /* prevent overscrolling on safari too (doesn't support `overscroll-behavior`): */
+  position: fixed;
+  overflow: hidden;
+  width: 100vw;
 }
 
 code {
