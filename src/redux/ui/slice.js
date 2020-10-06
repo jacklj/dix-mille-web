@@ -5,6 +5,8 @@ const uiSlice = createSlice({
   initialState: {
     isShakingCupLocal: false,
     isRollDiceCloudFunctionRunning: false,
+    innerHeight: undefined,
+    innerWidth: undefined,
   },
   reducers: {
     startedShakingCupLocal(state, action) {
@@ -31,6 +33,13 @@ const uiSlice = createSlice({
       // - then it sets isWaitingForCloudRollFlagToBeReceived to false
       // - this only matters if it's your turn - otherwise the selector ignores this stuff.
     },
+    windowResized(state, action) {
+      const { payload } = action;
+      const { innerHeight, innerWidth } = payload;
+
+      state.innerHeight = innerHeight;
+      state.innerWidth = innerWidth;
+    },
   },
 });
 
@@ -38,6 +47,7 @@ export const {
   startedShakingCupLocal,
   stoppedShakingCupLocal,
   rollDiceCloudFunctionReturned,
+  windowResized,
 } = uiSlice.actions;
 
 export default uiSlice.reducer;

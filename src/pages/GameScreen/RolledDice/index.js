@@ -26,6 +26,10 @@ import cheer from 'media/sounds/cheer.mp3';
 import disappointed from 'media/sounds/disappointed.mp3';
 import bankDice from 'media/sounds/bankDice.mp3';
 import Helpers from 'services/Helpers';
+import {
+  selectWindowInnerHeight,
+  selectWindowInnerWidth,
+} from 'redux/ui/selectors';
 
 const Container = styled.div`
   flex: 1;
@@ -39,9 +43,16 @@ const Container = styled.div`
   }
 `;
 
+const Text = styled.div`
+  font-size: 2em;
+`;
+
 const diceCastAnimationLength = 1000;
 
 const RolledDice = () => {
+  const innerHeight = useSelector(selectWindowInnerHeight);
+  const innerWidth = useSelector(selectWindowInnerWidth);
+
   const isMyTurn = useSelector(isItMyTurn);
   const gameId = useSelector(selectGameId);
   const currentRoundId = useSelector(selectCurrentRoundId);
@@ -205,7 +216,10 @@ const RolledDice = () => {
   // N.B. need to keep the empty <Container> component, to keep the page layout!
   return (
     <>
-      <Container></Container>
+      <Container>
+        <Text>width: {innerWidth}</Text>
+        <Text>height: {innerHeight}</Text>
+      </Container>
       {dice &&
         Object.entries(dice).map(([diceId, { value, isBanked, position }]) => (
           <Die

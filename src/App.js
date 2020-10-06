@@ -22,6 +22,7 @@ import { selectUid } from 'redux/auth/selectors';
 import { userUpdated } from 'redux/auth/slice';
 import { gameUpdated } from 'redux/game/slice';
 import { avatarsUpdated } from 'redux/avatars/slice';
+import { windowResized } from 'redux/ui/slice';
 import TopLevelContainer from 'components/TopLevelContainer';
 import ContentContainer from 'components/ContentContainer';
 
@@ -30,6 +31,23 @@ function App() {
   const gameId = useSelector(selectGameId);
   const uid = useSelector(selectUid);
   const startedAt = useSelector(selectGameStartedAt);
+
+  useEffect(() => {
+    // initial
+    dispatch(
+      windowResized({
+        innerHeight: window.innerHeight,
+        innerWidth: window.innerWidth,
+      }),
+    );
+
+    window.addEventListener('resize', function () {
+      console.log('window resized!');
+      const { innerHeight, innerWidth } = window;
+      dispatch(windowResized({ innerHeight, innerWidth }));
+    });
+    return () => window.removeEventListener('resize');
+  }, [dispatch]);
 
   useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
