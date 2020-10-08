@@ -7,22 +7,6 @@ import { windowResized } from 'redux/ui/slice';
 import cardTableSurface from './card-table-surface-1.jpeg';
 import { selectWindowInnerHeight } from 'redux/ui/selectors';
 
-function debounce(func, wait, immediate) {
-  var timeout;
-  return function () {
-    var context = this,
-      args = arguments;
-    var later = function () {
-      timeout = null;
-      if (!immediate) func.apply(context, args);
-    };
-    var callNow = immediate && !timeout;
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-    if (callNow) func.apply(context, args);
-  };
-}
-
 const Container = styled.div`
   text-align: center;
   height: ${(props) => props.innerHeight}px;
@@ -139,15 +123,12 @@ const TopLevelContainer = ({ children }) => {
 
     document.body.style.height = `${window.innerHeight}px`;
 
-    window.addEventListener(
-      'resize',
-      debounce(() => {
-        console.log('window resized!');
-        const { innerHeight, innerWidth } = window;
-        dispatch(windowResized({ innerHeight, innerWidth }));
-        document.body.style.height = `${innerHeight}px`;
-      }, 250),
-    );
+    window.addEventListener('resize', function () {
+      console.log('window resized!');
+      const { innerHeight, innerWidth } = window;
+      dispatch(windowResized({ innerHeight, innerWidth }));
+      document.body.style.height = `${innerHeight}px`;
+    });
     return () => window.removeEventListener('resize');
   }, [dispatch]);
 
