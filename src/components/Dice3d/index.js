@@ -75,7 +75,8 @@ const Container = styled.div`
       var(--dice-cup-width) * 0.66 - 10px
   );
   --dice-position-inside-cup-y: calc(
-    100vh - 60px - var(--rolled-dice-size) / 4 - var(--dice-cup-height) * 0.66
+    var(--game-container-height) - var(--rolled-dice-size) / 4 -
+      var(--dice-cup-height) * 0.77
   );
 
   // use transform, rather than changing top and left, for positioning the dice - it makes the

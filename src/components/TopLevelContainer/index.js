@@ -8,13 +8,12 @@ import cardTableSurface from './card-table-surface-1.jpeg';
 import { selectWindowInnerHeight } from 'redux/ui/selectors';
 
 const Container = styled.div`
+  --page-height: ${(props) => props.innerHeight}px;
+
   text-align: center;
-  height: ${(props) => props.innerHeight}px;
+  height: var(--page-height);
   display: flex;
   flex-direction: column;
-
-  // padding-bottom: 20px;
-  // background-color: #076324; // card table green
 
   background-image: url('${cardTableSurface}');
   background-repeat: no-repeat;
@@ -32,7 +31,7 @@ const Container = styled.div`
   // game CSS variables live here now, so they can get the innerHeight
   --game-container-width: min(100vw, 900px);
   --game-container-height: calc(
-    ${(props) => props.innerHeight}px - var(--header-height-estimate)
+    var(--page-height) - var(--header-height-estimate)
   );
 
   @media (orientation: portrait) {
