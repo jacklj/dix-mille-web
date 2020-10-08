@@ -121,17 +121,13 @@ const TopLevelContainer = ({ children }) => {
       }),
     );
 
-    document
-      .getElementsByTagName('body')[0]
-      .style.setProperty('height', window.innerHeight);
+    document.body.style.height = `${window.innerHeight}px`;
 
     window.addEventListener('resize', function () {
       console.log('window resized!');
       const { innerHeight, innerWidth } = window;
       dispatch(windowResized({ innerHeight, innerWidth }));
-      document
-        .getElementsByTagName('body')[0]
-        .style.setProperty('height', innerHeight);
+      document.body.style.height = `${innerHeight}px`;
     });
     return () => window.removeEventListener('resize');
   }, [dispatch]);
