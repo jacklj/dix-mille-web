@@ -7,6 +7,7 @@ import storage from 'redux-persist/lib/storage/session'; // session storage - ea
 import authReducer from './auth/slice';
 import gameReducer from './game/slice';
 import avatarsReducer from './avatars/slice';
+import highScoresReducer from './highScores/slice';
 import settingsReducer from './settings/slice';
 import uiReducer from './ui/slice';
 
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   game: gameReducer,
   avatars: avatarsReducer,
+  highScores: highScoresReducer,
   settings: settingsReducer,
   ui: uiReducer,
 });

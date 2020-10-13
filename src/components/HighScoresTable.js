@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-// import { useSelector } from 'react-redux';
+import * as firebase from 'firebase/app';
+import 'firebase/database';
+import { useSelector, useDispatch } from 'react-redux';
 
-// import { selectTotalScores } from 'redux/game/selectors';
+import { highScoresUpdated } from 'redux/highScores/slice';
+import { selectHighScores } from 'redux/highScores/selectors';
 
 const Table = styled.table`
   color: white;
@@ -67,19 +70,43 @@ const Td = styled.td`
 `;
 
 // dummy leaderboard data
-const highScores = [
-  { player: 'Gobbort', score: 144550 },
-  { player: 'agora', score: 100000 },
-  { player: 'mandelbrot', score: 90000 },
-  { player: 'plaistow', score: 80000 },
-  { player: 'gammadamma', score: 78050 },
-  { player: 'sore spot', score: 72000 },
-  { player: 'gransford plaitlet', score: 60000 },
-  { player: 'morgon lafayette', score: 50000 },
-];
+// const highScores = [
+//   { player: 'Gobbort', score: 144550 },
+//   { player: 'agora', score: 100000 },
+//   { player: 'mandelbrot', score: 90000 },
+//   { player: 'plaistow', score: 80000 },
+//   { player: 'gammadamma', score: 78050 },
+//   { player: 'sore spot', score: 72000 },
+//   { player: 'gransford plaitlet', score: 60000 },
+//   { player: 'morgon lafayette', score: 50000 },
+// ];
 
 const HighScoresTable = ({ className }) => {
-  // const highScores = useSelector(selectHighScores);
+  const dispatch = useDispatch();
+  const highScores = useSelector(selectHighScores);
+
+  useEffect(() => {
+    const highScoresRef = firebase.database().ref('highScores');
+    // N.B. RealtimeDb can't do reverse order queries.
+    highScoresRef
+      .orderByValue()
+      .limitToLast(15)
+      .on('value', (snapshot) => {
+        // N.B. can get a map of all values using `snapshot.val()`, but then you lose the ordering -
+        // use `snapshot.forEach()` (N.B. always in ascending order - RealtimeDB doesn't support reverse
+        // order queries)
+        const highScores = [];
+        snapshot.forEach(function (data) {
+          const player = data.key;
+          const score = data.val();
+          highScores.push({ player, score });
+        });
+        highScores.reverse();
+        dispatch(highScoresUpdated(highScores));
+      });
+
+    return () => highScoresRef.off(); // unsubscriber
+  }, [dispatch]);
 
   return (
     <Table className={className}>

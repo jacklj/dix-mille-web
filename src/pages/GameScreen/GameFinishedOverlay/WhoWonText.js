@@ -111,7 +111,13 @@ const WhoWonText = () => {
 
   // wrap every character (except space) in a span
   const jsx = (
-    <>{message.split('').map((x) => (x === ' ' ? x : <span>{x}</span>))}</>
+    <>
+      {message
+        .split('')
+        .map((x, index) =>
+          x === ' ' ? x : <span key={`${x}.${index}`}>{x}</span>,
+        )}
+    </>
   );
 
   return (
