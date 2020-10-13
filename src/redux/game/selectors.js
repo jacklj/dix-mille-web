@@ -549,6 +549,7 @@ export const selectTurnScoreSoFar = (state) => {
   const currentTurnObj = selectCurrentTurn(state);
   const currentScore = selectMyCurrentScore(state);
   const isRolling = selectIsRolling(state); // dont return score = 0 if blapped but still rolling
+  const isSinglePlayerGame = selectIsSinglePlayerGame(state);
 
   if (!currentTurnObj) {
     return undefined;
@@ -574,7 +575,9 @@ export const selectTurnScoreSoFar = (state) => {
 
   let turnScore;
   // exception to turn score calculation - rolling 6 of a kind - special 'insta-win' roll.
-  if (hasRolledSixOfAKind(currentTurnObj)) {
+  // N.B. only if multiplayer game - if single player game, 6 of a kind doesn't insta-win, it
+  // just scores 10000
+  if (!isSinglePlayerGame && hasRolledSixOfAKind(currentTurnObj)) {
     turnScore = 10000 - currentScore;
   } else {
     // calculate turn score 'properly'
@@ -776,7 +779,7 @@ export const selectPreviousTurnOutcome = (state) => {
   let playerName;
 
   if (gameType === 'singlePlayer') {
-    playerName = 'You';
+    playerName = `Round ${currentRoundId}: you`;
   } else {
     playerName = selectPlayer(player)(state).name;
   }
