@@ -10,6 +10,9 @@ import Helpers from 'services/Helpers';
 
 export const selectGameCode = (state) => state.game.gameCode;
 
+export const selectIsSinglePlayerGame = (state) =>
+  state.game.gameType === 'singlePlayer';
+
 export const selectGameId = (state) => state.game.gameId;
 
 export const selectGameStartedAt = (state) => state.game.startedAt;
@@ -746,6 +749,7 @@ export const selectPreviousTurnOutcome = (state) => {
     currentTurn: currentTurnId,
     rounds,
     players,
+    gameType,
   } = state.game;
 
   let previousRoundId;
@@ -769,7 +773,13 @@ export const selectPreviousTurnOutcome = (state) => {
 
   // what was the outcome?
   const { turnState, turnScore, player } = previousTurnObj;
-  const playerName = selectPlayer(player)(state).name;
+  let playerName;
+
+  if (gameType === 'singlePlayer') {
+    playerName = 'You';
+  } else {
+    playerName = selectPlayer(player)(state).name;
+  }
 
   let outcome;
   if (turnState === Constants.TURN_STATES.STICKED) {

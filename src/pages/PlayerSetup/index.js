@@ -11,6 +11,7 @@ import {
   selectGameId,
   selectAllAvatarsWithChosenStatus,
   selectAllUsedNames,
+  selectIsSinglePlayerGame,
 } from 'redux/game/selectors';
 import { selectUid } from 'redux/auth/selectors';
 import { Button, Input, Label, FieldContainer } from 'components/forms';
@@ -32,8 +33,9 @@ const PlayerSetup = () => {
   const gameId = useSelector(selectGameId);
   const uid = useSelector(selectUid);
   const usedNames = useSelector(selectAllUsedNames);
+  const isSinglePlayerGame = useSelector(selectIsSinglePlayerGame);
 
-  const writePlayerProfileAndGoToWaitingRoom = async (event) => {
+  const writePlayerProfileAndGoNext = async (event) => {
     event.preventDefault();
     setIsSavingPlayerDetails(true);
 
@@ -76,7 +78,17 @@ const PlayerSetup = () => {
         [`games/${gameId}/players/${uid}/avatarId`]: currentAvatar,
       });
 
-    history.push('/waitingRoom');
+    if (isSinglePlayerGame) {
+      try {
+        await firebase.functions().httpsCallable('startGame')({ gameId });
+      } catch (error) {
+        alert(error.message);
+        setIsSavingPlayerDetails(false);
+        return;
+      }
+    } else {
+      history.push('/waitingRoom');
+    }
   };
 
   const onAvatarSelected = (index) => {
@@ -85,9 +97,9 @@ const PlayerSetup = () => {
 
   return (
     <SetupScreenContainer>
-      <GameCode />
+      {isSinglePlayerGame ? null : <GameCode />}
 
-      <Form onSubmit={(event) => writePlayerProfileAndGoToWaitingRoom(event)}>
+      <Form onSubmit={(event) => writePlayerProfileAndGoNext(event)}>
         <FieldContainer>
           <Label htmlFor="name">Name:</Label>
           <Input
@@ -101,7 +113,9 @@ const PlayerSetup = () => {
 
         <AvatarCarousel avatars={avatars} onAvatarSelected={onAvatarSelected} />
 
-        <Button loading={isSavingPlayerDetails}>Next</Button>
+        <Button loading={isSavingPlayerDetails}>
+          {isSinglePlayerGame ? 'Start' : 'Next'}
+        </Button>
       </Form>
       <Link onClick={() => history.goBack()}>{' < back'}</Link>
     </SetupScreenContainer>

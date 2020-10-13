@@ -49,7 +49,9 @@ const SinglePlayerStart = () => {
     try {
       res = await firebase
         .functions()
-        .httpsCallable('createUserProfileAndCreateSinglePlayerGame')();
+        .httpsCallable('createUserProfileAndCreateGame')({
+        gameType: 'singlePlayer',
+      });
     } catch (error) {
       alert(error.message);
       setIsStartingGame(false);
@@ -78,7 +80,7 @@ const SinglePlayerStart = () => {
   return (
     <SetupScreenContainer>
       <H2>Single player</H2>
-      <Text>Score as many points as you can in 5 rounds.</Text>
+      <Text>Score as many points as you can in 6 rounds.</Text>
 
       <div>
         <CustomButton

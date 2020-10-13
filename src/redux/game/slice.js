@@ -22,6 +22,7 @@ const gameSlice = createSlice({
   reducers: {
     gameUpdated(state, action) {
       const { payload } = action;
+      state.gameType = payload.gameType;
       state.gameCode = payload.code;
       state.gameCreator = payload.gameCreator;
       state.players = payload.players;

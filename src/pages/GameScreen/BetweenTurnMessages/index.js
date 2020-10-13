@@ -7,6 +7,7 @@ import {
   selectIsRolling,
   selectCurrentRoll,
   selectCurrentTurnPlayerName,
+  selectIsSinglePlayerGame,
 } from 'redux/game/selectors';
 import PreviousTurnOutcome from './PreviousTurnOutcome';
 
@@ -61,6 +62,7 @@ const BetweenTurnMessages = () => {
   const isRolling = useSelector(selectIsRolling);
   const currentRoll = useSelector(selectCurrentRoll);
   const hasRolled = !!currentRoll;
+  const isSinglePlayerGame = useSelector(selectIsSinglePlayerGame);
 
   if (isRolling || hasRolled) {
     return null;
@@ -74,7 +76,7 @@ const BetweenTurnMessages = () => {
     <OuterContainer>
       <Container>
         <PreviousTurnOutcome />
-        <Text>{turnMessage}</Text>
+        {isSinglePlayerGame ? null : <Text>{turnMessage}</Text>}
       </Container>
     </OuterContainer>
   );

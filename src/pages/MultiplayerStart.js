@@ -48,7 +48,9 @@ const MultiplayerStart = () => {
     try {
       res = await firebase
         .functions()
-        .httpsCallable('createUserProfileAndCreateGame')();
+        .httpsCallable('createUserProfileAndCreateGame')({
+        gameType: 'multiplayer',
+      });
     } catch (error) {
       alert(error.message);
       setIsStartingGame(false);
