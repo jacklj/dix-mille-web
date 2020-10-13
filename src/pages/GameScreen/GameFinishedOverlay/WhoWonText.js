@@ -2,7 +2,10 @@ import React from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import { useSelector } from 'react-redux';
 
-import { selectHasSomeoneWon } from 'redux/game/selectors';
+import {
+  selectHasSomeoneWon,
+  selectIsSinglePlayerGame,
+} from 'redux/game/selectors';
 
 const bounceLost = keyframes`
 100% {
@@ -96,10 +99,15 @@ const Svg = styled.svg`
 
 const WhoWonText = () => {
   const hasSomeoneWon = useSelector(selectHasSomeoneWon);
-
+  const isSinglePlayerGame = useSelector(selectIsSinglePlayerGame);
   const { didIWin } = hasSomeoneWon;
 
-  const message = `${didIWin ? 'You' : hasSomeoneWon.winnersName} won!`;
+  let message;
+  if (isSinglePlayerGame) {
+    message = 'The End.';
+  } else {
+    message = `${didIWin ? 'You' : hasSomeoneWon.winnersName} won!`;
+  }
 
   // wrap every character (except space) in a span
   const jsx = (
@@ -108,7 +116,7 @@ const WhoWonText = () => {
 
   return (
     <>
-      <Container didIWin={didIWin}>{jsx}</Container>
+      <Container didIWin={isSinglePlayerGame || didIWin}>{jsx}</Container>
       <Svg>
         <defs>
           <filter id="flyOn">
