@@ -121,14 +121,15 @@ const TopLevelContainer = ({ children }) => {
     );
 
     document.body.style.height = `${window.innerHeight}px`;
-
-    window.addEventListener('resize', function () {
+    function onResize() {
       console.log('window resized!');
       const { innerHeight, innerWidth } = window;
       dispatch(windowResized({ innerHeight, innerWidth }));
       document.body.style.height = `${innerHeight}px`;
-    });
-    return () => window.removeEventListener('resize');
+    }
+
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
   }, [dispatch]);
 
   return (
