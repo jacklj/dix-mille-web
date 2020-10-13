@@ -83,7 +83,7 @@ const HighScoresTable = ({ className }) => {
 
   return (
     <Table className={className}>
-      <Caption>High scorers</Caption>
+      <Caption>High scores</Caption>
       <thead>
         <Tr>
           <Th key="Rank">Rank</Th>
@@ -93,13 +93,17 @@ const HighScoresTable = ({ className }) => {
       </thead>
       <tbody>
         {highScores &&
-          highScores.map((highScore, r) => (
-            <Tr key={`${highScore.player}-${r}`}>
-              <Td key="rank">{r}.</Td>
-              <Td key="name">{highScore.player}</Td>
-              <Td key="score">{highScore.score}</Td>
-            </Tr>
-          ))}
+          highScores.map((highScore, r) => {
+            const { player, score } = highScore;
+            const rank = r + 1;
+            return (
+              <Tr key={`${highScore.player}-${rank}`}>
+                <Td key="rank">{rank}</Td>
+                <Td key="name">{player}</Td>
+                <Td key="score">{score}</Td>
+              </Tr>
+            );
+          })}
       </tbody>
     </Table>
   );

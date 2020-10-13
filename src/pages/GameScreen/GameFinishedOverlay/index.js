@@ -12,6 +12,7 @@ import WhoWonText from './WhoWonText';
 import { selectIsSoundOn } from 'redux/settings/selectors';
 import winMusic from 'media/sounds/winMusic.mp3';
 import loseMusic from 'media/sounds/loseMusic.mp3';
+import HighScoresTable from 'components/HighScoresTable';
 
 const TableContainer = styled.div`
   flex: 0;
@@ -30,6 +31,9 @@ const TableContainer = styled.div`
 //   didIWin: true,
 // };
 
+const CustomButton = styled(Button)`
+  margin-top: 50px;
+`;
 const GameFinishedOverlay = () => {
   const history = useHistory();
   const hasSomeoneWon = useSelector(selectHasSomeoneWon);
@@ -69,7 +73,9 @@ const GameFinishedOverlay = () => {
         <TableContainer>
           <ScoresTable />
         </TableContainer>
-        <Button onClick={goBackToHomePage}>Play again</Button>
+        <HighScoresTable />
+
+        <CustomButton onClick={goBackToHomePage}>Play again</CustomButton>
       </Overlay>
     );
   }
