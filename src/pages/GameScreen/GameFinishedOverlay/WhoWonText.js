@@ -94,7 +94,7 @@ const Svg = styled.svg`
 //   winnersName: 'Granchester Mike',
 // };
 
-const WinnerText = () => {
+const WhoWonText = () => {
   const hasSomeoneWon = useSelector(selectHasSomeoneWon);
 
   const { didIWin } = hasSomeoneWon;
@@ -127,4 +127,4 @@ const WinnerText = () => {
   );
 };
 
-export default WinnerText;
+export default WhoWonText;

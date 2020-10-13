@@ -8,7 +8,7 @@ import ScoresTable from 'components/ScoresTable';
 import { Button } from 'components/forms';
 import Overlay from 'components/Overlay';
 import { selectHasSomeoneWon } from 'redux/game/selectors';
-import WinnerText from './WinnerText';
+import WhoWonText from './WhoWonText';
 import { selectIsSoundOn } from 'redux/settings/selectors';
 import winMusic from 'media/sounds/winMusic.mp3';
 import loseMusic from 'media/sounds/loseMusic.mp3';
@@ -30,7 +30,7 @@ const TableContainer = styled.div`
 //   didIWin: true,
 // };
 
-const WinnerOverlay = () => {
+const GameFinishedOverlay = () => {
   const history = useHistory();
   const hasSomeoneWon = useSelector(selectHasSomeoneWon);
 
@@ -65,7 +65,7 @@ const WinnerOverlay = () => {
   } else {
     return (
       <Overlay>
-        <WinnerText />
+        <WhoWonText />
         <TableContainer>
           <ScoresTable />
         </TableContainer>
@@ -75,4 +75,4 @@ const WinnerOverlay = () => {
   }
 };
 
-export default WinnerOverlay;
+export default GameFinishedOverlay;

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import WinnerOverlay from './WinnerOverlay';
+import GameFinishedOverlay from './GameFinishedOverlay';
 import RolledDice from './RolledDice';
 import ScoringGroups from './ScoringGroups';
 import BetweenTurnMessages from './BetweenTurnMessages';
@@ -45,7 +45,7 @@ const GameScreen = () => {
         <ScoringGroups />
         <DiceCup />
       </Container>
-      <WinnerOverlay />
+      <GameFinishedOverlay />
     </>
   );
 };
