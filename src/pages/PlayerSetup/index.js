@@ -15,6 +15,7 @@ import {
 import { selectUid } from 'redux/auth/selectors';
 import { Button, Input, Label, FieldContainer } from 'components/forms';
 import SetupScreenContainer from 'components/SetupScreenContainer';
+import Link from 'components/Link';
 
 const Form = styled.form`
   align-self: stretch;
@@ -102,6 +103,7 @@ const PlayerSetup = () => {
 
         <Button loading={isSavingPlayerDetails}>Next</Button>
       </Form>
+      <Link onClick={() => history.goBack()}>{' < back'}</Link>
     </SetupScreenContainer>
   );
 };

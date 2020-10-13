@@ -12,6 +12,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Header from 'components/Header';
 import Start from 'pages/Start';
+import SinglePlayerStart from 'pages/SinglePlayerStart';
+import MultiplayerStart from 'pages/MultiplayerStart';
 import JoinGame from 'pages/JoinGame';
 import PlayerSetup from 'pages/PlayerSetup';
 import WaitingRoom from 'pages/WaitingRoom';
@@ -108,6 +110,16 @@ function App() {
           <Route path="/" exact>
             <ContentContainer>
               <Start />
+            </ContentContainer>
+          </Route>
+          <Route path="/singlePlayerStart">
+            <ContentContainer>
+              <SinglePlayerStart />
+            </ContentContainer>
+          </Route>
+          <Route path="/multiplayerStart">
+            <ContentContainer>
+              <MultiplayerStart />
             </ContentContainer>
           </Route>
           <Route path="/joinGame">

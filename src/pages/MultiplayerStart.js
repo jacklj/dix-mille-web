@@ -6,10 +6,10 @@ import { useDispatch } from 'react-redux';
 import * as firebase from 'firebase/app';
 import 'firebase/functions';
 
-import Logo from './Logo';
 import { loggedInAndCreatedGame } from 'redux/auth/slice';
 import { Button } from 'components/forms';
 import SetupScreenContainer from 'components/SetupScreenContainer';
+import Link from 'components/Link';
 
 const IntroText = styled.div`
   margin-top: 40px;
@@ -25,7 +25,7 @@ const CustomButton = styled(Button)`
   margin-bottom: 40px;
 `;
 
-const Start = () => {
+const MultiplayerStart = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [isStartingGame, setIsStartingGame] = useState(false);
@@ -85,23 +85,23 @@ const Start = () => {
 
   return (
     <SetupScreenContainer>
-      <Logo />
-
-      <IntroText>
-        Ten thousand - Farkle - Crap Out - Zilch - Greed - Hot Dice
-      </IntroText>
+      <IntroText>Multiplayer</IntroText>
       <div>
-        <CustomButton onClick={() => history.push('/singlePlayerStart')}>
-          Single player
+        <CustomButton
+          onClick={() => createAnonymousProfileAndGame()}
+          loading={isStartingGame}
+          loadingMessage="Starting">
+          Start game
         </CustomButton>
       </div>
       <div>
-        <CustomButton onClick={() => history.push('/multiplayerStart')}>
-          Multiplayer
+        <CustomButton onClick={() => history.push('/joinGame')}>
+          Join game
         </CustomButton>
       </div>
+      <Link onClick={() => history.goBack()}>{' < back'}</Link>
     </SetupScreenContainer>
   );
 };
 
-export default Start;
+export default MultiplayerStart;

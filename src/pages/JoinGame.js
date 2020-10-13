@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { loggedInAndJoinedGame } from 'redux/auth/slice';
 import { Button, Input, Label, FieldContainer } from 'components/forms';
 import SetupScreenContainer from 'components/SetupScreenContainer';
+import Link from 'components/Link';
 
 const CustomFieldContainer = styled(FieldContainer)`
   margin-bottom: 60px;
@@ -97,6 +98,8 @@ const JoinGame = () => {
           Next
         </Button>
       </form>
+
+      <Link onClick={() => history.goBack()}>{' < back'}</Link>
     </SetupScreenContainer>
   );
 };
