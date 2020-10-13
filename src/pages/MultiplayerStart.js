@@ -10,16 +10,7 @@ import { loggedInAndCreatedGame } from 'redux/auth/slice';
 import { Button } from 'components/forms';
 import SetupScreenContainer from 'components/SetupScreenContainer';
 import Link from 'components/Link';
-
-const IntroText = styled.div`
-  margin-top: 40px;
-  margin-bottom: 80px;
-
-  color: #ffdc73;
-  font-size: 1.5em;
-
-  text-shadow: 0 8px 8px rgba(0, 0, 0, 0.5);
-`;
+import { H2, Text } from 'components/intro';
 
 const CustomButton = styled(Button)`
   margin-bottom: 40px;
@@ -85,7 +76,10 @@ const MultiplayerStart = () => {
 
   return (
     <SetupScreenContainer>
-      <IntroText>Multiplayer</IntroText>
+      <H2>Multiplayer</H2>
+      <Text>
+        Start a new game for people to join, or join an existing game.
+      </Text>
       <div>
         <CustomButton
           onClick={() => createAnonymousProfileAndGame()}
