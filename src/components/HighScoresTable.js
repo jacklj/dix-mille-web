@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { highScoresUpdated } from 'redux/highScores/slice';
 import { selectHighScores } from 'redux/highScores/selectors';
+import { Text } from 'components/intro';
 
 const Table = styled.table`
   color: white;
@@ -85,6 +86,8 @@ const HighScoresTable = ({ className }) => {
   const dispatch = useDispatch();
   const highScores = useSelector(selectHighScores);
 
+  // only subscribe to high scores table updates when the table component is mounted, otherwise
+  // store historical data
   useEffect(() => {
     const highScoresRef = firebase.database().ref('highScores');
     // N.B. RealtimeDb can't do reverse order queries.
@@ -107,6 +110,10 @@ const HighScoresTable = ({ className }) => {
 
     return () => highScoresRef.off(); // unsubscriber
   }, [dispatch]);
+
+  if (!highScores || highScores.length === 0) {
+    return <Text>High scores loading...</Text>;
+  }
 
   return (
     <Table className={className}>
