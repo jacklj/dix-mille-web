@@ -85,7 +85,7 @@ const Svg = styled.svg`
   z-index: -1;
 `;
 
-const WhoWonText = ({ didIWin, message }) => {
+const WhoWonText = ({ didIWin = true, message }) => {
   // wrap every character (except space) in a span
   const jsx = (
     <>

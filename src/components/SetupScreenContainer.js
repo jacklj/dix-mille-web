@@ -29,10 +29,10 @@ const InnerContainer = styled.div`
   // N.B. max() isn't supported by Firefox for Android https://caniuse.com/#search=max%20function
 `;
 
-const SetupScreenContainer = ({ children }) => (
-  <Container>
+const SetupScreenContainer = React.forwardRef(({ children }, ref) => (
+  <Container ref={ref}>
     <InnerContainer>{children}</InnerContainer>
   </Container>
-);
+));
 
 export default SetupScreenContainer;

@@ -43,10 +43,6 @@ const Container = styled.div`
   }
 `;
 
-const Text = styled.div`
-  font-size: 2em;
-`;
-
 const diceCastAnimationLength = 1000;
 
 const RolledDice = () => {
