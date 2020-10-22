@@ -53,7 +53,7 @@ const Container = styled.div`
     ${(props) =>
       props.didIWin
         ? css`
-            animation: ${bounceWon} 0.3s ease infinite alternate;
+            animation: ${bounceWon} 0.3s ease 4 alternate;
 
             text-shadow: 0 1px 0 #7f6319, 0 2px 0 #7f6319, 0 3px 0 #7f6319,
               0 4px 0 #7f6319, 0 5px 0 #7f6319, 0 6px 0 transparent,
@@ -61,7 +61,7 @@ const Container = styled.div`
               0 10px 10px rgba(255, 220, 127, 0.7);
           `
         : css`
-            animation: ${bounceLost} 0.3s ease infinite alternate;
+            animation: ${bounceLost} 0.3s ease 4 alternate;
 
             text-shadow: 0 1px 0 #155415, 0 2px 0 #155415, 0 3px 0 #155415,
               0 4px 0 #155415, 0 5px 0 #155415, 0 6px 0 transparent,
