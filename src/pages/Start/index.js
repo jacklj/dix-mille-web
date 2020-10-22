@@ -1,13 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import 'firebase/functions';
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import * as firebase from 'firebase/app';
 import 'firebase/functions';
 
 import Logo from './Logo';
-import { loggedInAndCreatedGame } from 'redux/auth/slice';
 import { Button } from 'components/forms';
 import SetupScreenContainer from 'components/SetupScreenContainer';
 
@@ -27,58 +24,6 @@ const CustomButton = styled(Button)`
 
 const Start = () => {
   const history = useHistory();
-  const dispatch = useDispatch();
-  const [isStartingGame, setIsStartingGame] = useState(false);
-
-  const createAnonymousProfileAndGame = async () => {
-    setIsStartingGame(true);
-    // set auth persistence level:
-    // LOCAL - persists across tabs
-    // SESSION - persists within a tab (across page refreshes, but not shared between tabs)
-    // NONE - doesnt persist at all.
-    await firebase
-      .auth()
-      .setPersistence(firebase.auth.Auth.Persistence.SESSION);
-
-    const result = await firebase.auth().signInAnonymously();
-    const { additionalUserInfo, user } = result;
-    const { uid } = user;
-    const { isNewUser } = additionalUserInfo;
-
-    console.log(
-      `[createAnonymousProfileAndGame] ${
-        isNewUser
-          ? 'Created new anonymous account'
-          : 'Already logged in (anonymously)'
-      }: ${uid}`,
-    );
-
-    let res;
-    try {
-      res = await firebase
-        .functions()
-        .httpsCallable('createUserProfileAndCreateGame')();
-    } catch (error) {
-      alert(error.message);
-      setIsStartingGame(false);
-      return;
-    }
-
-    // could return user and game data here, but also need to subscribe to the game obj
-    const { data } = res;
-    const { gameId, gameCode } = data;
-
-    dispatch(
-      loggedInAndCreatedGame({
-        uid,
-        type: 'gameCreator',
-        gameId,
-        gameCode,
-      }),
-    );
-
-    history.push('/playerSetup');
-  };
 
   // N.B. <div>s around buttons are to fix a bug in mobile Safari where the flex container
   // forces the buttons to be really short (ie squished vertically)
