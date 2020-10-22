@@ -1,13 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import 'firebase/functions';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import * as firebase from 'firebase/app';
 import 'firebase/functions';
 
 import Logo from './Logo';
+import { loggedInAndCreatedGame } from 'redux/auth/slice';
 import { Button } from 'components/forms';
 import SetupScreenContainer from 'components/SetupScreenContainer';
-import WhoWonText from '../GameScreen/GameFinishedOverlay/WhoWonText/WhoWonTextDumb';
+
 const IntroText = styled.div`
   margin-top: 40px;
   margin-bottom: 80px;
@@ -22,74 +25,71 @@ const CustomButton = styled(Button)`
   margin-bottom: 40px;
 `;
 
-// const handleScroll = () => {
-//   lastScrollY = window.scrollY;
-
-//   if (!ticking) {
-//     window.requestAnimationFrame(() => {
-//       this.nav.current.style.top = `${lastScrollY}px`;
-//       ticking = false;
-//     });
-
-//     ticking = true;
-//   }
-// };
-
 const Start = () => {
   const history = useHistory();
-  const scrollContainer = useRef(null);
-  const [debug, setDebug] = useState(null);
+  const dispatch = useDispatch();
+  const [isStartingGame, setIsStartingGame] = useState(false);
 
-  useEffect(() => {
-    console.log(scrollContainer);
-    if (scrollContainer.current) {
-      const el = scrollContainer.current;
+  const createAnonymousProfileAndGame = async () => {
+    setIsStartingGame(true);
+    // set auth persistence level:
+    // LOCAL - persists across tabs
+    // SESSION - persists within a tab (across page refreshes, but not shared between tabs)
+    // NONE - doesnt persist at all.
+    await firebase
+      .auth()
+      .setPersistence(firebase.auth.Auth.Persistence.SESSION);
 
-      el.addEventListener('scroll', () => {
-        const top = el.scrollTop;
-        const totalScroll = el.scrollHeight;
-        const bottom = top + el.offsetHeight;
+    const result = await firebase.auth().signInAnonymously();
+    const { additionalUserInfo, user } = result;
+    const { uid } = user;
+    const { isNewUser } = additionalUserInfo;
 
-        setDebug((x) => `${x}, ${top}`);
+    console.log(
+      `[createAnonymousProfileAndGame] ${
+        isNewUser
+          ? 'Created new anonymous account'
+          : 'Already logged in (anonymously)'
+      }: ${uid}`,
+    );
 
-        //If we're at the top or the bottom of the containers
-        //scroll, push up or down one pixel.
-        //
-        //this prevents the scroll from "passing through" to
-        //the body.
-        if (top <= 0) {
-          el.scrollTop = 0;
-        } else if (bottom >= totalScroll) {
-          el.scrollTop = top - 1;
-        }
-      });
+    let res;
+    try {
+      res = await firebase
+        .functions()
+        .httpsCallable('createUserProfileAndCreateGame')();
+    } catch (error) {
+      alert(error.message);
+      setIsStartingGame(false);
+      return;
     }
 
-    // const listener = scrollContainer.current.addEventListener('scroll', function(e) {
-    //   last_known_scroll_position = window.scrollY;
+    // could return user and game data here, but also need to subscribe to the game obj
+    const { data } = res;
+    const { gameId, gameCode } = data;
 
-    //   if (!ticking) {
-    //     window.requestAnimationFrame(function() {
-    //       doSomething(last_known_scroll_position);
-    //       ticking = false;
-    //     });
+    dispatch(
+      loggedInAndCreatedGame({
+        uid,
+        type: 'gameCreator',
+        gameId,
+        gameCode,
+      }),
+    );
 
-    //     ticking = true;
-    //   }
-    // });
-
-    // return () => scrollContainer.removeEventListener('scroll', listener);
-  }, []);
+    history.push('/playerSetup');
+  };
 
   // N.B. <div>s around buttons are to fix a bug in mobile Safari where the flex container
   // forces the buttons to be really short (ie squished vertically)
 
   return (
-    <SetupScreenContainer ref={scrollContainer}>
-      <WhoWonText message="Hello there, boys." />
+    <SetupScreenContainer>
       <Logo />
 
-      {/* <IntroText>{debug}</IntroText> */}
+      <IntroText>
+        Ten thousand - Farkle - Crap Out - Zilch - Greed - Hot Dice
+      </IntroText>
       <div>
         <CustomButton onClick={() => history.push('/singlePlayerStart')}>
           Single player
