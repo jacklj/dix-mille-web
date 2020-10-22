@@ -27,6 +27,8 @@ const bounce = keyframes`
   text-shadow: 0 1px 0 #4d0400, 0 2px 0 #4d0400, 0 3px 0 #4d0400, 0 4px 0 #4d0400,
     0 5px 0 #4d0400, 0 6px 0 #4d0400, 0 7px 0 #4d0400, 0 8px 0 #4d0400, 0 9px 0 #4d0400,
     0 50px 25px rgba(0, 0, 0, 0.5);
+    // N.B. animating the text-shadow causes an elastic scrolling bug on webkit. Here it's fine because
+    // the GameScreen is not scrollable.
 }
 `;
 

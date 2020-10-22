@@ -26,6 +26,9 @@ const bounceWhite = keyframes`
   text-shadow: 0 1px 0 #bbb, 0 2px 0 #bbb, 0 3px 0 #bbb, 0 4px 0 #bbb,
     0 5px 0 #bbb, 0 6px 0 #bbb, 0 7px 0 #bbb, 0 8px 0 #bbb, 0 9px 0 #bbb,
     0 50px 25px rgba(0, 0, 0, 0.5);
+    // N.B. animating the text-shadow causes problems when elastic scrolling in Webkit. But
+    // seeing as this animation only runs 1 time, it shouldn't matter too much - the user is
+    // unlikely to scroll while the animation is happening.
 }
 `;
 
@@ -36,6 +39,9 @@ const bounceYellow = keyframes`
   text-shadow: 0 1px 0 #b38600, 0 2px 0 #b38600, 0 3px 0 #b38600, 0 4px 0 #b38600,
     0 5px 0 #b38600, 0 6px 0 #b38600, 0 7px 0 #b38600, 0 8px 0 #b38600, 0 9px 0 #b38600,
     0 50px 25px rgba(0, 0, 0, 0.5);
+  // N.B. animating the text-shadow causes problems when elastic scrolling in Webkit. But
+  // seeing as this animation only runs 1 time, it shouldn't matter too much - the user is
+  // unlikely to scroll while the animation is happening.
 }
 `;
 
