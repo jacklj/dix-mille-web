@@ -11,7 +11,9 @@ import ScoresPopover from './ScoresPopover';
 import RulesPopover from './RulesPopover';
 import TrophyIcon from './TrophyIcon';
 import ScrollIcon from './ScrollIcon';
+import MenuIcon from './MenuIcon';
 import SoundOnOffButton from './SoundOnOffButton';
+import MenuPopover from './MenuPopover';
 
 const Container = styled.header`
   flex: 0 1 auto; // so it doesn't look too bad on safari
@@ -119,6 +121,10 @@ const Header = () => {
   const showRules = () => setIsShowingRules(true);
   const hideRules = () => setIsShowingRules(false);
 
+  const [isShowingMenu, setIsShowingMenu] = useState(false);
+  const showMenu = () => setIsShowingMenu(true);
+  const hideMenu = () => setIsShowingMenu(false);
+
   return (
     <>
       <Container>
@@ -136,11 +142,15 @@ const Header = () => {
         <HeaderButton onClick={showRules} Icon={ScrollIcon}>
           Rules
         </HeaderButton>
+        <HeaderButton onClick={showMenu} Icon={MenuIcon}>
+          Menu
+        </HeaderButton>
         {avatarUrl && <ProfileImage src={avatarUrl} />}
         {name && <UserName>{name}</UserName>}
       </Container>
       {isShowingScores ? <ScoresPopover hideScores={hideScores} /> : null}
       {isShowingRules ? <RulesPopover hideRules={hideRules} /> : null}
+      {isShowingMenu ? <MenuPopover hideMenu={hideMenu} /> : null}
     </>
   );
 };
