@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { selectMyAvatarUrl, selectHasGameStarted } from 'redux/game/selectors';
 import { selectName } from 'redux/auth/selectors';
+import { showOverlay, hideOverlay } from 'redux/ui/slice';
+import { selectCurrentlyDisplayedOverlay } from 'redux/ui/selectors';
+import CONSTANTS from 'services/constants';
+
 import diceIcon from './diceIcon.png';
 import HeaderButton from './HeaderButton';
 import ScoresPopover from './ScoresPopover';
@@ -109,21 +113,40 @@ const UserName = styled.div`
 `;
 
 const Header = () => {
+  const dispatch = useDispatch();
+  const currentlyDisplayedOverlay = useSelector(
+    selectCurrentlyDisplayedOverlay,
+  );
+
   const name = useSelector(selectName);
   const avatarUrl = useSelector(selectMyAvatarUrl);
   const hasGameStarted = useSelector(selectHasGameStarted);
 
-  const [isShowingScores, setIsShowingScores] = useState(false);
-  const showScores = () => setIsShowingScores(true);
-  const hideScores = () => setIsShowingScores(false);
+  const showScores = () => dispatch(showOverlay(CONSTANTS.OVERLAYS.SCORES));
+  const hideScores = () => dispatch(hideOverlay());
 
-  const [isShowingRules, setIsShowingRules] = useState(false);
-  const showRules = () => setIsShowingRules(true);
-  const hideRules = () => setIsShowingRules(false);
+  const showRules = () => dispatch(showOverlay(CONSTANTS.OVERLAYS.RULES));
+  const hideRules = () => dispatch(hideOverlay());
 
-  const [isShowingMenu, setIsShowingMenu] = useState(false);
-  const showMenu = () => setIsShowingMenu(true);
-  const hideMenu = () => setIsShowingMenu(false);
+  const showMenu = () => dispatch(showOverlay(CONSTANTS.OVERLAYS.MENU));
+  const hideMenu = () => dispatch(hideOverlay());
+
+  let overlayJsx;
+
+  switch (currentlyDisplayedOverlay) {
+    case CONSTANTS.OVERLAYS.SCORES:
+      overlayJsx = <ScoresPopover hideScores={hideScores} />;
+      break;
+    case CONSTANTS.OVERLAYS.RULES:
+      overlayJsx = <RulesPopover hideRules={hideRules} />;
+      break;
+    case CONSTANTS.OVERLAYS.MENU:
+      overlayJsx = <MenuPopover hideMenu={hideMenu} />;
+      break;
+
+    default:
+      overlayJsx = null;
+  }
 
   return (
     <>
@@ -148,9 +171,7 @@ const Header = () => {
         {avatarUrl && <ProfileImage src={avatarUrl} />}
         {name && <UserName>{name}</UserName>}
       </Container>
-      {isShowingScores ? <ScoresPopover hideScores={hideScores} /> : null}
-      {isShowingRules ? <RulesPopover hideRules={hideRules} /> : null}
-      {isShowingMenu ? <MenuPopover hideMenu={hideMenu} /> : null}
+      {overlayJsx}
     </>
   );
 };

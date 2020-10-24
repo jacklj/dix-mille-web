@@ -36,9 +36,16 @@ const ROLL_STATES = {
   STICKED_AND_WON: 'STICKED_AND_WON',
 };
 
+const OVERLAYS = {
+  SCORES: 'SCORES',
+  RULES: 'RULES',
+  MENU: 'MENU',
+};
+
 export default {
   diceGroupTypes,
   TURN_STATES,
   ROLL_STATES,
   ROLL_TYPES,
+  OVERLAYS,
 };

@@ -5,3 +5,6 @@ export const selectIsRollDiceCloudFunctionRunning = (state) =>
 
 export const selectWindowInnerHeight = (state) => state.ui.innerHeight;
 export const selectWindowInnerWidth = (state) => state.ui.innerWidth;
+
+export const selectCurrentlyDisplayedOverlay = (state) =>
+  state.ui.currentlyDisplayedOverlay;

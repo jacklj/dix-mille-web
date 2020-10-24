@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { selectMyAvatarUrl, selectHasGameStarted } from 'redux/game/selectors';
 import { selectName } from 'redux/auth/selectors';
-import diceIcon from './diceIcon.png';
+import { showOverlay, hideOverlay } from 'redux/ui/slice';
+import CONSTANTS from 'services/constants';
+
 import HeaderButton from './HeaderButton';
-import ScoresPopover from './ScoresPopover';
-import RulesPopover from './RulesPopover';
 import TrophyIcon from './TrophyIcon';
 import ScrollIcon from './ScrollIcon';
 import QuitIcon from './QuitIcon';
@@ -43,17 +43,15 @@ const UserName = styled.div`
 `;
 
 const MenuPopover = ({ hideMenu }) => {
+  const dispatch = useDispatch();
+
   const name = useSelector(selectName);
   const avatarUrl = useSelector(selectMyAvatarUrl);
   const hasGameStarted = useSelector(selectHasGameStarted);
 
-  const [isShowingScores, setIsShowingScores] = useState(false);
-  const showScores = () => setIsShowingScores(true);
-  const hideScores = () => setIsShowingScores(false);
+  const showScores = () => dispatch(showOverlay(CONSTANTS.OVERLAYS.SCORES));
 
-  const [isShowingRules, setIsShowingRules] = useState(false);
-  const showRules = () => setIsShowingRules(true);
-  const hideRules = () => setIsShowingRules(false);
+  const showRules = () => dispatch(showOverlay(CONSTANTS.OVERLAYS.RULES));
 
   const quitGame = () => alert('quitting game');
 

@@ -7,6 +7,7 @@ const uiSlice = createSlice({
     isRollDiceCloudFunctionRunning: false,
     innerHeight: undefined,
     innerWidth: undefined,
+    currentlyDisplayedOverlay: null,
   },
   reducers: {
     startedShakingCupLocal(state, action) {
@@ -40,6 +41,13 @@ const uiSlice = createSlice({
       state.innerHeight = innerHeight;
       state.innerWidth = innerWidth;
     },
+    showOverlay(state, action) {
+      const { payload } = action;
+      state.currentlyDisplayedOverlay = payload;
+    },
+    hideOverlay(state, action) {
+      state.currentlyDisplayedOverlay = null;
+    },
   },
 });
 
@@ -48,6 +56,8 @@ export const {
   stoppedShakingCupLocal,
   rollDiceCloudFunctionReturned,
   windowResized,
+  showOverlay,
+  hideOverlay,
 } = uiSlice.actions;
 
 export default uiSlice.reducer;
