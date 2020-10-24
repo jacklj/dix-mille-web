@@ -11,6 +11,7 @@ import 'firebase/database';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Header from 'components/Header';
+import Overlays from 'components/Overlays';
 import Start from 'pages/Start';
 import SinglePlayerStart from 'pages/SinglePlayerStart';
 import MultiplayerStart from 'pages/MultiplayerStart';
@@ -103,6 +104,7 @@ function App() {
       {startedAt && <Redirect to="/gameScreen" />}
       <TopLevelContainer>
         <Header />
+        <Overlays />
 
         {/* A <Switch> looks through its children <Route>s and
           renders the first one that matches the current URL. */}

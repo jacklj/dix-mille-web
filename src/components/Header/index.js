@@ -5,19 +5,17 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { selectMyAvatarUrl, selectHasGameStarted } from 'redux/game/selectors';
 import { selectName } from 'redux/auth/selectors';
-import { showOverlay, hideOverlay } from 'redux/ui/slice';
-import { selectCurrentlyDisplayedOverlay } from 'redux/ui/selectors';
+import { showOverlay } from 'redux/ui/slice';
+
 import CONSTANTS from 'services/constants';
 
 import diceIcon from './diceIcon.png';
 import HeaderButton from './HeaderButton';
-import ScoresPopover from './ScoresPopover';
-import RulesPopover from './RulesPopover';
+
 import TrophyIcon from './TrophyIcon';
 import ScrollIcon from './ScrollIcon';
 import MenuIcon from './MenuIcon';
 import SoundOnOffButton from './SoundOnOffButton';
-import MenuPopover from './MenuPopover';
 
 const Container = styled.header`
   flex: 0 1 auto; // so it doesn't look too bad on safari
@@ -114,65 +112,39 @@ const UserName = styled.div`
 
 const Header = () => {
   const dispatch = useDispatch();
-  const currentlyDisplayedOverlay = useSelector(
-    selectCurrentlyDisplayedOverlay,
-  );
 
   const name = useSelector(selectName);
   const avatarUrl = useSelector(selectMyAvatarUrl);
   const hasGameStarted = useSelector(selectHasGameStarted);
 
   const showScores = () => dispatch(showOverlay(CONSTANTS.OVERLAYS.SCORES));
-  const hideScores = () => dispatch(hideOverlay());
 
   const showRules = () => dispatch(showOverlay(CONSTANTS.OVERLAYS.RULES));
-  const hideRules = () => dispatch(hideOverlay());
 
   const showMenu = () => dispatch(showOverlay(CONSTANTS.OVERLAYS.MENU));
-  const hideMenu = () => dispatch(hideOverlay());
-
-  let overlayJsx;
-
-  switch (currentlyDisplayedOverlay) {
-    case CONSTANTS.OVERLAYS.SCORES:
-      overlayJsx = <ScoresPopover hideScores={hideScores} />;
-      break;
-    case CONSTANTS.OVERLAYS.RULES:
-      overlayJsx = <RulesPopover hideRules={hideRules} />;
-      break;
-    case CONSTANTS.OVERLAYS.MENU:
-      overlayJsx = <MenuPopover hideMenu={hideMenu} />;
-      break;
-
-    default:
-      overlayJsx = null;
-  }
 
   return (
-    <>
-      <Container>
-        <DiceIcon src={diceIcon} />
-        <TitleText>
-          <Yellow>D</Yellow>ix <Yellow>M</Yellow>ille
-        </TitleText>
+    <Container>
+      <DiceIcon src={diceIcon} />
+      <TitleText>
+        <Yellow>D</Yellow>ix <Yellow>M</Yellow>ille
+      </TitleText>
 
-        <SoundOnOffButton />
-        {hasGameStarted ? (
-          <HeaderButton onClick={showScores} Icon={TrophyIcon}>
-            Scores
-          </HeaderButton>
-        ) : null}
-        <HeaderButton onClick={showRules} Icon={ScrollIcon}>
-          Rules
+      <SoundOnOffButton />
+      {hasGameStarted ? (
+        <HeaderButton onClick={showScores} Icon={TrophyIcon}>
+          Scores
         </HeaderButton>
-        <HeaderButton onClick={showMenu} Icon={MenuIcon}>
-          Menu
-        </HeaderButton>
-        {avatarUrl && <ProfileImage src={avatarUrl} />}
-        {name && <UserName>{name}</UserName>}
-      </Container>
-      {overlayJsx}
-    </>
+      ) : null}
+      <HeaderButton onClick={showRules} Icon={ScrollIcon}>
+        Rules
+      </HeaderButton>
+      <HeaderButton onClick={showMenu} Icon={MenuIcon}>
+        Menu
+      </HeaderButton>
+      {avatarUrl && <ProfileImage src={avatarUrl} />}
+      {name && <UserName>{name}</UserName>}
+    </Container>
   );
 };
 

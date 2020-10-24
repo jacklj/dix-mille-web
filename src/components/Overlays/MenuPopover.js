@@ -5,14 +5,14 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { selectMyAvatarUrl, selectHasGameStarted } from 'redux/game/selectors';
 import { selectName } from 'redux/auth/selectors';
-import { showOverlay, hideOverlay } from 'redux/ui/slice';
+import { showOverlay } from 'redux/ui/slice';
 import CONSTANTS from 'services/constants';
 
-import HeaderButton from './HeaderButton';
-import TrophyIcon from './TrophyIcon';
-import ScrollIcon from './ScrollIcon';
-import QuitIcon from './QuitIcon';
-import SoundOnOffButton from './SoundOnOffButton';
+import HeaderButton from 'components/Header/HeaderButton';
+import TrophyIcon from 'components/Header/TrophyIcon';
+import ScrollIcon from 'components/Header/ScrollIcon';
+import QuitIcon from 'components/Header/QuitIcon';
+import SoundOnOffButton from 'components/Header/SoundOnOffButton';
 
 import Overlay from 'components/Overlay';
 
