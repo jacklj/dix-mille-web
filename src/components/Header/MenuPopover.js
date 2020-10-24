@@ -1,34 +1,71 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+
+import { useSelector } from 'react-redux';
+
+import { selectMyAvatarUrl, selectHasGameStarted } from 'redux/game/selectors';
+import { selectName } from 'redux/auth/selectors';
+import diceIcon from './diceIcon.png';
+import HeaderButton from './HeaderButton';
+import ScoresPopover from './ScoresPopover';
+import RulesPopover from './RulesPopover';
+import TrophyIcon from './TrophyIcon';
+import ScrollIcon from './ScrollIcon';
+import MenuIcon from './MenuIcon';
+import SoundOnOffButton from './SoundOnOffButton';
 
 import Overlay from 'components/Overlay';
 
-const H2 = styled.h2`
-  font-family: Limelight;
-  font-size: 3em;
-  text-transform: uppercase;
+const ProfileImage = styled.img`
+  flex-shrink: 0;
+  flex-grow: 0;
+  flex-basis: auto;
 
-  margin-bottom: 20px;
-  color: rgb(180, 176, 85);
-
-  &:first-child {
-    margin-top: 0;
-  }
+  height: 20vh;
+  min-height: 26px;
+  max-height: 200px;
+  width: auto;
 `;
 
-const P = styled.p`
-  color: white;
-  max-width: 700px;
-  padding-left: 10px;
-  padding-right: 10px;
-  font-family: Palatino;
-  font-size: 1.1em;
+const UserName = styled.div`
+  flex-grow: 0;
+  flex-basis: auto;
+  flex-shrink: 1;
+
+  overflow: hidden;
+
+  margin-bottom: 6vh;
+
+  font-size: 2em;
+  font-family: Limelight;
+
+  color: #fff;
 `;
 
 const MenuPopover = ({ hideMenu }) => {
+  const name = useSelector(selectName);
+  const avatarUrl = useSelector(selectMyAvatarUrl);
+  const hasGameStarted = useSelector(selectHasGameStarted);
+
+  const [isShowingScores, setIsShowingScores] = useState(false);
+  const showScores = () => setIsShowingScores(true);
+  const hideScores = () => setIsShowingScores(false);
+
+  const [isShowingRules, setIsShowingRules] = useState(false);
+  const showRules = () => setIsShowingRules(true);
+  const hideRules = () => setIsShowingRules(false);
+
   return (
     <Overlay closeButton hide={hideMenu}>
-      <H2>hello</H2>
+      {avatarUrl && <ProfileImage src={avatarUrl} />}
+      {name && <UserName>{name}</UserName>}
+      <HeaderButton onClick={showScores} Icon={TrophyIcon} large>
+        Scores
+      </HeaderButton>
+      <HeaderButton onClick={showRules} Icon={ScrollIcon} large>
+        Rules
+      </HeaderButton>
+      <SoundOnOffButton large />
     </Overlay>
   );
 };

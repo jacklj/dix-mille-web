@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const Colours = {
   disabled: 'rgb(180, 176, 85)',
-  normal: '#ffdc73',
+  normal: '#fff',
   hover: '#ffcf40',
   active: '#ffbf00',
 };
@@ -13,14 +13,14 @@ const Container = styled.div`
   flex-grow: 0;
   flex-basis: auto;
 
-  margin-right: 2vw;
+  ${(props) => (props.large ? 'margin-bottom: 10vh;' : 'margin-right: 2vw;')}
 
   display: flex;
   flex-direction: row;
   align-items: center;
 
-  color: white;
-  font-size: 0.6em;
+  color: ${Colours.normal};
+  font-size: ${(props) => (props.large ? '3em' : '0.6em')};
   font-family: Limelight;
   text-transform: uppercase;
 
@@ -28,14 +28,18 @@ const Container = styled.div`
 
   // svg
   & svg {
-    height: 1em;
+    height: ${(props) => (props.large ? '0.6em' : '1em')};
     width: auto;
-    margin-right: 4px;
+    margin-right: ${(props) => (props.large ? '10px' : '4px')};
     margin-top: -2px; // center it relative to text
 
+    ${(props) =>
+      !props.large &&
+      `
     @media (max-width: 380px) {
       display: none;
     }
+    `}
   }
 
   &:hover {
@@ -56,12 +60,13 @@ const Container = styled.div`
 
   &:last-child {
     margin-right: 0;
+    margin-bottom: 0;
   }
 `;
 
-const HeaderButton = ({ Icon, onClick, children }) => {
+const HeaderButton = ({ Icon, onClick, children, large = false }) => {
   return (
-    <Container onClick={onClick}>
+    <Container onClick={onClick} large={large}>
       {Icon && <Icon />}
       {children}
     </Container>

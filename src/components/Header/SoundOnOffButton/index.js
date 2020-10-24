@@ -14,10 +14,10 @@ const Container = styled.div`
   flex-grow: 0;
   flex-basis: auto;
 
-  margin-right: 2vw;
+  ${(props) => (props.large ? 'margin-bottom: 10vh;' : 'margin-right: 2vw;')}
 
   --color: ${(props) => (props.isOn ? '#fff' : '#ccc')};
-  --size: 25px;
+  --size: ${(props) => (props.large ? '50px' : '25px')};
   --border: calc(var(--size) / 25);
 
   width: var(--size);
@@ -80,7 +80,7 @@ const SoundWave = styled.div`
   `}
 `;
 
-const SoundOnOffButton = () => {
+const SoundOnOffButton = ({ large = false }) => {
   const isOn = useSelector(selectIsSoundOn);
   const dispatch = useDispatch();
   const [playSwitchOn] = useSound(switchOn, { volume: 0.4 });
@@ -97,7 +97,7 @@ const SoundOnOffButton = () => {
   };
 
   return (
-    <Container isOn={isOn} onClick={toggleSound}>
+    <Container isOn={isOn} onClick={toggleSound} large={large}>
       <VolumeIcon />
       <SoundWave isOn={isOn} />
       <SoundWave isOn={isOn} />
