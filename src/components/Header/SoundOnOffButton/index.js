@@ -14,7 +14,7 @@ const Container = styled.div`
   flex-grow: 0;
   flex-basis: auto;
 
-  ${(props) => (props.large ? 'margin-bottom: 10vh;' : 'margin-right: 2vw;')}
+  ${(props) => (props.large ? 'margin-bottom: 6vh;' : 'margin-right: 2vw;')}
 
   --color: ${(props) => (props.isOn ? '#fff' : '#ccc')};
   --size: ${(props) => (props.large ? '50px' : '25px')};

@@ -13,7 +13,7 @@ const Container = styled.div`
   flex-grow: 0;
   flex-basis: auto;
 
-  ${(props) => (props.large ? 'margin-bottom: 10vh;' : 'margin-right: 2vw;')}
+  ${(props) => (props.large ? 'margin-bottom: 6vh;' : 'margin-right: 2vw;')}
 
   display: flex;
   flex-direction: row;

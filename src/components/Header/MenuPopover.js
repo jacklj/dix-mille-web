@@ -11,7 +11,7 @@ import ScoresPopover from './ScoresPopover';
 import RulesPopover from './RulesPopover';
 import TrophyIcon from './TrophyIcon';
 import ScrollIcon from './ScrollIcon';
-import MenuIcon from './MenuIcon';
+import QuitIcon from './QuitIcon';
 import SoundOnOffButton from './SoundOnOffButton';
 
 import Overlay from 'components/Overlay';
@@ -22,7 +22,7 @@ const ProfileImage = styled.img`
   flex-basis: auto;
 
   height: 20vh;
-  min-height: 26px;
+  min-height: 50px;
   max-height: 200px;
   width: auto;
 `;
@@ -55,6 +55,8 @@ const MenuPopover = ({ hideMenu }) => {
   const showRules = () => setIsShowingRules(true);
   const hideRules = () => setIsShowingRules(false);
 
+  const quitGame = () => alert('quitting game');
+
   return (
     <Overlay closeButton hide={hideMenu}>
       {avatarUrl && <ProfileImage src={avatarUrl} />}
@@ -66,6 +68,9 @@ const MenuPopover = ({ hideMenu }) => {
         Rules
       </HeaderButton>
       <SoundOnOffButton large />
+      <HeaderButton onClick={quitGame} Icon={QuitIcon} large>
+        Leave Game
+      </HeaderButton>
     </Overlay>
   );
 };
