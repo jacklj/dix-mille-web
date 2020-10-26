@@ -130,20 +130,24 @@ const Header = () => {
         <Yellow>D</Yellow>ix <Yellow>M</Yellow>ille
       </TitleText>
 
-      <SoundOnOffButton />
+      {!hasGameStarted && <SoundOnOffButton />}
       {hasGameStarted ? (
         <HeaderButton onClick={showScores} Icon={TrophyIcon}>
           Scores
         </HeaderButton>
       ) : null}
-      <HeaderButton onClick={showRules} Icon={ScrollIcon}>
-        Rules
-      </HeaderButton>
-      <HeaderButton onClick={showMenu} Icon={MenuIcon}>
-        Menu
-      </HeaderButton>
-      {avatarUrl && <ProfileImage src={avatarUrl} />}
-      {name && <UserName>{name}</UserName>}
+      {!hasGameStarted && (
+        <HeaderButton onClick={showRules} Icon={ScrollIcon}>
+          Rules
+        </HeaderButton>
+      )}
+      {hasGameStarted && (
+        <HeaderButton onClick={showMenu} Icon={MenuIcon}>
+          Menu
+        </HeaderButton>
+      )}
+      {/* {avatarUrl && <ProfileImage src={avatarUrl} />}
+      {name && <UserName>{name}</UserName>} */}
     </Container>
   );
 };

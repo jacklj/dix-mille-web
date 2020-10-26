@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 
 import {
-  selectPlayerNamesInTurnOrder,
+  selectPlayersInTurnOrder,
   selectAllTurnScores,
   selectTotalScores,
 } from 'redux/game/selectors';
@@ -42,6 +42,24 @@ const Th = styled.th`
   &:last-child {
     border-right: none;
   }
+
+  // vertical-align: middle;
+`;
+
+const ThInnerContainer = styled.div`
+  display: flex;
+
+  flex-direction: row;
+  align-items: center;
+
+  padding-bottom: 5px;
+`;
+
+const ProfileImage = styled.img`
+  height: 30px;
+  width: auto;
+  display: inline-block;
+  margin-right: 6px;
 `;
 
 const Tr = styled.tr`
@@ -89,7 +107,7 @@ const Td = styled.td`
 // const totalScores = [3908, 4089, 3094, 2234, 4000, 3000, 2000];
 
 const ScoresTable = ({ className }) => {
-  const players = useSelector(selectPlayerNamesInTurnOrder);
+  const players = useSelector(selectPlayersInTurnOrder);
   const turnScores = useSelector(selectAllTurnScores);
   const totalScores = useSelector(selectTotalScores);
 
@@ -99,7 +117,15 @@ const ScoresTable = ({ className }) => {
       <thead>
         <Tr>
           <Th key="empty"></Th>
-          {players && players.map((name) => <Th key={name}>{name}</Th>)}
+          {players &&
+            players.map((player) => (
+              <Th key={player.uid}>
+                <ThInnerContainer>
+                  <ProfileImage src={player.avatarUrl} title="User's avatar" />
+                  <span>{player.name}</span>
+                </ThInnerContainer>
+              </Th>
+            ))}
         </Tr>
       </thead>
       <tbody>

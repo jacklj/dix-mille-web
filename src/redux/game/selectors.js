@@ -688,7 +688,7 @@ export const selectHasSomeoneWon = (state) => {
 };
 
 // scores table
-export const selectPlayerNamesInTurnOrder = (state) => {
+export const selectPlayersInTurnOrder = (state) => {
   const turnOrder = selectPlayerTurnOrder(state);
 
   const allPlayers = selectPlayers(state);
@@ -697,7 +697,14 @@ export const selectPlayerNamesInTurnOrder = (state) => {
     return undefined;
   }
 
-  return turnOrder.map((uid) => allPlayers[uid].name);
+  return turnOrder.map((uid) => {
+    const playerObj = allPlayers[uid];
+    const avatarUrl = selectAvatarUrl(playerObj.avatarId)(state);
+    return {
+      ...playerObj,
+      avatarUrl,
+    };
+  });
 };
 
 // const turnScores = {
