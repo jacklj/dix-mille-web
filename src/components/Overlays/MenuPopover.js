@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { selectMyAvatarUrl, selectHasGameStarted } from 'redux/game/selectors';
+import { selectMyAvatarUrl } from 'redux/game/selectors';
 import { selectName } from 'redux/auth/selectors';
 import { showOverlay } from 'redux/ui/slice';
 import CONSTANTS from 'services/constants';
@@ -48,7 +48,6 @@ const MenuPopover = ({ hideMenu }) => {
 
   const name = useSelector(selectName);
   const avatarUrl = useSelector(selectMyAvatarUrl);
-  const hasGameStarted = useSelector(selectHasGameStarted);
 
   const showScores = () => dispatch(showOverlay(CONSTANTS.OVERLAYS.SCORES));
 

@@ -3,8 +3,7 @@ import styled from 'styled-components';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { selectMyAvatarUrl, selectHasGameStarted } from 'redux/game/selectors';
-import { selectName } from 'redux/auth/selectors';
+import { selectHasGameStarted } from 'redux/game/selectors';
 import { showOverlay } from 'redux/ui/slice';
 
 import CONSTANTS from 'services/constants';
@@ -71,50 +70,8 @@ const Yellow = styled.span`
   color: #ffbf00;
 `;
 
-const ProfileImage = styled.img`
-  flex-shrink: 0;
-  flex-grow: 0;
-  flex-basis: auto;
-
-  height: 7vh;
-  min-height: 26px;
-  max-height: 50px;
-  width: auto;
-
-  @media (max-width: 470px) {
-    // dont display user avatar or name when narrow viewport
-    display: none;
-  }
-`;
-
-const UserName = styled.div`
-  flex-grow: 0;
-  flex-basis: auto;
-  flex-shrink: 1;
-
-  overflow: hidden;
-
-  margin-left: 7px; // put left padding on UserName, rather than right padding on ProfileImage, in case
-  // ProfileImage isn't rendered for some reason - then there will still be a margin between UserName
-  // and the "Dix Mille" title text
-
-  text-overflow: ellipsis;
-  white-space: nowrap;
-
-  font-size: 0.6em;
-  font-family: Limelight;
-
-  @media (max-width: 470px) {
-    // dont display user avatar or name when narrow viewport
-    display: none;
-  }
-`;
-
 const Header = () => {
   const dispatch = useDispatch();
-
-  const name = useSelector(selectName);
-  const avatarUrl = useSelector(selectMyAvatarUrl);
   const hasGameStarted = useSelector(selectHasGameStarted);
 
   const showScores = () => dispatch(showOverlay(CONSTANTS.OVERLAYS.SCORES));
