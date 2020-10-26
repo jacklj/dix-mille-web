@@ -2,12 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import { selectMyAvatarUrl, selectHasGameStarted } from 'redux/game/selectors';
 import { selectName } from 'redux/auth/selectors';
 import { showOverlay } from 'redux/ui/slice';
 import CONSTANTS from 'services/constants';
-
 import HeaderButton from 'components/Header/HeaderButton';
 import TrophyIcon from 'components/Header/TrophyIcon';
 import ScrollIcon from 'components/Header/ScrollIcon';
@@ -44,6 +44,7 @@ const UserName = styled.div`
 
 const MenuPopover = ({ hideMenu }) => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const name = useSelector(selectName);
   const avatarUrl = useSelector(selectMyAvatarUrl);
@@ -53,7 +54,11 @@ const MenuPopover = ({ hideMenu }) => {
 
   const showRules = () => dispatch(showOverlay(CONSTANTS.OVERLAYS.RULES));
 
-  const quitGame = () => alert('quitting game');
+  const quitGame = () => {
+    history.push('/');
+    hideMenu();
+    // todo unsubscribe from game subscriptions, clear store, do db changes (cloud function?)
+  };
 
   return (
     <Overlay closeButton hide={hideMenu}>

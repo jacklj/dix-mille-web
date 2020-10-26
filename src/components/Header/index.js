@@ -142,7 +142,7 @@ const Header = () => {
         </HeaderButton>
       )}
       {hasGameStarted && (
-        <HeaderButton onClick={showMenu} Icon={MenuIcon}>
+        <HeaderButton onClick={showMenu} Icon={MenuIcon} hideTextNotIcon>
           Menu
         </HeaderButton>
       )}

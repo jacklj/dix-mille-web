@@ -13,14 +13,14 @@ const Container = styled.div`
   flex-grow: 0;
   flex-basis: auto;
 
-  ${(props) => (props.large ? 'margin-bottom: 6vh;' : 'margin-right: 2vw;')}
+  ${(props) => (props.large ? 'margin-bottom: 5vh;' : 'margin-right: 2vw;')}
 
   display: flex;
   flex-direction: row;
   align-items: center;
 
   color: ${Colours.normal};
-  font-size: ${(props) => (props.large ? '3em' : '0.6em')};
+  font-size: ${(props) => (props.large ? '2.6em' : '0.6em')};
   font-family: Limelight;
   text-transform: uppercase;
 
@@ -32,13 +32,26 @@ const Container = styled.div`
     width: auto;
     margin-right: ${(props) => (props.large ? '10px' : '4px')};
     margin-top: -2px; // center it relative to text
-
     ${(props) =>
       !props.large &&
+      !props.hideTextNotIcon &&
       `
-    @media (max-width: 380px) {
-      display: none;
-    }
+      @media (max-width: 380px) {
+  
+          display: none;
+      }
+    `}
+  }
+
+  & span {
+    ${(props) =>
+      !props.large &&
+      props.hideTextNotIcon &&
+      `
+      @media (max-width: 380px) {
+  
+          display: none;
+      }
     `}
   }
 
@@ -64,11 +77,20 @@ const Container = styled.div`
   }
 `;
 
-const HeaderButton = ({ Icon, onClick, children, large = false }) => {
+const HeaderButton = ({
+  Icon,
+  onClick,
+  children,
+  large = false,
+  hideTextNotIcon = false,
+}) => {
   return (
-    <Container onClick={onClick} large={large}>
+    <Container
+      onClick={onClick}
+      large={large}
+      hideTextNotIcon={hideTextNotIcon}>
       {Icon && <Icon />}
-      {children}
+      <span>{children}</span>
     </Container>
   );
 };
