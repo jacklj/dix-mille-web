@@ -1,10 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-
+import * as firebase from 'firebase/app';
+import 'firebase/functions';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { selectMyAvatarUrl } from 'redux/game/selectors';
+import { selectGameId, selectMyAvatarUrl } from 'redux/game/selectors';
 import { selectName } from 'redux/auth/selectors';
 import { showOverlay } from 'redux/ui/slice';
 import CONSTANTS from 'services/constants';
@@ -47,15 +48,19 @@ const MenuPopover = ({ hideMenu }) => {
   const history = useHistory();
 
   const name = useSelector(selectName);
+  const gameId = useSelector(selectGameId);
   const avatarUrl = useSelector(selectMyAvatarUrl);
 
   const showScores = () => dispatch(showOverlay(CONSTANTS.OVERLAYS.SCORES));
 
   const showRules = () => dispatch(showOverlay(CONSTANTS.OVERLAYS.RULES));
 
-  const quitGame = () => {
     history.push('/');
     hideMenu();
+  const quitGame = async () => {
+    await firebase.functions().httpsCallable('leaveGame')({
+      gameId,
+    });
     // todo unsubscribe from game subscriptions, clear store, do db changes (cloud function?)
   };
 
