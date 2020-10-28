@@ -701,6 +701,7 @@ export const selectPlayersInTurnOrder = (state) => {
     const playerObj = allPlayers[uid];
     const avatarUrl = selectAvatarUrl(playerObj.avatarId)(state);
     return {
+      uid,
       ...playerObj,
       avatarUrl,
     };
