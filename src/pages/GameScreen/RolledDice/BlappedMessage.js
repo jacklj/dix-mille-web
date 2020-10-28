@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled, { keyframes } from 'styled-components';
 import * as firebase from 'firebase/app';
 import 'firebase/functions';
@@ -99,6 +99,15 @@ const BlappedMessage = () => {
   const randomIndex = Math.floor(Math.random() * blapNames.length);
   const randomSpriteName = blapNames[randomIndex];
 
+  const gameIdRef = useRef(gameId);
+  useEffect(() => {
+    gameIdRef.current = gameId;
+
+    return () => {
+      gameIdRef.current = null;
+    };
+  }, [gameId]);
+
   const endTurnAfterBlap = async () => {
     if (!isMyTurn) {
       console.log("not my turn - don't end turn after blap");
@@ -106,6 +115,18 @@ const BlappedMessage = () => {
     }
 
     await delay(3000); // wait 3 seconds after end of blap sound end
+
+    // check to make sure we still want to do this - it's possible that
+    // the user rage quit the game immediately after blapping, in which case
+    // the endTUrnAfterBlap cloud function returns with a 400 error, which
+    // the user sees in an ugly alert().
+    // We need to use the `gameIdRef` ref so that we have the up to date value - if
+    // we just used the gameId selected value, it would still have the old value.
+
+    if (!gameIdRef.current) {
+      // user has just quit the game
+      return;
+    }
 
     try {
       await firebase.functions().httpsCallable('endTurnAfterBlap')({
