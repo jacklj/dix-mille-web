@@ -29,8 +29,11 @@ const MultiplayerStart = () => {
     // NONE - doesnt persist at all.
     await firebase
       .auth()
-      .setPersistence(firebase.auth.Auth.Persistence.SESSION);
-
+      .setPersistence(
+        process.env.NODE_ENV === 'development'
+          ? firebase.auth.Auth.Persistence.SESSION
+          : firebase.auth.Auth.Persistence.LOCAL,
+      );
     const result = await firebase.auth().signInAnonymously();
     const { additionalUserInfo, user } = result;
     const { uid } = user;

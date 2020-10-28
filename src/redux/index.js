@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import { persistStore, persistReducer } from 'redux-persist';
-// import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
-import storage from 'redux-persist/lib/storage/session'; // session storage - each open tab is a separate session https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage
+import { default as localStorage } from 'redux-persist/lib/storage'; // defaults to localStorage for web
+import { default as sessionStorage } from 'redux-persist/lib/storage/session'; // session storage - each open tab is a separate session https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage
 
 import authReducer from './auth/slice';
 import gameReducer from './game/slice';
@@ -22,7 +22,8 @@ const rootReducer = combineReducers({
 
 const persistConfig = {
   key: 'root',
-  storage,
+  storage:
+    process.env.NODE_ENV === 'development' ? sessionStorage : localStorage,
   blacklist: ['ui'],
 };
 
