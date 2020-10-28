@@ -55,12 +55,12 @@ const MenuPopover = ({ hideMenu }) => {
 
   const showRules = () => dispatch(showOverlay(CONSTANTS.OVERLAYS.RULES));
 
-    history.push('/');
-    hideMenu();
   const quitGame = async () => {
     await firebase.functions().httpsCallable('leaveGame')({
       gameId,
     });
+    history.push('/');
+    hideMenu();
     // todo unsubscribe from game subscriptions, clear store, do db changes (cloud function?)
   };
 
