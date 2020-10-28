@@ -75,7 +75,7 @@ function App() {
       });
     }
 
-    return () => gameRef.off(); // unsubscriber
+    return () => gameRef.off(); // unsubscriber - if you finish or quit a game, will hopefully unsubscribe and then not resubscribe!
   }, [dispatch, gameId, uid]);
 
   useEffect(() => {

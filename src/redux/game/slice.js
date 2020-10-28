@@ -5,6 +5,8 @@ import {
   loggedInAndJoinedGame,
 } from 'redux/auth/slice';
 
+import { userHasLeftGame } from './moreActions';
+
 const gameSlice = createSlice({
   name: 'game',
   initialState: {
@@ -48,6 +50,18 @@ const gameSlice = createSlice({
       // N.B. seems mutable but isnt, due to immer.js
       state.gameId = gameId;
       state.gameCode = gameCode;
+    },
+    [userHasLeftGame]: (state) => {
+      state.gameId = undefined;
+      state.gameCode = undefined;
+      state.gameCreator = undefined;
+      state.players = undefined;
+      state.startedAt = undefined;
+      state.currentRound = undefined;
+      state.currentTurn = undefined;
+      state.playerTurnOrder = undefined;
+      state.rounds = undefined;
+      state.winner = undefined;
     },
   },
 });

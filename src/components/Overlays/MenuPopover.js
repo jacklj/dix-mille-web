@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import { selectGameId, selectMyAvatarUrl } from 'redux/game/selectors';
+import { userHasLeftGame } from 'redux/game/moreActions';
 import { selectName } from 'redux/auth/selectors';
 import { showOverlay } from 'redux/ui/slice';
 import CONSTANTS from 'services/constants';
@@ -60,6 +61,7 @@ const MenuPopover = ({ hideMenu }) => {
       gameId,
     });
     history.push('/');
+    dispatch(userHasLeftGame());
     hideMenu();
     // todo unsubscribe from game subscriptions, clear store, do db changes (cloud function?)
   };
@@ -76,7 +78,7 @@ const MenuPopover = ({ hideMenu }) => {
       </HeaderButton>
       <SoundOnOffButton large />
       <HeaderButton onClick={quitGame} Icon={QuitIcon} large>
-        Leave Game
+        Quit Game
       </HeaderButton>
     </Overlay>
   );

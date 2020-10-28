@@ -19,7 +19,7 @@ export const selectGameStartedAt = (state) => state.game.startedAt;
 
 export const selectHasGameStarted = (state) => !!state.game.startedAt;
 
-export const selectPlayer = (uid) => (state) => state.game.players[uid];
+export const selectPlayer = (uid) => (state) => state.game.players?.[uid];
 
 const selectPlayers = (state) => state.game.players;
 
@@ -142,9 +142,7 @@ export const selectCurrentTurnPlayerName = (state) => {
 
   const player = selectPlayer(uid)(state);
 
-  const { name } = player;
-
-  return name;
+  return player?.name;
 };
 
 export const isItMyTurn = (state) => {
@@ -162,13 +160,9 @@ const selectCurrentRollObj = (state) => {
     rounds,
   } = state.game;
 
-  const currentRoundObj = rounds[currentRoundId];
+  const currentRoundObj = rounds?.[currentRoundId];
 
-  if (!currentRoundObj || !currentRoundObj.turns) {
-    return undefined;
-  }
-
-  const currentTurnObj = currentRoundObj.turns[currentTurnId];
+  const currentTurnObj = currentRoundObj?.turns?.[currentTurnId];
 
   if (!currentTurnObj) {
     return undefined;
@@ -192,13 +186,13 @@ export const selectCurrentRollNumber = (state) => {
     rounds,
   } = state.game;
 
-  const currentRoundObj = rounds[currentRoundId];
+  const currentRoundObj = rounds?.[currentRoundId];
 
   if (!currentRoundObj || !currentRoundObj.turns) {
     return undefined;
   }
 
-  const currentTurnObj = currentRoundObj.turns[currentTurnId];
+  const currentTurnObj = currentRoundObj?.turns?.[currentTurnId];
 
   if (!currentTurnObj) {
     return undefined;

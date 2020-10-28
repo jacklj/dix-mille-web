@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+import { userHasLeftGame } from 'redux/game/moreActions';
+
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
@@ -32,6 +34,13 @@ const authSlice = createSlice({
       const { uid, type } = action.payload;
       state.uid = uid;
       state.type = type;
+    },
+  },
+  extraReducers: {
+    [userHasLeftGame]: (state) => {
+      state.name = undefined;
+      state.avatarId = undefined;
+      state.type = undefined;
     },
   },
 });
