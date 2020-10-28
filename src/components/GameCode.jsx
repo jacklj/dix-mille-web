@@ -10,11 +10,19 @@ import { Button } from 'components/forms';
 
 const Container = styled.div`
   align-self: center; // just this component is "align-items centered" within the parent
+  flex-shrink: 0; // prevents Safari freaking out
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin-bottom: 20px;
+`;
+
+const CodeContainer = styled.div`
   display: flex;
   align-items: baseline;
-  margin-bottom: 20px;
-
-  flex-shrink: 0; // prevents Safari freaking out
+  margin-bottom: 3px;
 `;
 
 const Code = styled.span`
@@ -50,18 +58,28 @@ const Text = styled.div`
   font-size: 1.2em;
 `;
 
+const HelpText = styled.p`
+  margin: 0;
+  font-size: 0.8em;
+`;
+
 const GameCode = () => {
   const gameCode = useSelector(selectGameCode);
   const [isCopied, setIsCopied] = useState(false);
 
   return (
     <Container>
-      <Text>
-        Game code: <Code>{gameCode}</Code>
-      </Text>
-      <CopyToClipboard text={gameCode} onCopy={() => setIsCopied(true)}>
-        <CustomButton>{isCopied ? '✅ Copied.' : 'Copy'}</CustomButton>
-      </CopyToClipboard>
+      <CodeContainer>
+        <Text>
+          Game code: <Code>{gameCode}</Code>
+        </Text>
+        <CopyToClipboard text={gameCode} onCopy={() => setIsCopied(true)}>
+          <CustomButton>{isCopied ? '✅ Copied.' : 'Copy'}</CustomButton>
+        </CopyToClipboard>
+      </CodeContainer>
+      <HelpText>
+        (share this code with friends so they can join the game)
+      </HelpText>
     </Container>
   );
 };

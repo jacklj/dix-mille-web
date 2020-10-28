@@ -134,7 +134,9 @@ const ScoresTable = ({ className }) => {
             <Tr key={`round${r}`}>
               <Td key={`round${r}.title`}>Round {r + 1}</Td>
               {round.map((turnScore, t) => (
-                <Td key={`round${r}.turn${t}`}>{turnScore}</Td>
+                <Td key={`round${r}.turn${t}`}>
+                  {turnScore === 0 ? 'BLAP!' : turnScore}
+                </Td>
               ))}
             </Tr>
           ))}
