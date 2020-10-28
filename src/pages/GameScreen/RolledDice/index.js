@@ -122,7 +122,6 @@ const RolledDice = () => {
     );
 
     const updates = {};
-
     // mark dice as banked
     updates[`bankedDice/${diceId}`] = true;
 
@@ -145,9 +144,14 @@ const RolledDice = () => {
     updates.scoringGroups = scoringGroups; // replace existing scoringGroups map
     updates.diceToScoringGroups = diceToScoringGroups;
 
-    await firebase.database().ref(rollPath).update(updates);
-    playBankingDiceSound();
-    setIsBanking(false);
+    try {
+      await firebase.database().ref(rollPath).update(updates);
+      playBankingDiceSound();
+      setIsBanking(false);
+    } catch (error) {
+      setIsBanking(false);
+      throw error;
+    }
   };
 
   const [showBlapped, setShowBlapped] = useState(false);
