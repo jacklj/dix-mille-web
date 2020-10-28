@@ -793,6 +793,10 @@ export const selectPreviousTurnOutcome = (state) => {
     outcome = `${playerName} BLAPPED.`;
   } else if (turnState === Constants.TURN_STATES.STICKED_AND_OVERSHOT) {
     outcome = `${playerName}'s score exceeded 10,000 - BLAP.`;
+  } else if (
+    turnState === Constants.TURN_STATES.PLAYER_QUIT_GAME_DURING_THEIR_TURN
+  ) {
+    outcome = `${playerName} left the game.`;
   } else {
     outcome = undefined;
   }
