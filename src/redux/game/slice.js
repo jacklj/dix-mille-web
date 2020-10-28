@@ -11,12 +11,14 @@ const gameSlice = createSlice({
   name: 'game',
   initialState: {
     gameId: undefined,
+    gameType: undefined,
     gameCode: undefined,
     gameCreator: undefined,
     players: undefined,
     startedAt: undefined,
     currentRound: undefined,
     currentTurn: undefined,
+    currentRoll: undefined,
     playerTurnOrder: undefined,
     rounds: undefined,
     winner: undefined,
@@ -31,6 +33,7 @@ const gameSlice = createSlice({
       state.startedAt = payload.startedAt;
       state.currentRound = payload.currentRound;
       state.currentTurn = payload.currentTurn;
+      state.currentRoll = payload.currentRoll;
       state.playerTurnOrder = payload.playerTurnOrder;
       state.rounds = payload.rounds;
       state.winner = payload.winner;
@@ -53,12 +56,14 @@ const gameSlice = createSlice({
     },
     [userHasLeftGame]: (state) => {
       state.gameId = undefined;
+      state.gameType = undefined;
       state.gameCode = undefined;
       state.gameCreator = undefined;
       state.players = undefined;
       state.startedAt = undefined;
       state.currentRound = undefined;
       state.currentTurn = undefined;
+      state.currentRoll = undefined;
       state.playerTurnOrder = undefined;
       state.rounds = undefined;
       state.winner = undefined;
