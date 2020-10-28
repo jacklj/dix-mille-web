@@ -33,7 +33,8 @@ const Start = () => {
       <Logo />
 
       <IntroText>
-        Ten thousand - Farkle - Crap Out - Zilch - Greed - Hot Dice
+        <p>An ancient dice game of many names.</p>
+        <p>Ten thousand - Farkle - Crap Out - Zilch - Greed - Hot Dice</p>
       </IntroText>
       <div>
         <CustomButton onClick={() => history.push('/singlePlayerStart')}>

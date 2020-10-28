@@ -57,13 +57,18 @@ const MenuPopover = ({ hideMenu }) => {
   const showRules = () => dispatch(showOverlay(CONSTANTS.OVERLAYS.RULES));
 
   const quitGame = async () => {
-    await firebase.functions().httpsCallable('leaveGame')({
-      gameId,
-    });
-    history.push('/');
-    dispatch(userHasLeftGame());
-    hideMenu();
-    // todo unsubscribe from game subscriptions, clear store, do db changes (cloud function?)
+    if (
+      window.confirm(
+        "Are you sure you want to quit this game? This action can't be undone.",
+      )
+    ) {
+      await firebase.functions().httpsCallable('leaveGame')({
+        gameId,
+      });
+      history.push('/');
+      dispatch(userHasLeftGame());
+      hideMenu();
+    }
   };
 
   return (
