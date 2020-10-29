@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import * as firebase from 'firebase/app';
 import 'firebase/functions';
 import 'firebase/database';
+import 'firebase/analytics';
+
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
@@ -45,6 +47,8 @@ if (window.location.hostname === 'localhost') {
 
   firebase.initializeApp(firebaseConfig);
 }
+
+firebase.analytics();
 
 ReactDOM.render(
   <React.StrictMode>
