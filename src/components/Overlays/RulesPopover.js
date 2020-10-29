@@ -11,12 +11,23 @@ const H2 = styled.h2`
   font-size: 3em;
   text-transform: uppercase;
 
-  margin-bottom: 20px;
+  margin-bottom: 0;
   color: rgb(180, 176, 85);
 
   &:first-child {
     margin-top: 0;
   }
+`;
+
+const Subtitle = styled.p`
+  font-family: Limelight;
+  font-size: 2em;
+  text-transform: uppercase;
+
+  margin-top: 0;
+  margin-bottom: 15px;
+
+  color: rgb(180, 176, 85);
 `;
 
 const H3 = styled.h3`
@@ -75,14 +86,16 @@ const RulesPopover = ({ hideRules }) => {
   }, []);
   return (
     <Overlay closeButton hide={hideRules}>
-      <H2>Rules (multiplayer)</H2>
+      <H2>Rules</H2>
+      <Subtitle>(multiplayer)</Subtitle>
+
       <P>A game for 2 or more players, using 6 dice.</P>
       <P>
         The goal is to be the first player to score exactly 10,000. You get
         there by thowing certain combinations of dice:
       </P>
 
-      <H3 id="scoring-dice">Scoring Dice</H3>
+      <H3>Scoring Dice</H3>
       <ScoreDemo>
         <Dice>
           <ExampleDie id={5} key={5} value={5} />
@@ -163,7 +176,7 @@ const RulesPopover = ({ hideRules }) => {
         turn started).
       </P>
 
-      <H2>Single player</H2>
+      <H3>Single player</H3>
       <P>
         In single player mode, the goal is to score as many points as possible
         in 6 rounds.
