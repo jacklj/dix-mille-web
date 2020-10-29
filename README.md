@@ -1,4 +1,5 @@
 # Dix mille
+![Tests](https://github.com/jacklj/dix-mille-web/workflows/tests/badge.svg)
 
 ## How to test the website on your phone _in dev_
 
