@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import 'firebase/functions';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import * as firebase from 'firebase/app';
 import 'firebase/functions';
+import 'firebase/analytics';
 
 import { loggedInAndCreatedGame } from 'redux/auth/slice';
 import { Button } from 'components/forms';
@@ -55,6 +55,9 @@ const SinglePlayerStart = () => {
         .functions()
         .httpsCallable('createUserProfileAndCreateGame')({
         gameType: 'singlePlayer',
+      });
+      firebase.analytics().logEvent('start_game', {
+        game_type: 'single_player',
       });
     } catch (error) {
       alert(error.message);

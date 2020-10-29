@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import * as firebase from 'firebase/app';
 import 'firebase/functions';
+import 'firebase/analytics';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
@@ -68,6 +69,7 @@ const MenuPopover = ({ hideMenu }) => {
       history.push('/');
       dispatch(userHasLeftGame());
       hideMenu();
+      firebase.analytics().logEvent('quit_game');
     }
   };
 

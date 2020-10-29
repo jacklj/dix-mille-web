@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
+import * as firebase from 'firebase/app';
+import 'firebase/analytics';
 
 import Overlay from 'components/Overlay';
 import Die from 'components/BankedDie';
@@ -68,6 +70,9 @@ const CustomDie = styled(Die)`
 const ExampleDie = (props) => <CustomDie isInGroup {...props} />;
 
 const RulesPopover = ({ hideRules }) => {
+  useEffect(() => {
+    firebase.analytics().logEvent('opened_rules'); // TODO should be page tracking instead
+  }, []);
   return (
     <Overlay closeButton hide={hideRules}>
       <H2>Rules (multiplayer)</H2>

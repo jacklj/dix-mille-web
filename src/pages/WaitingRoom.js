@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import 'firebase/functions';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import * as firebase from 'firebase/app';
 import 'firebase/functions';
+import 'firebase/analytics';
 
 import {
   selectGameId,
@@ -61,6 +61,10 @@ const WaitingRoom = () => {
 
     try {
       await firebase.functions().httpsCallable('startGame')({ gameId });
+      firebase.analytics().logEvent('start_game', {
+        game_type: 'multiplayer',
+        number_of_players: totalNumberOfPlayers,
+      });
     } catch (error) {
       alert(error.message);
       setIsStartingGame(false);
