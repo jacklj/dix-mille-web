@@ -4,6 +4,8 @@ import * as firebase from 'firebase/app';
 import 'firebase/functions';
 import 'firebase/database';
 import 'firebase/analytics';
+import * as Sentry from '@sentry/react';
+import { Integrations } from '@sentry/tracing';
 
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -49,6 +51,16 @@ if (window.location.hostname === 'localhost') {
 }
 
 firebase.analytics();
+
+Sentry.init({
+  dsn:
+    'https://6b6f938c89aa4037b3fed8ec64e892c0@o291834.ingest.sentry.io/5497012',
+  integrations: [new Integrations.BrowserTracing()],
+
+  // We recommend adjusting this value in production, or using tracesSampler
+  // for finer control
+  tracesSampleRate: 1.0,
+});
 
 ReactDOM.render(
   <React.StrictMode>
