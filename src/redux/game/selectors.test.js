@@ -82,6 +82,9 @@ describe('Game Selectors', () => {
             },
           ],
         },
+        ui: {
+          isShakingCupLocal: false,
+        },
       };
 
       const turnScore = selectTurnScoreSoFar(state);
