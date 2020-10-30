@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import 'firebase/functions';
 import { useHistory } from 'react-router-dom';
 import 'firebase/functions';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import Logo from './Logo';
 import { Button } from 'components/forms';
