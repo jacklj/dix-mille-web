@@ -55,8 +55,8 @@ const Start = () => {
       <Logo />
 
       <IntroText>
-        <p>An ancient dice game of many names.</p>
-        <p>Ten thousand - Farkle - Crap Out - Zilch - Greed - Hot Dice</p>
+        <p>A dice game.</p>
+        <p>(a.k.a. Farkle, Ten thousand, Crap Out, Zilch, Greed, Hot Dice)</p>
       </IntroText>
       <div>
         <CustomButton onClick={() => history.push('/singlePlayerStart')}>
