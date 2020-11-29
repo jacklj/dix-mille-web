@@ -16,36 +16,31 @@ import LoadingScreen from './pages/LoadingScreen';
 import * as serviceWorker from './serviceWorker';
 import { store, persistor } from './redux';
 
-if (window.location.hostname === 'localhost') {
-  // more info here https://firebase.google.com/docs/emulator-suite/connect_and_prototype?database=RTDB
-  const firebaseConfig = {
-    // Point to the RTDB emulator running on localhost.
-    databaseURL: 'http://localhost:9000?ns=dix-mille-lj',
+const baseFirebaseConfig = {
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: 'dix-mille-lj.firebaseapp.com',
+  projectId: 'dix-mille-lj',
+  storageBucket: 'dix-mille-lj.appspot.com',
+  messagingSenderId: '460205070103',
+  appId: '1:460205070103:web:35c8e07bf97913d7adc952',
+  measurementId: 'G-R6TN7MHTGZ',
+};
 
-    // remaining settings
-    apiKey: 'AIzaSyD96WTH3vOmrvdM9ACsQnW8XtamQAICLpg',
-    authDomain: 'dix-mille-lj.firebaseapp.com',
-    projectId: 'dix-mille-lj',
-    storageBucket: 'dix-mille-lj.appspot.com',
-    messagingSenderId: '460205070103',
-    appId: '1:460205070103:web:35c8e07bf97913d7adc952',
-    measurementId: 'G-R6TN7MHTGZ',
+if (window.location.hostname === 'localhost') {
+  const firebaseConfig = {
+    ...baseFirebaseConfig,
+    databaseURL: 'http://localhost:9000?ns=dix-mille-lj', // point to RTDB emulator
   };
 
   firebase.initializeApp(firebaseConfig);
 
+  // use Functions and Auth emulators
   firebase.functions().useFunctionsEmulator('http://localhost:5001');
   firebase.auth().useEmulator('http://localhost:9099/');
 } else {
   const firebaseConfig = {
-    apiKey: 'AIzaSyD96WTH3vOmrvdM9ACsQnW8XtamQAICLpg',
-    authDomain: 'dix-mille-lj.firebaseapp.com',
+    ...baseFirebaseConfig,
     databaseURL: 'https://dix-mille-lj.firebaseio.com',
-    projectId: 'dix-mille-lj',
-    storageBucket: 'dix-mille-lj.appspot.com',
-    messagingSenderId: '460205070103',
-    appId: '1:460205070103:web:35c8e07bf97913d7adc952',
-    measurementId: 'G-R6TN7MHTGZ',
   };
 
   firebase.initializeApp(firebaseConfig);
