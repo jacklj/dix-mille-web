@@ -13,7 +13,7 @@ const getHighestScoringGrouping = (bankedDice) => {
     };
   }
   const groups = [];
-  // let remainingDice = { ...bankedDice };
+  
   // 1. make tally map
   let tally = {};
   Object.entries(bankedDice).forEach(([diceId, value]) => {

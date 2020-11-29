@@ -15,7 +15,7 @@
 :root {
   /* N.B. CSS variables are passed to children! */
   --dice-cup-height: 30vh;
-  /* N.B. keeps dice cup container in proportion to the dice cup svgs*/
+  /* N.B. keeps dice cup container in proportion to the dice cup svgs */
   --dice-cup-width: calc(var(--dice-cup-height) * (130 / 179));
   --dice-cup-right-margin: 10px;
 

@@ -8,7 +8,7 @@ const authSlice = createSlice({
     uid: undefined,
     name: undefined,
     avatarId: undefined,
-    type: undefined, // creator or joiner?
+    type: undefined, // creator or joiner
   },
   reducers: {
     userUpdated(state, action) {

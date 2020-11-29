@@ -1,4 +1,3 @@
-// import moment from 'moment';
 import { selectAllAvatars } from 'redux/avatars/selectors';
 import { selectUid } from 'redux/auth/selectors';
 import {
@@ -702,12 +701,13 @@ export const selectPlayersInTurnOrder = (state) => {
   });
 };
 
-// const turnScores = {
-// [roundIndex]: {
-//  [turnIndex]: 600,
-//  ...
-// },
-// ...
+// turnScores object shape:
+// {
+//   [roundIndex]: {
+//    [turnIndex]: 600,
+//    ...
+//   },
+//   ...
 // }
 
 export const selectAllTurnScores = (state) => {

@@ -36,16 +36,14 @@ function App() {
   const startedAt = useSelector(selectGameStartedAt);
 
   useEffect(() => {
+    // subscribe to auth state changes
     const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         // User is signed in.
         console.log('User signed in');
-        // const { displayName: name, email, uid } = user;
-        // dispatch(loggedIn({ uid, name, email }));
       } else {
         // User is signed out.
         console.log('User signed out');
-        // dispatch(loggedOut());
       }
     });
 
@@ -53,7 +51,7 @@ function App() {
   }, [dispatch]);
 
   useEffect(() => {
-    // subscribe to user
+    // subscribe to user object changes
     const userRef = firebase.database().ref(`users/${uid}`);
     if (uid) {
       userRef.on('value', (snapshot) => {
@@ -62,11 +60,11 @@ function App() {
       });
     }
 
-    return () => userRef.off(); // unsubscriber
+    return () => userRef.off();
   }, [dispatch, gameId, uid]);
 
   useEffect(() => {
-    // subscribe to game
+    // subscribe to game object changes
     const gameRef = firebase.database().ref(`games/${gameId}`);
     if (gameId && uid) {
       gameRef.on('value', (snapshot) => {
@@ -106,8 +104,6 @@ function App() {
         <Header />
         <Overlays />
 
-        {/* A <Switch> looks through its children <Route>s and
-          renders the first one that matches the current URL. */}
         <Switch>
           <Route path="/" exact>
             <ContentContainer>
