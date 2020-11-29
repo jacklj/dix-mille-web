@@ -2,7 +2,7 @@
 
 ![Tests](https://github.com/jacklj/dix-mille-web/workflows/tests/badge.svg)
 
-Frontend code for multiplayer dice web game [dix-mille.com/](https://dix-mille.com/).
+Frontend code for multiplayer dice web game [dix-mille.com](https://dix-mille.com/).
 
 Single and multiplayer (2 or more players) game modes. Responsive - works on computers, tablets and phones.
 
