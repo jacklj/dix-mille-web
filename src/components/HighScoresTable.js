@@ -99,7 +99,7 @@ const HighScoresTable = ({ className }) => {
         // use `snapshot.forEach()` (N.B. always in ascending order - RealtimeDB doesn't support reverse
         // order queries)
         const highScores = [];
-        snapshot.forEach(function (data) {
+        snapshot.forEach((data) => {
           const player = data.key;
           const score = data.val();
           highScores.push({ player, score });
@@ -108,7 +108,7 @@ const HighScoresTable = ({ className }) => {
         dispatch(highScoresUpdated(highScores));
       });
 
-    return () => highScoresRef.off(); // unsubscriber
+    return () => highScoresRef.off();
   }, [dispatch]);
 
   if (!highScores || highScores.length === 0) {
