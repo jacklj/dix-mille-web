@@ -35,6 +35,7 @@ if (window.location.hostname === 'localhost') {
   firebase.initializeApp(firebaseConfig);
 
   firebase.functions().useFunctionsEmulator('http://localhost:5001');
+  firebase.auth().useEmulator('http://localhost:9099/');
 } else {
   const firebaseConfig = {
     apiKey: 'AIzaSyD96WTH3vOmrvdM9ACsQnW8XtamQAICLpg',
