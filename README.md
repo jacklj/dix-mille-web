@@ -4,10 +4,18 @@
 
 Frontend code for multiplayer dice web game [dix-mille.com/](https://dix-mille.com/).
 
+Single and multiplayer (2 or more players) game modes. Responsive - works on computers, tablets and phones.
+
 ## Local development
 
 ```bash
 yarn start
+```
+
+## Testing
+
+```bash
+yarn test
 ```
 
 ## Deploying
