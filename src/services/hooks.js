@@ -34,10 +34,10 @@ export const usePlaySoundOnMount = ({ soundFile, options, spriteName }) => {
     play(spriteName ? { id: spriteName } : undefined);
   }, [isSoundOn, options, play, spriteName]);
 
-  useEffect(onMount, [play]);
-  // N.B. must have playBlapSound in the dep list, or doesn't work.
+  useEffect(onMount, [play]); // eslint-disable-line react-hooks/exhaustive-deps
+  // N.B. must have `play` in the dep list, or doesn't work.
   // This is becase the first time the `useSound` hook is run, it starts lazy loading the Howler lib.
-  // So the first value of playBlapSound can't play any sound - it's the second value that works
+  // So the first value of `play` can't play any sound - it's the second value that works
 
   useEffect(() => {
     if (isPlaying && !isSoundOn) {
