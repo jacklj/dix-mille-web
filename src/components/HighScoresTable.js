@@ -93,7 +93,7 @@ const HighScoresTable = ({ className }) => {
     // N.B. RealtimeDb can't do reverse order queries.
     highScoresRef
       .orderByValue()
-      .limitToLast(15)
+      .limitToLast(20)
       .on('value', (snapshot) => {
         // N.B. can get a map of all values using `snapshot.val()`, but then you lose the ordering -
         // use `snapshot.forEach()` (N.B. always in ascending order - RealtimeDB doesn't support reverse
