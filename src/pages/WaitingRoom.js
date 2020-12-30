@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app';
 import 'firebase/functions';
 import 'firebase/analytics';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app';
 import 'firebase/functions';
 import 'firebase/database';
 import 'firebase/analytics';

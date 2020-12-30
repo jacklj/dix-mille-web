@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import 'firebase/functions';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app';
 import 'firebase/functions';
 
 import { loggedInAndCreatedGame } from 'redux/auth/slice';

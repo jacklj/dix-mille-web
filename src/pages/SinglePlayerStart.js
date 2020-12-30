@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app';
 import 'firebase/functions';
 import 'firebase/analytics';
 

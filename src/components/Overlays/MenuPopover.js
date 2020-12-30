@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app';
 import 'firebase/functions';
 import 'firebase/analytics';
 import { useDispatch, useSelector } from 'react-redux';

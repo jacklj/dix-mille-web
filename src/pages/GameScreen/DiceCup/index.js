@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app';
 import 'firebase/functions';
 import { useSelector, useDispatch } from 'react-redux';
 import useSound from 'use-sound';
