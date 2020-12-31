@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import firebase from 'firebase/app';
 import 'firebase/functions';
@@ -16,6 +16,7 @@ import TrophyIcon from 'components/Header/TrophyIcon';
 import ScrollIcon from 'components/Header/ScrollIcon';
 import QuitIcon from 'components/Header/QuitIcon';
 import SoundOnOffButton from 'components/Header/SoundOnOffButton';
+import { Button } from 'components/forms';
 
 import Overlay from 'components/Overlay';
 
@@ -45,6 +46,14 @@ const UserName = styled.div`
   color: #fff;
 `;
 
+const StyledButton = styled(Button)`
+  color: #fff;
+  border-color: white;
+  font-size: 32px;
+
+  height: 74px;
+`;
+
 const MenuPopover = ({ hideMenu }) => {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -57,18 +66,22 @@ const MenuPopover = ({ hideMenu }) => {
 
   const showRules = () => dispatch(showOverlay(CONSTANTS.OVERLAYS.RULES));
 
+  const [isQuittingGame, setIsQuittingGame] = useState(false);
+
   const quitGame = async () => {
     if (
       window.confirm(
         "Are you sure you want to quit this game? This action can't be undone.",
       )
     ) {
+      setIsQuittingGame(true);
       try {
         await firebase.functions().httpsCallable('leaveGame')({
           gameId,
         });
       } catch (error) {
         if (error.code !== 'unauthenticated') {
+          setIsQuittingGame(false);
           throw error;
         }
         // if unauthenticated error, continue as if user has successfully left the game
@@ -91,9 +104,13 @@ const MenuPopover = ({ hideMenu }) => {
         Rules
       </HeaderButton>
       <SoundOnOffButton large />
-      <HeaderButton onClick={quitGame} Icon={QuitIcon} large>
-        Quit Game
-      </HeaderButton>
+
+      <StyledButton
+        onClick={quitGame}
+        loading={isQuittingGame}
+        loadingMessage="Quitting">
+        <QuitIcon /> Quit Game
+      </StyledButton>
     </Overlay>
   );
 };
