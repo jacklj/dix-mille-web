@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import useSound from 'use-sound';
 
 import ScoresTable from 'components/ScoresTable';
@@ -10,6 +10,7 @@ import Overlay from 'components/Overlay';
 import { selectHasSomeoneWon } from 'redux/game/selectors';
 import WhoWonText from './WhoWonText';
 import { selectIsSoundOn } from 'redux/settings/selectors';
+import { userHasLeftGame } from 'redux/game/moreActions';
 import winMusic from 'media/sounds/winMusic.mp3';
 import loseMusic from 'media/sounds/loseMusic.mp3';
 import HighScoresTable from 'components/HighScoresTable';
@@ -37,10 +38,11 @@ const CustomButton = styled(Button)`
 const GameFinishedOverlay = () => {
   const history = useHistory();
   const hasSomeoneWon = useSelector(selectHasSomeoneWon);
+  const dispatch = useDispatch();
 
-  const goBackToHomePage = () => {
+  const returnToHomeScreen = () => {
     history.push('/');
-    // todo unsubscribe from game subscriptions, clear store
+    dispatch(userHasLeftGame());
   };
 
   const isSoundOn = useSelector(selectIsSoundOn);
@@ -75,7 +77,7 @@ const GameFinishedOverlay = () => {
         </TableContainer>
         <HighScoresTable />
 
-        <CustomButton onClick={goBackToHomePage}>Play again</CustomButton>
+        <CustomButton onClick={returnToHomeScreen}>Play again</CustomButton>
       </Overlay>
     );
   }

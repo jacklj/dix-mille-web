@@ -67,13 +67,17 @@ function App() {
     // subscribe to game object changes
     const gameRef = firebase.database().ref(`games/${gameId}`);
     if (gameId && uid) {
+      // console.log('subscribe to game object');
       gameRef.on('value', (snapshot) => {
         const gameObj = snapshot.val();
         dispatch(gameUpdated(gameObj));
       });
     }
 
-    return () => gameRef.off(); // unsubscriber - if you finish or quit a game, will hopefully unsubscribe and then not resubscribe!
+    return () => {
+      // console.log('unsubscribe from game object.');
+      gameRef.off(); // unsubscriber - if you finish or quit a game, will hopefully unsubscribe and then not resubscribe!
+    };
   }, [dispatch, gameId, uid]);
 
   useEffect(() => {
