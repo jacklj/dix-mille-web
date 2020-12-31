@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import {
   MemoryRouter as Router,
   Switch,
@@ -12,22 +12,22 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Header from 'components/Header';
 import Overlays from 'components/Overlays';
-import Start from 'pages/Start';
-import SinglePlayerStart from 'pages/SinglePlayerStart';
-import MultiplayerStart from 'pages/MultiplayerStart';
-import JoinGame from 'pages/JoinGame';
-import PlayerSetup from 'pages/PlayerSetup';
-import WaitingRoom from 'pages/WaitingRoom';
-import GameScreen from 'pages/GameScreen';
-
+import TopLevelContainer from 'components/TopLevelContainer';
+import ContentContainer from 'components/ContentContainer';
+import Loading from 'components/Loading';
 import { selectGameId, selectGameStartedAt } from 'redux/game/selectors';
 import { selectUid } from 'redux/auth/selectors';
 import { userUpdated } from 'redux/auth/slice';
 import { gameUpdated } from 'redux/game/slice';
 import { avatarsUpdated } from 'redux/avatars/slice';
 
-import TopLevelContainer from 'components/TopLevelContainer';
-import ContentContainer from 'components/ContentContainer';
+const Start = React.lazy(() => import('pages/Start'));
+const SinglePlayerStart = React.lazy(() => import('pages/SinglePlayerStart'));
+const MultiplayerStart = React.lazy(() => import('pages/MultiplayerStart'));
+const JoinGame = React.lazy(() => import('pages/JoinGame'));
+const PlayerSetup = React.lazy(() => import('pages/PlayerSetup'));
+const WaitingRoom = React.lazy(() => import('pages/WaitingRoom'));
+const GameScreen = React.lazy(() => import('pages/GameScreen'));
 
 function App() {
   const dispatch = useDispatch();
@@ -108,41 +108,43 @@ function App() {
         <Header />
         <Overlays />
 
-        <Switch>
-          <Route path="/" exact>
-            <ContentContainer>
-              <Start />
-            </ContentContainer>
-          </Route>
-          <Route path="/singlePlayerStart">
-            <ContentContainer>
-              <SinglePlayerStart />
-            </ContentContainer>
-          </Route>
-          <Route path="/multiplayerStart">
-            <ContentContainer>
-              <MultiplayerStart />
-            </ContentContainer>
-          </Route>
-          <Route path="/joinGame">
-            <ContentContainer>
-              <JoinGame />
-            </ContentContainer>
-          </Route>
-          <Route path="/playerSetup">
-            <ContentContainer>
-              <PlayerSetup />
-            </ContentContainer>
-          </Route>
-          <Route path="/waitingRoom">
-            <ContentContainer>
-              <WaitingRoom />
-            </ContentContainer>
-          </Route>
-          <Route path="/gameScreen">
-            <GameScreen />
-          </Route>
-        </Switch>
+        <Suspense fallback={<Loading />}>
+          <Switch>
+            <Route path="/" exact>
+              <ContentContainer>
+                <Start />
+              </ContentContainer>
+            </Route>
+            <Route path="/singlePlayerStart">
+              <ContentContainer>
+                <SinglePlayerStart />
+              </ContentContainer>
+            </Route>
+            <Route path="/multiplayerStart">
+              <ContentContainer>
+                <MultiplayerStart />
+              </ContentContainer>
+            </Route>
+            <Route path="/joinGame">
+              <ContentContainer>
+                <JoinGame />
+              </ContentContainer>
+            </Route>
+            <Route path="/playerSetup">
+              <ContentContainer>
+                <PlayerSetup />
+              </ContentContainer>
+            </Route>
+            <Route path="/waitingRoom">
+              <ContentContainer>
+                <WaitingRoom />
+              </ContentContainer>
+            </Route>
+            <Route path="/gameScreen">
+              <GameScreen />
+            </Route>
+          </Switch>
+        </Suspense>
       </TopLevelContainer>
     </Router>
   );
