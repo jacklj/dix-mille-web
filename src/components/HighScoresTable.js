@@ -72,14 +72,14 @@ const Td = styled.td`
 
 // dummy leaderboard data
 // const highScores = [
-//   { player: 'Gobbort', score: 144550 },
-//   { player: 'agora', score: 100000 },
-//   { player: 'mandelbrot', score: 90000 },
-//   { player: 'plaistow', score: 80000 },
-//   { player: 'gammadamma', score: 78050 },
-//   { player: 'sore spot', score: 72000 },
-//   { player: 'gransford plaitlet', score: 60000 },
-//   { player: 'morgon lafayette', score: 50000 },
+//   { username: 'Gobbort', score: 144550 },
+//   { username: 'agora', score: 100000 },
+//   { username: 'mandelbrot', score: 90000 },
+//   { username: 'plaistow', score: 80000 },
+//   { username: 'gammadamma', score: 78050 },
+//   { username: 'sore spot', score: 72000 },
+//   { username: 'gransford plaitlet', score: 60000 },
+//   { username: 'morgon lafayette', score: 50000 },
 // ];
 
 const HighScoresTable = ({ className }) => {
@@ -92,18 +92,20 @@ const HighScoresTable = ({ className }) => {
     const highScoresRef = firebase.database().ref('highScores');
     // N.B. RealtimeDb can't do reverse order queries.
     highScoresRef
-      .orderByValue()
+      .orderByChild('score')
       .limitToLast(20)
       .on('value', (snapshot) => {
         // N.B. can get a map of all values using `snapshot.val()`, but then you lose the ordering -
         // use `snapshot.forEach()` (N.B. always in ascending order - RealtimeDB doesn't support reverse
         // order queries)
         const highScores = [];
+
         snapshot.forEach((data) => {
-          const player = data.key;
-          const score = data.val();
-          highScores.push({ player, score });
+          const scoreObj = data.val();
+          const { username, score } = scoreObj;
+          highScores.push({ username, score });
         });
+
         highScores.reverse();
         dispatch(highScoresUpdated(highScores));
       });
@@ -128,12 +130,12 @@ const HighScoresTable = ({ className }) => {
       <tbody>
         {highScores &&
           highScores.map((highScore, r) => {
-            const { player, score } = highScore;
+            const { username, score } = highScore;
             const rank = r + 1;
             return (
-              <Tr key={`${highScore.player}-${rank}`}>
+              <Tr key={`${highScore.username}-${rank}`}>
                 <Td key="rank">{rank}</Td>
-                <Td key="name">{player}</Td>
+                <Td key="name">{username}</Td>
                 <Td key="score">{score}</Td>
               </Tr>
             );
