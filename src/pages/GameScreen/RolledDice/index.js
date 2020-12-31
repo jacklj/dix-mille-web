@@ -102,7 +102,7 @@ const RolledDice = () => {
     }
 
     if (dice[diceId]?.isBanked) {
-      console.warn(`dice '${diceId}' is already banked - can't bank again.`);
+      // console.warn(`dice '${diceId}' is already banked - can't bank again.`);
       setIsBanking(false);
       return;
     }

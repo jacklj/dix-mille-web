@@ -122,7 +122,7 @@ const TopLevelContainer = ({ children }) => {
 
     document.body.style.height = `${window.innerHeight}px`;
     function onResize() {
-      console.log('window resized!');
+      // console.log('window resized!');
       const { innerHeight, innerWidth } = window;
       dispatch(windowResized({ innerHeight, innerWidth }));
       document.body.style.height = `${innerHeight}px`;

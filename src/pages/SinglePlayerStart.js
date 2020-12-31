@@ -37,17 +37,17 @@ const SinglePlayerStart = () => {
       );
 
     const result = await firebase.auth().signInAnonymously();
-    const { additionalUserInfo, user } = result;
+    const { user } = result; // additionalUserInfo
     const { uid } = user;
-    const { isNewUser } = additionalUserInfo;
+    // const { isNewUser } = additionalUserInfo;
 
-    console.log(
-      `[createAnonymousProfileAndGame] ${
-        isNewUser
-          ? 'Created new anonymous account'
-          : 'Already logged in (anonymously)'
-      }: ${uid}`,
-    );
+    // console.log(
+    //   `[createAnonymousProfileAndGame] ${
+    //     isNewUser
+    //       ? 'Created new anonymous account'
+    //       : 'Already logged in (anonymously)'
+    //   }: ${uid}`,
+    // );
 
     let res;
     try {

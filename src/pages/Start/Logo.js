@@ -120,7 +120,7 @@ const Logo = () => {
     const randomIndex = Math.floor(Math.random() * blapNames.length);
     const randomSpriteName = blapNames[randomIndex];
 
-    console.log(`play '${randomSpriteName}'`);
+    // console.log(`play '${randomSpriteName}'`);
     playBlapSound({ id: randomSpriteName });
   };
 

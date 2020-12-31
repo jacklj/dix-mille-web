@@ -191,8 +191,8 @@ const ScoringGroups = () => {
     // recalculate scoring groups
     const newBankedDice = { ...bankedDice };
     delete newBankedDice[diceId];
-    console.log('old banked dice: ', bankedDice);
-    console.log('new banked dice: ', newBankedDice);
+    // console.log('old banked dice: ', bankedDice);
+    // console.log('new banked dice: ', newBankedDice);
 
     const bankedDiceValuesMap = Helpers.transformDiceDetailsIntoValueMap(
       newBankedDice,

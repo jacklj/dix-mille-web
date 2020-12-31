@@ -192,7 +192,7 @@ const GameButtons = () => {
     }
 
     if (isRollingCloud && !isHoldingDownRollButton) {
-      console.log('PREVENT RACE CONDITION');
+      // console.log('PREVENT RACE CONDITION');
       const writeIsRollingFalse = async () => {
         const path = `games/${gameId}/rounds/${currentRoundId}/turns/${currentTurnId}/isRolling`;
         await firebase.database().ref(path).set(false);

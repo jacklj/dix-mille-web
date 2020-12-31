@@ -110,7 +110,7 @@ const BlappedMessage = () => {
 
   const endTurnAfterBlap = async () => {
     if (!isMyTurn) {
-      console.log("not my turn - don't end turn after blap");
+      // console.log("not my turn - don't end turn after blap");
       return;
     }
 

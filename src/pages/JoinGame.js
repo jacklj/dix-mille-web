@@ -49,12 +49,12 @@ const JoinGame = () => {
     const { uid } = user;
     const { isNewUser } = additionalUserInfo;
 
-    console.log(
-      isNewUser
-        ? 'Created new anonymous account: '
-        : 'Already logged in (anonymously): ',
-      uid,
-    );
+    // console.log(
+    //   isNewUser
+    //     ? 'Created new anonymous account: '
+    //     : 'Already logged in (anonymously): ',
+    //   uid,
+    // );
 
     let res;
     try {

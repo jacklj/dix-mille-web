@@ -40,10 +40,10 @@ function App() {
     const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         // User is signed in.
-        console.log('User signed in');
+        // console.log('User signed in');
       } else {
         // User is signed out.
-        console.log('User signed out');
+        // console.log('User signed out');
       }
     });
 
