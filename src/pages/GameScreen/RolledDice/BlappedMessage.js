@@ -118,7 +118,7 @@ const BlappedMessage = () => {
 
     // check to make sure we still want to do this - it's possible that
     // the user rage quit the game immediately after blapping, in which case
-    // the endTUrnAfterBlap cloud function returns with a 400 error, which
+    // the endTurnAfterBlap cloud function returns with a 400 error, which
     // the user sees in an ugly alert().
     // We need to use the `gameIdRef` ref so that we have the up to date value - if
     // we just used the gameId selected value, it would still have the old value.
