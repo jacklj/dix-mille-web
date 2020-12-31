@@ -63,9 +63,16 @@ const MenuPopover = ({ hideMenu }) => {
         "Are you sure you want to quit this game? This action can't be undone.",
       )
     ) {
-      await firebase.functions().httpsCallable('leaveGame')({
-        gameId,
-      });
+      try {
+        await firebase.functions().httpsCallable('leaveGame')({
+          gameId,
+        });
+      } catch (error) {
+        if (error.code !== 'unauthenticated') {
+          throw error;
+        }
+        // if unauthenticated error, continue as if user has successfully left the game
+      }
       history.push('/');
       dispatch(userHasLeftGame());
       hideMenu();
