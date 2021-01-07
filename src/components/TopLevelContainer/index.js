@@ -8,7 +8,7 @@ import cardTableSurface from './card-table-surface-1.jpeg';
 import { selectWindowInnerHeight } from 'redux/ui/selectors';
 
 const Container = styled.div`
-  --page-height: ${(props) => props.innerHeight}px;
+  --page-height: ${(props) => props.innerHeight}px; // 100vh;
 
   text-align: center;
   height: var(--page-height);
@@ -120,13 +120,20 @@ const TopLevelContainer = ({ children }) => {
       }),
     );
 
-    document.body.style.height = `${window.innerHeight}px`;
+    // document.body.style.height = `${window.innerHeight}px`; // `100vh`;
     function onResize() {
       // console.log('window resized!');
-      const { innerHeight, innerWidth } = window;
+      const innerHeight =
+        document.documentElement?.clientHeight || window.innerHeight;
+      const innerWidth =
+        document.documentElement?.clientWidth || window.innerWidth;
+
       dispatch(windowResized({ innerHeight, innerWidth }));
       document.body.style.height = `${innerHeight}px`;
     }
+
+    // call it first time too
+    onResize();
 
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
