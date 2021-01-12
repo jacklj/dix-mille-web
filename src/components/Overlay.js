@@ -16,7 +16,7 @@ const Container = styled.div`
   height: 100vh;
 
   background-color: rgba(10, 10, 10, 0.95);
-  overflow-y: scroll;
+  overflow-y: auto;
 
   z-index: 1; // ensures it goes over the avatar carousel
 

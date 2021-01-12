@@ -19,7 +19,7 @@ const TableContainer = styled.div`
   flex: 0;
   align-self: stretch;
 
-  overflow-x: scroll;
+  overflow-x: auto;
 
   padding-left: 15px;
   padding-right: 15px; // doesnt do anything when overflowing-x (narrow screens)

@@ -2,7 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  overflow: scroll;
+  flex: 1; // take up whole page
+  overflow: auto;
   display: flex;
   flex-direction: column;
   align-items: stretch;
