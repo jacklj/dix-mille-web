@@ -50,8 +50,8 @@ firebase.analytics();
 Sentry.init({
   dsn:
     'https://6b6f938c89aa4037b3fed8ec64e892c0@o291834.ingest.sentry.io/5497012',
+  release: process.env.REACT_APP_SENTRY_RELEASE,
   integrations: [new Integrations.BrowserTracing()],
-
   // We recommend adjusting this value in production, or using tracesSampler
   // for finer control
   tracesSampleRate: 1.0,
