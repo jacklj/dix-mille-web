@@ -70,17 +70,21 @@ const Td = styled.td`
   }
 `;
 
-// dummy leaderboard data
-// const highScores = [
-//   { username: 'Gobbort', score: 144550 },
-//   { username: 'agora', score: 100000 },
-//   { username: 'mandelbrot', score: 90000 },
-//   { username: 'plaistow', score: 80000 },
-//   { username: 'gammadamma', score: 78050 },
-//   { username: 'sore spot', score: 72000 },
-//   { username: 'gransford plaitlet', score: 60000 },
-//   { username: 'morgon lafayette', score: 50000 },
-// ];
+const TdInnerContainer = styled.div`
+  display: flex;
+
+  flex-direction: row;
+  align-items: center;
+
+  padding-bottom: 5px;
+`;
+
+const ProfileImage = styled.img`
+  height: 30px;
+  width: auto;
+  display: inline-block;
+  margin-right: 6px;
+`;
 
 const HighScoresTable = ({ className }) => {
   const dispatch = useDispatch();
@@ -102,8 +106,8 @@ const HighScoresTable = ({ className }) => {
 
         snapshot.forEach((data) => {
           const scoreObj = data.val();
-          const { username, score } = scoreObj;
-          highScores.push({ username, score });
+          const { username, score, avatarId, date } = scoreObj;
+          highScores.push({ username, score, avatarId, date });
         });
 
         highScores.reverse();
@@ -123,19 +127,24 @@ const HighScoresTable = ({ className }) => {
       <thead>
         <Tr>
           <Th key="Rank">Rank</Th>
-          <Th key="Name">Name</Th>
+          <Th key="Player">Player</Th>
           <Th key="Score">Score</Th>
         </Tr>
       </thead>
       <tbody>
         {highScores &&
           highScores.map((highScore, r) => {
-            const { username, score } = highScore;
+            const { username, score, avatarUrl } = highScore;
             const rank = r + 1;
             return (
               <Tr key={`${highScore.username}-${rank}`}>
                 <Td key="rank">{rank}</Td>
-                <Td key="name">{username}</Td>
+                <Td key="name">
+                  <TdInnerContainer>
+                    <ProfileImage src={avatarUrl} title="User's avatar" />
+                    {username}
+                  </TdInnerContainer>
+                </Td>
                 <Td key="score">{score}</Td>
               </Tr>
             );
