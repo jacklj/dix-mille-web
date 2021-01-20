@@ -76,6 +76,7 @@ const TdInnerContainer = styled.div`
   flex-direction: row;
   align-items: center;
 
+  padding-top: 5px;
   padding-bottom: 5px;
 `;
 

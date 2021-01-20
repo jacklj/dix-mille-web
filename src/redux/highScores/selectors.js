@@ -6,7 +6,7 @@ export const selectHighScores = (state) => {
   // replace avatar IDs with avatar URLs here, for convenience
   const withAvatarUrls = scoresList.map((score) => ({
     ...score,
-    avatarUrl: score.avatarId && selectAvatarUrl(score.avatarId)(state),
+    avatarUrl: selectAvatarUrl(score.avatarId)(state),
   }));
 
   return withAvatarUrls;
