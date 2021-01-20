@@ -25,7 +25,7 @@ const persistConfig = {
   key: 'root',
   storage:
     process.env.NODE_ENV === 'development' ? sessionStorage : localStorage,
-  blacklist: ['ui'],
+  blacklist: ['ui', 'highScores'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
