@@ -81,10 +81,16 @@ const TdInnerContainer = styled.div`
 `;
 
 const ProfileImage = styled.img`
-  height: 30px;
-  width: auto;
-  display: inline-block;
+  width: 35px;
+  height: auto;
   margin-right: 6px;
+`;
+
+const ImagePlaceholder = styled.div`
+  height: 35px;
+  width: 35px;
+  margin-right: 6px;
+  background-color: rgba(30, 30, 30, 0.6);
 `;
 
 const HighScoresTable = ({ className }) => {
@@ -142,7 +148,12 @@ const HighScoresTable = ({ className }) => {
                 <Td key="rank">{rank}</Td>
                 <Td key="name">
                   <TdInnerContainer>
-                    <ProfileImage src={avatarUrl} title="User's avatar" />
+                    {avatarUrl ? (
+                      <ProfileImage src={avatarUrl} title="User's avatar" />
+                    ) : (
+                      <ImagePlaceholder />
+                    )}
+
                     {username}
                   </TdInnerContainer>
                 </Td>
