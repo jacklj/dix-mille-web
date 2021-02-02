@@ -13,8 +13,8 @@ const bulge = keyframes`
 0% {
   transform: scale(0);
 }
-80% {
-  transform: scale(1.1);
+90% {
+  transform: scale(1.2);
 }
 100% {
   transform: scale(1);
@@ -120,7 +120,7 @@ const BlappedMessage = () => {
       return;
     }
 
-    await delay(3000); // wait 3 seconds after end of blap sound end
+    await delay(1000); // wait 1 second after end of blap sound end
 
     // check to make sure we still want to do this - it's possible that
     // the user rage quit the game immediately after blapping, in which case
