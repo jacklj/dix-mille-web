@@ -21,39 +21,6 @@ const bulge = keyframes`
 }
 `;
 
-const bounce = keyframes`
-// add delay between animation plays
-// N.B. animating the text-shadow causes an elastic scrolling bug on webkit. Here it's fine because
-// the GameScreen is not scrollable.
-0% {
-  transform: translateY(5px);
-  text-shadow: 0 1px 0 #4d0400, 0 2px 0 #4d0400, 0 3px 0 #4d0400,
-    0 4px 0 #4d0400, 0 5px 0 #4d0400, 0 6px 0 transparent, 0 7px 0 transparent,
-    0 8px 0 transparent, 0 9px 0 transparent, 0 10px 10px rgba(0, 0, 0, 0.7);
-}
-
-10% {
-  transform: translateY(-5px);
-  text-shadow: 0 1px 0 #4d0400, 0 2px 0 #4d0400, 0 3px 0 #4d0400, 0 4px 0 #4d0400,
-    0 5px 0 #4d0400, 0 6px 0 #4d0400, 0 7px 0 #4d0400, 0 8px 0 #4d0400, 0 9px 0 #4d0400,
-    0 50px 25px rgba(0, 0, 0, 0.5);
-    
-}
-20% {
-  transform: translateY(5px);
-  text-shadow: 0 1px 0 #4d0400, 0 2px 0 #4d0400, 0 3px 0 #4d0400,
-    0 4px 0 #4d0400, 0 5px 0 #4d0400, 0 6px 0 transparent, 0 7px 0 transparent,
-    0 8px 0 transparent, 0 9px 0 transparent, 0 10px 10px rgba(0, 0, 0, 0.7);
-}
-
-100% {
-  transform: translateY(5px);
-  text-shadow: 0 1px 0 #4d0400, 0 2px 0 #4d0400, 0 3px 0 #4d0400,
-    0 4px 0 #4d0400, 0 5px 0 #4d0400, 0 6px 0 transparent, 0 7px 0 transparent,
-    0 8px 0 transparent, 0 9px 0 transparent, 0 10px 10px rgba(0, 0, 0, 0.7);
-}
-`;
-
 const Container = styled.div`
   position: absolute;
   width: 100%;
@@ -76,18 +43,9 @@ const BlapText = styled.div`
 
   animation: ${bulge} 1s ease-in-out 1;
 
-  span {
-    position: relative;
-    display: inline-block;
-
-    transform: translateY(5px);
-    text-shadow: 0 1px 0 #4d0400, 0 2px 0 #4d0400, 0 3px 0 #4d0400,
-      0 4px 0 #4d0400, 0 5px 0 #4d0400, 0 6px 0 transparent, 0 7px 0 transparent,
-      0 8px 0 transparent, 0 9px 0 transparent, 0 10px 10px rgba(0, 0, 0, 0.7);
-
-    animation: ${bounce} 3s ease infinite;
-    animation-delay: 2s;
-  }
+  text-shadow: 0 1px 0 #4d0400, 0 2px 0 #4d0400, 0 3px 0 #4d0400,
+    0 4px 0 #4d0400, 0 5px 0 #4d0400, 0 6px 0 transparent, 0 7px 0 transparent,
+    0 8px 0 transparent, 0 9px 0 transparent, 0 10px 10px rgba(0, 0, 0, 0.7);
 `;
 
 const delay = (t) =>
