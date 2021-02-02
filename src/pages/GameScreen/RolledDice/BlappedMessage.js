@@ -22,13 +22,35 @@ const bulge = keyframes`
 `;
 
 const bounce = keyframes`
-100% {
-  transform: translateY(-10px);
+// add delay between animation plays
+// N.B. animating the text-shadow causes an elastic scrolling bug on webkit. Here it's fine because
+// the GameScreen is not scrollable.
+0% {
+  transform: translateY(5px);
+  text-shadow: 0 1px 0 #4d0400, 0 2px 0 #4d0400, 0 3px 0 #4d0400,
+    0 4px 0 #4d0400, 0 5px 0 #4d0400, 0 6px 0 transparent, 0 7px 0 transparent,
+    0 8px 0 transparent, 0 9px 0 transparent, 0 10px 10px rgba(0, 0, 0, 0.7);
+}
+
+10% {
+  transform: translateY(-5px);
   text-shadow: 0 1px 0 #4d0400, 0 2px 0 #4d0400, 0 3px 0 #4d0400, 0 4px 0 #4d0400,
     0 5px 0 #4d0400, 0 6px 0 #4d0400, 0 7px 0 #4d0400, 0 8px 0 #4d0400, 0 9px 0 #4d0400,
     0 50px 25px rgba(0, 0, 0, 0.5);
-    // N.B. animating the text-shadow causes an elastic scrolling bug on webkit. Here it's fine because
-    // the GameScreen is not scrollable.
+    
+}
+20% {
+  transform: translateY(5px);
+  text-shadow: 0 1px 0 #4d0400, 0 2px 0 #4d0400, 0 3px 0 #4d0400,
+    0 4px 0 #4d0400, 0 5px 0 #4d0400, 0 6px 0 transparent, 0 7px 0 transparent,
+    0 8px 0 transparent, 0 9px 0 transparent, 0 10px 10px rgba(0, 0, 0, 0.7);
+}
+
+100% {
+  transform: translateY(5px);
+  text-shadow: 0 1px 0 #4d0400, 0 2px 0 #4d0400, 0 3px 0 #4d0400,
+    0 4px 0 #4d0400, 0 5px 0 #4d0400, 0 6px 0 transparent, 0 7px 0 transparent,
+    0 8px 0 transparent, 0 9px 0 transparent, 0 10px 10px rgba(0, 0, 0, 0.7);
 }
 `;
 
@@ -56,31 +78,15 @@ const BlapText = styled.div`
 
   span {
     position: relative;
-    transform: translateY(10px);
     display: inline-block;
 
-    animation: ${bounce} 0.3s ease infinite alternate;
-    animation-delay: 1s;
-
+    transform: translateY(5px);
     text-shadow: 0 1px 0 #4d0400, 0 2px 0 #4d0400, 0 3px 0 #4d0400,
       0 4px 0 #4d0400, 0 5px 0 #4d0400, 0 6px 0 transparent, 0 7px 0 transparent,
       0 8px 0 transparent, 0 9px 0 transparent, 0 10px 10px rgba(0, 0, 0, 0.7);
-  }
 
-  span:nth-child(2) {
-    animation-delay: 1.1s;
-  }
-
-  span:nth-child(3) {
-    animation-delay: 1.2s;
-  }
-
-  span:nth-child(4) {
-    animation-delay: 1.3s;
-  }
-
-  span:nth-child(5) {
-    animation-delay: 1.4s;
+    animation: ${bounce} 3s ease infinite;
+    animation-delay: 2s;
   }
 `;
 
@@ -149,11 +155,7 @@ const BlappedMessage = () => {
   return (
     <Container>
       <BlapText>
-        <span>B</span>
-        <span>L</span>
-        <span>A</span>
-        <span>P</span>
-        <span>!</span>
+        <span>BLAP!</span>
       </BlapText>
     </Container>
   );
