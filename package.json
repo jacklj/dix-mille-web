@@ -7,7 +7,7 @@
     "@sentry/cli": "^1.61.0",
     "@sentry/react": "^5.29.2",
     "@sentry/tracing": "^5.29.2",
-    "firebase": "^8.2.1",
+    "firebase": "^10.9.0",
     "moment": "^2.29.1",
     "pure-react-carousel": "^1.27.6",
     "react": "^17.0.1",
